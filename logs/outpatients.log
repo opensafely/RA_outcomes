@@ -1,0 +1,418 @@
+
+. * Import data
+. import delimited using ./output/input.csv
+(31 vars, 1,000 obs)
+
+. * Check data
+. count if age==. 
+  0
+
+. count if age<18 
+  203
+
+. count if age>110 & age!=.
+  0
+
+. count if sex==""
+  0
+
+. sum household, d
+
+                          household
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            1              0
+10%            1              0       Obs               1,000
+25%            2              0       Sum of Wgt.       1,000
+
+50%            3                      Mean              2.521
+                        Largest       Std. Dev.      1.040501
+75%            3              6
+90%            4              6       Variance       1.082642
+95%            4              6       Skewness       -.002576
+99%            5              6       Kurtosis       3.183431
+
+. count if died
+  500
+
+. sum first_ra_code, d
+
+                        first_ra_code
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%         1901           1900
+ 5%         1906           1900
+10%         1911           1900       Obs                 477
+25%         1930           1901       Sum of Wgt.         477
+
+50%         1959                      Mean           1957.992
+                        Largest       Std. Dev.      33.29452
+75%         1984           2017
+90%         2004           2017       Variance       1108.525
+95%         2011           2017       Skewness      -.0146256
+99%         2017           2017       Kurtosis       1.883568
+
+. 
+. sum outpatient*, d
+
+                    outpatient_appt_2018
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            1              0
+10%            1              0       Obs               1,000
+25%            2              0       Sum of Wgt.       1,000
+
+50%            2                      Mean              2.498
+                        Largest       Std. Dev.      1.039749
+75%            3              5
+90%            4              5       Variance       1.081077
+95%            4              5       Skewness       .0614596
+99%            5              5       Kurtosis       2.820688
+
+                    outpatient_appt_2019
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            1              0
+10%            1              0       Obs               1,000
+25%            2              0       Sum of Wgt.       1,000
+
+50%            2                      Mean              2.452
+                        Largest       Std. Dev.      1.055846
+75%            3              5
+90%            4              5       Variance       1.114811
+95%            4              6       Skewness        .031892
+99%            5              6       Kurtosis       2.892237
+
+                    outpatient_appt_2020
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            1              0
+10%            1              0       Obs               1,000
+25%            2              0       Sum of Wgt.       1,000
+
+50%            3                      Mean              2.546
+                        Largest       Std. Dev.      1.010398
+75%            3              5
+90%            4              6       Variance       1.020905
+95%            4              6       Skewness      -.0265457
+99%            5              6       Kurtosis         3.2462
+
+                    outpatient_appt_2021
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            1              0
+10%            1              0       Obs               1,000
+25%            2              0       Sum of Wgt.       1,000
+
+50%            3                      Mean              2.495
+                        Largest       Std. Dev.      1.021283
+75%            3              5
+90%            4              5       Variance       1.043018
+95%            4              5       Skewness      -.1162261
+99%            5              5       Kurtosis       2.917783
+
+                   outpatient_medium_2018
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            1              1
+ 5%            1              1
+10%            1              1       Obs                 500
+25%            2              1       Sum of Wgt.         500
+
+50%            5                      Mean             15.332
+                        Largest       Std. Dev.      30.64153
+75%            7             98
+90%           98             98       Variance       938.9036
+95%           98             98       Skewness       2.313643
+99%           98             98       Kurtosis       6.403628
+
+                   outpatient_medium_2019
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            1              1
+ 5%            1              1
+10%            1              1       Obs                 500
+25%            2              1       Sum of Wgt.         500
+
+50%            5                      Mean              12.22
+                        Largest       Std. Dev.      26.44303
+75%            7             98
+90%            8             98       Variance       699.2341
+95%           98             98       Skewness       2.911411
+99%           98             98       Kurtosis       9.574106
+
+                   outpatient_medium_2020
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            1              1
+ 5%            1              1
+10%            1              1       Obs                 500
+25%            2              1       Sum of Wgt.         500
+
+50%            4                      Mean              14.15
+                        Largest       Std. Dev.      29.29628
+75%            7             98
+90%           98             98       Variance        858.272
+95%           98             98       Skewness       2.496264
+99%           98             98       Kurtosis       7.293818
+
+                   outpatient_medium_2021
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            1              1
+ 5%            1              1
+10%            1              1       Obs                 500
+25%            2              1       Sum of Wgt.         500
+
+50%            4                      Mean             13.246
+                        Largest       Std. Dev.      28.05565
+75%            7             98
+90%            8             98       Variance       787.1197
+95%           98             98       Skewness       2.671597
+99%           98             98       Kurtosis       8.209186
+
+. 
+. * Format variables
+. *re-order ethnicity
+.  gen eth5=1 if ethnicity==1
+(804 missing values generated)
+
+.  replace eth5=2 if ethnicity==3
+(211 real changes made)
+
+.  replace eth5=3 if ethnicity==4
+(164 real changes made)
+
+.  replace eth5=4 if ethnicity==2
+(211 real changes made)
+
+.  replace eth5=5 if ethnicity==5
+(218 real changes made)
+
+.  replace eth5=. if ethnicity==.
+(0 real changes made)
+
+. 
+.  label define eth5                      1 "White"                            
+>            ///
+>                                                         2 "South Asian"      
+>                    ///                                             
+>                                                         3 "Black"            
+>                            ///
+>                                                         4 "Mixed"            
+>                            ///
+>                                                         5 "Other"            
+>                            
+
+.                                         
+. 
+. label values eth5 eth5
+
+. safetab eth5, m
+5
+
+       eth5 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+      White |        196       19.60       19.60
+South Asian |        211       21.10       40.70
+      Black |        164       16.40       57.10
+      Mixed |        211       21.10       78.20
+      Other |        218       21.80      100.00
+------------+-----------------------------------
+      Total |      1,000      100.00
+
+. 
+. * formatting gender
+. gen male=(sex=="M")
+
+. replace male = 0 if sex == "F"
+(0 real changes made)
+
+. label define male 0"Female" 1"Male"
+
+. label values male male
+
+. safetab male, miss
+5
+
+       male |      Freq.     Percent        Cum.
+------------+-----------------------------------
+     Female |        486       48.60       48.60
+       Male |        514       51.40      100.00
+------------+-----------------------------------
+      Total |      1,000      100.00
+
+. 
+. * Make region numeric
+. generate region2=.
+(1,000 missing values generated)
+
+. replace region2=0 if region=="East"
+(0 real changes made)
+
+. replace region2=1 if region=="East Midlands"
+(109 real changes made)
+
+. replace region2=2 if region=="London"
+(200 real changes made)
+
+. replace region2=3 if region=="North East"
+(85 real changes made)
+
+. replace region2=4 if region=="North West"
+(85 real changes made)
+
+. replace region2=5 if region=="South East"
+(217 real changes made)
+
+. replace region2=6 if region=="South West"
+(0 real changes made)
+
+. replace region2=7 if region=="West Midlands"
+(106 real changes made)
+
+. replace region2=8 if region=="Yorkshire and The Humber"
+(0 real changes made)
+
+. drop region
+
+. rename region2 region
+
+. label var region "region of England"
+
+. label define region 0 "East" 1 "East Midlands"  2 "London" 3 "North East" 4 "
+> North West" 5 "South East" 6 "South West" 7 "West Midlands" 8 "Yorkshire and 
+> The Humber"
+
+. label values region region
+
+. safetab region, miss
+7
+
+       region of England |      Freq.     Percent        Cum.
+-------------------------+-----------------------------------
+           East Midlands |        109       10.90       10.90
+                  London |        200       20.00       30.90
+              North East |         85        8.50       39.40
+              North West |         85        8.50       47.90
+              South East |        217       21.70       69.60
+           West Midlands |        106       10.60       80.20
+                       . |        198       19.80      100.00
+-------------------------+-----------------------------------
+                   Total |      1,000      100.00
+
+. 
+. *create a 4 category rural urban variable 
+. generate urban_rural_5=.
+(1,000 missing values generated)
+
+. la var urban_rural_5 "Rural Urban in five categories"
+
+. replace urban_rural_5=1 if urban_rural==1
+(120 real changes made)
+
+. replace urban_rural_5=2 if urban_rural==2
+(128 real changes made)
+
+. replace urban_rural_5=3 if urban_rural==3|urban_rural==4
+(252 real changes made)
+
+. replace urban_rural_5=4 if urban_rural==5|urban_rural==6
+(249 real changes made)
+
+. replace urban_rural_5=5 if urban_rural==7|urban_rural==8
+(251 real changes made)
+
+. label define urban_rural_5 1 "Urban major conurbation" 2 "Urban minor conurba
+> tion" 3 "Urban city and town" 4 "Rural town and fringe" 5 "Rural village and 
+> dispersed"
+
+. label values urban_rural_5 urban_rural_5
+
+. safetab urban_rural_5, miss
+14
+
+        Rural Urban in five |
+                 categories |      Freq.     Percent        Cum.
+----------------------------+-----------------------------------
+    Urban major conurbation |        120       12.00       12.00
+    Urban minor conurbation |        128       12.80       24.80
+        Urban city and town |        252       25.20       50.00
+      Rural town and fringe |        249       24.90       74.90
+Rural village and dispersed |        251       25.10      100.00
+----------------------------+-----------------------------------
+                      Total |      1,000      100.00
+
+. 
+. *generate a binary rural urban (with missing assigned to urban)
+. generate urban_rural_bin=.
+(1,000 missing values generated)
+
+. replace urban_rural_bin=1 if urban_rural<=4|urban_rural==.
+(500 real changes made)
+
+. replace urban_rural_bin=0 if urban_rural>4 & urban_rural!=.
+(500 real changes made)
+
+. label define urban_rural_bin 0 "Rural" 1 "Urban"
+
+. label values urban_rural_bin urban_rural_bin
+
+. safetab urban_rural_bin urban_rural, miss
+28
+
+urban_rura |                      urban_rural
+     l_bin |         1          2          3          4          5 |     Total
+-----------+-------------------------------------------------------+----------
+     Rural |         0          0          0          0        108 |       500 
+     Urban |       120        128        131        121          0 |       500 
+-----------+-------------------------------------------------------+----------
+     Total |       120        128        131        121        108 |     1,000 
+
+
+urban_rura |           urban_rural
+     l_bin |         6          7          8 |     Total
+-----------+---------------------------------+----------
+     Rural |       141        125        126 |       500 
+     Urban |         0          0          0 |       500 
+-----------+---------------------------------+----------
+     Total |       141        125        126 |     1,000 
+
+. label var urban_rural_bin "Rural-Urban"
+
+. 
+. * Define age categories
+. * Create age categories
+. egen age_cat = cut(age), at(18, 40, 60, 80, 120) icodes
+(203 missing values generated)
+
+. label define age 0 "18 - 40 years" 1 "41 - 60 years" 2 "61 - 80 years" 3 ">80
+>  years"
+
+. label values age_cat age
+
+. safetab age_cat, miss
+8
+
+      age_cat |      Freq.     Percent        Cum.
+--------------+-----------------------------------
+18 - 40 years |        289       28.90       28.90
+41 - 60 years |        269       26.90       55.80
+61 - 80 years |        192       19.20       75.00
+    >80 years |         47        4.70       79.70
+            . |        203       20.30      100.00
+--------------+-----------------------------------
+        Total |      1,000      100.00
+
+. 
+. log close
+      name:  <unnamed>
+       log:  /workspace/logs/outpatients.log
+  log type:  text
+ closed on:   8 Jun 2022, 15:46:51
+-------------------------------------------------------------------------------

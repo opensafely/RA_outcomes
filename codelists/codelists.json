@@ -1,3 +1,40 @@
 {
-  "files": {}
+  "files": {
+    "opensafely-rheumatoid-arthritis.csv": {
+      "id": "opensafely/rheumatoid-arthritis/2020-05-12",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/rheumatoid-arthritis/2020-05-12/",
+      "downloaded_at": "2022-06-06 10:25:17.920979Z",
+      "sha": "4042d1daebf9ab893093d0eeff6b62ad5927c86e"
+    },
+    "opensafely-methotrexate-oral.csv": {
+      "id": "opensafely/methotrexate-oral/041a8320",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/methotrexate-oral/041a8320/",
+      "downloaded_at": "2022-06-06 10:25:18.118751Z",
+      "sha": "68754de9916bb08a1ea9d6d84c899dda5ee64ad7"
+    },
+    "opensafely-sulfasalazine-oral-dmd.csv": {
+      "id": "opensafely/sulfasalazine-oral-dmd/1a189116",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/sulfasalazine-oral-dmd/1a189116/",
+      "downloaded_at": "2022-06-06 10:25:18.361756Z",
+      "sha": "295d27dc7f03635498c460ad4d16686608f02c71"
+    },
+    "opensafely-leflunomide-dmd.csv": {
+      "id": "opensafely/leflunomide-dmd/1765d120",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/leflunomide-dmd/1765d120/",
+      "downloaded_at": "2022-06-06 10:25:18.631654Z",
+      "sha": "0d88edfe37ebb951a6ccc6199ef360c91b188c11"
+    },
+    "opensafely-hydroxychloroquine.csv": {
+      "id": "opensafely/hydroxychloroquine/2020-06-15",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/hydroxychloroquine/2020-06-15/",
+      "downloaded_at": "2022-06-06 10:25:19.208702Z",
+      "sha": "b9787f3b2851a0c2d4b03fbe3eec921ff9098802"
+    },
+    "opensafely-ethnicity-with-categories-snomed.csv": {
+      "id": "opensafely/ethnicity-with-categories-snomed/5eb3345b",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/ethnicity-with-categories-snomed/5eb3345b/",
+      "downloaded_at": "2022-06-08 13:25:55.601005Z",
+      "sha": "2fe65c9b8c1536ff12fd05f981c70749aee92944"
+    }
+  }
 }

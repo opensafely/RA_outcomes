@@ -1,0 +1,13 @@
+# RA codes
+opensafely/rheumatoid-arthritis/2020-05-12/
+# DMARD codes
+# Methotrexate
+opensafely/methotrexate-oral/041a8320/
+# Sulfasalazine
+opensafely/sulfasalazine-oral-dmd/1a189116/
+# Leflunomide
+opensafely/leflunomide-dmd/1765d120/
+# Hydroxychloroquine
+opensafely/hydroxychloroquine/2020-06-15/
+# Ethnicity - SNOMED
+opensafely/ethnicity-with-categories-snomed/5eb3345b/
