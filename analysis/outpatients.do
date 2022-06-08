@@ -91,5 +91,12 @@ label define age 0 "18 - 40 years" 1 "41 - 60 years" 2 "61 - 80 years" 3 ">80 ye
 label values age_cat age
 safetab age_cat, miss
 
+* Categorise number of outpatient appointments
+label define appt 0 "No appointments" 1 "1-2 per year" 2 "3-6 per year" 3 "7-12 per year" 4 "More than 12 per year"
+forvalues i=2018/2021 {
+    egen op_appt_`i'_cat = cut(outpatient_appt_`i'), at(0, 1, 3, 7, 13, 1000) icodes
+    label values op_appt_`i'_cat appt
+    }
+
 log close
 
