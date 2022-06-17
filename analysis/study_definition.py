@@ -264,3 +264,4 @@ study = StudyDefinition(
         returning="binary_flag",
     ),
     **common_variables
+)
