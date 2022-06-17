@@ -35,6 +35,42 @@
       "url": "https://codelists.opensafely.org/codelist/opensafely/ethnicity-with-categories-snomed/5eb3345b/",
       "downloaded_at": "2022-06-08 13:25:55.601005Z",
       "sha": "2fe65c9b8c1536ff12fd05f981c70749aee92944"
+    },
+    "opensafely-alanine-aminotransferase-alt-tests.csv": {
+      "id": "opensafely/alanine-aminotransferase-alt-tests/2298df3e",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/alanine-aminotransferase-alt-tests/2298df3e/",
+      "downloaded_at": "2022-06-15 15:22:53.394149Z",
+      "sha": "0d231653e5ece343f6945309d21fc40c7f685ff2"
+    },
+    "opensafely-red-blood-cell-rbc-tests.csv": {
+      "id": "opensafely/red-blood-cell-rbc-tests/576a859e",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/red-blood-cell-rbc-tests/576a859e/",
+      "downloaded_at": "2022-06-15 15:22:53.617596Z",
+      "sha": "e111693c2b9ae4e688d859daa73491a978b0795b"
+    },
+    "user-Andrew-ue-check-represented-by-serum-creatinine-level.csv": {
+      "id": "user/Andrew/ue-check-represented-by-serum-creatinine-level/75c3c92f",
+      "url": "https://codelists.opensafely.org/codelist/user/Andrew/ue-check-represented-by-serum-creatinine-level/75c3c92f/",
+      "downloaded_at": "2022-06-15 15:22:54.145401Z",
+      "sha": "4d21ba23fe3862242be9f2eb2e538a89ae851c00"
+    },
+    "primis-covid19-vacc-uptake-ckd35.csv": {
+      "id": "primis-covid19-vacc-uptake/ckd35/1ec0c670",
+      "url": "https://codelists.opensafely.org/codelist/primis-covid19-vacc-uptake/ckd35/1ec0c670/",
+      "downloaded_at": "2022-06-16 08:43:45.626089Z",
+      "sha": "3a32f20ef7b33b9cdda2128754d3f394f28f0165"
+    },
+    "primis-covid19-vacc-uptake-cld_cod.csv": {
+      "id": "primis-covid19-vacc-uptake/cld_cod/1001fe3a",
+      "url": "https://codelists.opensafely.org/codelist/primis-covid19-vacc-uptake/cld_cod/1001fe3a/",
+      "downloaded_at": "2022-06-16 08:43:45.867633Z",
+      "sha": "a895e56a651467671e5b2bb5c8e764a7dac0db47"
+    },
+    "opensafely-azathioprine-dmd.csv": {
+      "id": "opensafely/azathioprine-dmd/78f0ddfe",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/azathioprine-dmd/78f0ddfe/",
+      "downloaded_at": "2022-06-17 10:20:42.313810Z",
+      "sha": "f6fa74e1b390e9c0735d523e68873146c19e7f39"
     }
   }
 }

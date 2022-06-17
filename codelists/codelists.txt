@@ -11,3 +11,15 @@ opensafely/leflunomide-dmd/1765d120/
 opensafely/hydroxychloroquine/2020-06-15/
 # Ethnicity - SNOMED
 opensafely/ethnicity-with-categories-snomed/5eb3345b/
+# AST 
+opensafely/alanine-aminotransferase-alt-tests/2298df3e/
+# red blood cell tests
+opensafely/red-blood-cell-rbc-tests/576a859e/
+# Creatinine
+user/Andrew/ue-check-represented-by-serum-creatinine-level/75c3c92f/
+# Chronic kidney disease stages 3-5
+primis-covid19-vacc-uptake/ckd35/1ec0c670
+# Liver disease
+primis-covid19-vacc-uptake/cld_cod/1001fe3a
+# Azathioprine
+opensafely/azathioprine-dmd/78f0ddfe

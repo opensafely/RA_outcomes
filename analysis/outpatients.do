@@ -5,17 +5,30 @@ Date:           08/06/2022
 Author:         Ruth Costello
 Description:    Check data, tabulates frequency of outpatient appointments
 ==============================================================================*/
+adopath + ./analysis/ado 
+
 cap log using ./logs/outpatients.log, replace
+
+cap mkdir ./output/tables
 * Import data
 import delimited using ./output/input.csv
 * Check data
 count if age==. 
 count if age<18 
 count if age>110 & age!=.
+sum age, d
 count if sex==""
+tab sex
 sum household, d
-count if died
-sum first_ra_code, d
+tab care_home
+* Time since first RA code
+gen time_ra = 2018 - first_ra_code
+sum time_ra, d
+sum number_ra_codes, d
+sum metho_count, d
+sum sulfa_count, d 
+sum leflu_count, d 
+sum hydrox_count, d 
 
 sum outpatient*, d
 
@@ -97,6 +110,12 @@ forvalues i=2018/2021 {
     egen op_appt_`i'_cat = cut(outpatient_appt_`i'), at(0, 1, 3, 7, 13, 1000) icodes
     label values op_appt_`i'_cat appt
     }
+
+* Tabulate
+table1_mc, vars(op_appt_2018_cat cate \ op_appt_2019_cat cate \ op_appt_2020_cat cate \ op_appt_2021_cat cate) clear
+export delimited using ./output/tables/op_appt_yrs.csv
+
+
 
 log close
 

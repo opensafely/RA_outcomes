@@ -4,6 +4,9 @@ from common_variables import common_variables
 from codelists import *
 
 # Definition for objective 2 - outpatient appointments
+# Include people age 18+, registered with a GP at index, with at least 3 months registration
+# and a diagnosis of RA
+# Exclude people with missing age, sex or STP as likely low data quality
 study = StudyDefinition(
     default_expectations={
         "date": {"earliest": "1900-01-01", "latest": "today"},
@@ -19,23 +22,22 @@ study = StudyDefinition(
         (sex = 'M' OR sex = 'F') AND
         (stp != 'missing') AND
         (imd != 0) AND
-        (household>0 AND household <=15) AND
-        (care_home_type="PR") AND
         has_ra
         """,
-    ),
-    has_follow_up=patients.registered_with_one_practice_between(
-        "index_date - 3 months", "index_date"
-    ),
-    died=patients.died_from_any_cause(
-            on_or_before="index_date"
-    ),
-    stp=patients.registered_practice_as_of(
-            "index_date",
-            returning="stp_code",
-            return_expectations={
-               "category": {"ratios": {"STP1": 0.3, "STP2": 0.2, "STP3": 0.5}},
-            },
+    
+        has_follow_up=patients.registered_with_one_practice_between(
+            "index_date - 3 months", "index_date"
+        ),
+        died=patients.died_from_any_cause(
+                on_or_before="index_date"
+        ),
+        stp=patients.registered_practice_as_of(
+                "index_date",
+                returning="stp_code",
+                return_expectations={
+                "category": {"ratios": {"STP1": 0.3, "STP2": 0.2, "STP3": 0.5}},
+                },
+        ),
     ),
     household=patients.household_as_of(
         "2020-02-01",
@@ -262,4 +264,3 @@ study = StudyDefinition(
         returning="binary_flag",
     ),
     **common_variables
-)
