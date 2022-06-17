@@ -105,32 +105,4 @@ common_variables = dict(
                 "category": {"ratios": {1: 0.125, 2: 0.125, 3: 0.125, 4: 0.125, 5: 0.125, 6: 0.125, 7: 0.125, 8: 0.125}},
             },
         ),
-        ### PRIMIS overall flag for shielded group
-        shielded=patients.satisfying(
-                """ severely_clinically_vulnerable
-                AND NOT less_vulnerable""", 
-            return_expectations={
-                "incidence": 0.01,
-                    },
-
-                ### SHIELDED GROUP - first flag all patients with "high risk" codes
-            severely_clinically_vulnerable=patients.with_these_clinical_events(
-                high_risk_codes, # note no date limits set
-                find_last_match_in_period = True,
-                return_expectations={"incidence": 0.02,},
-            ),
-
-            # find date at which the high risk code was added
-            date_severely_clinically_vulnerable=patients.date_of(
-                "severely_clinically_vulnerable", 
-                date_format="YYYY-MM-DD",   
-            ),
-
-            ### NOT SHIELDED GROUP (medium and low risk) - only flag if later than 'shielded'
-            less_vulnerable=patients.with_these_clinical_events(
-                not_high_risk_codes, 
-                on_or_after="date_severely_clinically_vulnerable",
-                return_expectations={"incidence": 0.01,},
-                ),
-            ),
     )

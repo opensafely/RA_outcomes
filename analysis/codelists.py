@@ -26,6 +26,11 @@ hydroxychloroquine_codes = codelist_from_csv(
     system="snomed",
     column="snomed_id",)
 
+azathioprine_codes = codelist_from_csv(
+    "codelists/opensafely-azathioprine-dmd.csv",
+    system="dmd_id",
+    column="dmd_id",)
+
 # Ethnicity
 ethnicity_codes = codelist_from_csv(
     "codelists/opensafely-ethnicity-with-categories-snomed.csv",
@@ -44,3 +49,30 @@ not_high_risk_codes = codelist(
     ['1300591000000101', '1300571000000100'],
     system="snomed",
     )
+
+# Blood monitoring
+ast_codes = codelist_from_csv(
+    "codelists/opensafely-alanine-aminotransferase-alt-tests.csv",
+    system="snomed",
+    column="code",
+)
+rbc_codes = codelist_from_csv(
+    "codelists/opensafely-red-blood-cell-rbc-tests.csv",
+    system="snomed",
+    column="code",
+)
+creatinine_codes = codelist_from_csv(
+    "codelists/user-Andrew-ue-check-represented-by-serum-creatinine-level.csv",
+    system="snomed",
+    column="code",
+)
+ckd_codes=codelist_from_csv(
+    "codelists/primis-covid19-vacc-uptake-ckd35.csv",
+    system="snomed",
+    column="code",
+)
+cld_codes=codelist_from_csv(
+    "codelists/primis-covid19-vacc-uptake-cld_cod.csv",
+    system="snomed",
+    column="code",
+)

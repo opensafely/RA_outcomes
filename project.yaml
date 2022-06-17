@@ -4,6 +4,27 @@ expectations:
   population_size: 1000
 
 actions:
+  # Study definition for objective 1
+  # First for baseline tables
+  generate_study_population_monitor_2018:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_monitor_bl --index-date-range "2018-03-01"
+    outputs:
+      highly_sensitive:
+        cohort: output/input_monitor_bl_2018-03-01.csv
+  
+  generate_study_population_monitor_2020:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_monitor_bl --index-date-range "2020-03-23"
+    outputs:
+      highly_sensitive:
+        cohort: output/input_monitor_bl_2020-03-23.csv
+  
+  # Generate baseline tables
+  baseline_monitor:
+    run: stata-mp:latest analysis/check.do
+    needs: [generate_study_population_monitor_2018, generate_study_population_monitor_2020]
+    outputs:
+      moderately_sensitive:
+        log: logs/baseline.log
   #Study definition for outpatient objective (2)
   generate_study_population:
     run: cohortextractor:latest generate_cohort --study-definition study_definition
@@ -17,3 +38,4 @@ actions:
     outputs:
       moderately_sensitive:
         log: logs/outpatients.log
+        output: output/tables/op_appt_yrs.csv

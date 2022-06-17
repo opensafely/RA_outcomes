@@ -1,4 +1,7 @@
 
+. 
+. cap mkdir ./output/tables
+
 . * Import data
 . import delimited using ./output/input.csv
 (31 vars, 1,000 obs)
@@ -410,9 +413,64 @@ urban_rura |           urban_rural
         Total |      1,000      100.00
 
 . 
+. * Categorise number of outpatient appointments
+. label define appt 0 "No appointments" 1 "1-2 per year" 2 "3-6 per year" 3 "7-
+> 12 per year" 4 "More than 12 per year"
+
+. forvalues i=2018/2021 {
+  2.     egen op_appt_`i'_cat = cut(outpatient_appt_`i'), at(0, 1, 3, 7, 13, 10
+> 00) icodes
+  3.     label values op_appt_`i'_cat appt
+  4.     }
+
+. 
+. * Tabulate
+. table1_mc, vars(op_appt_2018_cat cate \ op_appt_2019_cat cate \ op_appt_2020_
+> cat cate \ op_appt_2021_cat cate) clear
+
+  +--------------------------------+
+  | factor               N_1   m_1 |
+  |--------------------------------|
+  | op_appt_2018_cat   1,000     0 |
+  |--------------------------------|
+  | op_appt_2019_cat   1,000     0 |
+  |--------------------------------|
+  | op_appt_2020_cat   1,000     0 |
+  |--------------------------------|
+  | op_appt_2021_cat   1,000     0 |
+  +--------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +--------------------------------------------------+
+  |                                      Total       |
+  |--------------------------------------------------|
+  |                                      N=1,000     |
+  |--------------------------------------------------|
+  | op_appt_2018_cat   No appointments   22 ( 2.2%)  |
+  |                    1-2 per year      489 (48.9%) |
+  |                    3-6 per year      489 (48.9%) |
+  |--------------------------------------------------|
+  | op_appt_2019_cat   No appointments   29 ( 2.9%)  |
+  |                    1-2 per year      493 (49.3%) |
+  |                    3-6 per year      478 (47.8%) |
+  |--------------------------------------------------|
+  | op_appt_2020_cat   No appointments   23 ( 2.3%)  |
+  |                    1-2 per year      441 (44.1%) |
+  |                    3-6 per year      536 (53.6%) |
+  |--------------------------------------------------|
+  | op_appt_2021_cat   No appointments   30 ( 3.0%)  |
+  |                    1-2 per year      468 (46.8%) |
+  |                    3-6 per year      502 (50.2%) |
+  +--------------------------------------------------+
+Data are presented as n (%).
+ 
+
+. export delimited using ./output/tables/op_appt_yrs.csv
+file ./output/tables/op_appt_yrs.csv saved
+
 . log close
       name:  <unnamed>
        log:  /workspace/logs/outpatients.log
   log type:  text
- closed on:   8 Jun 2022, 15:46:51
+ closed on:  10 Jun 2022, 10:59:32
 -------------------------------------------------------------------------------
