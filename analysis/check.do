@@ -107,7 +107,8 @@ foreach year in 2018-03-01 2020-03-23 {
     safetab age_cat, miss
 
     * Tabulate
-    table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ comorbidity cate \ imd cate) by(dmard_monitored_prior)
+    table1_mc if dmard_monitored_prior==1, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ comorbidity cate \ imd cate)
+    table1_mc if dmard_monitored_prior==0, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ comorbidity cate \ imd cate)
     *export delimited using ./output/tables/op_appt_yrs.csv
 }
 log close
