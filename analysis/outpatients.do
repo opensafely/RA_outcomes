@@ -20,9 +20,17 @@ sum age, d
 count if sex==""
 tab sex
 sum household, d
-tab care_home
+tab care_home_type
+* Checking RA algorithm variables
+tab has_dmards has_alt_dmard_diag, m
+sum number_ra_codes
+di "Number where no DMARDs but does have multiple RA codes and no alt diag"
+count if has_dmards==0 & number_ra_codes>=2 & alt_diag!=1
+tab has_ra, m
 * Time since first RA code
-gen time_ra = 2018 - first_ra_code
+gen first_ra_codeA = date(first_ra_code, "YMD")
+format first_ra_codeA %dD/N/CY
+gen time_ra = (date("01Mar2018", "DMY") - first_ra_codeA)/365.25
 sum time_ra, d
 sum number_ra_codes, d
 sum metho_count, d
@@ -31,6 +39,8 @@ sum leflu_count, d
 sum hydrox_count, d 
 
 sum outpatient*, d
+
+keep if has_ra
 
 * Format variables
 *re-order ethnicity
@@ -104,18 +114,21 @@ label define age 0 "18 - 40 years" 1 "41 - 60 years" 2 "61 - 80 years" 3 ">80 ye
 label values age_cat age
 safetab age_cat, miss
 
+* Flag if in a care-home
+    gen care_home=care_home_type!="PR"
+
 * Categorise number of outpatient appointments
 label define appt 0 "No appointments" 1 "1-2 per year" 2 "3-6 per year" 3 "7-12 per year" 4 "More than 12 per year"
-forvalues i=2018/2021 {
+forvalues i=2019/2021 {
     egen op_appt_`i'_cat = cut(outpatient_appt_`i'), at(0, 1, 3, 7, 13, 1000) icodes
     label values op_appt_`i'_cat appt
     }
-
+preserve
 * Tabulate
-table1_mc, vars(op_appt_2018_cat cate \ op_appt_2019_cat cate \ op_appt_2020_cat cate \ op_appt_2021_cat cate) clear
+table1_mc, vars(op_appt_2019_cat cate \ op_appt_2020_cat cate \ op_appt_2021_cat cate) clear
 export delimited using ./output/tables/op_appt_yrs.csv
-
-
-
+restore 
+table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate) clear
+export delimited using ./output/tables/op_chars.csv
 log close
 

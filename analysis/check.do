@@ -11,28 +11,43 @@ cap log using ./logs/baseline.log, replace
 foreach year in 2018-03-01 2020-03-23 {
     import delimited using "./output/input_monitor_bl_`year'.csv", clear
     * Inital check of frequency of DMARD prescribing and blood tests
+    di "number of missing age"
     count if age==. 
+    di "number under age 18"
     count if age<18 
+    di "number older than 110"
     count if age>110 & age!=.
     sum age, d
+    di "number with missing gender"
     count if sex==""
     tab sex
     sum household, d
     tab care_home
-    * Time since first RA code
-    gen time_ra = 2018 - first_ra_code
-    sum time_ra, d
-    sum number_ra_codes, d
-    * Checking how frequently each type of drug is prescribed
-    foreach var in metho sulfa leflu fbc lft {
-        sum `var'_count, d
-    }
-    foreach drug in metho leflu sulfa {
-        egen `drug'_3_mth_total = rowtotal(`drug'_3_0 `drug'_6_3 `drug'_9_6 `drug'_12_9)
-        tab `drug'_3_mth_total if (`drug'_count>4 & `drug'_count!=.)
+    * Checking rheumatic disease
+    di "number with no RA, psoriasis or psoriatic arthritis"
+    count if has_ra_code==0 & has_psoriasis_code==0 & has_psoriatic_arthritis_code==0
+    egen dis_tot = rowtotal(has_ra_code has_psoriatic_arthritis_code has_psoriasis_code)
+    tab dis_tot
+    * Frequency of and time since first rheumatic disease code
+    foreach var in ra psoriasis psoriatic_arthritis {
+        tab has_`var'_code
+        gen time_`var' = 2018 - first_`var'_code
+        sum time_`var', d
     }
     
-    tab dmard_monitored_prior, m
+    * Checking how frequently each type of drug is prescribed & bloods are montiored
+    foreach var in metho leflu aza fbc lft creatinine {
+        sum `var'_count, d
+        gen `var'_monitored = (`var'_count>=3 & `var'_count!=.)
+    }
+    gen bloods_monitored=(fbc_count>=3 & lft_count>=3 & creatinine_count>=3)
+    tab bloods_monitored, m
+
+    di "People with 4+ prescriptions and rheum code"
+    tab dmard_rheum_prior, m
+    tab dmard_rheum_prior bloods_monitored
+
+    gen dmard_monitored_prior = (dmard_rheum_prior==1 & bloods_monitored==1)
 
     * Format variables
     *re-order ethnicity
@@ -106,9 +121,11 @@ foreach year in 2018-03-01 2020-03-23 {
     label values age_cat age
     safetab age_cat, miss
 
+    * Flag if in a care-home
+    gen care_home=care_home_type!="PR"
+
     * Tabulate
-    table1_mc if dmard_monitored_prior==1, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ comorbidity cate \ imd cate)
-    table1_mc if dmard_monitored_prior==0, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ comorbidity cate \ imd cate)
+    table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ comorbidity cate \ imd cate \ care_home cate) by(dmard_monitored_prior)
     *export delimited using ./output/tables/op_appt_yrs.csv
 }
 log close
