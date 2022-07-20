@@ -22,7 +22,7 @@ study = StudyDefinition(
         (sex = 'M' OR sex = 'F') AND
         (stp != 'missing') AND
         (imd != 0) AND
-        has_ra
+        has_ra_code
         """,
     
         has_follow_up=patients.registered_with_one_practice_between(
@@ -196,17 +196,17 @@ study = StudyDefinition(
     ),
     has_dmards=patients.satisfying(
         """
-        (metho_count>2 OR
-        sulfa_count>2 OR
-        hydrox_count>2 OR
-        leflu_count>2) AND NOT
+        (metho_count>=2 OR
+        sulfa_count>=2 OR
+        hydrox_count>=2 OR
+        leflu_count>=2) AND NOT
         has_alt_dmard_diag
         """,
     ),
     has_ra=patients.satisfying(
         """
-        (has_ra_code AND has_dmards) OR
-        (number_ra_codes>2 AND NOT alt_diag)
+        (has_ra_code AND has_dmards AND NOT has_alt_dmard_diag) OR
+        (number_ra_codes>=2 AND NOT alt_diag)
         """,
     ),
     # Determine number of appointments during years 2019-2021

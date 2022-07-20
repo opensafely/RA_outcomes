@@ -38,4 +38,4 @@ actions:
     outputs:
       moderately_sensitive:
         log: logs/outpatients.log
-        output: output/tables/op_appt_yrs.csv
+        output: output/tables/op_*.csv
