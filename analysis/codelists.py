@@ -2,9 +2,9 @@
 from cohortextractor import codelist_from_csv, codelist
 
 ra_codes = codelist_from_csv(
-    "codelists/opensafely-rheumatoid-arthritis.csv",
-    system="ctv3",
-    column="CTV3ID",)
+    "codelists/user-ruthcostello-rheumatoid-arthritis.csv",
+    system="snomed",
+    column="code",)
 
 metho_codes = codelist_from_csv(
     "codelists/opensafely-methotrexate-oral.csv",
@@ -28,24 +28,23 @@ hydroxychloroquine_codes = codelist_from_csv(
 
 azathioprine_codes = codelist_from_csv(
     "codelists/opensafely-azathioprine-dmd.csv",
-    system="dmd_id",
+    system="snomed",
     column="dmd_id",)
 
 # Ethnicity
 ethnicity_codes = codelist_from_csv(
-    "codelists/opensafely-ethnicity-with-categories-snomed.csv",
+    "codelists/opensafely-ethnicity-snomed-0removed.csv",
     system="snomed",
-    column="Code",
-    category_column="6_group",
-)
+    column="snomedcode",
+    category_column="Grouping_6",)
 
 # High risk and not high risk codes, to define clinical vulnerability to complications from COVID-19 infection/shielding
-high_risk_codes = codelist(
+high_risk_covid_codes = codelist(
     ['1300561000000107'],
     system="snomed",
     )
 
-not_high_risk_codes = codelist(
+not_high_risk_covid_codes = codelist(
     ['1300591000000101', '1300571000000100'],
     system="snomed",
     )
@@ -62,7 +61,7 @@ rbc_codes = codelist_from_csv(
     column="code",
 )
 creatinine_codes = codelist_from_csv(
-    "codelists/user-Andrew-ue-check-represented-by-serum-creatinine-level.csv",
+    "codelists/user-bangzheng-creatinine-value.csv",
     system="snomed",
     column="code",
 )
@@ -72,7 +71,52 @@ ckd_codes=codelist_from_csv(
     column="code",
 )
 cld_codes=codelist_from_csv(
-    "codelists/primis-covid19-vacc-uptake-cld_cod.csv",
+    "codelists/primis-covid19-vacc-uptake-cld.csv",
     system="snomed",
     column="code",
+)
+psoriasis_codes=codelist_from_csv(
+    "codelists/user-ruthcostello-psoriasis.csv",
+    system="snomed",
+    column="code",
+)
+psoriatic_arthritis_codes=codelist_from_csv(
+    "codelists/opensafely-psoriatic-arthritis.csv",
+    system="snomed",
+    column="id",
+)
+sle_codes=codelist_from_csv(
+    "codelists/user-ruthcostello-systemic-lupus-erythematosus.csv",
+    system="snomed",
+    column="code",
+)
+ibd_codes=codelist_from_csv(
+    "codelists/opensafely-inflammatory-bowel-disease.csv",
+    system="ctv3",
+    column="CTV3ID",
+)
+haem_cancer_codes=codelist_from_csv(
+    "codelists/opensafely-haematological-cancer.csv",
+    system="ctv3",
+    column="CTV3ID",
+)
+spondy_codes=codelist_from_csv(
+    "codelists/user-ruthcostello-spondyloarthropathy.csv",
+    system="snomed",
+    column="code",
+)
+t1dm_codes=codelist_from_csv(
+    "codelists/opensafely-type-1-diabetes.csv",
+    system="ctv3",
+    column="CTV3ID",
+)
+t2dm_codes= codelist_from_csv(
+    "codelists/opensafely-type-2-diabetes.csv",
+    system="ctv3",
+    column="CTV3ID",)
+
+cardiac_codes=codelist_from_csv(
+    "codelists/opensafely-chronic-cardiac-disease.csv",
+    system="ctv3",
+    column="CTV3ID",
 )
