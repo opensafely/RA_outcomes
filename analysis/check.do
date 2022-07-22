@@ -125,7 +125,8 @@ foreach year in 2018-03-01 2020-03-23 {
     gen care_home=care_home_type!="PR"
 
     * Tabulate
-    table1_mc, vars(age_cat cate \ male bin \ region cate \ urban_rural_5 cate \ comorbidity bin \ imd cate \ care_home bin) by(dmard_monitored_prior)
+    table1_mc  if dmard_monitored_prior==1, vars(age_cat cate \ male bin \ region cate \ urban_rural_5 cate \ comorbidity bin \ imd cate \ care_home bin)
     *export delimited using ./output/tables/op_appt_yrs.csv
+    table1_mc  if dmard_monitored_prior==0, vars(age_cat cate \ male bin \ region cate \ urban_rural_5 cate \ comorbidity bin \ imd cate \ care_home bin)
 }
 log close
