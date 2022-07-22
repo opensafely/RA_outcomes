@@ -44,16 +44,16 @@
  32.     tab dmard_rheum_prior bloods_monitored
  33. 
 .     gen dmard_monitored_prior = (dmard_rheum_prior==1 & bloods_monitored==1)
- 34. 
-.     * Format variables
+ 34.     tab dmard_monitored_prior, m
+ 35.     * Format variables
 .     *re-order ethnicity
 .     gen eth5=1 if ethnicity==1
- 35.     replace eth5=2 if ethnicity==3
- 36.     replace eth5=3 if ethnicity==4
- 37.     replace eth5=4 if ethnicity==2
- 38.     replace eth5=5 if ethnicity==5
- 39.     replace eth5=. if ethnicity==.
- 40. 
+ 36.     replace eth5=2 if ethnicity==3
+ 37.     replace eth5=3 if ethnicity==4
+ 38.     replace eth5=4 if ethnicity==2
+ 39.     replace eth5=5 if ethnicity==5
+ 40.     replace eth5=. if ethnicity==.
+ 41. 
 .     label define eth5                   1 "White"                            
 >            ///
 >                                 2 "South Asian"                         ///  
@@ -64,82 +64,82 @@
 >    ///
 >                                 5 "Other"                                    
 >    
- 41.                         
+ 42.                         
 . 
 .     label values eth5 eth5
- 42.     safetab eth5, m
- 43. 
+ 43.     safetab eth5, m
+ 44. 
 .     * formatting gender
 .     gen male=(sex=="M")
- 44.     replace male = 0 if sex == "F"
- 45.     label define male 0"Female" 1"Male"
- 46.     label values male male
- 47.     safetab male, miss
- 48. 
+ 45.     replace male = 0 if sex == "F"
+ 46.     label define male 0"Female" 1"Male"
+ 47.     label values male male
+ 48.     safetab male, miss
+ 49. 
 .     * Make region numeric
 .     generate region2=.
- 49.     replace region2=0 if region=="East"
- 50.     replace region2=1 if region=="East Midlands"
- 51.     replace region2=2 if region=="London"
- 52.     replace region2=3 if region=="North East"
- 53.     replace region2=4 if region=="North West"
- 54.     replace region2=5 if region=="South East"
- 55.     replace region2=6 if region=="South West"
- 56.     replace region2=7 if region=="West Midlands"
- 57.     replace region2=8 if region=="Yorkshire and The Humber"
- 58.     drop region
- 59.     rename region2 region
- 60.     label var region "region of England"
- 61.     label define region 0 "East" 1 "East Midlands"  2 "London" 3 "North Ea
+ 50.     replace region2=0 if region=="East"
+ 51.     replace region2=1 if region=="East Midlands"
+ 52.     replace region2=2 if region=="London"
+ 53.     replace region2=3 if region=="North East"
+ 54.     replace region2=4 if region=="North West"
+ 55.     replace region2=5 if region=="South East"
+ 56.     replace region2=6 if region=="South West"
+ 57.     replace region2=7 if region=="West Midlands"
+ 58.     replace region2=8 if region=="Yorkshire and The Humber"
+ 59.     drop region
+ 60.     rename region2 region
+ 61.     label var region "region of England"
+ 62.     label define region 0 "East" 1 "East Midlands"  2 "London" 3 "North Ea
 > st" 4 "North West" 5 "South East" 6 "South West" 7 "West Midlands" 8 "Yorkshi
 > re and The Humber"
- 62.     label values region region
- 63.     safetab region, miss
- 64. 
+ 63.     label values region region
+ 64.     safetab region, miss
+ 65. 
 .     *create a 4 category rural urban variable 
 .     generate urban_rural_5=.
- 65.     la var urban_rural_5 "Rural Urban in five categories"
- 66.     replace urban_rural_5=1 if urban_rural==1
- 67.     replace urban_rural_5=2 if urban_rural==2
- 68.     replace urban_rural_5=3 if urban_rural==3|urban_rural==4
- 69.     replace urban_rural_5=4 if urban_rural==5|urban_rural==6
- 70.     replace urban_rural_5=5 if urban_rural==7|urban_rural==8
- 71.     label define urban_rural_5 1 "Urban major conurbation" 2 "Urban minor 
+ 66.     la var urban_rural_5 "Rural Urban in five categories"
+ 67.     replace urban_rural_5=1 if urban_rural==1
+ 68.     replace urban_rural_5=2 if urban_rural==2
+ 69.     replace urban_rural_5=3 if urban_rural==3|urban_rural==4
+ 70.     replace urban_rural_5=4 if urban_rural==5|urban_rural==6
+ 71.     replace urban_rural_5=5 if urban_rural==7|urban_rural==8
+ 72.     label define urban_rural_5 1 "Urban major conurbation" 2 "Urban minor 
 > conurbation" 3 "Urban city and town" 4 "Rural town and fringe" 5 "Rural villa
 > ge and dispersed"
- 72.     label values urban_rural_5 urban_rural_5
- 73.     safetab urban_rural_5, miss
- 74. 
+ 73.     label values urban_rural_5 urban_rural_5
+ 74.     safetab urban_rural_5, miss
+ 75. 
 .     *generate a binary rural urban (with missing assigned to urban)
 .     generate urban_rural_bin=.
- 75.     replace urban_rural_bin=1 if urban_rural<=4|urban_rural==.
- 76.     replace urban_rural_bin=0 if urban_rural>4 & urban_rural!=.
- 77.     label define urban_rural_bin 0 "Rural" 1 "Urban"
- 78.     label values urban_rural_bin urban_rural_bin
- 79.     safetab urban_rural_bin urban_rural, miss
- 80.     label var urban_rural_bin "Rural-Urban"
- 81. 
+ 76.     replace urban_rural_bin=1 if urban_rural<=4|urban_rural==.
+ 77.     replace urban_rural_bin=0 if urban_rural>4 & urban_rural!=.
+ 78.     label define urban_rural_bin 0 "Rural" 1 "Urban"
+ 79.     label values urban_rural_bin urban_rural_bin
+ 80.     safetab urban_rural_bin urban_rural, miss
+ 81.     label var urban_rural_bin "Rural-Urban"
+ 82. 
 .     * Define age categories
 .     * Create age categories
 .     egen age_cat = cut(age), at(18, 40, 60, 80, 120) icodes
- 82.     label define age 0 "18 - 40 years" 1 "41 - 60 years" 2 "61 - 80 years"
+ 83.     label define age 0 "18 - 40 years" 1 "41 - 60 years" 2 "61 - 80 years"
 >  3 ">80 years"
- 83.     label values age_cat age
- 84.     safetab age_cat, miss
- 85. 
+ 84.     label values age_cat age
+ 85.     safetab age_cat, miss
+ 86. 
 .     * Flag if in a care-home
 .     gen care_home=care_home_type!="PR"
- 86. 
+ 87. 
 .     * Tabulate
-.     table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 ca
-> te \ comorbidity cate \ imd cate \ care_home cate) by(dmard_monitored_prior)
- 87.     *export delimited using ./output/tables/op_appt_yrs.csv
+.     table1_mc, vars(age_cat cate \ male bin \ region cate \ urban_rural_5 cat
+> e \ comorbidity bin \ imd cate \ care_home bin) by(dmard_monitored_prior)
+ 88.     *export delimited using ./output/tables/op_appt_yrs.csv
 . }
 (29 vars, 1,000 obs)
 number of missing age
   0
 number under age 18
-  207
+  212
 number older than 110
   0
 
@@ -147,24 +147,24 @@ number older than 110
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            1              0
- 5%            4              0
-10%            9              0       Obs               1,000
+ 5%          4.5              0
+10%            8              0       Obs               1,000
 25%           21              0       Sum of Wgt.       1,000
 
-50%           39                      Mean             40.328
-                        Largest       Std. Dev.      23.27677
-75%           58             95
-90%           73             96       Variance       541.8082
-95%         77.5             98       Skewness       .1297516
-99%         89.5            101       Kurtosis       2.080852
+50%           39                      Mean             40.002
+                        Largest       Std. Dev.      23.53193
+75%           58             93
+90%           73             94       Variance       553.7517
+95%           78             94       Skewness       .1839487
+99%           90             98       Kurtosis       2.069119
 number with missing gender
   0
 
         sex |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          F |        486       48.60       48.60
-          M |        503       50.30       98.90
-          U |         11        1.10      100.00
+          F |        496       49.60       49.60
+          M |        492       49.20       98.80
+          U |         12        1.20      100.00
 ------------+-----------------------------------
       Total |      1,000      100.00
 
@@ -176,31 +176,31 @@ number with missing gender
 10%            1              0       Obs               1,000
 25%            2              0       Sum of Wgt.       1,000
 
-50%            3                      Mean              2.536
-                        Largest       Std. Dev.      1.014758
+50%            2                      Mean              2.422
+                        Largest       Std. Dev.      1.006444
 75%            3              5
-90%            4              5       Variance       1.029734
-95%            4              5       Skewness      -.0173925
-99%            5              5       Kurtosis        2.78116
+90%            4              5       Variance       1.012929
+95%            4              5       Skewness       .0194148
+99%            5              5       Kurtosis       2.820081
 
 care_home_t |
         ype |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-         PC |         43        4.33        4.33
-         PN |         44        4.44        8.77
-         PR |        844       85.08       93.85
-         PS |         61        6.15      100.00
+         PC |         58        5.87        5.87
+         PN |         51        5.16       11.03
+         PR |        831       84.11       95.14
+         PS |         48        4.86      100.00
 ------------+-----------------------------------
-      Total |        992      100.00
+      Total |        988      100.00
 number with no RA, psoriasis or psoriatic arthritis
-  125
+  136
 
     dis_tot |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |        125       12.50       12.50
-          1 |        394       39.40       51.90
-          2 |        337       33.70       85.60
-          3 |        144       14.40      100.00
+          0 |        136       13.60       13.60
+          1 |        348       34.80       48.40
+          2 |        396       39.60       88.00
+          3 |        120       12.00      100.00
 ------------+-----------------------------------
       Total |      1,000      100.00
 
@@ -210,456 +210,25 @@ has_ra_code |      Freq.     Percent        Cum.
           1 |        500       50.00      100.00
 ------------+-----------------------------------
       Total |      1,000      100.00
-(552 missing values generated)
+(562 missing values generated)
 
                            time_ra
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%            2              2
+ 1%            3              2
  5%            6              2
-10%           11              2       Obs                 448
-25%           28              2       Sum of Wgt.         448
+10%           12              2       Obs                 438
+25%           26              3       Sum of Wgt.         438
 
-50%           55                      Mean            54.4933
-                        Largest       Std. Dev.      31.13139
-75%           81            108
-90%          100            109       Variance       969.1633
-95%          104            109       Skewness       .0285185
-99%          108            109       Kurtosis       1.870452
+50%         55.5                      Mean           54.06621
+                        Largest       Std. Dev.      30.84037
+75%           78            108
+90%           98            108       Variance       951.1283
+95%          104            109       Skewness       .0405442
+99%          108            109       Kurtosis       1.846914
 
 has_psorias |
     is_code |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          0 |        500       50.00       50.00
-          1 |        500       50.00      100.00
-------------+-----------------------------------
-      Total |      1,000      100.00
-(559 missing values generated)
-
-                       time_psoriasis
--------------------------------------------------------------
-      Percentiles      Smallest
- 1%            2              1
- 5%            6              1
-10%           11              2       Obs                 441
-25%           29              2       Sum of Wgt.         441
-
-50%           53                      Mean           54.29705
-                        Largest       Std. Dev.      31.40078
-75%           83            108
-90%           98            109       Variance       986.0093
-95%          104            109       Skewness       .0261184
-99%          108            109       Kurtosis       1.781115
-
-has_psoriat |
-ic_arthriti |
-     s_code |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          0 |        500       50.00       50.00
-          1 |        500       50.00      100.00
-------------+-----------------------------------
-      Total |      1,000      100.00
-(546 missing values generated)
-
-                  time_psoriatic_arthritis
--------------------------------------------------------------
-      Percentiles      Smallest
- 1%            2              1
- 5%            6              1
-10%           12              2       Obs                 454
-25%           28              2       Sum of Wgt.         454
-
-50%           54                      Mean           54.87665
-                        Largest       Std. Dev.      31.72408
-75%           83            109
-90%          100            109       Variance       1006.417
-95%          105            109       Skewness       .0409785
-99%          109            109       Kurtosis       1.786628
-
-                         metho_count
--------------------------------------------------------------
-      Percentiles      Smallest
- 1%            0              0
- 5%            1              0
-10%            1              0       Obs               1,000
-25%            2              0       Sum of Wgt.       1,000
-
-50%            3                      Mean              2.518
-                        Largest       Std. Dev.      1.052989
-75%            3              5
-90%            4              5       Variance       1.108785
-95%            4              5       Skewness      -.0345864
-99%            5              5       Kurtosis       2.640906
-
-                         leflu_count
--------------------------------------------------------------
-      Percentiles      Smallest
- 1%            0              0
- 5%            1              0
-10%            1              0       Obs               1,000
-25%            2              0       Sum of Wgt.       1,000
-
-50%            2                      Mean               2.46
-                        Largest       Std. Dev.       1.02247
-75%            3              5
-90%            4              5       Variance       1.045445
-95%            4              5       Skewness        .068762
-99%            5              5       Kurtosis       2.961403
-
-                          aza_count
--------------------------------------------------------------
-      Percentiles      Smallest
- 1%            0              0
- 5%            1              0
-10%            1              0       Obs               1,000
-25%            2              0       Sum of Wgt.       1,000
-
-50%            3                      Mean              2.547
-                        Largest       Std. Dev.      1.034825
-75%            3              5
-90%            4              5       Variance       1.070862
-95%            4              5       Skewness       .0016319
-99%            5              6       Kurtosis       2.802192
-
-                          fbc_count
--------------------------------------------------------------
-      Percentiles      Smallest
- 1%            0              0
- 5%            1              0
-10%            1              0       Obs               1,000
-25%            2              0       Sum of Wgt.       1,000
-
-50%            3                      Mean              2.526
-                        Largest       Std. Dev.      1.004158
-75%            3              5
-90%            4              5       Variance       1.008332
-95%            4              5       Skewness      -.0327286
-99%            5              5       Kurtosis       2.992855
-
-                          lft_count
--------------------------------------------------------------
-      Percentiles      Smallest
- 1%            0              0
- 5%            1              0
-10%            1              0       Obs               1,000
-25%            2              0       Sum of Wgt.       1,000
-
-50%            3                      Mean              2.515
-                        Largest       Std. Dev.      1.035784
-75%            3              5
-90%            4              5       Variance       1.072848
-95%            4              6       Skewness      -.0049418
-99%            5              6       Kurtosis        2.88707
-
-                      creatinine_count
--------------------------------------------------------------
-      Percentiles      Smallest
- 1%            0              0
- 5%            1              0
-10%            1              0       Obs               1,000
-25%            2              0       Sum of Wgt.       1,000
-
-50%            2                      Mean              2.446
-                        Largest       Std. Dev.       1.03545
-75%            3              5
-90%            4              5       Variance       1.072156
-95%            4              5       Skewness       .1011937
-99%            5              6       Kurtosis       2.921827
-
-bloods_moni |
-      tored |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          0 |        881       88.10       88.10
-          1 |        119       11.90      100.00
-------------+-----------------------------------
-      Total |      1,000      100.00
-People with 4+ prescriptions and rheum code
-
-dmard_rheum |
-     _prior |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          0 |        500       50.00       50.00
-          1 |        500       50.00      100.00
-------------+-----------------------------------
-      Total |      1,000      100.00
-
-dmard_rheu |   bloods_monitored
-   m_prior |         0          1 |     Total
------------+----------------------+----------
-         0 |       447         53 |       500 
-         1 |       434         66 |       500 
------------+----------------------+----------
-     Total |       881        119 |     1,000 
-(780 missing values generated)
-(177 real changes made)
-(199 real changes made)
-(201 real changes made)
-(203 real changes made)
-(0 real changes made)
-5
-
-       eth5 |      Freq.     Percent        Cum.
-------------+-----------------------------------
-      White |        220       22.00       22.00
-South Asian |        177       17.70       39.70
-      Black |        199       19.90       59.60
-      Mixed |        201       20.10       79.70
-      Other |        203       20.30      100.00
-------------+-----------------------------------
-      Total |      1,000      100.00
-(0 real changes made)
-5
-
-       male |      Freq.     Percent        Cum.
-------------+-----------------------------------
-     Female |        497       49.70       49.70
-       Male |        503       50.30      100.00
-------------+-----------------------------------
-      Total |      1,000      100.00
-(1,000 missing values generated)
-(0 real changes made)
-(83 real changes made)
-(197 real changes made)
-(97 real changes made)
-(108 real changes made)
-(202 real changes made)
-(0 real changes made)
-(122 real changes made)
-(0 real changes made)
-7
-
-       region of England |      Freq.     Percent        Cum.
--------------------------+-----------------------------------
-           East Midlands |         83        8.30        8.30
-                  London |        197       19.70       28.00
-              North East |         97        9.70       37.70
-              North West |        108       10.80       48.50
-              South East |        202       20.20       68.70
-           West Midlands |        122       12.20       80.90
-                       . |        191       19.10      100.00
--------------------------+-----------------------------------
-                   Total |      1,000      100.00
-(1,000 missing values generated)
-(144 real changes made)
-(111 real changes made)
-(250 real changes made)
-(247 real changes made)
-(248 real changes made)
-14
-
-        Rural Urban in five |
-                 categories |      Freq.     Percent        Cum.
-----------------------------+-----------------------------------
-    Urban major conurbation |        144       14.40       14.40
-    Urban minor conurbation |        111       11.10       25.50
-        Urban city and town |        250       25.00       50.50
-      Rural town and fringe |        247       24.70       75.20
-Rural village and dispersed |        248       24.80      100.00
-----------------------------+-----------------------------------
-                      Total |      1,000      100.00
-(1,000 missing values generated)
-(505 real changes made)
-(495 real changes made)
-28
-
-urban_rura |                      urban_rural
-     l_bin |         1          2          3          4          5 |     Total
------------+-------------------------------------------------------+----------
-     Rural |         0          0          0          0        118 |       495 
-     Urban |       144        111        132        118          0 |       505 
------------+-------------------------------------------------------+----------
-     Total |       144        111        132        118        118 |     1,000 
-
-
-urban_rura |           urban_rural
-     l_bin |         6          7          8 |     Total
------------+---------------------------------+----------
-     Rural |       129        130        118 |       495 
-     Urban |         0          0          0 |       505 
------------+---------------------------------+----------
-     Total |       129        130        118 |     1,000 
-(207 missing values generated)
-8
-
-      age_cat |      Freq.     Percent        Cum.
---------------+-----------------------------------
-18 - 40 years |        300       30.00       30.00
-41 - 60 years |        258       25.80       55.80
-61 - 80 years |        197       19.70       75.50
-    >80 years |         38        3.80       79.30
-            . |        207       20.70      100.00
---------------+-----------------------------------
-        Total |      1,000      100.00
-
-  +--------------------------------------------------------+
-  | factor                           N_0   N_1   m_0   m_1 |
-  |--------------------------------------------------------|
-  | age_cat                          743    50   191    16 |
-  |--------------------------------------------------------|
-  | male                             934    66     0     0 |
-  |--------------------------------------------------------|
-  | region of England                757    52   177    14 |
-  |--------------------------------------------------------|
-  | Rural Urban in five categories   934    66     0     0 |
-  |--------------------------------------------------------|
-  | comorbidity                      934    66     0     0 |
-  |--------------------------------------------------------|
-  | imd                              934    66     0     0 |
-  |--------------------------------------------------------|
-  | care_home                        934    66     0     0 |
-  +--------------------------------------------------------+
-   N_ ... #records used below,   m_ ... #records not used
- 
-  +----------------------------------------------------------------------------
-> ----------------------------------------------------+
-  |                                                                dmard_monito
-> red_prior = 0   dmard_monitored_prior = 1   p-value |
-  |----------------------------------------------------------------------------
-> ----------------------------------------------------|
-  |                                                                N=934       
->                 N=66                                |
-  |----------------------------------------------------------------------------
-> ----------------------------------------------------|
-  | age_cat                          18 - 40 years                 287 (38.6%) 
->                 13 (26.0%)                   0.095  |
-  |                                  41 - 60 years                 234 (31.5%) 
->                 24 (48.0%)                          |
-  |                                  61 - 80 years                 185 (24.9%) 
->                 12 (24.0%)                          |
-  |                                  >80 years                     37 ( 5.0%)  
->                 1 ( 2.0%)                           |
-  |----------------------------------------------------------------------------
-> ----------------------------------------------------|
-  | male                             Female                        454 (48.6%) 
->                 43 (65.2%)                   0.011  |
-  |                                  Male                          480 (51.4%) 
->                 23 (34.8%)                          |
-  |----------------------------------------------------------------------------
-> ----------------------------------------------------|
-  | region of England                East Midlands                 78 (10.3%)  
->                 5 ( 9.6%)                    0.25   |
-  |                                  London                        185 (24.4%) 
->                 12 (23.1%)                          |
-  |                                  North East                    90 (11.9%)  
->                 7 (13.5%)                           |
-  |                                  North West                    103 (13.6%) 
->                 5 ( 9.6%)                           |
-  |                                  South East                    193 (25.5%) 
->                 9 (17.3%)                           |
-  |                                  West Midlands                 108 (14.3%) 
->                 14 (26.9%)                          |
-  |----------------------------------------------------------------------------
-> ----------------------------------------------------|
-  | Rural Urban in five categories   Urban major conurbation       135 (14.5%) 
->                 9 (13.6%)                    0.78   |
-  |                                  Urban minor conurbation       105 (11.2%) 
->                 6 ( 9.1%)                           |
-  |                                  Urban city and town           229 (24.5%) 
->                 21 (31.8%)                          |
-  |                                  Rural town and fringe         233 (24.9%) 
->                 14 (21.2%)                          |
-  |                                  Rural village and dispersed   232 (24.8%) 
->                 16 (24.2%)                          |
-  |----------------------------------------------------------------------------
-> ----------------------------------------------------|
-  | comorbidity                      0                             470 (50.3%) 
->                 30 (45.5%)                   0.52   |
-  |                                  1                             464 (49.7%) 
->                 36 (54.5%)                          |
-  |----------------------------------------------------------------------------
-> ----------------------------------------------------|
-  | imd                              0                             46 ( 4.9%)  
->                 1 ( 1.5%)                    0.12   |
-  |                                  1                             166 (17.8%) 
->                 20 (30.3%)                          |
-  |                                  2                             180 (19.3%) 
->                 12 (18.2%)                          |
-  |                                  3                             187 (20.0%) 
->                 11 (16.7%)                          |
-  |                                  4                             187 (20.0%) 
->                 8 (12.1%)                           |
-  |                                  5                             168 (18.0%) 
->                 14 (21.2%)                          |
-  |----------------------------------------------------------------------------
-> ----------------------------------------------------|
-  | care_home                        0                             788 (84.4%) 
->                 56 (84.8%)                   1.00   |
-  |                                  1                             146 (15.6%) 
->                 10 (15.2%)                          |
-  +----------------------------------------------------------------------------
-> ----------------------------------------------------+
-Data are presented as n (%).
- 
-(29 vars, 1,000 obs)
-number of missing age
-  0
-number under age 18
-  217
-number older than 110
-  0
-
-                             age
--------------------------------------------------------------
-      Percentiles      Smallest
- 1%            0              0
- 5%            4              0
-10%          8.5              0       Obs               1,000
-25%           20              0       Sum of Wgt.       1,000
-
-50%           42                      Mean             40.901
-                        Largest       Std. Dev.      24.09938
-75%           60             94
-90%           73             94       Variance         580.78
-95%           80             95       Skewness       .1110969
-99%         89.5             99       Kurtosis       1.983158
-number with missing gender
-  0
-
-        sex |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          F |        490       49.00       49.00
-          M |        499       49.90       98.90
-          U |         11        1.10      100.00
-------------+-----------------------------------
-      Total |      1,000      100.00
-
-                          household
--------------------------------------------------------------
-      Percentiles      Smallest
- 1%            0              0
- 5%            1              0
-10%            1              0       Obs               1,000
-25%            2              0       Sum of Wgt.       1,000
-
-50%            3                      Mean              2.539
-                        Largest       Std. Dev.      1.003736
-75%            3              5
-90%            4              5       Variance       1.007486
-95%            4              6       Skewness      -.0565172
-99%            5              6       Kurtosis       2.950854
-
-care_home_t |
-        ype |      Freq.     Percent        Cum.
-------------+-----------------------------------
-         PC |         41        4.12        4.12
-         PN |         45        4.53        8.65
-         PR |        863       86.82       95.47
-         PS |         45        4.53      100.00
-------------+-----------------------------------
-      Total |        994      100.00
-number with no RA, psoriasis or psoriatic arthritis
-  116
-
-    dis_tot |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          0 |        116       11.60       11.60
-          1 |        396       39.60       51.20
-          2 |        360       36.00       87.20
-          3 |        128       12.80      100.00
-------------+-----------------------------------
-      Total |      1,000      100.00
-
-has_ra_code |      Freq.     Percent        Cum.
 ------------+-----------------------------------
           0 |        500       50.00       50.00
           1 |        500       50.00      100.00
@@ -667,44 +236,20 @@ has_ra_code |      Freq.     Percent        Cum.
       Total |      1,000      100.00
 (554 missing values generated)
 
-                           time_ra
--------------------------------------------------------------
-      Percentiles      Smallest
- 1%            2              1
- 5%            6              2
-10%           10              2       Obs                 446
-25%           26              2       Sum of Wgt.         446
-
-50%         51.5                      Mean           53.01794
-                        Largest       Std. Dev.       31.9863
-75%           82            108
-90%           99            108       Variance       1023.123
-95%          103            108       Skewness       .0798746
-99%          108            109       Kurtosis       1.754725
-
-has_psorias |
-    is_code |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          0 |        500       50.00       50.00
-          1 |        500       50.00      100.00
-------------+-----------------------------------
-      Total |      1,000      100.00
-(559 missing values generated)
-
                        time_psoriasis
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            3              2
  5%            8              2
-10%           13              2       Obs                 441
-25%           28              2       Sum of Wgt.         441
+10%           13              2       Obs                 446
+25%           28              3       Sum of Wgt.         446
 
-50%           52                      Mean           53.20635
-                        Largest       Std. Dev.      30.09297
-75%           77            109
-90%           97            109       Variance       905.5869
-95%          103            109       Skewness       .1079561
-99%          108            109       Kurtosis       1.889402
+50%           56                      Mean           55.51345
+                        Largest       Std. Dev.      30.63696
+75%           81            109
+90%           98            109       Variance       938.6234
+95%          103            109       Skewness      -.0184621
+99%          109            109       Kurtosis       1.845826
 
 has_psoriat |
 ic_arthriti |
@@ -714,22 +259,22 @@ ic_arthriti |
           1 |        500       50.00      100.00
 ------------+-----------------------------------
       Total |      1,000      100.00
-(555 missing values generated)
+(562 missing values generated)
 
                   time_psoriatic_arthritis
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%            4              2
- 5%           10              2
-10%           14              2       Obs                 445
-25%           32              4       Sum of Wgt.         445
+ 1%            2              2
+ 5%            8              2
+10%           13              2       Obs                 438
+25%           27              2       Sum of Wgt.         438
 
-50%           56                      Mean           57.48764
-                        Largest       Std. Dev.      30.68406
-75%           83            109
-90%          101            109       Variance       941.5117
-95%          106            109       Skewness      -.0015556
-99%          109            109       Kurtosis       1.839638
+50%           53                      Mean           54.39269
+                        Largest       Std. Dev.      31.22314
+75%           83            108
+90%           97            109       Variance       974.8843
+95%          104            109       Skewness       .0815971
+99%          108            109       Kurtosis       1.763675
 
                          metho_count
 -------------------------------------------------------------
@@ -739,12 +284,12 @@ ic_arthriti |
 10%            1              0       Obs               1,000
 25%            2              0       Sum of Wgt.       1,000
 
-50%            3                      Mean              2.529
-                        Largest       Std. Dev.      1.052743
+50%            3                      Mean              2.542
+                        Largest       Std. Dev.      1.063658
 75%            3              5
-90%            4              5       Variance       1.108267
-95%            4              5       Skewness      -.1460099
-99%            5              5       Kurtosis       2.673879
+90%            4              5       Variance       1.131367
+95%            4              5       Skewness       .0324707
+99%            5              6       Kurtosis       2.793868
 
                          leflu_count
 -------------------------------------------------------------
@@ -754,12 +299,12 @@ ic_arthriti |
 10%            1              0       Obs               1,000
 25%            2              0       Sum of Wgt.       1,000
 
-50%          2.5                      Mean              2.512
-                        Largest       Std. Dev.      1.017296
+50%            3                      Mean               2.51
+                        Largest       Std. Dev.      1.009415
 75%            3              5
-90%            4              6       Variance       1.034891
-95%            4              6       Skewness       .0701852
-99%            5              6       Kurtosis       3.100566
+90%            4              5       Variance       1.018919
+95%            4              6       Skewness      -.0156168
+99%            5              6       Kurtosis       2.932604
 
                           aza_count
 -------------------------------------------------------------
@@ -769,12 +314,12 @@ ic_arthriti |
 10%            1              0       Obs               1,000
 25%            2              0       Sum of Wgt.       1,000
 
-50%            2                      Mean              2.485
-                        Largest       Std. Dev.      1.047317
+50%            3                      Mean              2.506
+                        Largest       Std. Dev.      1.042617
 75%            3              5
-90%            4              5       Variance       1.096872
-95%            4              5       Skewness       .0318759
-99%            5              6       Kurtosis       2.793496
+90%            4              6       Variance       1.087051
+95%            4              6       Skewness       .0900896
+99%            5              6       Kurtosis       2.982927
 
                           fbc_count
 -------------------------------------------------------------
@@ -785,11 +330,11 @@ ic_arthriti |
 25%            2              0       Sum of Wgt.       1,000
 
 50%            2                      Mean              2.488
-                        Largest       Std. Dev.       .996418
+                        Largest       Std. Dev.      1.054973
 75%            3              5
-90%            4              5       Variance       .9928488
-95%            4              5       Skewness       .1515562
-99%            5              5       Kurtosis       2.809402
+90%            4              5       Variance       1.112969
+95%            4              5       Skewness       .0546136
+99%            5              6       Kurtosis       2.921488
 
                           lft_count
 -------------------------------------------------------------
@@ -799,12 +344,12 @@ ic_arthriti |
 10%            1              0       Obs               1,000
 25%            2              0       Sum of Wgt.       1,000
 
-50%            3                      Mean              2.547
-                        Largest       Std. Dev.      1.015294
-75%            3              5
-90%            4              5       Variance       1.030822
-95%            4              5       Skewness       .0587987
-99%            5              6       Kurtosis       3.032897
+50%            2                      Mean                2.5
+                        Largest       Std. Dev.      1.041674
+75%            3              6
+90%            4              6       Variance       1.085085
+95%            4              6       Skewness        .135565
+99%            5              6       Kurtosis       3.032621
 
                       creatinine_count
 -------------------------------------------------------------
@@ -814,18 +359,18 @@ ic_arthriti |
 10%            1              0       Obs               1,000
 25%            2              0       Sum of Wgt.       1,000
 
-50%            2                      Mean              2.489
-                        Largest       Std. Dev.      1.038729
+50%            3                      Mean              2.503
+                        Largest       Std. Dev.      1.030074
 75%            3              5
-90%            4              5       Variance       1.078958
-95%            4              5       Skewness       .0132444
-99%            5              5       Kurtosis        2.68231
+90%            4              5       Variance       1.061052
+95%            4              5       Skewness       .0221841
+99%            5              6       Kurtosis       2.754721
 
 bloods_moni |
       tored |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |        880       88.00       88.00
-          1 |        120       12.00      100.00
+          0 |        878       87.80       87.80
+          1 |        122       12.20      100.00
 ------------+-----------------------------------
       Total |      1,000      100.00
 People with 4+ prescriptions and rheum code
@@ -841,24 +386,32 @@ dmard_rheum |
 dmard_rheu |   bloods_monitored
    m_prior |         0          1 |     Total
 -----------+----------------------+----------
-         0 |       438         62 |       500 
-         1 |       442         58 |       500 
+         0 |       446         54 |       500 
+         1 |       432         68 |       500 
 -----------+----------------------+----------
-     Total |       880        120 |     1,000 
-(800 missing values generated)
-(206 real changes made)
-(205 real changes made)
+     Total |       878        122 |     1,000 
+
+dmard_monit |
+ ored_prior |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        932       93.20       93.20
+          1 |         68        6.80      100.00
+------------+-----------------------------------
+      Total |      1,000      100.00
+(767 missing values generated)
+(189 real changes made)
 (194 real changes made)
+(189 real changes made)
 (195 real changes made)
 (0 real changes made)
 5
 
        eth5 |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-      White |        200       20.00       20.00
-South Asian |        206       20.60       40.60
-      Black |        205       20.50       61.10
-      Mixed |        194       19.40       80.50
+      White |        233       23.30       23.30
+South Asian |        189       18.90       42.20
+      Black |        194       19.40       61.60
+      Mixed |        189       18.90       80.50
       Other |        195       19.50      100.00
 ------------+-----------------------------------
       Total |      1,000      100.00
@@ -867,101 +420,101 @@ South Asian |        206       20.60       40.60
 
        male |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-     Female |        501       50.10       50.10
-       Male |        499       49.90      100.00
+     Female |        508       50.80       50.80
+       Male |        492       49.20      100.00
 ------------+-----------------------------------
       Total |      1,000      100.00
 (1,000 missing values generated)
 (0 real changes made)
-(106 real changes made)
-(202 real changes made)
-(102 real changes made)
-(107 real changes made)
-(203 real changes made)
+(99 real changes made)
+(183 real changes made)
+(97 real changes made)
+(97 real changes made)
+(235 real changes made)
 (0 real changes made)
-(84 real changes made)
+(98 real changes made)
 (0 real changes made)
 7
 
        region of England |      Freq.     Percent        Cum.
 -------------------------+-----------------------------------
-           East Midlands |        106       10.60       10.60
-                  London |        202       20.20       30.80
-              North East |        102       10.20       41.00
-              North West |        107       10.70       51.70
-              South East |        203       20.30       72.00
-           West Midlands |         84        8.40       80.40
-                       . |        196       19.60      100.00
+           East Midlands |         99        9.90        9.90
+                  London |        183       18.30       28.20
+              North East |         97        9.70       37.90
+              North West |         97        9.70       47.60
+              South East |        235       23.50       71.10
+           West Midlands |         98        9.80       80.90
+                       . |        191       19.10      100.00
 -------------------------+-----------------------------------
                    Total |      1,000      100.00
 (1,000 missing values generated)
-(118 real changes made)
-(122 real changes made)
-(263 real changes made)
+(107 real changes made)
+(136 real changes made)
+(246 real changes made)
+(255 real changes made)
 (256 real changes made)
-(241 real changes made)
 14
 
         Rural Urban in five |
                  categories |      Freq.     Percent        Cum.
 ----------------------------+-----------------------------------
-    Urban major conurbation |        118       11.80       11.80
-    Urban minor conurbation |        122       12.20       24.00
-        Urban city and town |        263       26.30       50.30
-      Rural town and fringe |        256       25.60       75.90
-Rural village and dispersed |        241       24.10      100.00
+    Urban major conurbation |        107       10.70       10.70
+    Urban minor conurbation |        136       13.60       24.30
+        Urban city and town |        246       24.60       48.90
+      Rural town and fringe |        255       25.50       74.40
+Rural village and dispersed |        256       25.60      100.00
 ----------------------------+-----------------------------------
                       Total |      1,000      100.00
 (1,000 missing values generated)
-(503 real changes made)
-(497 real changes made)
+(489 real changes made)
+(511 real changes made)
 28
 
 urban_rura |                      urban_rural
      l_bin |         1          2          3          4          5 |     Total
 -----------+-------------------------------------------------------+----------
-     Rural |         0          0          0          0        130 |       497 
-     Urban |       118        122        123        140          0 |       503 
+     Rural |         0          0          0          0        127 |       511 
+     Urban |       107        136        132        114          0 |       489 
 -----------+-------------------------------------------------------+----------
-     Total |       118        122        123        140        130 |     1,000 
+     Total |       107        136        132        114        127 |     1,000 
 
 
 urban_rura |           urban_rural
      l_bin |         6          7          8 |     Total
 -----------+---------------------------------+----------
-     Rural |       126        128        113 |       497 
-     Urban |         0          0          0 |       503 
+     Rural |       128        128        128 |       511 
+     Urban |         0          0          0 |       489 
 -----------+---------------------------------+----------
-     Total |       126        128        113 |     1,000 
-(217 missing values generated)
+     Total |       128        128        128 |     1,000 
+(212 missing values generated)
 8
 
       age_cat |      Freq.     Percent        Cum.
 --------------+-----------------------------------
-18 - 40 years |        265       26.50       26.50
-41 - 60 years |        266       26.60       53.10
-61 - 80 years |        199       19.90       73.00
-    >80 years |         53        5.30       78.30
-            . |        217       21.70      100.00
+18 - 40 years |        297       29.70       29.70
+41 - 60 years |        255       25.50       55.20
+61 - 80 years |        196       19.60       74.80
+    >80 years |         40        4.00       78.80
+            . |        212       21.20      100.00
 --------------+-----------------------------------
         Total |      1,000      100.00
 
   +--------------------------------------------------------+
   | factor                           N_0   N_1   m_0   m_1 |
   |--------------------------------------------------------|
-  | age_cat                          739    44   203    14 |
+  | age_cat                          739    49   193    19 |
   |--------------------------------------------------------|
-  | male                             942    58     0     0 |
+  | male                             932    68     0     0 |
   |--------------------------------------------------------|
-  | region of England                760    44   182    14 |
+  | region of England                755    54   177    14 |
   |--------------------------------------------------------|
-  | Rural Urban in five categories   942    58     0     0 |
+  | Rural Urban in five categories   932    68     0     0 |
   |--------------------------------------------------------|
-  | comorbidity                      942    58     0     0 |
+  | comorbidity                      932    68     0     0 |
   |--------------------------------------------------------|
-  | imd                              942    58     0     0 |
+  | imd                              932    68     0     0 |
   |--------------------------------------------------------|
-  | care_home                        942    58     0     0 |
+  | care_home                        932    68     0     0 |
   +--------------------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
@@ -971,76 +524,527 @@ urban_rura |           urban_rural
 > red_prior = 0   dmard_monitored_prior = 1   p-value |
   |----------------------------------------------------------------------------
 > ----------------------------------------------------|
-  |                                                                N=942       
->                 N=58                                |
+  |                                                                N=932       
+>                 N=68                                |
   |----------------------------------------------------------------------------
 > ----------------------------------------------------|
-  | age_cat                          18 - 40 years                 249 (33.7%) 
->                 16 (36.4%)                   0.78   |
-  |                                  41 - 60 years                 251 (34.0%) 
->                 15 (34.1%)                          |
-  |                                  61 - 80 years                 190 (25.7%) 
->                 9 (20.5%)                           |
-  |                                  >80 years                     49 ( 6.6%)  
->                 4 ( 9.1%)                           |
+  | age_cat                          18 - 40 years                 279 (37.8%) 
+>                 18 (36.7%)                   0.73   |
+  |                                  41 - 60 years                 236 (31.9%) 
+>                 19 (38.8%)                          |
+  |                                  61 - 80 years                 185 (25.0%) 
+>                 11 (22.4%)                          |
+  |                                  >80 years                     39 ( 5.3%)  
+>                 1 ( 2.0%)                           |
   |----------------------------------------------------------------------------
 > ----------------------------------------------------|
-  | male                             Female                        475 (50.4%) 
->                 26 (44.8%)                   0.42   |
-  |                                  Male                          467 (49.6%) 
->                 32 (55.2%)                          |
+  | male                                                           462 (49.6%) 
+>                 30 (44.1%)                   0.39   |
   |----------------------------------------------------------------------------
 > ----------------------------------------------------|
-  | region of England                East Midlands                 102 (13.4%) 
->                 4 ( 9.1%)                    0.58   |
-  |                                  London                        191 (25.1%) 
->                 11 (25.0%)                          |
-  |                                  North East                    93 (12.2%)  
->                 9 (20.5%)                           |
+  | region of England                East Midlands                 92 (12.2%)  
+>                 7 (13.0%)                    0.97   |
+  |                                  London                        172 (22.8%) 
+>                 11 (20.4%)                          |
+  |                                  North East                    90 (11.9%)  
+>                 7 (13.0%)                           |
+  |                                  North West                    91 (12.1%)  
+>                 6 (11.1%)                           |
+  |                                  South East                    217 (28.7%) 
+>                 18 (33.3%)                          |
+  |                                  West Midlands                 93 (12.3%)  
+>                 5 ( 9.3%)                           |
+  |----------------------------------------------------------------------------
+> ----------------------------------------------------|
+  | Rural Urban in five categories   Urban major conurbation       98 (10.5%)  
+>                 9 (13.2%)                    0.79   |
+  |                                  Urban minor conurbation       128 (13.7%) 
+>                 8 (11.8%)                           |
+  |                                  Urban city and town           227 (24.4%) 
+>                 19 (27.9%)                          |
+  |                                  Rural town and fringe         241 (25.9%) 
+>                 14 (20.6%)                          |
+  |                                  Rural village and dispersed   238 (25.5%) 
+>                 18 (26.5%)                          |
+  |----------------------------------------------------------------------------
+> ----------------------------------------------------|
+  | comorbidity                                                    458 (49.1%) 
+>                 42 (61.8%)                   0.044  |
+  |----------------------------------------------------------------------------
+> ----------------------------------------------------|
+  | imd                              0                             42 ( 4.5%)  
+>                 2 ( 2.9%)                    0.96   |
+  |                                  1                             181 (19.4%) 
+>                 12 (17.6%)                          |
+  |                                  2                             185 (19.8%) 
+>                 13 (19.1%)                          |
+  |                                  3                             185 (19.8%) 
+>                 15 (22.1%)                          |
+  |                                  4                             183 (19.6%) 
+>                 16 (23.5%)                          |
+  |                                  5                             156 (16.7%) 
+>                 10 (14.7%)                          |
+  |----------------------------------------------------------------------------
+> ----------------------------------------------------|
+  | care_home                                                      159 (17.1%) 
+>                 10 (14.7%)                   0.62   |
+  +----------------------------------------------------------------------------
+> ----------------------------------------------------+
+Data are presented as n (%).
+ 
+(29 vars, 1,000 obs)
+number of missing age
+  0
+number under age 18
+  195
+number older than 110
+  0
+
+                             age
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            4              0
+10%            8              0       Obs               1,000
+25%           22              0       Sum of Wgt.       1,000
+
+50%           39                      Mean             39.907
+                        Largest       Std. Dev.      23.00608
+75%           58             92
+90%           71             92       Variance       529.2796
+95%           78             94       Skewness       .1345656
+99%         88.5             98       Kurtosis       2.144099
+number with missing gender
+  0
+
+        sex |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          F |        495       49.50       49.50
+          M |        495       49.50       99.00
+          U |         10        1.00      100.00
+------------+-----------------------------------
+      Total |      1,000      100.00
+
+                          household
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            1              0
+10%            1              0       Obs               1,000
+25%            2              0       Sum of Wgt.       1,000
+
+50%            3                      Mean              2.571
+                        Largest       Std. Dev.      1.059283
+75%            3              5
+90%            4              5       Variance       1.122081
+95%            4              6       Skewness      -.0146376
+99%            5              6       Kurtosis       2.781828
+
+care_home_t |
+        ype |      Freq.     Percent        Cum.
+------------+-----------------------------------
+         PC |         52        5.24        5.24
+         PN |         49        4.93       10.17
+         PR |        845       85.10       95.27
+         PS |         47        4.73      100.00
+------------+-----------------------------------
+      Total |        993      100.00
+number with no RA, psoriasis or psoriatic arthritis
+  135
+
+    dis_tot |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        135       13.50       13.50
+          1 |        353       35.30       48.80
+          2 |        389       38.90       87.70
+          3 |        123       12.30      100.00
+------------+-----------------------------------
+      Total |      1,000      100.00
+
+has_ra_code |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        500       50.00       50.00
+          1 |        500       50.00      100.00
+------------+-----------------------------------
+      Total |      1,000      100.00
+(562 missing values generated)
+
+                           time_ra
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            3              1
+ 5%            6              2
+10%           12              2       Obs                 438
+25%           28              2       Sum of Wgt.         438
+
+50%           52                      Mean           54.26256
+                        Largest       Std. Dev.      31.36873
+75%           82            109
+90%           99            109       Variance       983.9973
+95%          105            109       Skewness       .0786954
+99%          109            109       Kurtosis       1.789926
+
+has_psorias |
+    is_code |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        500       50.00       50.00
+          1 |        500       50.00      100.00
+------------+-----------------------------------
+      Total |      1,000      100.00
+(558 missing values generated)
+
+                       time_psoriasis
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            2              2
+ 5%            9              2
+10%           14              2       Obs                 442
+25%           29              2       Sum of Wgt.         442
+
+50%           55                      Mean           54.65158
+                        Largest       Std. Dev.      29.87891
+75%           80            108
+90%           97            109       Variance       892.7491
+95%          103            109       Skewness       .0611371
+99%          108            109       Kurtosis       1.887737
+
+has_psoriat |
+ic_arthriti |
+     s_code |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        500       50.00       50.00
+          1 |        500       50.00      100.00
+------------+-----------------------------------
+      Total |      1,000      100.00
+(562 missing values generated)
+
+                  time_psoriatic_arthritis
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            3              3
+ 5%            8              3
+10%           12              3       Obs                 438
+25%           28              3       Sum of Wgt.         438
+
+50%           58                      Mean           57.26027
+                        Largest       Std. Dev.      31.72163
+75%           85            108
+90%          100            108       Variance       1006.262
+95%          105            109       Skewness      -.0779054
+99%          108            109       Kurtosis       1.787398
+
+                         metho_count
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            1              0
+10%            1              0       Obs               1,000
+25%            2              0       Sum of Wgt.       1,000
+
+50%            3                      Mean              2.487
+                        Largest       Std. Dev.      1.043513
+75%            3              5
+90%            4              6       Variance        1.08892
+95%            4              6       Skewness      -.0474374
+99%            5              6       Kurtosis       3.077295
+
+                         leflu_count
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            1              0
+10%            1              0       Obs               1,000
+25%            2              0       Sum of Wgt.       1,000
+
+50%            2                      Mean              2.496
+                        Largest       Std. Dev.      1.031042
+75%            3              5
+90%            4              5       Variance       1.063047
+95%            4              6       Skewness       .1039324
+99%            5              6       Kurtosis       2.963458
+
+                          aza_count
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            1              0
+10%            1              0       Obs               1,000
+25%            2              0       Sum of Wgt.       1,000
+
+50%            3                      Mean              2.495
+                        Largest       Std. Dev.       1.01932
+75%            3              5
+90%            4              6       Variance       1.039014
+95%            4              6       Skewness       .0419099
+99%            5              6       Kurtosis       2.867323
+
+                          fbc_count
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            1              0
+10%            1              0       Obs               1,000
+25%            2              0       Sum of Wgt.       1,000
+
+50%            3                      Mean              2.546
+                        Largest       Std. Dev.      1.066312
+75%            3              5
+90%            4              6       Variance       1.137021
+95%            4              6       Skewness       .1475719
+99%            5              6       Kurtosis       2.811278
+
+                          lft_count
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            1              0
+10%            1              0       Obs               1,000
+25%            2              0       Sum of Wgt.       1,000
+
+50%            2                      Mean              2.471
+                        Largest       Std. Dev.      1.085512
+75%            3              5
+90%            4              6       Variance       1.178337
+95%            4              6       Skewness       .0886226
+99%            5              6       Kurtosis       2.936912
+
+                      creatinine_count
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            1              0
+10%            1              0       Obs               1,000
+25%            2              0       Sum of Wgt.       1,000
+
+50%            2                      Mean              2.486
+                        Largest       Std. Dev.      1.050194
+75%            3              5
+90%            4              5       Variance       1.102907
+95%            4              6       Skewness       .1303716
+99%            5              6       Kurtosis       2.879513
+
+bloods_moni |
+      tored |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        887       88.70       88.70
+          1 |        113       11.30      100.00
+------------+-----------------------------------
+      Total |      1,000      100.00
+People with 4+ prescriptions and rheum code
+
+dmard_rheum |
+     _prior |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        500       50.00       50.00
+          1 |        500       50.00      100.00
+------------+-----------------------------------
+      Total |      1,000      100.00
+
+dmard_rheu |   bloods_monitored
+   m_prior |         0          1 |     Total
+-----------+----------------------+----------
+         0 |       454         46 |       500 
+         1 |       433         67 |       500 
+-----------+----------------------+----------
+     Total |       887        113 |     1,000 
+
+dmard_monit |
+ ored_prior |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        933       93.30       93.30
+          1 |         67        6.70      100.00
+------------+-----------------------------------
+      Total |      1,000      100.00
+(807 missing values generated)
+(194 real changes made)
+(196 real changes made)
+(207 real changes made)
+(210 real changes made)
+(0 real changes made)
+5
+
+       eth5 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+      White |        193       19.30       19.30
+South Asian |        194       19.40       38.70
+      Black |        196       19.60       58.30
+      Mixed |        207       20.70       79.00
+      Other |        210       21.00      100.00
+------------+-----------------------------------
+      Total |      1,000      100.00
+(0 real changes made)
+5
+
+       male |      Freq.     Percent        Cum.
+------------+-----------------------------------
+     Female |        505       50.50       50.50
+       Male |        495       49.50      100.00
+------------+-----------------------------------
+      Total |      1,000      100.00
+(1,000 missing values generated)
+(0 real changes made)
+(108 real changes made)
+(195 real changes made)
+(106 real changes made)
+(110 real changes made)
+(190 real changes made)
+(0 real changes made)
+(103 real changes made)
+(0 real changes made)
+7
+
+       region of England |      Freq.     Percent        Cum.
+-------------------------+-----------------------------------
+           East Midlands |        108       10.80       10.80
+                  London |        195       19.50       30.30
+              North East |        106       10.60       40.90
+              North West |        110       11.00       51.90
+              South East |        190       19.00       70.90
+           West Midlands |        103       10.30       81.20
+                       . |        188       18.80      100.00
+-------------------------+-----------------------------------
+                   Total |      1,000      100.00
+(1,000 missing values generated)
+(130 real changes made)
+(126 real changes made)
+(238 real changes made)
+(264 real changes made)
+(242 real changes made)
+14
+
+        Rural Urban in five |
+                 categories |      Freq.     Percent        Cum.
+----------------------------+-----------------------------------
+    Urban major conurbation |        130       13.00       13.00
+    Urban minor conurbation |        126       12.60       25.60
+        Urban city and town |        238       23.80       49.40
+      Rural town and fringe |        264       26.40       75.80
+Rural village and dispersed |        242       24.20      100.00
+----------------------------+-----------------------------------
+                      Total |      1,000      100.00
+(1,000 missing values generated)
+(494 real changes made)
+(506 real changes made)
+28
+
+urban_rura |                      urban_rural
+     l_bin |         1          2          3          4          5 |     Total
+-----------+-------------------------------------------------------+----------
+     Rural |         0          0          0          0        133 |       506 
+     Urban |       130        126        116        122          0 |       494 
+-----------+-------------------------------------------------------+----------
+     Total |       130        126        116        122        133 |     1,000 
+
+
+urban_rura |           urban_rural
+     l_bin |         6          7          8 |     Total
+-----------+---------------------------------+----------
+     Rural |       131        128        114 |       506 
+     Urban |         0          0          0 |       494 
+-----------+---------------------------------+----------
+     Total |       131        128        114 |     1,000 
+(195 missing values generated)
+8
+
+      age_cat |      Freq.     Percent        Cum.
+--------------+-----------------------------------
+18 - 40 years |        308       30.80       30.80
+41 - 60 years |        274       27.40       58.20
+61 - 80 years |        177       17.70       75.90
+    >80 years |         46        4.60       80.50
+            . |        195       19.50      100.00
+--------------+-----------------------------------
+        Total |      1,000      100.00
+
+  +--------------------------------------------------------+
+  | factor                           N_0   N_1   m_0   m_1 |
+  |--------------------------------------------------------|
+  | age_cat                          747    58   186     9 |
+  |--------------------------------------------------------|
+  | male                             933    67     0     0 |
+  |--------------------------------------------------------|
+  | region of England                757    55   176    12 |
+  |--------------------------------------------------------|
+  | Rural Urban in five categories   933    67     0     0 |
+  |--------------------------------------------------------|
+  | comorbidity                      933    67     0     0 |
+  |--------------------------------------------------------|
+  | imd                              933    67     0     0 |
+  |--------------------------------------------------------|
+  | care_home                        933    67     0     0 |
+  +--------------------------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------
+> ----------------------------------------------------+
+  |                                                                dmard_monito
+> red_prior = 0   dmard_monitored_prior = 1   p-value |
+  |----------------------------------------------------------------------------
+> ----------------------------------------------------|
+  |                                                                N=933       
+>                 N=67                                |
+  |----------------------------------------------------------------------------
+> ----------------------------------------------------|
+  | age_cat                          18 - 40 years                 287 (38.4%) 
+>                 21 (36.2%)                   0.95   |
+  |                                  41 - 60 years                 252 (33.7%) 
+>                 22 (37.9%)                          |
+  |                                  61 - 80 years                 165 (22.1%) 
+>                 12 (20.7%)                          |
+  |                                  >80 years                     43 ( 5.8%)  
+>                 3 ( 5.2%)                           |
+  |----------------------------------------------------------------------------
+> ----------------------------------------------------|
+  | male                                                           464 (49.7%) 
+>                 31 (46.3%)                   0.58   |
+  |----------------------------------------------------------------------------
+> ----------------------------------------------------|
+  | region of England                East Midlands                 101 (13.3%) 
+>                 7 (12.7%)                    0.44   |
+  |                                  London                        182 (24.0%) 
+>                 13 (23.6%)                          |
+  |                                  North East                    95 (12.5%)  
+>                 11 (20.0%)                          |
   |                                  North West                    103 (13.6%) 
->                 4 ( 9.1%)                           |
-  |                                  South East                    193 (25.4%) 
->                 10 (22.7%)                          |
-  |                                  West Midlands                 78 (10.3%)  
->                 6 (13.6%)                           |
+>                 7 (12.7%)                           |
+  |                                  South East                    176 (23.2%) 
+>                 14 (25.5%)                          |
+  |                                  West Midlands                 100 (13.2%) 
+>                 3 ( 5.5%)                           |
   |----------------------------------------------------------------------------
 > ----------------------------------------------------|
-  | Rural Urban in five categories   Urban major conurbation       112 (11.9%) 
->                 6 (10.3%)                    0.54   |
-  |                                  Urban minor conurbation       114 (12.1%) 
->                 8 (13.8%)                           |
-  |                                  Urban city and town           245 (26.0%) 
->                 18 (31.0%)                          |
-  |                                  Rural town and fringe         239 (25.4%) 
->                 17 (29.3%)                          |
-  |                                  Rural village and dispersed   232 (24.6%) 
->                 9 (15.5%)                           |
+  | Rural Urban in five categories   Urban major conurbation       126 (13.5%) 
+>                 4 ( 6.0%)                    0.24   |
+  |                                  Urban minor conurbation       115 (12.3%) 
+>                 11 (16.4%)                          |
+  |                                  Urban city and town           225 (24.1%) 
+>                 13 (19.4%)                          |
+  |                                  Rural town and fringe         245 (26.3%) 
+>                 19 (28.4%)                          |
+  |                                  Rural village and dispersed   222 (23.8%) 
+>                 20 (29.9%)                          |
   |----------------------------------------------------------------------------
 > ----------------------------------------------------|
-  | comorbidity                      0                             477 (50.6%) 
->                 23 (39.7%)                   0.14   |
-  |                                  1                             465 (49.4%) 
->                 35 (60.3%)                          |
+  | comorbidity                                                    471 (50.5%) 
+>                 29 (43.3%)                   0.25   |
   |----------------------------------------------------------------------------
 > ----------------------------------------------------|
-  | imd                              0                             46 ( 4.9%)  
->                 3 ( 5.2%)                    0.65   |
-  |                                  1                             180 (19.1%) 
->                 11 (19.0%)                          |
-  |                                  2                             175 (18.6%) 
->                 10 (17.2%)                          |
-  |                                  3                             190 (20.2%) 
->                 9 (15.5%)                           |
-  |                                  4                             159 (16.9%) 
->                 15 (25.9%)                          |
-  |                                  5                             192 (20.4%) 
->                 10 (17.2%)                          |
+  | imd                              0                             45 ( 4.8%)  
+>                 4 ( 6.0%)                    0.89   |
+  |                                  1                             167 (17.9%) 
+>                 10 (14.9%)                          |
+  |                                  2                             173 (18.5%) 
+>                 15 (22.4%)                          |
+  |                                  3                             165 (17.7%) 
+>                 13 (19.4%)                          |
+  |                                  4                             195 (20.9%) 
+>                 14 (20.9%)                          |
+  |                                  5                             188 (20.2%) 
+>                 11 (16.4%)                          |
   |----------------------------------------------------------------------------
 > ----------------------------------------------------|
-  | care_home                        0                             811 (86.1%) 
->                 52 (89.7%)                   0.56   |
-  |                                  1                             131 (13.9%) 
->                 6 (10.3%)                           |
+  | care_home                                                      142 (15.2%) 
+>                 13 (19.4%)                   0.36   |
   +----------------------------------------------------------------------------
 > ----------------------------------------------------+
 Data are presented as n (%).
@@ -1050,5 +1054,5 @@ Data are presented as n (%).
       name:  <unnamed>
        log:  /workspace/logs/baseline.log
   log type:  text
- closed on:  20 Jul 2022, 11:59:53
+ closed on:  22 Jul 2022, 15:22:20
 -------------------------------------------------------------------------------

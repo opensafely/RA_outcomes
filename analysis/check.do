@@ -48,7 +48,7 @@ foreach year in 2018-03-01 2020-03-23 {
     tab dmard_rheum_prior bloods_monitored
 
     gen dmard_monitored_prior = (dmard_rheum_prior==1 & bloods_monitored==1)
-
+    tab dmard_monitored_prior, m
     * Format variables
     *re-order ethnicity
     gen eth5=1 if ethnicity==1
@@ -125,7 +125,7 @@ foreach year in 2018-03-01 2020-03-23 {
     gen care_home=care_home_type!="PR"
 
     * Tabulate
-    table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ comorbidity cate \ imd cate \ care_home cate) by(dmard_monitored_prior)
+    table1_mc, vars(age_cat cate \ male bin \ region cate \ urban_rural_5 cate \ comorbidity bin \ imd cate \ care_home bin) by(dmard_monitored_prior)
     *export delimited using ./output/tables/op_appt_yrs.csv
 }
 log close
