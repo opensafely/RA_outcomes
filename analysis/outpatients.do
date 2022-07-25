@@ -23,6 +23,12 @@ sum household, d
 tab care_home_type
 * Checking RA algorithm variables
 tab has_dmards has_alt_dmard_diag, m
+* Checking type of DMARD that meets inclusion
+foreach dmard in metho leflu sulfa hydrox azathioprine {
+    gen `dmard'_multi = (`dmard'_count>=2)
+    tab `dmard'_multi if has_dmards==1, m
+}
+
 sum number_ra_codes
 di "Number where no DMARDs but does have multiple RA codes and no alt diag"
 count if has_dmards==0 & number_ra_codes>=2 & alt_diag!=1

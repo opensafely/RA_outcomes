@@ -160,10 +160,10 @@ study = StudyDefinition(
             },
     ),
     has_ibd=patients.with_these_clinical_events(
-            codelist=ibd_codes,
-            between=["first_ra_code - 5 years", "first_ra_code"],
-            returning="binary_flag",
-            ),
+        codelist=ibd_codes,
+        between=["first_ra_code - 5 years", "first_ra_code"],
+        returning="binary_flag",
+        ),
     has_psoriasis=patients.with_these_clinical_events(
         codelist=psoriasis_codes,
         between=["first_ra_code - 5 years", "first_ra_code"],
