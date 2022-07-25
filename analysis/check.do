@@ -29,10 +29,19 @@ foreach year in 2018-03-01 2020-03-23 {
     egen dis_tot = rowtotal(has_ra_code has_psoriatic_arthritis_code has_psoriasis_code)
     tab dis_tot
     * Frequency of and time since first rheumatic disease code
-    foreach var in ra psoriasis psoriatic_arthritis {
-        tab has_`var'_code
-        gen time_`var' = 2018 - first_`var'_code
-        sum time_`var', d
+    if `year'==2018-03-01 {
+        foreach var in ra psoriasis psoriatic_arthritis {
+            tab has_`var'_code
+            gen time_`var' = 2018 - first_`var'_code
+            sum time_`var', d
+            }
+        }
+    else {
+        foreach var in ra psoriasis psoriatic_arthritis {
+            tab has_`var'_code
+            gen time_`var' = 2020 - first_`var'_code
+            sum time_`var', d
+            }
     }
     
     * Checking how frequently each type of drug is prescribed & bloods are montiored
