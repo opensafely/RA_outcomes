@@ -213,14 +213,14 @@ study = StudyDefinition(
         returning="binary_flag",
     ),
     # Determine number of appointments during years 2019-2021
-    outpatient_appt=patients.outpatient_appointment_date(
+    op_appt=patients.outpatient_appointment_date(
         returning="binary_flag",
         with_these_treatment_function_codes="410",
         attended="True",
         between=["index_date", "last_day_of_month(index_date)"],
-        
+        return_expectations = {"incidence": 0.7},
     ),
-    outpatient_appt_medium=patients.outpatient_appointment_date(
+    op_appt_medium=patients.outpatient_appointment_date(
         returning="consultation_medium_used",
         with_these_treatment_function_codes="410",
         attended="True",
@@ -240,7 +240,7 @@ study = StudyDefinition(
             },
         },
     ),
-    outpatient_appt_first=patients.outpatient_appointment_date(
+    op_appt_first=patients.outpatient_appointment_date(
         returning="binary_flag",
         with_these_treatment_function_codes="410",
         attended="True",
@@ -248,7 +248,7 @@ study = StudyDefinition(
         between=["index_date", "last_day_of_month(index_date)"],
         return_expectations={
                 "int": {"distribution": "normal", "mean": 3, "stddev": 1},
-                "incidence": 1,
+                "incidence": 0.6,
             },
     ),
 
@@ -258,19 +258,19 @@ study = StudyDefinition(
 measures = [
     Measure(
         id="op_appt_rate",
-        numerator="outpatient_appt",
+        numerator="op_appt",
         denominator="population",
         group_by="population",
     ),
     Measure(
         id="op_appt_medium_rate",
-        numerator="outpatient_appt",
+        numerator="op_appt",
         denominator="population",
-        group_by="outpatient_appt_medium",
+        group_by="op_appt_medium",
     ),
     Measure(
         id="op_appt_first_rate",
-        numerator="outpatient_appt_first",
+        numerator="op_appt_first",
         denominator="population",
         group_by="population",
     ),

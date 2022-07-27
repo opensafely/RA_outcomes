@@ -45,6 +45,15 @@ actions:
       moderately_sensitive:
         measure: output/measures/measure_*_rate.csv
 
+  # Generate baseline tables
+  graphs:
+    run: stata-mp:latest analysis/graphs.do
+    needs: [calculate_measures_op]
+    outputs:
+      moderately_sensitive:
+        log: logs/graphs.log
+        graphs: output/graphs/line*.svg
+
   outpatients:
     run: stata-mp:latest analysis/outpatients.do
     needs: [generate_study_population]
