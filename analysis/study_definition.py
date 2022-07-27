@@ -213,6 +213,7 @@ study = StudyDefinition(
     outpatient_appt_2019=patients.outpatient_appointment_date(
         returning="number_of_matches_in_period",
         with_these_treatment_function_codes="410",
+        attended="True",
         between=["2019-04-01", "2020-03-31"],
         return_expectations={
                 "int": {"distribution": "normal", "mean": 3, "stddev": 1},
@@ -222,6 +223,7 @@ study = StudyDefinition(
     outpatient_appt_2020=patients.outpatient_appointment_date(
         returning="number_of_matches_in_period",
         with_these_treatment_function_codes="410",
+        attended="True",
         between=["2020-04-01", "2021-03-31"],
         return_expectations={
                 "int": {"distribution": "normal", "mean": 3, "stddev": 1},
@@ -231,6 +233,7 @@ study = StudyDefinition(
     outpatient_appt_2021=patients.outpatient_appointment_date(
         returning="number_of_matches_in_period",
         with_these_treatment_function_codes="410",
+        attended="True",
         between=["2021-04-01", "2022-03-31"],
         return_expectations={
                 "int": {"distribution": "normal", "mean": 3, "stddev": 1},
@@ -241,6 +244,7 @@ study = StudyDefinition(
     outpatient_medium_2019=patients.outpatient_appointment_date(
         returning="consultation_medium_used",
         with_these_treatment_function_codes="410",
+        attended="True",
         between=["2019-04-01", "2020-03-31"],
         return_expectations={
            "category": { "ratios":{ 
@@ -260,6 +264,7 @@ study = StudyDefinition(
     outpatient_medium_2020=patients.outpatient_appointment_date(
         returning="consultation_medium_used",
         with_these_treatment_function_codes="410",
+        attended="True",
         between=["2020-04-01", "2021-03-31"],
         return_expectations={
            "category": { "ratios":{ 
@@ -279,6 +284,7 @@ study = StudyDefinition(
     outpatient_medium_2021=patients.outpatient_appointment_date(
         returning="consultation_medium_used",
         with_these_treatment_function_codes="410",
+        attended="True",
         between=["2021-04-01", "2022-03-31"],
         return_expectations={
             "category": { "ratios":{ 

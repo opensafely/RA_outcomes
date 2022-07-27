@@ -48,6 +48,9 @@ sum outpatient*, d
 
 keep if has_ra
 
+* How many people are not on DMARDs and have no RA appointments?
+
+
 * Format variables
 *re-order ethnicity
  gen eth5=1 if ethnicity==1
