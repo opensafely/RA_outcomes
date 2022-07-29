@@ -26,19 +26,22 @@ foreach this_group in appt_rate appt_first_rate {
         }
 * Graphs stratified by medium of appointment
 import delimited using ./output/measures/measure_op_appt_medium_rate.csv, numericcols(3) clear
-* Generate rate per 100,000
-gen rate = value*100000 
+* Take out missing medium or if 4 as this is <10 for all months
+drop if op_appt_medium==. | op_appt_medium>=4
+* Generate new population as all those with medium described
+bys date: egen pop_new = total(population)
+* Calculate rate
+gen rate = (op_appt/pop_new)*100000
+
 * Format date
 gen dateA = date(date, "YMD")
 drop date
 format dateA %dD/M/Y
-* Drop if medium is missing
-drop if op_appt_medium==.
 * reshape dataset so columns with rates for each ethnicity 
 reshape wide value rate population op_appt, i(dateA) j(op_appt_medium)
 describe
 * Generate line graph
-graph twoway line rate1 rate2 rate3 rate4 rate5 rate6 rate7 rate8 rate98 date, tlabel(01Apr2019(120)01Apr2022, angle(45) ///
+graph twoway line rate1 rate2 date, tlabel(01Apr2019(120)01Apr2022, angle(45) ///
 format(%dM-CY) labsize(small)) ytitle("Rate per 100,000") xtitle("Date") ylabel(, labsize(small) ///
 angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6) legend(row(1) size(small) title("Ethnic categories", size(small)))
 
