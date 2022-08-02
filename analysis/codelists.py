@@ -120,3 +120,14 @@ cardiac_codes=codelist_from_csv(
     system="ctv3",
     column="CTV3ID",
 )
+
+ra_hospitalisation=codelist_from_csv(
+    "codelists/user-ruthcostello-ra_hospitalisation.csv",
+    system="icd10",
+    column="code",
+)
+cardiac_hospitalisation=codelist_from_csv(
+    "codelists/opensafely-cardiovascular-secondary-care.csv",
+    system="icd10",
+    column="icd",
+)

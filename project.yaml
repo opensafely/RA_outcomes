@@ -43,12 +43,25 @@ actions:
     needs: [generate_study_population_op]
     outputs:
       moderately_sensitive:
-        measure: output/measures/measure_*_rate.csv
+        measure: output/measures/measure_op_*_rate.csv
+
+  generate_study_population_other:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_other --index-date-range "2018-03-01 to 2022-04-30 by month" --output-dir=output/measures --output-format=csv
+    outputs:
+      highly_sensitive:
+        cohort: output/measures/input_other*.csv
+  
+  calculate_measures_other:
+    run: cohortextractor:latest  generate_measures --study-definition study_definition_other --output-dir=output/measures
+    needs: [generate_study_population_other]
+    outputs:
+      moderately_sensitive:
+        measure: output/measures/measure_hosp_*_rate.csv
 
   # Generate baseline tables
   graphs:
     run: stata-mp:latest analysis/graphs.do
-    needs: [calculate_measures_op]
+    needs: [calculate_measures_op, calculate_measures_other]
     outputs:
       moderately_sensitive:
         log: logs/graphs.log
