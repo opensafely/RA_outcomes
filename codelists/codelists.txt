@@ -51,6 +51,17 @@ user/ruthcostello/ra_hospitalisation/14ec9de6
 opensafely/cardiovascular-secondary-care/20b63bd4
 # vasculitis
 
-# lung disease
+# lung disease (COPD)
+opensafely/copd-exacerbation/6858db5b
 
-# serious infections
+# serious infections (sepsis)
+
+
+# Steroids
+opensafely/asthma-oral-prednisolone-medication/2020-04-27
+
+# Opioids
+TBC
+
+ # depression (based on HDR UK https://phenotypes.healthdatagateway.org/phenotypes/PH149/version/298/detail/#home)
+ user/emilyherrett/depression_icd10/0aaf5048ression

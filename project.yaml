@@ -57,6 +57,7 @@ actions:
     outputs:
       moderately_sensitive:
         measure: output/measures/measure_hosp_*_rate.csv
+        measure_drug: output/measures/measure_med_*_rate.csv
 
   # Generate baseline tables
   graphs:

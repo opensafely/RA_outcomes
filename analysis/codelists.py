@@ -131,3 +131,8 @@ cardiac_hospitalisation=codelist_from_csv(
     system="icd10",
     column="icd",
 )
+gc_codes=codelist_from_csv(
+    "codelists/opensafely-asthma-oral-prednisolone-medication.csv",
+    system="snomed",
+    column="snomed_id",
+)

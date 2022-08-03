@@ -143,6 +143,12 @@
       "url": "https://codelists.opensafely.org/codelist/opensafely/cardiovascular-secondary-care/20b63bd4/",
       "downloaded_at": "2022-08-02 11:03:00.907046Z",
       "sha": "7c956ed25484f8c03dae29823031c27f2802914a"
+    },
+    "opensafely-asthma-oral-prednisolone-medication.csv": {
+      "id": "opensafely/asthma-oral-prednisolone-medication/2020-04-27",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/asthma-oral-prednisolone-medication/2020-04-27/",
+      "downloaded_at": "2022-08-03 13:07:48.370075Z",
+      "sha": "e47cc254975c23f7507cf04bb655454f8b5ece18"
     }
   }
 }
