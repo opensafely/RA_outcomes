@@ -3,6 +3,7 @@ from cohortextractor import StudyDefinition, patients, codelist, codelist_from_c
 from common_variables import common_variables
 from codelists import *
 
+ild_code = codelist(["J849"], system="icd10")
 
 # Inclusion criteria
 # age 18+, 

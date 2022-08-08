@@ -50,12 +50,10 @@ user/ruthcostello/ra_hospitalisation/14ec9de6
 # cardiovascular disease
 opensafely/cardiovascular-secondary-care/20b63bd4
 # vasculitis
-
-# lung disease (COPD)
-opensafely/copd-exacerbation/6858db5b
-
+user/ruthcostello/vasculitis/6ebe102b
+# lung disease (use ILD code in study definition)
 # serious infections (sepsis)
-
+user/ruthcostello/sepsis/26427682
 
 # Steroids
 opensafely/asthma-oral-prednisolone-medication/2020-04-27
