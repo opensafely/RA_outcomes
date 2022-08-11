@@ -133,11 +133,34 @@ forvalues i=2019/2021 {
     label values op_appt_`i'_cat appt
     }
 preserve
-* Tabulate
+* Tabulate number of appointments per year
 table1_mc, vars(op_appt_2019_cat cate \ op_appt_2020_cat cate \ op_appt_2021_cat cate) clear
 export delimited using ./output/tables/op_appt_yrs.csv
 restore 
+* Tabulate overall characteristics 
+preserve
 table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate) clear
 export delimited using ./output/tables/op_chars.csv
+restore
+* Tabulate characteristics by category of outpatient appointments 2019
+ tempfile tempfile
+ forvalues i=2019/2021 {
+    preserve
+    keep if op_appt_`i'_cat==1
+    table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate) clear
+    save `tempfile', replace
+    restore
+    forvalues j=2/4 {
+      preserve
+      keep if op_appt_`i'_cat==`j'
+      table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate) clear
+      append using `tempfile'
+      save `tempfile', replace
+      restore
+      }
+    use `tempfile', clear
+    export delimited using ./output/tables/characteristics_strata`i'.csv
+    }
+
 log close
 

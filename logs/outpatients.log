@@ -612,7 +612,7 @@ urban_rura |           urban_rural
 
 . preserve
 
-. * Tabulate
+. * Tabulate number of appointments per year
 . table1_mc, vars(op_appt_2019_cat cate \ op_appt_2020_cat cate \ op_appt_2021_
 > cat cate) clear
 
@@ -651,6 +651,9 @@ Data are presented as n (%).
 file ./output/tables/op_appt_yrs.csv saved
 
 . restore 
+
+. * Tabulate overall characteristics 
+. preserve
 
 . table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \
 >  prescribed_biologics cate \ imd cate \ care_home cate) clear
@@ -758,9 +761,244 @@ Data are presented as n (%).
 . export delimited using ./output/tables/op_chars.csv
 file ./output/tables/op_chars.csv saved
 
-. log close
-      name:  <unnamed>
-       log:  /workspace/logs/outpatients.log
-  log type:  text
- closed on:  11 Aug 2022, 10:59:16
--------------------------------------------------------------------------------
+. restore
+
+. * Tabulate characteristics by category of outpatient appointments 2019
+.  tempfile tempfile
+
+.  forvalues i=2019/2021 {
+  2.     preserve
+  3.     keep if op_appt_`i'_cat==1
+  4.     table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5
+>  cate \ prescribed_biologics cate \ imd cate \ care_home cate) clear
+  5.     save `tempfile', replace
+  6.     restore
+  7.     forvalues j=2/4 {
+  8.       preserve
+  9.       keep if op_appt_`i'_cat==`j'
+ 10.       table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural
+> _5 cate \ prescribed_biologics cate \ imd cate \ care_home cate) clear
+ 11.       append using `tempfile'
+ 12.       save `tempfile', replace
+ 13.       restore
+ 14.       }
+ 15.     use `tempfile', clear
+ 16.     export delimited using ./output/tables/characteristics_strata`i'.csv
+ 17.     }
+(246 observations deleted)
+
+  +--------------------------------------------+
+  | factor                           N_1   m_1 |
+  |--------------------------------------------|
+  | age_cat                          203    51 |
+  |--------------------------------------------|
+  | male                             254     0 |
+  |--------------------------------------------|
+  | region of England                205    49 |
+  |--------------------------------------------|
+  | Rural Urban in five categories   254     0 |
+  |--------------------------------------------|
+  | prescribed_biologics             254     0 |
+  |--------------------------------------------|
+  | imd                              254     0 |
+  |--------------------------------------------|
+  | care_home                        254     0 |
+  +--------------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------
+> +
+  |                                                                Total       
+> |
+  |----------------------------------------------------------------------------
+> |
+  |                                                                N=254       
+> |
+  |----------------------------------------------------------------------------
+> |
+  | age_cat                          18 - 40 years                 70 (34.5%)  
+> |
+  |                                  41 - 60 years                 73 (36.0%)  
+> |
+  |                                  61 - 80 years                 44 (21.7%)  
+> |
+  |                                  >80 years                     16 ( 7.9%)  
+> |
+  |----------------------------------------------------------------------------
+> |
+  | male                             Female                        125 (49.2%) 
+> |
+  |                                  Male                          129 (50.8%) 
+> |
+  |----------------------------------------------------------------------------
+> |
+  | region of England                East Midlands                 19 ( 9.3%)  
+> |
+  |                                  London                        55 (26.8%)  
+> |
+  |                                  North East                    26 (12.7%)  
+> |
+  |                                  North West                    33 (16.1%)  
+> |
+  |                                  South East                    41 (20.0%)  
+> |
+  |                                  West Midlands                 31 (15.1%)  
+> |
+  |----------------------------------------------------------------------------
+> |
+  | Rural Urban in five categories   Urban major conurbation       40 (15.7%)  
+> |
+  |                                  Urban minor conurbation       25 ( 9.8%)  
+> |
+  |                                  Urban city and town           69 (27.2%)  
+> |
+  |                                  Rural town and fringe         57 (22.4%)  
+> |
+  |                                  Rural village and dispersed   63 (24.8%)  
+> |
+  |----------------------------------------------------------------------------
+> |
+  | prescribed_biologics             0                             121 (47.6%) 
+> |
+  |                                  1                             133 (52.4%) 
+> |
+  |----------------------------------------------------------------------------
+> |
+  | imd                              0                             14 ( 5.5%)  
+> |
+  |                                  1                             43 (16.9%)  
+> |
+  |                                  2                             50 (19.7%)  
+> |
+  |                                  3                             53 (20.9%)  
+> |
+  |                                  4                             47 (18.5%)  
+> |
+  |                                  5                             47 (18.5%)  
+> |
+  |----------------------------------------------------------------------------
+> |
+  | care_home                        0                             207 (81.5%) 
+> |
+  |                                  1                             47 (18.5%)  
+> |
+  +----------------------------------------------------------------------------
+> +
+Data are presented as n (%).
+ 
+(note: file /tmp/St00011.000003 not found)
+file /tmp/St00011.000003 saved
+(265 observations deleted)
+
+  +--------------------------------------------+
+  | factor                           N_1   m_1 |
+  |--------------------------------------------|
+  | age_cat                          182    53 |
+  |--------------------------------------------|
+  | male                             235     0 |
+  |--------------------------------------------|
+  | region of England                187    48 |
+  |--------------------------------------------|
+  | Rural Urban in five categories   235     0 |
+  |--------------------------------------------|
+  | prescribed_biologics             235     0 |
+  |--------------------------------------------|
+  | imd                              235     0 |
+  |--------------------------------------------|
+  | care_home                        235     0 |
+  +--------------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------
+> +
+  |                                                                Total       
+> |
+  |----------------------------------------------------------------------------
+> |
+  |                                                                N=235       
+> |
+  |----------------------------------------------------------------------------
+> |
+  | age_cat                          18 - 40 years                 73 (40.1%)  
+> |
+  |                                  41 - 60 years                 55 (30.2%)  
+> |
+  |                                  61 - 80 years                 41 (22.5%)  
+> |
+  |                                  >80 years                     13 ( 7.1%)  
+> |
+  |----------------------------------------------------------------------------
+> |
+  | male                             Female                        116 (49.4%) 
+> |
+  |                                  Male                          119 (50.6%) 
+> |
+  |----------------------------------------------------------------------------
+> |
+  | region of England                East Midlands                 19 (10.2%)  
+> |
+  |                                  London                        44 (23.5%)  
+> |
+  |                                  North East                    26 (13.9%)  
+> |
+  |                                  North West                    29 (15.5%)  
+> |
+  |                                  South East                    35 (18.7%)  
+> |
+  |                                  West Midlands                 34 (18.2%)  
+> |
+  |----------------------------------------------------------------------------
+> |
+  | Rural Urban in five categories   Urban major conurbation       28 (11.9%)  
+> |
+  |                                  Urban minor conurbation       32 (13.6%)  
+> |
+  |                                  Urban city and town           57 (24.3%)  
+> |
+  |                                  Rural town and fringe         58 (24.7%)  
+> |
+  |                                  Rural village and dispersed   60 (25.5%)  
+> |
+  |----------------------------------------------------------------------------
+> |
+  | prescribed_biologics             0                             119 (50.6%) 
+> |
+  |                                  1                             116 (49.4%) 
+> |
+  |----------------------------------------------------------------------------
+> |
+  | imd                              0                             17 ( 7.2%)  
+> |
+  |                                  1                             48 (20.4%)  
+> |
+  |                                  2                             35 (14.9%)  
+> |
+  |                                  3                             48 (20.4%)  
+> |
+  |                                  4                             42 (17.9%)  
+> |
+  |                                  5                             45 (19.1%)  
+> |
+  |----------------------------------------------------------------------------
+> |
+  | care_home                        0                             199 (84.7%) 
+> |
+  |                                  1                             36 (15.3%)  
+> |
+  +----------------------------------------------------------------------------
+> +
+Data are presented as n (%).
+ 
+file /tmp/St00011.000003 saved
+(500 observations deleted)
+<0 invalid name
+r(198);
+
+end of do-file
+r(198);
+
+end of do-file
+
+r(198);
+
+
