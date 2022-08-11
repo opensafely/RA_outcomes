@@ -1,0 +1,538 @@
+
+. cap mkdir ./output/time_series
+
+. * Outpatient appointments
+. local a "appt_first appt"
+
+. forvalues i=1/2 {
+  2.     local c: word `i' of `a' 
+  3.                 import delimited "./output/measures/measure_op_`c'_rate.cs
+> v", clear     //get csv
+  4.                 putexcel set ./output/time_series/tsreg_tables, sheet(op_`
+> c') modify
+  5.         gen temp_date=date(date, "YMD")
+  6.                 format temp_date %td
+  7.                 gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
+  8.                 gen month=mofd(temp_date)
+  9.                 format month %tm
+ 10.                 drop temp_date
+ 11.                 *Value to rate per 100k
+.                 gen rate = value*100000
+ 12.                 label variable rate "Rate of op `c' per 100,000"
+ 13.                 *Set time series
+.                 tsset month 
+ 14.                 newey rate i.postcovid, lag(1) force
+ 15.         *Export results
+.         putexcel E1=("Number of obs") G1=(e(N))
+ 16.         putexcel E2=("F") G2=(e(F))
+ 17.         putexcel E3=("Prob > F") G3=(Ftail(e(df_m), e(df_r), e(F)))
+ 18.         matrix a = r(table)'
+ 19.         putexcel A6 = matrix(a), rownames
+ 20.         putexcel save
+ 21.         quietly margins postcovid
+ 22.         marginsplot
+ 23.         graph export ./output/time_series/margins_op_`c'.svg, as(svg) repl
+> ace
+ 24.         import excel using ./output/time_series/tsreg_tables.xlsx, sheet (
+> op_`c') clear
+ 25.         export delimited using ./output/time_series/tsreg_op_`c'.csv, repl
+> ace
+ 26.         }
+(4 vars, 37 obs)
+        time variable:  month, 2019m4 to 2022m4
+                delta:  1 month
+
+Regression with Newey-West standard errors      Number of obs     =         37
+maximum lag: 1                                  F(  0,        35) =          .
+                                                Prob > F          =          .
+
+------------------------------------------------------------------------------
+             |             Newey-West
+        rate |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+ 1.postcovid |          0  (omitted)
+       _cons |      60000          .        .       .            .           .
+------------------------------------------------------------------------------
+file ./output/time_series/tsreg_tables.xlsx saved
+file ./output/time_series/tsreg_tables.xlsx saved
+file ./output/time_series/tsreg_tables.xlsx saved
+file ./output/time_series/tsreg_tables.xlsx saved
+
+  Variables that uniquely identify margins: postcovid
+(note: file ./output/time_series/margins_op_appt_first.svg not found)
+(file ./output/time_series/margins_op_appt_first.svg written in SVG format)
+(10 vars, 8 obs)
+(note: file ./output/time_series/tsreg_op_appt_first.csv not found)
+file ./output/time_series/tsreg_op_appt_first.csv saved
+(4 vars, 37 obs)
+        time variable:  month, 2019m4 to 2022m4
+                delta:  1 month
+
+Regression with Newey-West standard errors      Number of obs     =         37
+maximum lag: 1                                  F(  0,        35) =          .
+                                                Prob > F          =          .
+
+------------------------------------------------------------------------------
+             |             Newey-West
+        rate |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+ 1.postcovid |          0  (omitted)
+       _cons |      70000          .        .       .            .           .
+------------------------------------------------------------------------------
+file ./output/time_series/tsreg_tables.xlsx saved
+file ./output/time_series/tsreg_tables.xlsx saved
+file ./output/time_series/tsreg_tables.xlsx saved
+file ./output/time_series/tsreg_tables.xlsx saved
+
+  Variables that uniquely identify margins: postcovid
+(note: file ./output/time_series/margins_op_appt.svg not found)
+(file ./output/time_series/margins_op_appt.svg written in SVG format)
+(10 vars, 8 obs)
+(note: file ./output/time_series/tsreg_op_appt.csv not found)
+file ./output/time_series/tsreg_op_appt.csv saved
+
+. 
+. * Outpatient medium
+. import delimited "./output/measures/measure_op_appt_medium_rate.csv", clear  
+>    //get csv
+(5 vars, 370 obs)
+
+. putexcel set ./output/time_series/tsreg_tables, sheet(op_appt_medium) modify
+
+. drop if op_appt_medium==. | op_appt_medium>=4
+(259 observations deleted)
+
+. gen temp_date=date(date, "YMD")
+
+. format temp_date %td
+
+. gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
+
+. gen month=mofd(temp_date)
+
+. format month %tm
+
+. drop temp_date
+
+. *Value to rate per 100k
+. gen rate = value*100000
+
+. label variable rate "Rate of op appts per 100,000"
+
+. *Set time series
+. tsset op_appt_medium month
+       panel variable:  op_appt_medium (strongly balanced)
+        time variable:  month, 2019m4 to 2022m4
+                delta:  1 month
+
+. newey rate i.op_appt_medium#i.postcovid, lag(1) force
+
+Regression with Newey-West standard errors      Number of obs     =        111
+maximum lag: 1                                  F(  5,       105) =       1.55
+                                                Prob > F          =     0.1820
+
+------------------------------------------------------------------------------
+             |             Newey-West
+        rate |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+op_appt_me~m#|
+   postcovid |
+        1 1  |   998.4095   1468.676     0.68   0.498    -1913.704    3910.523
+        2 0  |   2677.676   1909.277     1.40   0.164    -1108.068     6463.42
+        2 1  |  -234.9143   1627.905    -0.14   0.886     -3462.75    2992.921
+        3 0  |   1287.327   2006.004     0.64   0.522    -2690.208    5264.863
+        3 1  |   3582.673   1709.784     2.10   0.039     192.4877    6972.858
+             |
+       _cons |      68356   1212.884    56.36   0.000     65951.07    70760.92
+------------------------------------------------------------------------------
+
+. *Export results
+. putexcel E1=("Number of obs") G1=(e(N))
+file ./output/time_series/tsreg_tables.xlsx saved
+
+. putexcel E2=("F") G2=(e(F))
+file ./output/time_series/tsreg_tables.xlsx saved
+
+. putexcel E3=("Prob > F") G3=(Ftail(e(df_m), e(df_r), e(F)))
+file ./output/time_series/tsreg_tables.xlsx saved
+
+. matrix a = r(table)'
+
+. putexcel A6 = matrix(a), rownames
+file ./output/time_series/tsreg_tables.xlsx saved
+
+. putexcel save
+
+. quietly margins postcovid
+
+. marginsplot
+
+  Variables that uniquely identify margins: postcovid
+
+. graph export ./output/time_series/margins_op_appt_medium.svg, as(svg) replace
+(note: file ./output/time_series/margins_op_appt_medium.svg not found)
+(file ./output/time_series/margins_op_appt_medium.svg written in SVG format)
+
+. import excel using ./output/time_series/tsreg_tables.xlsx, sheet (op_appt_med
+> ium) clear
+(10 vars, 12 obs)
+
+. export delimited using ./output/time_series/tsreg_op_appt_medium.csv, replace
+(note: file ./output/time_series/tsreg_op_appt_medium.csv not found)
+file ./output/time_series/tsreg_op_appt_medium.csv saved
+
+. 
+. * Hospitalisations
+. local a "cardiac ild ra sepsis vasculitis"
+
+. forvalues i=1/5 {
+  2.     local c: word `i' of `a' 
+  3.                 import delimited "./output/measures/measure_hosp_`c'_rate.
+> csv", clear   //get csv
+  4.         putexcel set ./output/time_series/tsreg_tables, sheet(hosp_`c') mo
+> dify
+  5.                 gen temp_date=date(date, "YMD")
+  6.                 format temp_date %td
+  7.                 gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
+  8.                 gen month=mofd(temp_date)
+  9.                 format month %tm
+ 10.                 drop temp_date
+ 11.                 *Value to rate per 100k
+.                 gen rate = value*100000
+ 12.                 label variable rate "Rate of hospitalisations `c' per 100,
+> 000"
+ 13.                 *Set time series
+.                 tsset month 
+ 14.                 newey rate i.postcovid, lag(1) force
+ 15.         *Export results
+.         putexcel E1=("Number of obs") G1=(e(N))
+ 16.         putexcel E2=("F") G2=(e(F))
+ 17.         putexcel E3=("Prob > F") G3=(Ftail(e(df_m), e(df_r), e(F)))
+ 18.         matrix a = r(table)'
+ 19.         putexcel A6 = matrix(a), rownames
+ 20.         putexcel save
+ 21.         quietly margins postcovid
+ 22.         marginsplot
+ 23.         graph export ./output/time_series/margins_hosp_`c'.svg, as(svg) re
+> place
+ 24.         import excel using ./output/time_series/tsreg_tables.xlsx, sheet (
+> hosp_`c') clear
+ 25.         export delimited using ./output/time_series/tsreg_hosp_`c'.csv, re
+> place
+ 26.         }
+(4 vars, 50 obs)
+        time variable:  month, 2018m3 to 2022m4
+                delta:  1 month
+
+Regression with Newey-West standard errors      Number of obs     =         50
+maximum lag: 1                                  F(  0,        48) =          .
+                                                Prob > F          =          .
+
+------------------------------------------------------------------------------
+             |             Newey-West
+        rate |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+ 1.postcovid |          0  (omitted)
+       _cons |      10000          .        .       .            .           .
+------------------------------------------------------------------------------
+file ./output/time_series/tsreg_tables.xlsx saved
+file ./output/time_series/tsreg_tables.xlsx saved
+file ./output/time_series/tsreg_tables.xlsx saved
+file ./output/time_series/tsreg_tables.xlsx saved
+
+  Variables that uniquely identify margins: postcovid
+(note: file ./output/time_series/margins_hosp_cardiac.svg not found)
+(file ./output/time_series/margins_hosp_cardiac.svg written in SVG format)
+(10 vars, 8 obs)
+(note: file ./output/time_series/tsreg_hosp_cardiac.csv not found)
+file ./output/time_series/tsreg_hosp_cardiac.csv saved
+(4 vars, 50 obs)
+        time variable:  month, 2018m3 to 2022m4
+                delta:  1 month
+
+Regression with Newey-West standard errors      Number of obs     =         50
+maximum lag: 1                                  F(  0,        48) =          .
+                                                Prob > F          =          .
+
+------------------------------------------------------------------------------
+             |             Newey-West
+        rate |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+ 1.postcovid |          0  (omitted)
+       _cons |      10000          .        .       .            .           .
+------------------------------------------------------------------------------
+file ./output/time_series/tsreg_tables.xlsx saved
+file ./output/time_series/tsreg_tables.xlsx saved
+file ./output/time_series/tsreg_tables.xlsx saved
+file ./output/time_series/tsreg_tables.xlsx saved
+
+  Variables that uniquely identify margins: postcovid
+(note: file ./output/time_series/margins_hosp_ild.svg not found)
+(file ./output/time_series/margins_hosp_ild.svg written in SVG format)
+(10 vars, 8 obs)
+(note: file ./output/time_series/tsreg_hosp_ild.csv not found)
+file ./output/time_series/tsreg_hosp_ild.csv saved
+(4 vars, 50 obs)
+        time variable:  month, 2018m3 to 2022m4
+                delta:  1 month
+
+Regression with Newey-West standard errors      Number of obs     =         50
+maximum lag: 1                                  F(  0,        48) =          .
+                                                Prob > F          =          .
+
+------------------------------------------------------------------------------
+             |             Newey-West
+        rate |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+ 1.postcovid |          0  (omitted)
+       _cons |      10000          .        .       .            .           .
+------------------------------------------------------------------------------
+file ./output/time_series/tsreg_tables.xlsx saved
+file ./output/time_series/tsreg_tables.xlsx saved
+file ./output/time_series/tsreg_tables.xlsx saved
+file ./output/time_series/tsreg_tables.xlsx saved
+
+  Variables that uniquely identify margins: postcovid
+(note: file ./output/time_series/margins_hosp_ra.svg not found)
+(file ./output/time_series/margins_hosp_ra.svg written in SVG format)
+(10 vars, 8 obs)
+(note: file ./output/time_series/tsreg_hosp_ra.csv not found)
+file ./output/time_series/tsreg_hosp_ra.csv saved
+(4 vars, 50 obs)
+        time variable:  month, 2018m3 to 2022m4
+                delta:  1 month
+
+Regression with Newey-West standard errors      Number of obs     =         50
+maximum lag: 1                                  F(  0,        48) =          .
+                                                Prob > F          =          .
+
+------------------------------------------------------------------------------
+             |             Newey-West
+        rate |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+ 1.postcovid |          0  (omitted)
+       _cons |      10000          .        .       .            .           .
+------------------------------------------------------------------------------
+file ./output/time_series/tsreg_tables.xlsx saved
+file ./output/time_series/tsreg_tables.xlsx saved
+file ./output/time_series/tsreg_tables.xlsx saved
+file ./output/time_series/tsreg_tables.xlsx saved
+
+  Variables that uniquely identify margins: postcovid
+(note: file ./output/time_series/margins_hosp_sepsis.svg not found)
+(file ./output/time_series/margins_hosp_sepsis.svg written in SVG format)
+(10 vars, 8 obs)
+(note: file ./output/time_series/tsreg_hosp_sepsis.csv not found)
+file ./output/time_series/tsreg_hosp_sepsis.csv saved
+(4 vars, 50 obs)
+        time variable:  month, 2018m3 to 2022m4
+                delta:  1 month
+
+Regression with Newey-West standard errors      Number of obs     =         50
+maximum lag: 1                                  F(  0,        48) =          .
+                                                Prob > F          =          .
+
+------------------------------------------------------------------------------
+             |             Newey-West
+        rate |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+ 1.postcovid |          0  (omitted)
+       _cons |      10000          .        .       .            .           .
+------------------------------------------------------------------------------
+file ./output/time_series/tsreg_tables.xlsx saved
+file ./output/time_series/tsreg_tables.xlsx saved
+file ./output/time_series/tsreg_tables.xlsx saved
+file ./output/time_series/tsreg_tables.xlsx saved
+
+  Variables that uniquely identify margins: postcovid
+(note: file ./output/time_series/margins_hosp_vasculitis.svg not found)
+(file ./output/time_series/margins_hosp_vasculitis.svg written in SVG format)
+(10 vars, 8 obs)
+(note: file ./output/time_series/tsreg_hosp_vasculitis.csv not found)
+file ./output/time_series/tsreg_hosp_vasculitis.csv saved
+
+. 
+. * RA daycase
+. import delimited "./output/measures/measure_hosp_ra_daycase_rate.csv", clear 
+>    //get csv
+(5 vars, 300 obs)
+
+. putexcel set ./output/time_series/tsreg_tables, sheet(hosp_ra_daycase) modify
+
+. drop if ra_daycase==. | ra_daycase==5
+(100 observations deleted)
+
+. gen temp_date=date(date, "YMD")
+
+. format temp_date %td
+
+. gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
+
+. gen month=mofd(temp_date)
+
+. format month %tm
+
+. drop temp_date
+
+. *Value to rate per 100k
+. gen rate = value*100000
+
+. label variable rate "Rate of op appts per 100,000"
+
+. *Set time series
+. tsset ra_daycase month
+       panel variable:  ra_daycase (strongly balanced)
+        time variable:  month, 2018m3 to 2022m4
+                delta:  1 month
+
+. newey rate i.ra_daycase#i.postcovid, lag(1) force
+
+Regression with Newey-West standard errors      Number of obs     =        200
+maximum lag: 1                                  F(  7,       192) =       1.98
+                                                Prob > F          =     0.0599
+
+------------------------------------------------------------------------------
+             |             Newey-West
+        rate |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+  ra_daycase#|
+   postcovid |
+        1 1  |   161.4032   462.8682     0.35   0.728    -751.5565    1074.363
+        2 0  |   154.5189   1119.164     0.14   0.890    -2052.916    2361.954
+        2 1  |  -716.9452   848.2757    -0.85   0.399    -2390.081    956.1909
+        3 0  |   2048.015    786.878     2.60   0.010     495.9791     3600.05
+        3 1  |  -1040.133   934.3553    -1.11   0.267    -2883.052    802.7859
+        4 0  |  -783.3976   841.9643    -0.93   0.353    -2444.085    877.2899
+        4 1  |    954.746   769.2996     1.24   0.216    -562.6177     2472.11
+             |
+       _cons |    10103.2   369.2476    27.36   0.000     9374.895     10831.5
+------------------------------------------------------------------------------
+
+. *Export results
+. putexcel E1=("Number of obs") G1=(e(N))
+file ./output/time_series/tsreg_tables.xlsx saved
+
+. putexcel E2=("F") G2=(e(F))
+file ./output/time_series/tsreg_tables.xlsx saved
+
+. putexcel E3=("Prob > F") G3=(Ftail(e(df_m), e(df_r), e(F)))
+file ./output/time_series/tsreg_tables.xlsx saved
+
+. matrix a = r(table)'
+
+. putexcel A6 = matrix(a), rownames
+file ./output/time_series/tsreg_tables.xlsx saved
+
+. putexcel save
+
+. quietly margins postcovid
+
+. marginsplot
+
+  Variables that uniquely identify margins: postcovid
+
+. graph export ./output/time_series/margins_hosp_ra_daycase.svg, as(svg) replac
+> e
+(note: file ./output/time_series/margins_hosp_ra_daycase.svg not found)
+(file ./output/time_series/margins_hosp_ra_daycase.svg written in SVG format)
+
+. import excel using ./output/time_series/tsreg_tables.xlsx, sheet (hosp_ra_day
+> case) clear
+(10 vars, 14 obs)
+
+. export delimited using ./output/time_series/tsreg_hosp_ra_daycase.csv, replac
+> e
+(note: file ./output/time_series/tsreg_hosp_ra_daycase.csv not found)
+file ./output/time_series/tsreg_hosp_ra_daycase.csv saved
+
+. 
+. import delimited "./output/measures/measure_med_gc_rate.csv", clear     //get
+>  csv
+(4 vars, 50 obs)
+
+. putexcel set ./output/time_series/tsreg_tables, sheet(med_gc) modify
+
+. gen temp_date=date(date, "YMD")
+
+. format temp_date %td
+
+. gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
+
+. gen month=mofd(temp_date)
+
+. format month %tm
+
+. drop temp_date
+
+. *Value to rate per 100k
+. gen rate = value*100000
+
+. label variable rate "Rate of GC prescribing per 100,000"
+
+. *Set time series
+. tsset month 
+        time variable:  month, 2018m3 to 2022m4
+                delta:  1 month
+
+. newey rate i.postcovid, lag(1) force
+
+Regression with Newey-West standard errors      Number of obs     =         50
+maximum lag: 1                                  F(  0,        48) =          .
+                                                Prob > F          =          .
+
+------------------------------------------------------------------------------
+             |             Newey-West
+        rate |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+ 1.postcovid |          0  (omitted)
+       _cons |      10000          .        .       .            .           .
+------------------------------------------------------------------------------
+
+. *Export results
+. putexcel E1=("Number of obs") G1=(e(N))
+file ./output/time_series/tsreg_tables.xlsx saved
+
+. putexcel E2=("F") G2=(e(F))
+file ./output/time_series/tsreg_tables.xlsx saved
+
+. putexcel E3=("Prob > F") G3=(Ftail(e(df_m), e(df_r), e(F)))
+file ./output/time_series/tsreg_tables.xlsx saved
+
+. matrix a = r(table)'
+
+. putexcel A6 = matrix(a), rownames
+file ./output/time_series/tsreg_tables.xlsx saved
+
+. putexcel save
+
+. quietly margins postcovid
+
+. marginsplot
+
+  Variables that uniquely identify margins: postcovid
+
+. graph export ./output/time_series/margins_med_gc.svg, as(svg) replace
+(note: file ./output/time_series/margins_med_gc.svg not found)
+(file ./output/time_series/margins_med_gc.svg written in SVG format)
+
+. import excel using ./output/time_series/tsreg_tables.xlsx, sheet (med_gc) cle
+> ar
+(10 vars, 8 obs)
+
+. export delimited using ./output/time_series/tsreg_med_gc.csv, replace
+(note: file ./output/time_series/tsreg_med_gc.csv not found)
+file ./output/time_series/tsreg_med_gc.csv saved
+
+. 
+end of do-file
+
+. . file open output using "/tmp/tmp.jR0vRPVTm5", write text replace
+
+. . file write output "success" 
+
+. . file close output
+
+. 
+end of do-file
+
+

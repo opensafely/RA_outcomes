@@ -205,7 +205,7 @@ study = StudyDefinition(
     ),
     has_ra=patients.satisfying(
         """
-        (has_ra_code AND has_dmards AND NOT has_alt_dmard_diag) OR
+        has_dmards OR
         (number_ra_codes>=2 AND NOT alt_diag)
         """,
     ),
@@ -301,6 +301,28 @@ study = StudyDefinition(
             },
         },
     ),
+    ra_hosp_2019=patients.admitted_to_hospital(
+        with_these_diagnoses=ra_hospitalisation,
+        between=["2019-04-01", "2020-03-31"],
+        returning="number_of_matches_in_period",
+        return_expectations={ "int": {"distribution": "normal", "mean": 3, "stddev": 1},
+                "incidence": 1,},
+    ),
+    ra_hosp_2020=patients.admitted_to_hospital(
+        with_these_diagnoses=ra_hospitalisation,
+        between=["2020-04-01", "2021-03-31"],
+        returning="number_of_matches_in_period",
+        return_expectations={ "int": {"distribution": "normal", "mean": 3, "stddev": 1},
+                "incidence": 1,},
+    ),
+    ra_hosp_2021=patients.admitted_to_hospital(
+        with_these_diagnoses=ra_hospitalisation,
+        between=["2021-04-01", "2022-03-31"],
+        returning="number_of_matches_in_period",
+        return_expectations={ "int": {"distribution": "normal", "mean": 3, "stddev": 1},
+                "incidence": 1,},
+    ),
+    
     prescribed_biologics=patients.with_high_cost_drugs(
         drug_name_matches=["abatacept", "adalimumab", "baracitinib", "certolizumab", 
         "etanercept", "golimumab", "guselkumab", "infliximab", "ixekizumab", "methotrexate_hcd",

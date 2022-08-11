@@ -4,14 +4,14 @@
 
 . * Import data
 . import delimited using ./output/input.csv
-(36 vars, 1,000 obs)
+(39 vars, 1,000 obs)
 
 . * Check data
 . count if age==. 
   0
 
 . count if age<18 
-  202
+  214
 
 . count if age>110 & age!=.
   0
@@ -21,17 +21,17 @@
                              age
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%            1              0
- 5%            5              0
-10%          8.5              0       Obs               1,000
-25%           21              0       Sum of Wgt.       1,000
+ 1%            0              0
+ 5%            4              0
+10%            8              0       Obs               1,000
+25%           20              0       Sum of Wgt.       1,000
 
-50%           42                      Mean             41.336
-                        Largest       Std. Dev.      23.63984
-75%           60             94
-90%           73             98       Variance       558.8419
-95%           78             99       Skewness       .0481511
-99%         88.5            109       Kurtosis       2.006435
+50%           41                      Mean             40.546
+                        Largest       Std. Dev.      23.92179
+75%           59             92
+90%           74             92       Variance       572.2521
+95%           80             93       Skewness       .1142457
+99%           89             94       Kurtosis       2.007725
 
 . count if sex==""
   0
@@ -40,9 +40,9 @@
 
         sex |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          F |        505       50.50       50.50
-          M |        490       49.00       99.50
-          U |          5        0.50      100.00
+          F |        487       48.70       48.70
+          M |        505       50.50       99.20
+          U |          8        0.80      100.00
 ------------+-----------------------------------
       Total |      1,000      100.00
 
@@ -56,24 +56,24 @@
 10%            1              0       Obs               1,000
 25%            2              0       Sum of Wgt.       1,000
 
-50%            3                      Mean              2.484
-                        Largest       Std. Dev.      1.047302
+50%            3                      Mean              2.524
+                        Largest       Std. Dev.      1.051918
 75%            3              5
-90%            4              5       Variance       1.096841
-95%            4              6       Skewness      -.0857891
-99%            5              6       Kurtosis       2.906347
+90%            4              5       Variance       1.106531
+95%            4              5       Skewness       .0037821
+99%            5              6       Kurtosis       2.859546
 
 . tab care_home_type
 
 care_home_t |
         ype |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-         PC |         55        5.55        5.55
-         PN |         55        5.55       11.10
-         PR |        829       83.65       94.75
-         PS |         52        5.25      100.00
+         PC |         50        5.09        5.09
+         PN |         46        4.68        9.77
+         PR |        845       85.96       95.73
+         PS |         42        4.27      100.00
 ------------+-----------------------------------
-      Total |        991      100.00
+      Total |        983      100.00
 
 . * Checking RA algorithm variables
 . tab has_dmards has_alt_dmard_diag, m
@@ -81,8 +81,8 @@ care_home_t |
            |  has_alt_dmard_diag
 has_dmards |         0          1 |     Total
 -----------+----------------------+----------
-         0 |       246        254 |       500 
-         1 |       254        246 |       500 
+         0 |       248        252 |       500 
+         1 |       252        248 |       500 
 -----------+----------------------+----------
      Total |       500        500 |     1,000 
 
@@ -94,22 +94,22 @@ has_dmards |         0          1 |     Total
 
 metho_multi |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |         76       15.20       15.20
-          1 |        424       84.80      100.00
+          0 |         79       15.80       15.80
+          1 |        421       84.20      100.00
 ------------+-----------------------------------
       Total |        500      100.00
 
 leflu_multi |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |         81       16.20       16.20
-          1 |        419       83.80      100.00
+          0 |         73       14.60       14.60
+          1 |        427       85.40      100.00
 ------------+-----------------------------------
       Total |        500      100.00
 
 sulfa_multi |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |         80       16.00       16.00
-          1 |        420       84.00      100.00
+          0 |         68       13.60       13.60
+          1 |        432       86.40      100.00
 ------------+-----------------------------------
       Total |        500      100.00
 
@@ -124,8 +124,8 @@ hydrox_mult |
 azathioprin |
     e_multi |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |         77       15.40       15.40
-          1 |        423       84.60      100.00
+          0 |         74       14.80       14.80
+          1 |        426       85.20      100.00
 ------------+-----------------------------------
       Total |        500      100.00
 
@@ -134,13 +134,13 @@ azathioprin |
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-number_ra_~s |      1,000       2.472    1.060349          0          6
+number_ra_~s |      1,000       2.523    1.025926          0          6
 
 . di "Number where no DMARDs but does have multiple RA codes and no alt diag"
 Number where no DMARDs but does have multiple RA codes and no alt diag
 
 . count if has_dmards==0 & number_ra_codes>=2 & alt_diag!=1
-  213
+  229
 
 . tab has_ra, m
 
@@ -153,29 +153,29 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 
 . * Time since first RA code
 . gen first_ra_codeA = date(first_ra_code, "YMD")
-(557 missing values generated)
+(551 missing values generated)
 
 . format first_ra_codeA %dD/N/CY
 
 . gen time_ra = (date("01Mar2018", "DMY") - first_ra_codeA)/365.25
-(557 missing values generated)
+(551 missing values generated)
 
 . sum time_ra, d
 
                            time_ra
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%     1.075975       .0109514
- 5%     6.045175       .0793977
-10%     9.642711       .0985626       Obs                 443
-25%     26.27242       .5037646       Sum of Wgt.         443
+ 1%     .6187543       .1587953
+ 5%     6.707735       .3559206
+10%     13.69473       .3613963       Obs                 449
+25%     30.61739       .4900753       Sum of Wgt.         449
 
-50%     54.64202                      Mean           54.20033
-                        Largest       Std. Dev.      32.10281
-75%     81.06776       107.8576
-90%     98.82546       108.4463       Variance        1030.59
-95%     104.5257       108.5175       Skewness       .0049685
-99%     107.7947       108.6653       Kurtosis       1.766473
+50%     56.02738                      Mean           56.83135
+                        Largest       Std. Dev.       30.9557
+75%     83.18412       108.1971
+90%     100.2081       108.4107       Variance       958.2556
+95%     104.3915       108.7721       Skewness      -.0465867
+99%     108.0383        108.783       Kurtosis        1.86377
 
 . sum number_ra_codes, d
 
@@ -187,12 +187,12 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 10%            1              0       Obs               1,000
 25%            2              0       Sum of Wgt.       1,000
 
-50%            2                      Mean              2.472
-                        Largest       Std. Dev.      1.060349
+50%            3                      Mean              2.523
+                        Largest       Std. Dev.      1.025926
 75%            3              5
-90%            4              6       Variance        1.12434
-95%            4              6       Skewness       .1616022
-99%            5              6       Kurtosis       2.973779
+90%            4              5       Variance       1.052524
+95%            4              5       Skewness       .0075927
+99%            5              6       Kurtosis       2.886609
 
 . sum metho_count, d
 
@@ -204,12 +204,12 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 10%            1              0       Obs               1,000
 25%            2              0       Sum of Wgt.       1,000
 
-50%            2                      Mean              2.502
-                        Largest       Std. Dev.       1.05504
+50%            3                      Mean              2.483
+                        Largest       Std. Dev.      1.033818
 75%            3              5
-90%            4              5       Variance       1.113109
-95%            4              6       Skewness       .0740466
-99%            5              6       Kurtosis       3.054324
+90%            4              5       Variance        1.06878
+95%            4              5       Skewness       .0047207
+99%            5              5       Kurtosis       2.921038
 
 . sum sulfa_count, d 
 
@@ -221,12 +221,12 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 10%            1              0       Obs               1,000
 25%            2              0       Sum of Wgt.       1,000
 
-50%            3                      Mean              2.515
-                        Largest       Std. Dev.       1.04636
+50%            3                      Mean              2.522
+                        Largest       Std. Dev.      1.041442
 75%            3              5
-90%            4              5       Variance        1.09487
-95%            4              6       Skewness       .0599057
-99%            5              6       Kurtosis        2.91464
+90%            4              5       Variance       1.084601
+95%            4              6       Skewness       .0185993
+99%            5              6       Kurtosis        2.96975
 
 . sum leflu_count, d 
 
@@ -238,12 +238,12 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 10%            1              0       Obs               1,000
 25%            2              0       Sum of Wgt.       1,000
 
-50%            2                      Mean               2.46
-                        Largest       Std. Dev.      .9966912
+50%            3                      Mean              2.531
+                        Largest       Std. Dev.      1.048875
 75%            3              5
-90%            4              5       Variance       .9933934
-95%            4              5       Skewness        -.02918
-99%            5              5       Kurtosis       2.863718
+90%            4              6       Variance       1.100139
+95%            4              6       Skewness      -.0169161
+99%            5              6       Kurtosis       2.980063
 
 . sum hydrox_count, d 
 
@@ -255,12 +255,12 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 10%            1              0       Obs               1,000
 25%            2              0       Sum of Wgt.       1,000
 
-50%            3                      Mean              2.525
-                        Largest       Std. Dev.      1.023925
+50%            3                      Mean              2.524
+                        Largest       Std. Dev.      1.000212
 75%            3              5
-90%            4              6       Variance       1.048423
-95%            4              6       Skewness       .0920622
-99%            5              6       Kurtosis       3.131925
+90%            4              5       Variance       1.000424
+95%            4              5       Skewness       .0450666
+99%            5              5       Kurtosis          2.845
 
 . 
 . sum outpatient*, d
@@ -268,17 +268,17 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
                     outpatient_appt_2019
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%           .5              0
+ 1%            0              0
  5%            1              0
 10%            1              0       Obs               1,000
 25%            2              0       Sum of Wgt.       1,000
 
-50%            3                      Mean              2.539
-                        Largest       Std. Dev.      1.010693
+50%            2                      Mean              2.487
+                        Largest       Std. Dev.      1.078422
 75%            3              5
-90%            4              5       Variance       1.021501
-95%            4              5       Skewness       .1031111
-99%            5              6       Kurtosis       2.718134
+90%            4              5       Variance       1.162994
+95%            4              5       Skewness       .0767087
+99%            5              6       Kurtosis        2.71609
 
                     outpatient_appt_2020
 -------------------------------------------------------------
@@ -288,12 +288,12 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 10%            1              0       Obs               1,000
 25%            2              0       Sum of Wgt.       1,000
 
-50%            2                      Mean              2.499
-                        Largest       Std. Dev.      1.007479
+50%            3                      Mean              2.566
+                        Largest       Std. Dev.      1.032817
 75%            3              5
-90%            4              5       Variance       1.015014
-95%            4              6       Skewness       .1026294
-99%            5              6       Kurtosis       3.062567
+90%            4              5       Variance       1.066711
+95%            4              5       Skewness        .013831
+99%            5              6       Kurtosis       2.867753
 
                     outpatient_appt_2021
 -------------------------------------------------------------
@@ -303,12 +303,12 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 10%            1              0       Obs               1,000
 25%            2              0       Sum of Wgt.       1,000
 
-50%            3                      Mean               2.54
-                        Largest       Std. Dev.      1.023449
+50%            2                      Mean              2.456
+                        Largest       Std. Dev.      1.033989
 75%            3              5
-90%            4              5       Variance       1.047447
-95%            4              5       Skewness       .0236995
-99%            5              6       Kurtosis       3.005968
+90%            4              5       Variance       1.069133
+95%            4              5       Skewness      -.0995914
+99%            5              5       Kurtosis       2.833847
 
                    outpatient_medium_2019
 -------------------------------------------------------------
@@ -318,12 +318,12 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 10%            1              1       Obs                 500
 25%            2              1       Sum of Wgt.         500
 
-50%            5                      Mean             13.112
-                        Largest       Std. Dev.      27.47488
+50%            4                      Mean              13.09
+                        Largest       Std. Dev.      28.11182
 75%            7             98
-90%            8             98       Variance       754.8692
-95%           98             98       Skewness       2.743532
-99%           98             98       Kurtosis       8.614575
+90%            8             98       Variance       790.2744
+95%           98             98       Skewness       2.670063
+99%           98             98       Kurtosis       8.204018
 
                    outpatient_medium_2020
 -------------------------------------------------------------
@@ -333,12 +333,12 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 10%            1              1       Obs                 500
 25%            2              1       Sum of Wgt.         500
 
-50%            4                      Mean             13.932
-                        Largest       Std. Dev.      29.06898
+50%            5                      Mean             14.808
+                        Largest       Std. Dev.       29.9556
 75%            7             98
-90%           98             98       Variance       845.0054
-95%           98             98       Skewness       2.529124
-99%           98             98       Kurtosis        7.46149
+90%           98             98       Variance       897.3378
+95%           98             98       Skewness       2.402643
+99%           98             98       Kurtosis       6.827409
 
                    outpatient_medium_2021
 -------------------------------------------------------------
@@ -348,34 +348,37 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 10%            1              1       Obs                 500
 25%            2              1       Sum of Wgt.         500
 
-50%            5                      Mean               14.8
-                        Largest       Std. Dev.      29.66682
+50%            5                      Mean             12.264
+                        Largest       Std. Dev.      26.42618
 75%            7             98
-90%           98             98       Variance       880.1202
-95%           98             98       Skewness       2.432075
-99%           98             98       Kurtosis       6.974642
+90%            8             98       Variance        698.343
+95%           98             98       Skewness       2.912715
+99%           98             98       Kurtosis       9.578746
 
 . 
 . keep if has_ra
 (500 observations deleted)
 
 . 
+. * How many people are not on DMARDs and have no RA appointments?
+. 
+. 
 . * Format variables
 . *re-order ethnicity
 .  gen eth5=1 if ethnicity==1
-(396 missing values generated)
+(404 missing values generated)
 
 .  replace eth5=2 if ethnicity==3
-(92 real changes made)
+(119 real changes made)
 
 .  replace eth5=3 if ethnicity==4
-(100 real changes made)
+(101 real changes made)
 
 .  replace eth5=4 if ethnicity==2
-(108 real changes made)
+(89 real changes made)
 
 .  replace eth5=5 if ethnicity==5
-(96 real changes made)
+(95 real changes made)
 
 .  replace eth5=. if ethnicity==.
 (0 real changes made)
@@ -401,11 +404,11 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 
        eth5 |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-      White |        104       20.80       20.80
-South Asian |         92       18.40       39.20
-      Black |        100       20.00       59.20
-      Mixed |        108       21.60       80.80
-      Other |         96       19.20      100.00
+      White |         96       19.20       19.20
+South Asian |        119       23.80       43.00
+      Black |        101       20.20       63.20
+      Mixed |         89       17.80       81.00
+      Other |         95       19.00      100.00
 ------------+-----------------------------------
       Total |        500      100.00
 
@@ -425,8 +428,8 @@ South Asian |         92       18.40       39.20
 
        male |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-     Female |        231       46.20       46.20
-       Male |        269       53.80      100.00
+     Female |        247       49.40       49.40
+       Male |        253       50.60      100.00
 ------------+-----------------------------------
       Total |        500      100.00
 
@@ -439,25 +442,25 @@ South Asian |         92       18.40       39.20
 (0 real changes made)
 
 . replace region2=1 if region=="East Midlands"
-(55 real changes made)
+(38 real changes made)
 
 . replace region2=2 if region=="London"
-(97 real changes made)
+(102 real changes made)
 
 . replace region2=3 if region=="North East"
-(56 real changes made)
+(54 real changes made)
 
 . replace region2=4 if region=="North West"
-(48 real changes made)
+(63 real changes made)
 
 . replace region2=5 if region=="South East"
-(106 real changes made)
+(77 real changes made)
 
 . replace region2=6 if region=="South West"
 (0 real changes made)
 
 . replace region2=7 if region=="West Midlands"
-(48 real changes made)
+(66 real changes made)
 
 . replace region2=8 if region=="Yorkshire and The Humber"
 (0 real changes made)
@@ -479,13 +482,13 @@ South Asian |         92       18.40       39.20
 
        region of England |      Freq.     Percent        Cum.
 -------------------------+-----------------------------------
-           East Midlands |         55       11.00       11.00
-                  London |         97       19.40       30.40
-              North East |         56       11.20       41.60
-              North West |         48        9.60       51.20
-              South East |        106       21.20       72.40
-           West Midlands |         48        9.60       82.00
-                       . |         90       18.00      100.00
+           East Midlands |         38        7.60        7.60
+                  London |        102       20.40       28.00
+              North East |         54       10.80       38.80
+              North West |         63       12.60       51.40
+              South East |         77       15.40       66.80
+           West Midlands |         66       13.20       80.00
+                       . |        100       20.00      100.00
 -------------------------+-----------------------------------
                    Total |        500      100.00
 
@@ -497,19 +500,19 @@ South Asian |         92       18.40       39.20
 . la var urban_rural_5 "Rural Urban in five categories"
 
 . replace urban_rural_5=1 if urban_rural==1
-(55 real changes made)
+(68 real changes made)
 
 . replace urban_rural_5=2 if urban_rural==2
-(65 real changes made)
+(59 real changes made)
 
 . replace urban_rural_5=3 if urban_rural==3|urban_rural==4
-(134 real changes made)
+(128 real changes made)
 
 . replace urban_rural_5=4 if urban_rural==5|urban_rural==6
-(117 real changes made)
+(118 real changes made)
 
 . replace urban_rural_5=5 if urban_rural==7|urban_rural==8
-(129 real changes made)
+(127 real changes made)
 
 . label define urban_rural_5 1 "Urban major conurbation" 2 "Urban minor conurba
 > tion" 3 "Urban city and town" 4 "Rural town and fringe" 5 "Rural village and 
@@ -523,11 +526,11 @@ South Asian |         92       18.40       39.20
         Rural Urban in five |
                  categories |      Freq.     Percent        Cum.
 ----------------------------+-----------------------------------
-    Urban major conurbation |         55       11.00       11.00
-    Urban minor conurbation |         65       13.00       24.00
-        Urban city and town |        134       26.80       50.80
-      Rural town and fringe |        117       23.40       74.20
-Rural village and dispersed |        129       25.80      100.00
+    Urban major conurbation |         68       13.60       13.60
+    Urban minor conurbation |         59       11.80       25.40
+        Urban city and town |        128       25.60       51.00
+      Rural town and fringe |        118       23.60       74.60
+Rural village and dispersed |        127       25.40      100.00
 ----------------------------+-----------------------------------
                       Total |        500      100.00
 
@@ -537,10 +540,10 @@ Rural village and dispersed |        129       25.80      100.00
 (500 missing values generated)
 
 . replace urban_rural_bin=1 if urban_rural<=4|urban_rural==.
-(254 real changes made)
+(255 real changes made)
 
 . replace urban_rural_bin=0 if urban_rural>4 & urban_rural!=.
-(246 real changes made)
+(245 real changes made)
 
 . label define urban_rural_bin 0 "Rural" 1 "Urban"
 
@@ -552,19 +555,19 @@ Rural village and dispersed |        129       25.80      100.00
 urban_rura |                      urban_rural
      l_bin |         1          2          3          4          5 |     Total
 -----------+-------------------------------------------------------+----------
-     Rural |         0          0          0          0         57 |       246 
-     Urban |        55         65         72         62          0 |       254 
+     Rural |         0          0          0          0         55 |       245 
+     Urban |        68         59         68         60          0 |       255 
 -----------+-------------------------------------------------------+----------
-     Total |        55         65         72         62         57 |       500 
+     Total |        68         59         68         60         55 |       500 
 
 
 urban_rura |           urban_rural
      l_bin |         6          7          8 |     Total
 -----------+---------------------------------+----------
-     Rural |        60         66         63 |       246 
-     Urban |         0          0          0 |       254 
+     Rural |        63         62         65 |       245 
+     Urban |         0          0          0 |       255 
 -----------+---------------------------------+----------
-     Total |        60         66         63 |       500 
+     Total |        63         62         65 |       500 
 
 . label var urban_rural_bin "Rural-Urban"
 
@@ -572,7 +575,7 @@ urban_rura |           urban_rural
 . * Define age categories
 . * Create age categories
 . egen age_cat = cut(age), at(18, 40, 60, 80, 120) icodes
-(95 missing values generated)
+(107 missing values generated)
 
 . label define age 0 "18 - 40 years" 1 "41 - 60 years" 2 "61 - 80 years" 3 ">80
 >  years"
@@ -584,11 +587,11 @@ urban_rura |           urban_rural
 
       age_cat |      Freq.     Percent        Cum.
 --------------+-----------------------------------
-18 - 40 years |        126       25.20       25.20
-41 - 60 years |        136       27.20       52.40
-61 - 80 years |        120       24.00       76.40
-    >80 years |         23        4.60       81.00
-            . |         95       19.00      100.00
+18 - 40 years |        145       29.00       29.00
+41 - 60 years |        131       26.20       55.20
+61 - 80 years |         88       17.60       72.80
+    >80 years |         29        5.80       78.60
+            . |        107       21.40      100.00
 --------------+-----------------------------------
         Total |        500      100.00
 
@@ -629,17 +632,17 @@ urban_rura |           urban_rural
   |--------------------------------------------------|
   |                                      N=500       |
   |--------------------------------------------------|
-  | op_appt_2019_cat   No appointments   5 ( 1.0%)   |
-  |                    1-2 per year      251 (50.2%) |
-  |                    3-6 per year      244 (48.8%) |
+  | op_appt_2019_cat   No appointments   11 ( 2.2%)  |
+  |                    1-2 per year      254 (50.8%) |
+  |                    3-6 per year      235 (47.0%) |
   |--------------------------------------------------|
-  | op_appt_2020_cat   No appointments   12 ( 2.4%)  |
-  |                    1-2 per year      234 (46.8%) |
-  |                    3-6 per year      254 (50.8%) |
+  | op_appt_2020_cat   No appointments   9 ( 1.8%)   |
+  |                    1-2 per year      228 (45.6%) |
+  |                    3-6 per year      263 (52.6%) |
   |--------------------------------------------------|
-  | op_appt_2021_cat   No appointments   9 ( 1.8%)   |
-  |                    1-2 per year      223 (44.6%) |
-  |                    3-6 per year      268 (53.6%) |
+  | op_appt_2021_cat   No appointments   16 ( 3.2%)  |
+  |                    1-2 per year      233 (46.6%) |
+  |                    3-6 per year      251 (50.2%) |
   +--------------------------------------------------+
 Data are presented as n (%).
  
@@ -655,11 +658,11 @@ file ./output/tables/op_appt_yrs.csv saved
   +--------------------------------------------+
   | factor                           N_1   m_1 |
   |--------------------------------------------|
-  | age_cat                          405    95 |
+  | age_cat                          393   107 |
   |--------------------------------------------|
   | male                             500     0 |
   |--------------------------------------------|
-  | region of England                410    90 |
+  | region of England                400   100 |
   |--------------------------------------------|
   | Rural Urban in five categories   500     0 |
   |--------------------------------------------|
@@ -681,71 +684,71 @@ file ./output/tables/op_appt_yrs.csv saved
 > |
   |----------------------------------------------------------------------------
 > |
-  | age_cat                          18 - 40 years                 126 (31.1%) 
+  | age_cat                          18 - 40 years                 145 (36.9%) 
 > |
-  |                                  41 - 60 years                 136 (33.6%) 
+  |                                  41 - 60 years                 131 (33.3%) 
 > |
-  |                                  61 - 80 years                 120 (29.6%) 
+  |                                  61 - 80 years                 88 (22.4%)  
 > |
-  |                                  >80 years                     23 ( 5.7%)  
-> |
-  |----------------------------------------------------------------------------
-> |
-  | male                             Female                        231 (46.2%) 
-> |
-  |                                  Male                          269 (53.8%) 
+  |                                  >80 years                     29 ( 7.4%)  
 > |
   |----------------------------------------------------------------------------
 > |
-  | region of England                East Midlands                 55 (13.4%)  
+  | male                             Female                        247 (49.4%) 
 > |
-  |                                  London                        97 (23.7%)  
-> |
-  |                                  North East                    56 (13.7%)  
-> |
-  |                                  North West                    48 (11.7%)  
-> |
-  |                                  South East                    106 (25.9%) 
-> |
-  |                                  West Midlands                 48 (11.7%)  
+  |                                  Male                          253 (50.6%) 
 > |
   |----------------------------------------------------------------------------
 > |
-  | Rural Urban in five categories   Urban major conurbation       55 (11.0%)  
+  | region of England                East Midlands                 38 ( 9.5%)  
 > |
-  |                                  Urban minor conurbation       65 (13.0%)  
+  |                                  London                        102 (25.5%) 
 > |
-  |                                  Urban city and town           134 (26.8%) 
+  |                                  North East                    54 (13.5%)  
 > |
-  |                                  Rural town and fringe         117 (23.4%) 
+  |                                  North West                    63 (15.8%)  
 > |
-  |                                  Rural village and dispersed   129 (25.8%) 
+  |                                  South East                    77 (19.2%)  
 > |
-  |----------------------------------------------------------------------------
-> |
-  | prescribed_biologics             0                             255 (51.0%) 
-> |
-  |                                  1                             245 (49.0%) 
+  |                                  West Midlands                 66 (16.5%)  
 > |
   |----------------------------------------------------------------------------
 > |
-  | imd                              0                             24 ( 4.8%)  
+  | Rural Urban in five categories   Urban major conurbation       68 (13.6%)  
 > |
-  |                                  1                             103 (20.6%) 
+  |                                  Urban minor conurbation       59 (11.8%)  
 > |
-  |                                  2                             94 (18.8%)  
+  |                                  Urban city and town           128 (25.6%) 
 > |
-  |                                  3                             91 (18.2%)  
+  |                                  Rural town and fringe         118 (23.6%) 
 > |
-  |                                  4                             101 (20.2%) 
-> |
-  |                                  5                             87 (17.4%)  
+  |                                  Rural village and dispersed   127 (25.4%) 
 > |
   |----------------------------------------------------------------------------
 > |
-  | care_home                        0                             414 (82.8%) 
+  | prescribed_biologics             0                             245 (49.0%) 
 > |
-  |                                  1                             86 (17.2%)  
+  |                                  1                             255 (51.0%) 
+> |
+  |----------------------------------------------------------------------------
+> |
+  | imd                              0                             31 ( 6.2%)  
+> |
+  |                                  1                             93 (18.6%)  
+> |
+  |                                  2                             87 (17.4%)  
+> |
+  |                                  3                             104 (20.8%) 
+> |
+  |                                  4                             90 (18.0%)  
+> |
+  |                                  5                             95 (19.0%)  
+> |
+  |----------------------------------------------------------------------------
+> |
+  | care_home                        0                             416 (83.2%) 
+> |
+  |                                  1                             84 (16.8%)  
 > |
   +----------------------------------------------------------------------------
 > +
@@ -759,5 +762,5 @@ file ./output/tables/op_chars.csv saved
       name:  <unnamed>
        log:  /workspace/logs/outpatients.log
   log type:  text
- closed on:  25 Jul 2022, 12:06:56
+ closed on:  11 Aug 2022, 10:59:16
 -------------------------------------------------------------------------------

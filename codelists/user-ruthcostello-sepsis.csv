@@ -1,0 +1,28 @@
+code,term
+A021,Salmonella sepsis
+A202,Pneumonic plague
+A207,Septicaemic plague
+A217,Generalized tularaemia
+A227,Anthrax sepsis
+A267,Erysipelothrix sepsis
+A327,Listerial sepsis
+A392,Acute meningococcaemia
+A394,"Meningococcaemia, unspecified"
+A40,Streptococcal sepsis
+A400,"Sepsis due to streptococcus, group A"
+A401,"Sepsis due to streptococcus, group B"
+A402,"Sepsis due to streptococcus, group D and enterococcus"
+A403,Sepsis due to Streptococcus pneumoniae
+A408,Other streptococcal sepsis
+A409,"Streptococcal sepsis, unspecified"
+A41,Other sepsis
+A410,Sepsis due to Staphylococcus aureus
+A411,Sepsis due to other specified staphylococcus
+A412,Sepsis due to unspecified staphylococcus
+A413,Sepsis due to Haemophilus influenzae
+A414,Sepsis due to anaerobes
+A415,Sepsis due to other Gram-negative organisms
+A418,Other specified sepsis
+A419,"Sepsis, unspecified"
+A427,Actinomycotic sepsis
+O85,Puerperal sepsis

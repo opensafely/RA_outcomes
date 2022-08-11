@@ -42,3 +42,24 @@ opensafely/type-1-diabetes/2020-06-29
 opensafely/type-2-diabetes/2020-06-29
 # Cardiovascular disease
 opensafely/chronic-cardiac-disease/2020-04-08
+
+# ICD-10 codes
+
+# Rheumatoid arthritis
+user/ruthcostello/ra_hospitalisation/14ec9de6
+# cardiovascular disease
+opensafely/cardiovascular-secondary-care/20b63bd4
+# vasculitis
+user/ruthcostello/vasculitis/6ebe102b
+# lung disease (use ILD code in study definition)
+# serious infections (sepsis)
+user/ruthcostello/sepsis/26427682
+
+# Steroids
+opensafely/asthma-oral-prednisolone-medication/2020-04-27
+
+# Opioids
+# TBC
+
+# depression (based on HDR UK https://phenotypes.healthdatagateway.org/phenotypes/PH149/version/298/detail/#home)
+ user/emilyherrett/depression_icd10/0aaf5048

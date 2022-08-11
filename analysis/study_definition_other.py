@@ -3,6 +3,7 @@ from cohortextractor import StudyDefinition, patients, codelist, codelist_from_c
 from common_variables import common_variables
 from codelists import *
 
+ild_code = codelist(["J849"], system="icd10")
 
 # Inclusion criteria
 # age 18+, 
@@ -210,7 +211,6 @@ study = StudyDefinition(
         (number_ra_codes>=2 AND NOT alt_diag)
         """,
     ),
-   
     prescribed_biologics=patients.with_high_cost_drugs(
         drug_name_matches=["abatacept", "adalimumab", "baracitinib", "certolizumab", 
         "etanercept", "golimumab", "guselkumab", "infliximab", "ixekizumab", "methotrexate_hcd",
@@ -219,44 +219,55 @@ study = StudyDefinition(
         on_or_before="2020-03-01",
         returning="binary_flag",
     ),
-    # Determine number of appointments during years 2019-2021
-    op_appt=patients.outpatient_appointment_date(
+    ra_hosp=patients.admitted_to_hospital(
+        with_these_diagnoses=ra_hospitalisation,
+        between=["index_date", "last_day_of_month(index_date)"],
         returning="binary_flag",
-        with_these_treatment_function_codes="410",
-        attended="True",
-        between=["index_date", "last_day_of_month(index_date)"],
-        return_expectations = {"incidence": 0.7},
+        return_expectations={"incidence": 0.1},
     ),
-    op_appt_medium=patients.outpatient_appointment_date(
-        returning="consultation_medium_used",
-        with_these_treatment_function_codes="410",
-        attended="True",
+    ra_daycase=patients.admitted_to_hospital(
+        with_these_diagnoses=ra_hospitalisation,
         between=["index_date", "last_day_of_month(index_date)"],
-        return_expectations={
-            "category": { "ratios":{ 
-                "1": 0.2,
+        returning="patient_classification",
+        return_expectations={"category": { "ratios":{ 
+                "1": 0.6,
                 "2": 0.1,
                 "3": 0.1,
                 "4": 0.1,
                 "5": 0.1,
-                "6": 0.1,
-                "7": 0.1,
-                "8": 0.1,
-                "98": 0.1, 
                 },
             },
         },
     ),
-    op_appt_first=patients.outpatient_appointment_date(
-        returning="binary_flag",
-        with_these_treatment_function_codes="410",
-        attended="True",
-        is_first_attendance="True",
+    cardiac_hosp=patients.admitted_to_hospital(
+        with_these_primary_diagnoses=cardiac_hospitalisation,
         between=["index_date", "last_day_of_month(index_date)"],
-        return_expectations={
-                "int": {"distribution": "normal", "mean": 3, "stddev": 1},
-                "incidence": 0.6,
-            },
+        returning="binary_flag",
+        return_expectations={"incidence": 0.1},
+    ),
+    vasculitis_hosp=patients.admitted_to_hospital(
+        with_these_primary_diagnoses=vasculitis_hospitalisation,
+        between=["index_date", "last_day_of_month(index_date)"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.1},
+    ),
+    sepsis_hosp=patients.admitted_to_hospital(
+        with_these_primary_diagnoses=sepsis_hospitalisation,
+        between=["index_date", "last_day_of_month(index_date)"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.1},
+    ),
+    ild_hosp=patients.admitted_to_hospital(
+        with_these_primary_diagnoses=ild_code,
+        between=["index_date", "last_day_of_month(index_date)"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.1},
+    ),
+    gc_prescribing=patients.with_these_medications(
+        gc_codes,
+        between=["index_date", "last_day_of_month(index_date)"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.1},
     ),
 
     **common_variables
@@ -264,20 +275,44 @@ study = StudyDefinition(
 
 measures = [
     Measure(
-        id="op_appt_rate",
-        numerator="op_appt",
+        id="hosp_ra_rate",
+        numerator="ra_hosp",
         denominator="population",
         group_by="population",
     ),
     Measure(
-        id="op_appt_medium_rate",
-        numerator="op_appt",
+        id="hosp_ra_daycase_rate",
+        numerator="ra_hosp",
         denominator="population",
-        group_by="op_appt_medium",
+        group_by="ra_daycase",
     ),
     Measure(
-        id="op_appt_first_rate",
-        numerator="op_appt_first",
+        id="hosp_cardiac_rate",
+        numerator="cardiac_hosp",
+        denominator="population",
+        group_by="population",
+    ),
+    Measure(
+        id="hosp_vasculitis_rate",
+        numerator="vasculitis_hosp",
+        denominator="population",
+        group_by="population",
+    ),
+    Measure(
+        id="hosp_sepsis_rate",
+        numerator="sepsis_hosp",
+        denominator="population",
+        group_by="population",
+    ),
+    Measure(
+        id="hosp_ild_rate",
+        numerator="ild_hosp",
+        denominator="population",
+        group_by="population",
+    ),
+    Measure(
+        id="med_gc_rate",
+        numerator="gc_prescribing",
         denominator="population",
         group_by="population",
     ),

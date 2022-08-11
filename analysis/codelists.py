@@ -120,3 +120,29 @@ cardiac_codes=codelist_from_csv(
     system="ctv3",
     column="CTV3ID",
 )
+
+ra_hospitalisation=codelist_from_csv(
+    "codelists/user-ruthcostello-ra_hospitalisation.csv",
+    system="icd10",
+    column="code",
+)
+cardiac_hospitalisation=codelist_from_csv(
+    "codelists/opensafely-cardiovascular-secondary-care.csv",
+    system="icd10",
+    column="icd",
+)
+vasculitis_hospitalisation=codelist_from_csv(
+    "codelists/user-ruthcostello-vasculitis.csv",
+    system="icd10",
+    column="code",
+)
+sepsis_hospitalisation=codelist_from_csv(
+    "codelists/user-ruthcostello-sepsis.csv",
+    system="icd10",
+    column="code",
+)
+gc_codes=codelist_from_csv(
+    "codelists/opensafely-asthma-oral-prednisolone-medication.csv",
+    system="snomed",
+    column="snomed_id",
+)

@@ -131,6 +131,42 @@
       "url": "https://codelists.opensafely.org/codelist/opensafely/chronic-cardiac-disease/2020-04-08/",
       "downloaded_at": "2022-07-19 15:17:48.336984Z",
       "sha": "2267f6fada9c77a2bbf62ce7a1c07ddf48348d61"
+    },
+    "user-ruthcostello-ra_hospitalisation.csv": {
+      "id": "user/ruthcostello/ra_hospitalisation/14ec9de6",
+      "url": "https://codelists.opensafely.org/codelist/user/ruthcostello/ra_hospitalisation/14ec9de6/",
+      "downloaded_at": "2022-08-02 11:03:00.691988Z",
+      "sha": "06e4db0975b3355b66e9187d071452348c39d6df"
+    },
+    "opensafely-cardiovascular-secondary-care.csv": {
+      "id": "opensafely/cardiovascular-secondary-care/20b63bd4",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/cardiovascular-secondary-care/20b63bd4/",
+      "downloaded_at": "2022-08-02 11:03:00.907046Z",
+      "sha": "7c956ed25484f8c03dae29823031c27f2802914a"
+    },
+    "user-ruthcostello-vasculitis.csv": {
+      "id": "user/ruthcostello/vasculitis/6ebe102b",
+      "url": "https://codelists.opensafely.org/codelist/user/ruthcostello/vasculitis/6ebe102b/",
+      "downloaded_at": "2022-08-09 10:35:15.994378Z",
+      "sha": "a2bc78865c51d3d66c2ccfbd572b8a0c846184ea"
+    },
+    "user-ruthcostello-sepsis.csv": {
+      "id": "user/ruthcostello/sepsis/26427682",
+      "url": "https://codelists.opensafely.org/codelist/user/ruthcostello/sepsis/26427682/",
+      "downloaded_at": "2022-08-09 10:35:16.248383Z",
+      "sha": "2a799ac08e35bbfa5eff6bcd487c27200a7b723d"
+    },
+    "opensafely-asthma-oral-prednisolone-medication.csv": {
+      "id": "opensafely/asthma-oral-prednisolone-medication/2020-04-27",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/asthma-oral-prednisolone-medication/2020-04-27/",
+      "downloaded_at": "2022-08-03 13:07:48.370075Z",
+      "sha": "e47cc254975c23f7507cf04bb655454f8b5ece18"
+    },
+    "user-emilyherrett-depression_icd10.csv": {
+      "id": "user/emilyherrett/depression_icd10/0aaf5048",
+      "url": "https://codelists.opensafely.org/codelist/user/emilyherrett/depression_icd10/0aaf5048/",
+      "downloaded_at": "2022-08-09 10:35:16.751310Z",
+      "sha": "0b364f07654123840f01c96d4645785ac195b47f"
     }
   }
 }
