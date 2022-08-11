@@ -131,6 +131,16 @@ cardiac_hospitalisation=codelist_from_csv(
     system="icd10",
     column="icd",
 )
+vasculitis_hospitalisation=codelist_from_csv(
+    "codelists/user-ruthcostello-vasculitis.csv",
+    system="icd10",
+    column="code",
+)
+sepsis_hospitalisation=codelist_from_csv(
+    "codelists/user-ruthcostello-sepsis.csv",
+    system="icd10",
+    column="code",
+)
 gc_codes=codelist_from_csv(
     "codelists/opensafely-asthma-oral-prednisolone-medication.csv",
     system="snomed",

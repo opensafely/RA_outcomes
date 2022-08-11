@@ -219,7 +219,7 @@ study = StudyDefinition(
         on_or_before="2020-03-01",
         returning="binary_flag",
     ),
-    ra_hospitalisation=patients.admitted_to_hospital(
+    ra_hosp=patients.admitted_to_hospital(
         with_these_diagnoses=ra_hospitalisation,
         between=["index_date", "last_day_of_month(index_date)"],
         returning="binary_flag",
@@ -239,8 +239,26 @@ study = StudyDefinition(
             },
         },
     ),
-    cardiac_hospitalisation=patients.admitted_to_hospital(
-        with_these_diagnoses=cardiac_hospitalisation,
+    cardiac_hosp=patients.admitted_to_hospital(
+        with_these_primary_diagnoses=cardiac_hospitalisation,
+        between=["index_date", "last_day_of_month(index_date)"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.1},
+    ),
+    vasculitis_hosp=patients.admitted_to_hospital(
+        with_these_primary_diagnoses=vasculitis_hospitalisation,
+        between=["index_date", "last_day_of_month(index_date)"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.1},
+    ),
+    sepsis_hosp=patients.admitted_to_hospital(
+        with_these_primary_diagnoses=sepsis_hospitalisation,
+        between=["index_date", "last_day_of_month(index_date)"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.1},
+    ),
+    ild_hosp=patients.admitted_to_hospital(
+        with_these_primary_diagnoses=ild_code,
         between=["index_date", "last_day_of_month(index_date)"],
         returning="binary_flag",
         return_expectations={"incidence": 0.1},
@@ -258,19 +276,37 @@ study = StudyDefinition(
 measures = [
     Measure(
         id="hosp_ra_rate",
-        numerator="ra_hospitalisation",
+        numerator="ra_hosp",
         denominator="population",
         group_by="population",
     ),
     Measure(
         id="hosp_ra_daycase_rate",
-        numerator="ra_hospitalisation",
+        numerator="ra_hosp",
         denominator="population",
         group_by="ra_daycase",
     ),
     Measure(
         id="hosp_cardiac_rate",
-        numerator="cardiac_hospitalisation",
+        numerator="cardiac_hosp",
+        denominator="population",
+        group_by="population",
+    ),
+    Measure(
+        id="hosp_vasculitis_rate",
+        numerator="vasculitis_hosp",
+        denominator="population",
+        group_by="population",
+    ),
+    Measure(
+        id="hosp_sepsis_rate",
+        numerator="sepsis_hosp",
+        denominator="population",
+        group_by="population",
+    ),
+    Measure(
+        id="hosp_ild_rate",
+        numerator="ild_hosp",
         denominator="population",
         group_by="population",
     ),

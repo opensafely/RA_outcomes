@@ -49,7 +49,7 @@ angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6) legend(row(1) size(small) title
 graph export ./output/graphs/line_op_appt_medium.svg, as(svg) replace
 
 * Generates line graphs with rate of hospitalisations over time
-foreach this_group in ra cardiac {
+foreach this_group in ra cardiac vasculitis ild sepsis {
         import delimited using ./output/measures/measure_hosp_`this_group'_rate.csv, numericcols(3) clear
         * Generate rate per 100,000
         gen rate = value*100000 
@@ -72,14 +72,14 @@ drop if ra_daycase==.
 * Generate new population as all those with type of admission
 bys date: egen pop_new = total(population)
 * Calculate rate
-gen rate = (ra_hospitalisation/pop_new)*100000
+gen rate = (ra_hosp/pop_new)*100000
 
 * Format date
 gen dateA = date(date, "YMD")
 drop date
 format dateA %dD/M/Y
 * reshape dataset so columns with rates for each ethnicity 
-reshape wide value rate population ra_hospitalisation, i(dateA) j(ra_daycase)
+reshape wide value rate population ra_hosp, i(dateA) j(ra_daycase)
 describe
 * Generate line graph
 graph twoway line rate1 rate2 date, tlabel(01Apr2019(120)01Apr2022, angle(45) ///
