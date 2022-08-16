@@ -107,7 +107,7 @@ forvalues i=1/5 {
 * RA daycase
 import delimited "./output/measures/measure_hosp_ra_daycase_rate.csv", clear	//get csv
 putexcel set ./output/time_series/tsreg_tables, sheet(hosp_ra_daycase) modify
-drop if ra_daycase==. | ra_daycase==5
+drop if ra_daycase==. | ra_daycase>=4
 gen temp_date=date(date, "YMD")
 format temp_date %td
 gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
