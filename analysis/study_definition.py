@@ -1,4 +1,10 @@
-from cohortextractor import StudyDefinition, patients, codelist, codelist_from_csv  
+from cohortextractor import (
+StudyDefinition, 
+patients, 
+codelist, 
+codelist_from_csv,
+filter_codes_by_category,
+)  
 
 from common_variables import common_variables 
 from codelists import *
@@ -301,6 +307,13 @@ study = StudyDefinition(
             },
         },
     ),
+    ra_hosp_2018=patients.admitted_to_hospital(
+        with_these_diagnoses=ra_hospitalisation,
+        between=["2018-04-01", "2019-03-31"],
+        returning="number_of_matches_in_period",
+        return_expectations={ "int": {"distribution": "normal", "mean": 3, "stddev": 1},
+                "incidence": 1,},
+    ),
     ra_hosp_2019=patients.admitted_to_hospital(
         with_these_diagnoses=ra_hospitalisation,
         between=["2019-04-01", "2020-03-31"],
@@ -331,5 +344,31 @@ study = StudyDefinition(
         on_or_before="2020-03-01",
         returning="binary_flag",
     ),
+    smoking_status=patients.categorised_as(
+        {
+            "S": "most_recent_smoking_code = 'S'",
+            "E": """
+                     most_recent_smoking_code = 'E' OR (    
+                       most_recent_smoking_code = 'N' AND ever_smoked   
+                     )  
+                """,
+            "N": "most_recent_smoking_code = 'N' AND NOT ever_smoked",
+            "M": "DEFAULT",
+        },
+        return_expectations={
+            "category": {"ratios": {"S": 0.4, "E": 0.3, "N": 0.2, "M": 0.1}}
+        },
+        most_recent_smoking_code=patients.with_these_clinical_events(
+            clear_smoking_codes,
+            find_last_match_in_period=True,
+            on_or_before="index_date",
+            returning="category",
+        ),
+        ever_smoked=patients.with_these_clinical_events(
+            filter_codes_by_category(clear_smoking_codes, include=["S", "E"]),
+            on_or_before="index_date",
+        ),
+    ),
+
     **common_variables
 )

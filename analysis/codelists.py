@@ -141,8 +141,26 @@ sepsis_hospitalisation=codelist_from_csv(
     system="icd10",
     column="code",
 )
+depression_hospitalisation=codelist_from_csv(
+    "codelists/user-emilyherrett-depression_icd10.csv",
+    system="icd10",
+    column="code",
+)
 gc_codes=codelist_from_csv(
     "codelists/opensafely-asthma-oral-prednisolone-medication.csv",
     system="snomed",
     column="snomed_id",
+)
+clear_smoking_codes = codelist_from_csv(
+    "codelists/opensafely-smoking-clear.csv",
+    system="ctv3",
+    column="CTV3Code",
+    category_column="Category",
+)
+
+unclear_smoking_codes = codelist_from_csv(
+    "codelists/opensafely-smoking-unclear.csv",
+    system="ctv3",
+    column="CTV3Code",
+    category_column="Category",
 )

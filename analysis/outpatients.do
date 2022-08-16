@@ -22,13 +22,13 @@ tab sex
 sum household, d
 tab care_home_type
 * Checking RA algorithm variables
-tab has_dmards has_alt_dmard_diag, m
 * Checking type of DMARD that meets inclusion
-foreach dmard in metho leflu sulfa hydrox azathioprine {
+foreach dmard in metho leflu sulfa hydrox {
     gen `dmard'_multi = (`dmard'_count>=2)
     tab `dmard'_multi if has_dmards==1, m
 }
-
+gen dmard_multi = (metho_multi==1 | leflu_multi==1 | sulfa_multi==1 | hydrox_multi==1)
+tab dmard_multi has_alt_dmard_diag
 sum number_ra_codes
 di "Number where no DMARDs but does have multiple RA codes and no alt diag"
 count if has_dmards==0 & number_ra_codes>=2 & alt_diag!=1
@@ -126,6 +126,14 @@ safetab age_cat, miss
 * Flag if in a care-home
     gen care_home=care_home_type!="PR"
 
+* Smoking status
+gen smoking = 0 if smoking_status=="N"
+replace smoking = 1 if smoking_status=="S"
+replace smoking = 2 if smoking_status=="E"
+
+label define smok 1 "Current smoker" 2 "Ex-smoker" 0 "Never smoked"
+label values smoking smok
+
 * Categorise number of outpatient appointments
 label define appt 0 "No appointments" 1 "1-2 per year" 2 "3-6 per year" 3 "7-12 per year" 4 "More than 12 per year"
 forvalues i=2019/2021 {
@@ -139,28 +147,39 @@ export delimited using ./output/tables/op_appt_yrs.csv
 restore 
 * Tabulate overall characteristics 
 preserve
-table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate) clear
+table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate) clear
 export delimited using ./output/tables/op_chars.csv
 restore
-* Tabulate characteristics by category of outpatient appointments 2019
- tempfile tempfile
- forvalues i=2019/2021 {
+* Tabulate characteristics by category of outpatient appointments for each year
+tempfile tempfile
+forvalues i=2019/2021 {
     preserve
-    keep if op_appt_`i'_cat==1
-    table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate) clear
+    keep if op_appt_`i'_cat==0
+    table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate) clear
     save `tempfile', replace
     restore
-    forvalues j=2/4 {
-      preserve
-      keep if op_appt_`i'_cat==`j'
-      table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate) clear
-      append using `tempfile'
-      save `tempfile', replace
-      restore
-      }
-    use `tempfile', clear
-    export delimited using ./output/tables/characteristics_strata`i'.csv
+    forvalues j=1/2 {
+        preserve
+        keep if op_appt_`i'_cat==`j'
+        table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate) clear
+        append using `tempfile'
+        save `tempfile', replace
+        if `j'==2 {
+            export delimited using ./output/tables/characteristics_strata`i'.csv
+        }
+        restore
+        }
+    * Tabulate characteristics by whether hospitalised with RA for each year
+    preserve
+    keep if ra_hosp_`i'==1
+    table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate) clear
+    export delimited using ./output/tables/characteristics_ra_hosp_`i'.csv
+    restore
     }
-
+preserve
+    keep if ra_hosp_2018==1
+    table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate) clear
+    export delimited using ./output/tables/characteristics_ra_hosp_2018.csv
+    restore
 log close
 
