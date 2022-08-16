@@ -369,6 +369,15 @@ study = StudyDefinition(
             on_or_before="index_date",
         ),
     ),
+    bmi=patients.most_recent_bmi(
+            between=["index_date - 5 years", "index_date"],
+            minimum_age_at_measurement=18,
+            return_expectations={
+                "date": {"earliest": "2010-02-01", "latest": "2020-01-31"},
+                "float": {"distribution": "normal", "mean": 28, "stddev": 8},
+                "incidence": 0.80,
+            }
+    ),
 
     **common_variables
 )

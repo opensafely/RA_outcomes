@@ -135,6 +135,12 @@ replace smoking = 3 if smoking==.
 label define smok 1 "Current smoker" 2 "Ex-smoker" 0 "Never smoked" 3 "Unknown"
 label values smoking smok
 
+* BMI categories
+egen bmi_cat = cut(bmi), at(0, 1, 18.5, 24.9, 29.9, 39.9, 100) icodes
+bys bmi_cat: sum bmi
+label define bmi 0 "Missing" 1 "Underweight" 2 "Healthy range" 3 "Overweight" 4 "Obese" 5 "Morbidly obese"
+label values bmi_cat bmi
+
 * Categorise number of outpatient appointments
 label define appt 0 "No appointments" 1 "1-2 per year" 2 "3-6 per year" 3 "7-12 per year" 4 "More than 12 per year"
 forvalues i=2019/2021 {
@@ -148,7 +154,7 @@ export delimited using ./output/tables/op_appt_yrs.csv
 restore 
 * Tabulate overall characteristics 
 preserve
-table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate) clear
+table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate \ time_ra contn) clear
 export delimited using ./output/tables/op_chars.csv
 restore
 * Tabulate characteristics by category of outpatient appointments for each year
@@ -156,13 +162,13 @@ tempfile tempfile
 forvalues i=2019/2021 {
     preserve
     keep if op_appt_`i'_cat==0
-    table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate) clear
+    table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate \ time_ra contn) clear
     save `tempfile', replace
     restore
     forvalues j=1/2 {
         preserve
         keep if op_appt_`i'_cat==`j'
-        table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate) clear
+        table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate \ time_ra contn) clear
         append using `tempfile'
         save `tempfile', replace
         if `j'==2 {
@@ -173,13 +179,13 @@ forvalues i=2019/2021 {
     * Tabulate characteristics by whether hospitalised with RA for each year
     preserve
     keep if ra_hosp_`i'==1
-    table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate) clear
+    table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate \ time_ra contn) clear
     export delimited using ./output/tables/characteristics_ra_hosp_`i'.csv
     restore
     }
 preserve
     keep if ra_hosp_2018==1
-    table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate) clear
+    table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate \ time_ra contn) clear
     export delimited using ./output/tables/characteristics_ra_hosp_2018.csv
     restore
 log close
