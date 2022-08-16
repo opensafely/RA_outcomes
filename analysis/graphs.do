@@ -18,9 +18,9 @@ foreach this_group in appt_rate appt_first_rate {
         drop date
         format dateA %dD/M/Y
         * Generate line graph
-        graph twoway line rate date, tlabel(01Apr2019(120)01Apr2022, angle(45) ///
-        format(%dM-CY) labsize(small)) ytitle("Rate per 100,000") xtitle("Date") ylabel(, labsize(small) ///
-        angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6) legend(row(1) size(small) title("Ethnic categories", size(small)))
+        graph twoway line rate dateA, tlabel(01Apr2019(120)01Apr2022, angle(45) ///
+        format(%dM-CY) labsize(small)) ytitle("Rate per 100,000") xtitle("Date") ylabel(#5, labsize(small) ///
+        angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6)
 
         graph export ./output/graphs/line_`this_group'.svg, as(svg) replace
         }
@@ -41,10 +41,14 @@ format dateA %dD/M/Y
 * reshape dataset so columns with rates for each ethnicity 
 reshape wide value rate population op_appt, i(dateA) j(op_appt_medium)
 describe
+* Label strata
+label var rate1 "Face to face"
+label var rate2 "Telephone"
 * Generate line graph
-graph twoway line rate1 rate2 date, tlabel(01Apr2019(120)01Apr2022, angle(45) ///
-format(%dM-CY) labsize(small)) ytitle("Rate per 100,000") xtitle("Date") ylabel(, labsize(small) ///
-angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6) legend(row(1) size(small) title("Ethnic categories", size(small)))
+graph twoway line rate1 rate2 dateA, tlabel(01Apr2019(120)01Apr2022, angle(45) ///
+format(%dM-CY) labsize(small)) ytitle("Rate per 100,000") xtitle("Date") ylabel(#5, labsize(small) ///
+angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6) legend(row(1) size(small) ///
+title("Consultation medium", size(small)))
 
 graph export ./output/graphs/line_op_appt_medium.svg, as(svg) replace
 
@@ -58,9 +62,9 @@ foreach this_group in ra cardiac vasculitis ild sepsis {
         drop date
         format dateA %dD/M/Y
         * Generate line graph
-        graph twoway line rate date, tlabel(01Mar2018(120)01Apr2022, angle(45) ///
-        format(%dM-CY) labsize(small)) ytitle("Rate per 100,000") xtitle("Date") ylabel(, labsize(small) ///
-        angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6) legend(row(1) size(small) title("Ethnic categories", size(small)))
+        graph twoway line rate dateA, tlabel(01Mar2018(120)01Apr2022, angle(45) ///
+        format(%dM-CY) labsize(small)) ytitle("Rate per 100,000") xtitle("Date") ylabel(#5, labsize(small) ///
+        angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6)
 
         graph export ./output/graphs/line_hosp_`this_group'.svg, as(svg) replace
         }
@@ -81,10 +85,15 @@ format dateA %dD/M/Y
 * reshape dataset so columns with rates for each ethnicity 
 reshape wide value rate population ra_hosp, i(dateA) j(ra_daycase)
 describe
+* Label strata 
+label var rate1 "Ordinary admission"
+label var rate2 "Day case"
+label var rate3 "Regular admission"
 * Generate line graph
-graph twoway line rate1 rate2 date, tlabel(01Apr2019(120)01Apr2022, angle(45) ///
-format(%dM-CY) labsize(small)) ytitle("Rate per 100,000") xtitle("Date") ylabel(, labsize(small) ///
-angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6) legend(row(1) size(small) title("Ethnic categories", size(small)))
+graph twoway line rate1 rate2 rate3 dateA, tlabel(01Apr2019(120)01Apr2022, angle(45) ///
+format(%dM-CY) labsize(small)) ytitle("Rate per 100,000") xtitle("Date") ylabel(#5, labsize(small) ///
+angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6) legend(row(1) size(small) ///
+title("Type of admission", size(small)))
 
 graph export ./output/graphs/line_ra_daycase.svg, as(svg) replace
 
@@ -96,11 +105,11 @@ foreach this_group in gc {
         * Format date
         gen dateA = date(date, "YMD")
         drop date
-        format dateA %dD/M/Y
+        format dateA %dD/M/Y  
         * Generate line graph
-        graph twoway line rate date, tlabel(01Mar2018(120)01Apr2022, angle(45) ///
-        format(%dM-CY) labsize(small)) ytitle("Rate per 100,000") xtitle("Date") ylabel(, labsize(small) ///
-        angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6) legend(row(1) size(small) title("Ethnic categories", size(small)))
+        graph twoway line rate dateA, tlabel(01Mar2018(120)01Apr2022, angle(45) ///
+        format(%dM-CY) labsize(small)) ytitle("Rate per 100,000") xtitle("Date") ylabel(#5, labsize(small) ///
+        angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6)
 
         graph export ./output/graphs/line_med_`this_group'.svg, as(svg) replace
         }

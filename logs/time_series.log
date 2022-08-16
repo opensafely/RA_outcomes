@@ -114,8 +114,11 @@ file ./output/time_series/tsreg_op_appt.csv saved
 
 . drop temp_date
 
-. *Value to rate per 100k
-. gen rate = value*100000
+. * Generate new population as all those with medium described
+. bys date: egen pop_new = total(population)
+
+. * Calculate rate
+. gen rate = (op_appt/pop_new)*100000
 
 . label variable rate "Rate of op appts per 100,000"
 
@@ -128,8 +131,8 @@ file ./output/time_series/tsreg_op_appt.csv saved
 . newey rate i.op_appt_medium#i.postcovid, lag(1) force
 
 Regression with Newey-West standard errors      Number of obs     =        111
-maximum lag: 1                                  F(  5,       105) =       1.55
-                                                Prob > F          =     0.1820
+maximum lag: 1                                  F(  5,       105) =     135.56
+                                                Prob > F          =     0.0000
 
 ------------------------------------------------------------------------------
              |             Newey-West
@@ -137,13 +140,13 @@ maximum lag: 1                                  F(  5,       105) =       1.55
 -------------+----------------------------------------------------------------
 op_appt_me~m#|
    postcovid |
-        1 1  |   998.4095   1468.676     0.68   0.498    -1913.704    3910.523
-        2 0  |   2677.676   1909.277     1.40   0.164    -1108.068     6463.42
-        2 1  |  -234.9143   1627.905    -0.14   0.886     -3462.75    2992.921
-        3 0  |   1287.327   2006.004     0.64   0.522    -2690.208    5264.863
-        3 1  |   3582.673   1709.784     2.10   0.039     192.4877    6972.858
+        1 1  |  -495.6141   1250.035    -0.40   0.693    -2974.203    1982.974
+        2 0  |  -17723.64   1074.969   -16.49   0.000    -19855.11   -15592.18
+        2 1  |  -17619.28   954.5005   -18.46   0.000    -19511.88   -15726.69
+        3 0  |  -19240.65    1226.92   -15.68   0.000     -21673.4   -16807.89
+        3 1  |  -19021.78   1039.114   -18.31   0.000    -21082.15   -16961.41
              |
-       _cons |      68356   1212.884    56.36   0.000     65951.07    70760.92
+       _cons |   35852.79   811.6163    44.17   0.000      34243.5    37462.07
 ------------------------------------------------------------------------------
 
 . *Export results
@@ -374,8 +377,11 @@ file ./output/time_series/tsreg_hosp_vasculitis.csv saved
 
 . drop temp_date
 
-. *Value to rate per 100k
-. gen rate = value*100000
+. * Generate new population as all those with type of admission
+. bys date: egen pop_new = total(population)
+
+. * Calculate rate
+. gen rate = (ra_hosp/pop_new)*100000
 
 . label variable rate "Rate of op appts per 100,000"
 
@@ -388,8 +394,8 @@ file ./output/time_series/tsreg_hosp_vasculitis.csv saved
 . newey rate i.ra_daycase#i.postcovid, lag(1) force
 
 Regression with Newey-West standard errors      Number of obs     =        200
-maximum lag: 1                                  F(  7,       192) =       1.98
-                                                Prob > F          =     0.0599
+maximum lag: 1                                  F(  7,       192) =     204.36
+                                                Prob > F          =     0.0000
 
 ------------------------------------------------------------------------------
              |             Newey-West
@@ -397,15 +403,15 @@ maximum lag: 1                                  F(  7,       192) =       1.98
 -------------+----------------------------------------------------------------
   ra_daycase#|
    postcovid |
-        1 1  |   161.4032   462.8682     0.35   0.728    -751.5565    1074.363
-        2 0  |   154.5189   1119.164     0.14   0.890    -2052.916    2361.954
-        2 1  |  -716.9452   848.2757    -0.85   0.399    -2390.081    956.1909
-        3 0  |   2048.015    786.878     2.60   0.010     495.9791     3600.05
-        3 1  |  -1040.133   934.3553    -1.11   0.267    -2883.052    802.7859
-        4 0  |  -783.3976   841.9643    -0.93   0.353    -2444.085    877.2899
-        4 1  |    954.746   769.2996     1.24   0.216    -562.6177     2472.11
+        1 1  |   -125.633   291.0885    -0.43   0.667    -699.7749    448.5089
+        2 0  |  -5783.317   216.0454   -26.77   0.000    -6209.444    -5357.19
+        2 1  |  -5635.059   209.0031   -26.96   0.000    -6047.297   -5222.822
+        3 0  |  -5780.608   207.1856   -27.90   0.000     -6189.26   -5371.956
+        3 1  |  -5716.609   207.3754   -27.57   0.000    -6125.636   -5307.583
+        4 0  |  -5772.783   199.5163   -28.93   0.000    -6166.309   -5379.258
+        4 1  |  -5723.694   233.6752   -24.49   0.000    -6184.594   -5262.794
              |
-       _cons |    10103.2   369.2476    27.36   0.000     9374.895     10831.5
+       _cons |   6788.627   187.5038    36.21   0.000     6418.795    7158.458
 ------------------------------------------------------------------------------
 
 . *Export results
@@ -526,7 +532,7 @@ file ./output/time_series/tsreg_med_gc.csv saved
 . 
 end of do-file
 
-. . file open output using "/tmp/tmp.jR0vRPVTm5", write text replace
+. . file open output using "/tmp/tmp.A5jtyYXGei", write text replace
 
 . . file write output "success" 
 
