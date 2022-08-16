@@ -58,7 +58,7 @@ gen rate = (op_appt/pop_new)*100000
 label variable rate "Rate of op appts per 100,000"
 *Set time series
 tsset op_appt_medium month
-newey rate i.op_appt_medium#i.postcovid, lag(1) force
+newey rate i.op_appt_medium##i.postcovid, lag(1) force
 *Export results
 putexcel E1=("Number of obs") G1=(e(N))
 putexcel E2=("F") G2=(e(F))
@@ -121,7 +121,7 @@ gen rate = (ra_hosp/pop_new)*100000
 label variable rate "Rate of op appts per 100,000"
 *Set time series
 tsset ra_daycase month
-newey rate i.ra_daycase#i.postcovid, lag(1) force
+newey rate i.ra_daycase##i.postcovid, lag(1) force
 *Export results
 putexcel E1=("Number of obs") G1=(e(N))
 putexcel E2=("F") G2=(e(F))
