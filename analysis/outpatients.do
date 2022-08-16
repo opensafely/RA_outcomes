@@ -130,8 +130,9 @@ safetab age_cat, miss
 gen smoking = 0 if smoking_status=="N"
 replace smoking = 1 if smoking_status=="S"
 replace smoking = 2 if smoking_status=="E"
+replace smoking = 3 if smoking==.
 
-label define smok 1 "Current smoker" 2 "Ex-smoker" 0 "Never smoked"
+label define smok 1 "Current smoker" 2 "Ex-smoker" 0 "Never smoked" 3 "Unknown"
 label values smoking smok
 
 * Categorise number of outpatient appointments

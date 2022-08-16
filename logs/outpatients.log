@@ -604,8 +604,12 @@ urban_rura |           urban_rural
 . replace smoking = 2 if smoking_status=="E"
 (84 real changes made)
 
+. replace smoking = 3 if smoking==.
+(256 real changes made)
+
 . 
-. label define smok 1 "Current smoker" 2 "Ex-smoker" 0 "Never smoked"
+. label define smok 1 "Current smoker" 2 "Ex-smoker" 0 "Never smoked" 3 "Unknow
+> n"
 
 . label values smoking smok
 
@@ -686,7 +690,7 @@ file ./output/tables/op_appt_yrs.csv saved
   |--------------------------------------------|
   | care_home                        500     0 |
   |--------------------------------------------|
-  | smoking                          244   256 |
+  | smoking                          500     0 |
   +--------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
@@ -768,11 +772,13 @@ file ./output/tables/op_appt_yrs.csv saved
 > |
   |----------------------------------------------------------------------------
 > |
-  | smoking                          Never smoked                  53 (21.7%)  
+  | smoking                          Never smoked                  53 (10.6%)  
 > |
-  |                                  Current smoker                107 (43.9%) 
+  |                                  Current smoker                107 (21.4%) 
 > |
-  |                                  Ex-smoker                     84 (34.4%)  
+  |                                  Ex-smoker                     84 (16.8%)  
+> |
+  |                                  Unknown                       256 (51.2%) 
 > |
   +----------------------------------------------------------------------------
 > +
@@ -839,7 +845,7 @@ file ./output/tables/op_chars.csv saved
   |--------------------------------------------|
   | care_home                         18     0 |
   |--------------------------------------------|
-  | smoking                            7    11 |
+  | smoking                           18     0 |
   +--------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
@@ -880,9 +886,10 @@ file ./output/tables/op_chars.csv saved
   | care_home                        0                             12 (67%) |
   |                                  1                             6 (33%)  |
   |-------------------------------------------------------------------------|
-  | smoking                          Never smoked                  3 (43%)  |
-  |                                  Current smoker                2 (29%)  |
-  |                                  Ex-smoker                     2 (29%)  |
+  | smoking                          Never smoked                  3 (17%)  |
+  |                                  Current smoker                2 (11%)  |
+  |                                  Ex-smoker                     2 (11%)  |
+  |                                  Unknown                       11 (61%) |
   +-------------------------------------------------------------------------+
 Data are presented as n (%).
  
@@ -907,7 +914,7 @@ file /tmp/St00011.000003 saved
   |--------------------------------------------|
   | care_home                        221     0 |
   |--------------------------------------------|
-  | smoking                          103   118 |
+  | smoking                          221     0 |
   +--------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
@@ -989,11 +996,13 @@ file /tmp/St00011.000003 saved
 > |
   |----------------------------------------------------------------------------
 > |
-  | smoking                          Never smoked                  21 (20.4%)  
+  | smoking                          Never smoked                  21 ( 9.5%)  
 > |
-  |                                  Current smoker                45 (43.7%)  
+  |                                  Current smoker                45 (20.4%)  
 > |
-  |                                  Ex-smoker                     37 (35.9%)  
+  |                                  Ex-smoker                     37 (16.7%)  
+> |
+  |                                  Unknown                       118 (53.4%) 
 > |
   +----------------------------------------------------------------------------
 > +
@@ -1019,7 +1028,7 @@ file /tmp/St00011.000003 saved
   |--------------------------------------------|
   | care_home                        260     0 |
   |--------------------------------------------|
-  | smoking                          133   127 |
+  | smoking                          260     0 |
   +--------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
@@ -1101,11 +1110,13 @@ file /tmp/St00011.000003 saved
 > |
   |----------------------------------------------------------------------------
 > |
-  | smoking                          Never smoked                  29 (21.8%)  
+  | smoking                          Never smoked                  29 (11.2%)  
 > |
-  |                                  Current smoker                60 (45.1%)  
+  |                                  Current smoker                60 (23.1%)  
 > |
-  |                                  Ex-smoker                     44 (33.1%)  
+  |                                  Ex-smoker                     44 (16.9%)  
+> |
+  |                                  Unknown                       127 (48.8%) 
 > |
   +----------------------------------------------------------------------------
 > +
@@ -1132,7 +1143,7 @@ file ./output/tables/characteristics_strata2019.csv saved
   |--------------------------------------------|
   | care_home                         83     0 |
   |--------------------------------------------|
-  | smoking                           41    42 |
+  | smoking                           83     0 |
   +--------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
@@ -1175,9 +1186,10 @@ file ./output/tables/characteristics_strata2019.csv saved
   | care_home                        0                             70 (84%) |
   |                                  1                             13 (16%) |
   |-------------------------------------------------------------------------|
-  | smoking                          Never smoked                  8 (20%)  |
-  |                                  Current smoker                20 (49%) |
-  |                                  Ex-smoker                     13 (32%) |
+  | smoking                          Never smoked                  8 (10%)  |
+  |                                  Current smoker                20 (24%) |
+  |                                  Ex-smoker                     13 (16%) |
+  |                                  Unknown                       42 (51%) |
   +-------------------------------------------------------------------------+
 Data are presented as n (%).
  
@@ -1201,7 +1213,7 @@ file ./output/tables/characteristics_ra_hosp_2019.csv saved
   |--------------------------------------------|
   | care_home                          9     0 |
   |--------------------------------------------|
-  | smoking                            7     2 |
+  | smoking                            9     0 |
   +--------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
@@ -1238,9 +1250,10 @@ file ./output/tables/characteristics_ra_hosp_2019.csv saved
   | care_home                        0                             8 (89%) |
   |                                  1                             1 (11%) |
   |------------------------------------------------------------------------|
-  | smoking                          Never smoked                  1 (14%) |
-  |                                  Current smoker                3 (43%) |
-  |                                  Ex-smoker                     3 (43%) |
+  | smoking                          Never smoked                  1 (11%) |
+  |                                  Current smoker                3 (33%) |
+  |                                  Ex-smoker                     3 (33%) |
+  |                                  Unknown                       2 (22%) |
   +------------------------------------------------------------------------+
 Data are presented as n (%).
  
@@ -1264,7 +1277,7 @@ file /tmp/St00011.000003 saved
   |--------------------------------------------|
   | care_home                        240     0 |
   |--------------------------------------------|
-  | smoking                          112   128 |
+  | smoking                          240     0 |
   +--------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
@@ -1346,11 +1359,13 @@ file /tmp/St00011.000003 saved
 > |
   |----------------------------------------------------------------------------
 > |
-  | smoking                          Never smoked                  21 (18.8%)  
+  | smoking                          Never smoked                  21 ( 8.8%)  
 > |
-  |                                  Current smoker                49 (43.8%)  
+  |                                  Current smoker                49 (20.4%)  
 > |
-  |                                  Ex-smoker                     42 (37.5%)  
+  |                                  Ex-smoker                     42 (17.5%)  
+> |
+  |                                  Unknown                       128 (53.3%) 
 > |
   +----------------------------------------------------------------------------
 > +
@@ -1376,7 +1391,7 @@ file /tmp/St00011.000003 saved
   |--------------------------------------------|
   | care_home                        251     0 |
   |--------------------------------------------|
-  | smoking                          125   126 |
+  | smoking                          251     0 |
   +--------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
@@ -1458,11 +1473,13 @@ file /tmp/St00011.000003 saved
 > |
   |----------------------------------------------------------------------------
 > |
-  | smoking                          Never smoked                  31 (24.8%)  
+  | smoking                          Never smoked                  31 (12.4%)  
 > |
-  |                                  Current smoker                55 (44.0%)  
+  |                                  Current smoker                55 (21.9%)  
 > |
-  |                                  Ex-smoker                     39 (31.2%)  
+  |                                  Ex-smoker                     39 (15.5%)  
+> |
+  |                                  Unknown                       126 (50.2%) 
 > |
   +----------------------------------------------------------------------------
 > +
@@ -1489,7 +1506,7 @@ file ./output/tables/characteristics_strata2020.csv saved
   |--------------------------------------------|
   | care_home                         67     0 |
   |--------------------------------------------|
-  | smoking                           34    33 |
+  | smoking                           67     0 |
   +--------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
@@ -1532,9 +1549,10 @@ file ./output/tables/characteristics_strata2020.csv saved
   | care_home                        0                             55 (82%) |
   |                                  1                             12 (18%) |
   |-------------------------------------------------------------------------|
-  | smoking                          Never smoked                  7 (21%)  |
-  |                                  Current smoker                13 (38%) |
-  |                                  Ex-smoker                     14 (41%) |
+  | smoking                          Never smoked                  7 (10%)  |
+  |                                  Current smoker                13 (19%) |
+  |                                  Ex-smoker                     14 (21%) |
+  |                                  Unknown                       33 (49%) |
   +-------------------------------------------------------------------------+
 Data are presented as n (%).
  
@@ -1558,7 +1576,7 @@ file ./output/tables/characteristics_ra_hosp_2020.csv saved
   |--------------------------------------------|
   | care_home                         11     0 |
   |--------------------------------------------|
-  | smoking                            7     4 |
+  | smoking                           11     0 |
   +--------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
@@ -1597,8 +1615,9 @@ file ./output/tables/characteristics_ra_hosp_2020.csv saved
   | care_home                        0                             9 (82%) |
   |                                  1                             2 (18%) |
   |------------------------------------------------------------------------|
-  | smoking                          Never smoked                  2 (29%) |
-  |                                  Current smoker                5 (71%) |
+  | smoking                          Never smoked                  2 (18%) |
+  |                                  Current smoker                5 (45%) |
+  |                                  Unknown                       4 (36%) |
   +------------------------------------------------------------------------+
 Data are presented as n (%).
  
@@ -1622,7 +1641,7 @@ file /tmp/St00011.000003 saved
   |--------------------------------------------|
   | care_home                        253     0 |
   |--------------------------------------------|
-  | smoking                          123   130 |
+  | smoking                          253     0 |
   +--------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
@@ -1704,11 +1723,13 @@ file /tmp/St00011.000003 saved
 > |
   |----------------------------------------------------------------------------
 > |
-  | smoking                          Never smoked                  28 (22.8%)  
+  | smoking                          Never smoked                  28 (11.1%)  
 > |
-  |                                  Current smoker                48 (39.0%)  
+  |                                  Current smoker                48 (19.0%)  
 > |
-  |                                  Ex-smoker                     47 (38.2%)  
+  |                                  Ex-smoker                     47 (18.6%)  
+> |
+  |                                  Unknown                       130 (51.4%) 
 > |
   +----------------------------------------------------------------------------
 > +
@@ -1734,7 +1755,7 @@ file /tmp/St00011.000003 saved
   |--------------------------------------------|
   | care_home                        236     0 |
   |--------------------------------------------|
-  | smoking                          114   122 |
+  | smoking                          236     0 |
   +--------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
@@ -1816,11 +1837,13 @@ file /tmp/St00011.000003 saved
 > |
   |----------------------------------------------------------------------------
 > |
-  | smoking                          Never smoked                  23 (20.2%)  
+  | smoking                          Never smoked                  23 ( 9.7%)  
 > |
-  |                                  Current smoker                54 (47.4%)  
+  |                                  Current smoker                54 (22.9%)  
 > |
-  |                                  Ex-smoker                     37 (32.5%)  
+  |                                  Ex-smoker                     37 (15.7%)  
+> |
+  |                                  Unknown                       122 (51.7%) 
 > |
   +----------------------------------------------------------------------------
 > +
@@ -1847,7 +1870,7 @@ file ./output/tables/characteristics_strata2021.csv saved
   |--------------------------------------------|
   | care_home                         73     0 |
   |--------------------------------------------|
-  | smoking                           38    35 |
+  | smoking                           73     0 |
   +--------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
@@ -1890,9 +1913,10 @@ file ./output/tables/characteristics_strata2021.csv saved
   | care_home                        0                             61 (84%) |
   |                                  1                             12 (16%) |
   |-------------------------------------------------------------------------|
-  | smoking                          Never smoked                  11 (29%) |
-  |                                  Current smoker                13 (34%) |
-  |                                  Ex-smoker                     14 (37%) |
+  | smoking                          Never smoked                  11 (15%) |
+  |                                  Current smoker                13 (18%) |
+  |                                  Ex-smoker                     14 (19%) |
+  |                                  Unknown                       35 (48%) |
   +-------------------------------------------------------------------------+
 Data are presented as n (%).
  
@@ -1924,7 +1948,7 @@ file ./output/tables/characteristics_ra_hosp_2021.csv saved
   |--------------------------------------------|
   | care_home                         73     0 |
   |--------------------------------------------|
-  | smoking                           29    44 |
+  | smoking                           73     0 |
   +--------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
@@ -1967,9 +1991,10 @@ file ./output/tables/characteristics_ra_hosp_2021.csv saved
   | care_home                        0                             63 (86%) |
   |                                  1                             10 (14%) |
   |-------------------------------------------------------------------------|
-  | smoking                          Never smoked                  7 (24%)  |
-  |                                  Current smoker                13 (45%) |
-  |                                  Ex-smoker                     9 (31%)  |
+  | smoking                          Never smoked                  7 (10%)  |
+  |                                  Current smoker                13 (18%) |
+  |                                  Ex-smoker                     9 (12%)  |
+  |                                  Unknown                       44 (60%) |
   +-------------------------------------------------------------------------+
 Data are presented as n (%).
  
@@ -1983,5 +2008,5 @@ file ./output/tables/characteristics_ra_hosp_2018.csv saved
       name:  <unnamed>
        log:  /workspace/logs/outpatients.log
   log type:  text
- closed on:  16 Aug 2022, 14:06:23
+ closed on:  16 Aug 2022, 14:11:56
 -------------------------------------------------------------------------------
