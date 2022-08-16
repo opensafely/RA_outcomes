@@ -120,17 +120,14 @@ tsset ra_daycase month
 kdensity rate if ra_daycase==1, normal name(kd_ra_daycase_1, replace)
 kdensity rate if ra_daycase==2, normal name(kd_ra_daycase_2, replace)
 kdensity rate if ra_daycase==3, normal name(kd_ra_daycase_3, replace)
-kdensity rate if ra_daycase==4, normal name(kd_ra_daycase_4, replace)
 *Autoregression plots by ethnicity
 ac rate if ra_daycase==1, name(ac_ra_daycase_1, replace)
 ac rate if ra_daycase==2, name(ac_ra_daycase_2, replace)
 ac rate if ra_daycase==3, name(ac_ra_daycase_3, replace)
-ac rate if ra_daycase==4, name(ac_ra_daycase_4, replace)
 *Partial autoregression plots by ethnicity
 pac rate if ra_daycase==1, name(pac_ra_daycase_1, replace)
 pac rate if ra_daycase==2, name(pac_ra_daycase_2, replace)
 pac rate if ra_daycase==3, name(pac_ra_daycase_3, replace)
-pac rate if ra_daycase==4, name(pac_ra_daycase_4, replace)
 
 *Combine Graphs
 graph combine kd_ra_daycase_1 kd_ra_daycase_2 kd_ra_daycase_3, altshrink 

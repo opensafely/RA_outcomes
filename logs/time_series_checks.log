@@ -190,8 +190,8 @@
 >    //get csv
 (5 vars, 300 obs)
 
-. drop if ra_daycase==. | ra_daycase==5
-(100 observations deleted)
+. drop if ra_daycase==. | ra_daycase>=4
+(150 observations deleted)
 
 . gen temp_date=date(date, "YMD")
 
@@ -226,8 +226,6 @@
 
 . kdensity rate if ra_daycase==3, normal name(kd_ra_daycase_3, replace)
 
-. kdensity rate if ra_daycase==4, normal name(kd_ra_daycase_4, replace)
-
 . *Autoregression plots by ethnicity
 . ac rate if ra_daycase==1, name(ac_ra_daycase_1, replace)
 
@@ -235,16 +233,12 @@
 
 . ac rate if ra_daycase==3, name(ac_ra_daycase_3, replace)
 
-. ac rate if ra_daycase==4, name(ac_ra_daycase_4, replace)
-
 . *Partial autoregression plots by ethnicity
 . pac rate if ra_daycase==1, name(pac_ra_daycase_1, replace)
 
 . pac rate if ra_daycase==2, name(pac_ra_daycase_2, replace)
 
 . pac rate if ra_daycase==3, name(pac_ra_daycase_3, replace)
-
-. pac rate if ra_daycase==4, name(pac_ra_daycase_4, replace)
 
 . 
 . *Combine Graphs
@@ -312,7 +306,7 @@
 . 
 end of do-file
 
-. . file open output using "/tmp/tmp.YBmcyUSNEC", write text replace
+. . file open output using "/tmp/tmp.WC7VCHbxaU", write text replace
 
 . . file write output "success" 
 
