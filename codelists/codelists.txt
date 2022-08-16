@@ -63,3 +63,7 @@ opensafely/asthma-oral-prednisolone-medication/2020-04-27
 
 # depression (based on HDR UK https://phenotypes.healthdatagateway.org/phenotypes/PH149/version/298/detail/#home)
  user/emilyherrett/depression_icd10/0aaf5048
+
+# Smoking
+opensafely/smoking-clear/2020-04-29
+opensafely/smoking-unclear/2020-04-29

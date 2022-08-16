@@ -76,6 +76,7 @@ actions:
       moderately_sensitive:
         log: logs/outpatients.log
         output: output/tables/op_*.csv
+        tables: output/tables/characteristics*.csv
 
   time_series_checks:
     run: stata-mp:latest analysis/time_series_checks.do

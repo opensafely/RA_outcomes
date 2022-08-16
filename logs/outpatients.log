@@ -4,14 +4,14 @@
 
 . * Import data
 . import delimited using ./output/input.csv
-(39 vars, 1,000 obs)
+(42 vars, 1,000 obs)
 
 . * Check data
 . count if age==. 
   0
 
 . count if age<18 
-  214
+  209
 
 . count if age>110 & age!=.
   0
@@ -22,16 +22,16 @@
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
- 5%            4              0
-10%            8              0       Obs               1,000
-25%           20              0       Sum of Wgt.       1,000
+ 5%            3              0
+10%          8.5              0       Obs               1,000
+25%           21              0       Sum of Wgt.       1,000
 
-50%           41                      Mean             40.546
-                        Largest       Std. Dev.      23.92179
-75%           59             92
-90%           74             92       Variance       572.2521
-95%           80             93       Skewness       .1142457
-99%           89             94       Kurtosis       2.007725
+50%           39                      Mean              40.26
+                        Largest       Std. Dev.      23.52581
+75%           59             91
+90%           73             92       Variance       553.4639
+95%           79             94       Skewness       .1283899
+99%           88             97       Kurtosis       2.003229
 
 . count if sex==""
   0
@@ -40,9 +40,9 @@
 
         sex |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          F |        487       48.70       48.70
-          M |        505       50.50       99.20
-          U |          8        0.80      100.00
+          F |        495       49.50       49.50
+          M |        495       49.50       99.00
+          U |         10        1.00      100.00
 ------------+-----------------------------------
       Total |      1,000      100.00
 
@@ -56,91 +56,84 @@
 10%            1              0       Obs               1,000
 25%            2              0       Sum of Wgt.       1,000
 
-50%            3                      Mean              2.524
-                        Largest       Std. Dev.      1.051918
+50%            2                      Mean              2.491
+                        Largest       Std. Dev.      1.040674
 75%            3              5
-90%            4              5       Variance       1.106531
-95%            4              5       Skewness       .0037821
-99%            5              6       Kurtosis       2.859546
+90%            4              5       Variance       1.083002
+95%            4              6       Skewness       .1519179
+99%            5              6       Kurtosis        3.00383
 
 . tab care_home_type
 
 care_home_t |
         ype |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-         PC |         50        5.09        5.09
-         PN |         46        4.68        9.77
-         PR |        845       85.96       95.73
-         PS |         42        4.27      100.00
+         PC |         51        5.15        5.15
+         PN |         45        4.55        9.70
+         PR |        850       85.86       95.56
+         PS |         44        4.44      100.00
 ------------+-----------------------------------
-      Total |        983      100.00
+      Total |        990      100.00
 
 . * Checking RA algorithm variables
-. tab has_dmards has_alt_dmard_diag, m
-
-           |  has_alt_dmard_diag
-has_dmards |         0          1 |     Total
------------+----------------------+----------
-         0 |       248        252 |       500 
-         1 |       252        248 |       500 
------------+----------------------+----------
-     Total |       500        500 |     1,000 
-
 . * Checking type of DMARD that meets inclusion
-. foreach dmard in metho leflu sulfa hydrox azathioprine {
+. foreach dmard in metho leflu sulfa hydrox {
   2.     gen `dmard'_multi = (`dmard'_count>=2)
   3.     tab `dmard'_multi if has_dmards==1, m
   4. }
 
 metho_multi |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |         79       15.80       15.80
-          1 |        421       84.20      100.00
+          0 |         82       16.40       16.40
+          1 |        418       83.60      100.00
 ------------+-----------------------------------
       Total |        500      100.00
 
 leflu_multi |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |         73       14.60       14.60
-          1 |        427       85.40      100.00
+          0 |         82       16.40       16.40
+          1 |        418       83.60      100.00
 ------------+-----------------------------------
       Total |        500      100.00
 
 sulfa_multi |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |         68       13.60       13.60
-          1 |        432       86.40      100.00
+          0 |         97       19.40       19.40
+          1 |        403       80.60      100.00
 ------------+-----------------------------------
       Total |        500      100.00
 
 hydrox_mult |
           i |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |         71       14.20       14.20
-          1 |        429       85.80      100.00
+          0 |         89       17.80       17.80
+          1 |        411       82.20      100.00
 ------------+-----------------------------------
       Total |        500      100.00
 
-azathioprin |
-    e_multi |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          0 |         74       14.80       14.80
-          1 |        426       85.20      100.00
-------------+-----------------------------------
-      Total |        500      100.00
+. gen dmard_multi = (metho_multi==1 | leflu_multi==1 | sulfa_multi==1 | hydrox_
+> multi==1)
 
-. 
+. tab dmard_multi has_alt_dmard_diag
+
+dmard_mult |  has_alt_dmard_diag
+         i |         0          1 |     Total
+-----------+----------------------+----------
+         1 |       500        500 |     1,000 
+-----------+----------------------+----------
+     Total |       500        500 |     1,000 
+
 . sum number_ra_codes
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-number_ra_~s |      1,000       2.523    1.025926          0          6
+number_ra_~s |      1,000       2.497    1.028128          0          6
 
 . di "Number where no DMARDs but does have multiple RA codes and no alt diag"
 Number where no DMARDs but does have multiple RA codes and no alt diag
 
 . count if has_dmards==0 & number_ra_codes>=2 & alt_diag!=1
-  229
+  209
 
 . tab has_ra, m
 
@@ -153,29 +146,29 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 
 . * Time since first RA code
 . gen first_ra_codeA = date(first_ra_code, "YMD")
-(551 missing values generated)
+(556 missing values generated)
 
 . format first_ra_codeA %dD/N/CY
 
 . gen time_ra = (date("01Mar2018", "DMY") - first_ra_codeA)/365.25
-(551 missing values generated)
+(556 missing values generated)
 
 . sum time_ra, d
 
                            time_ra
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%     .6187543       .1587953
- 5%     6.707735       .3559206
-10%     13.69473       .3613963       Obs                 449
-25%     30.61739       .4900753       Sum of Wgt.         449
+ 1%     1.106092       .0903491
+ 5%     5.467488       .1232033
+10%     10.69952       .5174538       Obs                 444
+25%     25.51266        .788501       Sum of Wgt.         444
 
-50%     56.02738                      Mean           56.83135
-                        Largest       Std. Dev.       30.9557
-75%     83.18412       108.1971
-90%     100.2081       108.4107       Variance       958.2556
-95%     104.3915       108.7721       Skewness      -.0465867
-99%     108.0383        108.783       Kurtosis        1.86377
+50%     53.17864                      Mean           53.68312
+                        Largest       Std. Dev.      31.53749
+75%     80.76386       108.4517
+90%     98.37646       108.7556       Variance       994.6132
+95%     104.4709       108.9993       Skewness       .0753264
+99%      108.386       108.9993       Kurtosis       1.822629
 
 . sum number_ra_codes, d
 
@@ -187,12 +180,12 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 10%            1              0       Obs               1,000
 25%            2              0       Sum of Wgt.       1,000
 
-50%            3                      Mean              2.523
-                        Largest       Std. Dev.      1.025926
+50%            3                      Mean              2.497
+                        Largest       Std. Dev.      1.028128
 75%            3              5
-90%            4              5       Variance       1.052524
-95%            4              5       Skewness       .0075927
-99%            5              6       Kurtosis       2.886609
+90%            4              5       Variance       1.057048
+95%            4              6       Skewness      -.0444602
+99%            5              6       Kurtosis       2.895538
 
 . sum metho_count, d
 
@@ -204,29 +197,29 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 10%            1              0       Obs               1,000
 25%            2              0       Sum of Wgt.       1,000
 
-50%            3                      Mean              2.483
-                        Largest       Std. Dev.      1.033818
+50%          2.5                      Mean              2.507
+                        Largest       Std. Dev.      1.063523
 75%            3              5
-90%            4              5       Variance        1.06878
-95%            4              5       Skewness       .0047207
-99%            5              5       Kurtosis       2.921038
+90%            4              5       Variance       1.131082
+95%            4              6       Skewness         .04664
+99%            5              6       Kurtosis       2.879566
 
 . sum sulfa_count, d 
 
                          sulfa_count
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%            0              0
+ 1%            0             -1
  5%            1              0
 10%            1              0       Obs               1,000
 25%            2              0       Sum of Wgt.       1,000
 
-50%            3                      Mean              2.522
-                        Largest       Std. Dev.      1.041442
+50%            3                      Mean              2.497
+                        Largest       Std. Dev.      1.066362
 75%            3              5
-90%            4              5       Variance       1.084601
-95%            4              6       Skewness       .0185993
-99%            5              6       Kurtosis        2.96975
+90%            4              5       Variance       1.137128
+95%            4              5       Skewness      -.0144751
+99%            5              5       Kurtosis       2.936304
 
 . sum leflu_count, d 
 
@@ -238,12 +231,12 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 10%            1              0       Obs               1,000
 25%            2              0       Sum of Wgt.       1,000
 
-50%            3                      Mean              2.531
-                        Largest       Std. Dev.      1.048875
+50%            2                      Mean              2.482
+                        Largest       Std. Dev.      1.050133
 75%            3              5
-90%            4              6       Variance       1.100139
-95%            4              6       Skewness      -.0169161
-99%            5              6       Kurtosis       2.980063
+90%            4              5       Variance       1.102779
+95%            4              5       Skewness       .0164282
+99%            5              6       Kurtosis       2.834106
 
 . sum hydrox_count, d 
 
@@ -255,12 +248,12 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 10%            1              0       Obs               1,000
 25%            2              0       Sum of Wgt.       1,000
 
-50%            3                      Mean              2.524
-                        Largest       Std. Dev.      1.000212
+50%            3                      Mean              2.501
+                        Largest       Std. Dev.      1.034925
 75%            3              5
-90%            4              5       Variance       1.000424
-95%            4              5       Skewness       .0450666
-99%            5              5       Kurtosis          2.845
+90%            4              5       Variance        1.07107
+95%            4              5       Skewness       .0515353
+99%            5              6       Kurtosis       2.914029
 
 . 
 . sum outpatient*, d
@@ -273,12 +266,12 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 10%            1              0       Obs               1,000
 25%            2              0       Sum of Wgt.       1,000
 
-50%            2                      Mean              2.487
-                        Largest       Std. Dev.      1.078422
-75%            3              5
-90%            4              5       Variance       1.162994
-95%            4              5       Skewness       .0767087
-99%            5              6       Kurtosis        2.71609
+50%          2.5                      Mean               2.51
+                        Largest       Std. Dev.      1.088616
+75%            3              6
+90%            4              6       Variance       1.185085
+95%            4              6       Skewness       .0512216
+99%            5              6       Kurtosis       2.889622
 
                     outpatient_appt_2020
 -------------------------------------------------------------
@@ -288,12 +281,12 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 10%            1              0       Obs               1,000
 25%            2              0       Sum of Wgt.       1,000
 
-50%            3                      Mean              2.566
-                        Largest       Std. Dev.      1.032817
+50%            2                      Mean               2.46
+                        Largest       Std. Dev.       1.04857
 75%            3              5
-90%            4              5       Variance       1.066711
-95%            4              5       Skewness        .013831
-99%            5              6       Kurtosis       2.867753
+90%            4              5       Variance       1.099499
+95%            4              5       Skewness      -.0061919
+99%            5              6       Kurtosis       2.798061
 
                     outpatient_appt_2021
 -------------------------------------------------------------
@@ -303,12 +296,12 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 10%            1              0       Obs               1,000
 25%            2              0       Sum of Wgt.       1,000
 
-50%            2                      Mean              2.456
-                        Largest       Std. Dev.      1.033989
+50%            2                      Mean              2.442
+                        Largest       Std. Dev.      1.019645
 75%            3              5
-90%            4              5       Variance       1.069133
-95%            4              5       Skewness      -.0995914
-99%            5              5       Kurtosis       2.833847
+90%            4              5       Variance       1.039676
+95%            4              6       Skewness        .077862
+99%            5              6       Kurtosis       2.915043
 
                    outpatient_medium_2019
 -------------------------------------------------------------
@@ -318,12 +311,12 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 10%            1              1       Obs                 500
 25%            2              1       Sum of Wgt.         500
 
-50%            4                      Mean              13.09
-                        Largest       Std. Dev.      28.11182
+50%            5                      Mean             12.762
+                        Largest       Std. Dev.      27.25618
 75%            7             98
-90%            8             98       Variance       790.2744
-95%           98             98       Skewness       2.670063
-99%           98             98       Kurtosis       8.204018
+90%            8             98       Variance       742.8992
+95%           98             98       Skewness       2.786615
+99%           98             98       Kurtosis       8.848331
 
                    outpatient_medium_2020
 -------------------------------------------------------------
@@ -333,12 +326,12 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 10%            1              1       Obs                 500
 25%            2              1       Sum of Wgt.         500
 
-50%            5                      Mean             14.808
-                        Largest       Std. Dev.       29.9556
+50%            4                      Mean              13.67
+                        Largest       Std. Dev.      28.53801
 75%            7             98
-90%           98             98       Variance       897.3378
-95%           98             98       Skewness       2.402643
-99%           98             98       Kurtosis       6.827409
+90%           98             98       Variance       814.4179
+95%           98             98       Skewness       2.599668
+99%           98             98       Kurtosis       7.824161
 
                    outpatient_medium_2021
 -------------------------------------------------------------
@@ -348,12 +341,12 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 10%            1              1       Obs                 500
 25%            2              1       Sum of Wgt.         500
 
-50%            5                      Mean             12.264
-                        Largest       Std. Dev.      26.42618
+50%            4                      Mean             14.236
+                        Largest       Std. Dev.      29.26276
 75%            7             98
-90%            8             98       Variance        698.343
-95%           98             98       Skewness       2.912715
-99%           98             98       Kurtosis       9.578746
+90%           98             98       Variance       856.3089
+95%           98             98       Skewness        2.49738
+99%           98             98       Kurtosis        7.29714
 
 . 
 . keep if has_ra
@@ -366,19 +359,19 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 . * Format variables
 . *re-order ethnicity
 .  gen eth5=1 if ethnicity==1
-(404 missing values generated)
+(393 missing values generated)
 
 .  replace eth5=2 if ethnicity==3
-(119 real changes made)
+(94 real changes made)
 
 .  replace eth5=3 if ethnicity==4
-(101 real changes made)
+(92 real changes made)
 
 .  replace eth5=4 if ethnicity==2
-(89 real changes made)
+(110 real changes made)
 
 .  replace eth5=5 if ethnicity==5
-(95 real changes made)
+(97 real changes made)
 
 .  replace eth5=. if ethnicity==.
 (0 real changes made)
@@ -404,11 +397,11 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 
        eth5 |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-      White |         96       19.20       19.20
-South Asian |        119       23.80       43.00
-      Black |        101       20.20       63.20
-      Mixed |         89       17.80       81.00
-      Other |         95       19.00      100.00
+      White |        107       21.40       21.40
+South Asian |         94       18.80       40.20
+      Black |         92       18.40       58.60
+      Mixed |        110       22.00       80.60
+      Other |         97       19.40      100.00
 ------------+-----------------------------------
       Total |        500      100.00
 
@@ -428,8 +421,8 @@ South Asian |        119       23.80       43.00
 
        male |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-     Female |        247       49.40       49.40
-       Male |        253       50.60      100.00
+     Female |        269       53.80       53.80
+       Male |        231       46.20      100.00
 ------------+-----------------------------------
       Total |        500      100.00
 
@@ -442,25 +435,25 @@ South Asian |        119       23.80       43.00
 (0 real changes made)
 
 . replace region2=1 if region=="East Midlands"
-(38 real changes made)
+(59 real changes made)
 
 . replace region2=2 if region=="London"
-(102 real changes made)
+(101 real changes made)
 
 . replace region2=3 if region=="North East"
-(54 real changes made)
+(41 real changes made)
 
 . replace region2=4 if region=="North West"
-(63 real changes made)
+(49 real changes made)
 
 . replace region2=5 if region=="South East"
-(77 real changes made)
+(107 real changes made)
 
 . replace region2=6 if region=="South West"
 (0 real changes made)
 
 . replace region2=7 if region=="West Midlands"
-(66 real changes made)
+(55 real changes made)
 
 . replace region2=8 if region=="Yorkshire and The Humber"
 (0 real changes made)
@@ -482,13 +475,13 @@ South Asian |        119       23.80       43.00
 
        region of England |      Freq.     Percent        Cum.
 -------------------------+-----------------------------------
-           East Midlands |         38        7.60        7.60
-                  London |        102       20.40       28.00
-              North East |         54       10.80       38.80
-              North West |         63       12.60       51.40
-              South East |         77       15.40       66.80
-           West Midlands |         66       13.20       80.00
-                       . |        100       20.00      100.00
+           East Midlands |         59       11.80       11.80
+                  London |        101       20.20       32.00
+              North East |         41        8.20       40.20
+              North West |         49        9.80       50.00
+              South East |        107       21.40       71.40
+           West Midlands |         55       11.00       82.40
+                       . |         88       17.60      100.00
 -------------------------+-----------------------------------
                    Total |        500      100.00
 
@@ -500,19 +493,19 @@ South Asian |        119       23.80       43.00
 . la var urban_rural_5 "Rural Urban in five categories"
 
 . replace urban_rural_5=1 if urban_rural==1
-(68 real changes made)
-
-. replace urban_rural_5=2 if urban_rural==2
 (59 real changes made)
 
+. replace urban_rural_5=2 if urban_rural==2
+(53 real changes made)
+
 . replace urban_rural_5=3 if urban_rural==3|urban_rural==4
-(128 real changes made)
+(124 real changes made)
 
 . replace urban_rural_5=4 if urban_rural==5|urban_rural==6
-(118 real changes made)
+(134 real changes made)
 
 . replace urban_rural_5=5 if urban_rural==7|urban_rural==8
-(127 real changes made)
+(130 real changes made)
 
 . label define urban_rural_5 1 "Urban major conurbation" 2 "Urban minor conurba
 > tion" 3 "Urban city and town" 4 "Rural town and fringe" 5 "Rural village and 
@@ -526,11 +519,11 @@ South Asian |        119       23.80       43.00
         Rural Urban in five |
                  categories |      Freq.     Percent        Cum.
 ----------------------------+-----------------------------------
-    Urban major conurbation |         68       13.60       13.60
-    Urban minor conurbation |         59       11.80       25.40
-        Urban city and town |        128       25.60       51.00
-      Rural town and fringe |        118       23.60       74.60
-Rural village and dispersed |        127       25.40      100.00
+    Urban major conurbation |         59       11.80       11.80
+    Urban minor conurbation |         53       10.60       22.40
+        Urban city and town |        124       24.80       47.20
+      Rural town and fringe |        134       26.80       74.00
+Rural village and dispersed |        130       26.00      100.00
 ----------------------------+-----------------------------------
                       Total |        500      100.00
 
@@ -540,10 +533,10 @@ Rural village and dispersed |        127       25.40      100.00
 (500 missing values generated)
 
 . replace urban_rural_bin=1 if urban_rural<=4|urban_rural==.
-(255 real changes made)
+(236 real changes made)
 
 . replace urban_rural_bin=0 if urban_rural>4 & urban_rural!=.
-(245 real changes made)
+(264 real changes made)
 
 . label define urban_rural_bin 0 "Rural" 1 "Urban"
 
@@ -555,19 +548,19 @@ Rural village and dispersed |        127       25.40      100.00
 urban_rura |                      urban_rural
      l_bin |         1          2          3          4          5 |     Total
 -----------+-------------------------------------------------------+----------
-     Rural |         0          0          0          0         55 |       245 
-     Urban |        68         59         68         60          0 |       255 
+     Rural |         0          0          0          0         66 |       264 
+     Urban |        59         53         63         61          0 |       236 
 -----------+-------------------------------------------------------+----------
-     Total |        68         59         68         60         55 |       500 
+     Total |        59         53         63         61         66 |       500 
 
 
 urban_rura |           urban_rural
      l_bin |         6          7          8 |     Total
 -----------+---------------------------------+----------
-     Rural |        63         62         65 |       245 
-     Urban |         0          0          0 |       255 
+     Rural |        68         67         63 |       264 
+     Urban |         0          0          0 |       236 
 -----------+---------------------------------+----------
-     Total |        63         62         65 |       500 
+     Total |        68         67         63 |       500 
 
 . label var urban_rural_bin "Rural-Urban"
 
@@ -575,7 +568,7 @@ urban_rura |           urban_rural
 . * Define age categories
 . * Create age categories
 . egen age_cat = cut(age), at(18, 40, 60, 80, 120) icodes
-(107 missing values generated)
+(101 missing values generated)
 
 . label define age 0 "18 - 40 years" 1 "41 - 60 years" 2 "61 - 80 years" 3 ">80
 >  years"
@@ -587,17 +580,91 @@ urban_rura |           urban_rural
 
       age_cat |      Freq.     Percent        Cum.
 --------------+-----------------------------------
-18 - 40 years |        145       29.00       29.00
-41 - 60 years |        131       26.20       55.20
-61 - 80 years |         88       17.60       72.80
-    >80 years |         29        5.80       78.60
-            . |        107       21.40      100.00
+18 - 40 years |        152       30.40       30.40
+41 - 60 years |        133       26.60       57.00
+61 - 80 years |         89       17.80       74.80
+    >80 years |         25        5.00       79.80
+            . |        101       20.20      100.00
 --------------+-----------------------------------
         Total |        500      100.00
 
 . 
 . * Flag if in a care-home
 .     gen care_home=care_home_type!="PR"
+
+. 
+. * Smoking status
+. gen smoking = 0 if smoking_status=="N"
+(457 missing values generated)
+
+. replace smoking = 1 if smoking_status=="S"
+(102 real changes made)
+
+. replace smoking = 2 if smoking_status=="E"
+(78 real changes made)
+
+. replace smoking = 3 if smoking==.
+(277 real changes made)
+
+. 
+. label define smok 1 "Current smoker" 2 "Ex-smoker" 0 "Never smoked" 3 "Unknow
+> n"
+
+. label values smoking smok
+
+. 
+. * BMI categories
+. egen bmi_cat = cut(bmi), at(0, 1, 18.5, 24.9, 29.9, 39.9, 100) icodes
+
+. bys bmi_cat: sum bmi
+
+-------------------------------------------------------------------------------
+-> bmi_cat = 0
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         bmi |         90           0           0          0          0
+
+-------------------------------------------------------------------------------
+-> bmi_cat = 1
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         bmi |         55    14.23967    3.861355   2.715916   18.35893
+
+-------------------------------------------------------------------------------
+-> bmi_cat = 2
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         bmi |         96    21.93145    1.798986   18.53241   24.86153
+
+-------------------------------------------------------------------------------
+-> bmi_cat = 3
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         bmi |        103    27.61296    1.343984   24.92326   29.69999
+
+-------------------------------------------------------------------------------
+-> bmi_cat = 4
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         bmi |        128    34.18354    2.783501    29.9169   39.84679
+
+-------------------------------------------------------------------------------
+-> bmi_cat = 5
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         bmi |         28    43.53946    2.903677   40.15789   49.85973
+
+
+. label define bmi 0 "Missing" 1 "Underweight" 2 "Healthy range" 3 "Overweight"
+>  4 "Obese" 5 "Morbidly obese"
+
+. label values bmi_cat bmi
 
 . 
 . * Categorise number of outpatient appointments
@@ -612,7 +679,7 @@ urban_rura |           urban_rural
 
 . preserve
 
-. * Tabulate
+. * Tabulate number of appointments per year
 . table1_mc, vars(op_appt_2019_cat cate \ op_appt_2020_cat cate \ op_appt_2021_
 > cat cate) clear
 
@@ -632,17 +699,17 @@ urban_rura |           urban_rural
   |--------------------------------------------------|
   |                                      N=500       |
   |--------------------------------------------------|
-  | op_appt_2019_cat   No appointments   11 ( 2.2%)  |
-  |                    1-2 per year      254 (50.8%) |
-  |                    3-6 per year      235 (47.0%) |
+  | op_appt_2019_cat   No appointments   17 ( 3.4%)  |
+  |                    1-2 per year      225 (45.0%) |
+  |                    3-6 per year      258 (51.6%) |
   |--------------------------------------------------|
-  | op_appt_2020_cat   No appointments   9 ( 1.8%)   |
-  |                    1-2 per year      228 (45.6%) |
-  |                    3-6 per year      263 (52.6%) |
+  | op_appt_2020_cat   No appointments   12 ( 2.4%)  |
+  |                    1-2 per year      250 (50.0%) |
+  |                    3-6 per year      238 (47.6%) |
   |--------------------------------------------------|
-  | op_appt_2021_cat   No appointments   16 ( 3.2%)  |
-  |                    1-2 per year      233 (46.6%) |
-  |                    3-6 per year      251 (50.2%) |
+  | op_appt_2021_cat   No appointments   10 ( 2.0%)  |
+  |                    1-2 per year      242 (48.4%) |
+  |                    3-6 per year      248 (49.6%) |
   +--------------------------------------------------+
 Data are presented as n (%).
  
@@ -652,17 +719,21 @@ file ./output/tables/op_appt_yrs.csv saved
 
 . restore 
 
+. * Tabulate overall characteristics 
+. preserve
+
 . table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \
->  prescribed_biologics cate \ imd cate \ care_home cate) clear
+>  prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate \ time_
+> ra contn) clear
 
   +--------------------------------------------+
   | factor                           N_1   m_1 |
   |--------------------------------------------|
-  | age_cat                          393   107 |
+  | age_cat                          399   101 |
   |--------------------------------------------|
   | male                             500     0 |
   |--------------------------------------------|
-  | region of England                400   100 |
+  | region of England                412    88 |
   |--------------------------------------------|
   | Rural Urban in five categories   500     0 |
   |--------------------------------------------|
@@ -671,96 +742,1723 @@ file ./output/tables/op_appt_yrs.csv saved
   | imd                              500     0 |
   |--------------------------------------------|
   | care_home                        500     0 |
+  |--------------------------------------------|
+  | smoking                          500     0 |
+  |--------------------------------------------|
+  | time_ra                          230   270 |
   +--------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
   +----------------------------------------------------------------------------
-> +
+> --------+
   |                                                                Total       
-> |
+>         |
   |----------------------------------------------------------------------------
-> |
+> --------|
   |                                                                N=500       
-> |
+>         |
   |----------------------------------------------------------------------------
-> |
-  | age_cat                          18 - 40 years                 145 (36.9%) 
-> |
-  |                                  41 - 60 years                 131 (33.3%) 
-> |
-  |                                  61 - 80 years                 88 (22.4%)  
-> |
-  |                                  >80 years                     29 ( 7.4%)  
-> |
+> --------|
+  | age_cat                          18 - 40 years                 152 (38.1%) 
+>         |
+  |                                  41 - 60 years                 133 (33.3%) 
+>         |
+  |                                  61 - 80 years                 89 (22.3%)  
+>         |
+  |                                  >80 years                     25 ( 6.3%)  
+>         |
   |----------------------------------------------------------------------------
-> |
-  | male                             Female                        247 (49.4%) 
-> |
-  |                                  Male                          253 (50.6%) 
-> |
+> --------|
+  | male                             Female                        269 (53.8%) 
+>         |
+  |                                  Male                          231 (46.2%) 
+>         |
   |----------------------------------------------------------------------------
-> |
-  | region of England                East Midlands                 38 ( 9.5%)  
-> |
-  |                                  London                        102 (25.5%) 
-> |
-  |                                  North East                    54 (13.5%)  
-> |
-  |                                  North West                    63 (15.8%)  
-> |
-  |                                  South East                    77 (19.2%)  
-> |
-  |                                  West Midlands                 66 (16.5%)  
-> |
+> --------|
+  | region of England                East Midlands                 59 (14.3%)  
+>         |
+  |                                  London                        101 (24.5%) 
+>         |
+  |                                  North East                    41 (10.0%)  
+>         |
+  |                                  North West                    49 (11.9%)  
+>         |
+  |                                  South East                    107 (26.0%) 
+>         |
+  |                                  West Midlands                 55 (13.3%)  
+>         |
   |----------------------------------------------------------------------------
-> |
-  | Rural Urban in five categories   Urban major conurbation       68 (13.6%)  
-> |
-  |                                  Urban minor conurbation       59 (11.8%)  
-> |
-  |                                  Urban city and town           128 (25.6%) 
-> |
-  |                                  Rural town and fringe         118 (23.6%) 
-> |
-  |                                  Rural village and dispersed   127 (25.4%) 
-> |
+> --------|
+  | Rural Urban in five categories   Urban major conurbation       59 (11.8%)  
+>         |
+  |                                  Urban minor conurbation       53 (10.6%)  
+>         |
+  |                                  Urban city and town           124 (24.8%) 
+>         |
+  |                                  Rural town and fringe         134 (26.8%) 
+>         |
+  |                                  Rural village and dispersed   130 (26.0%) 
+>         |
   |----------------------------------------------------------------------------
-> |
-  | prescribed_biologics             0                             245 (49.0%) 
-> |
-  |                                  1                             255 (51.0%) 
-> |
+> --------|
+  | prescribed_biologics             0                             240 (48.0%) 
+>         |
+  |                                  1                             260 (52.0%) 
+>         |
   |----------------------------------------------------------------------------
-> |
-  | imd                              0                             31 ( 6.2%)  
-> |
-  |                                  1                             93 (18.6%)  
-> |
-  |                                  2                             87 (17.4%)  
-> |
-  |                                  3                             104 (20.8%) 
-> |
-  |                                  4                             90 (18.0%)  
-> |
-  |                                  5                             95 (19.0%)  
-> |
+> --------|
+  | imd                              0                             20 ( 4.0%)  
+>         |
+  |                                  1                             87 (17.4%)  
+>         |
+  |                                  2                             99 (19.8%)  
+>         |
+  |                                  3                             93 (18.6%)  
+>         |
+  |                                  4                             102 (20.4%) 
+>         |
+  |                                  5                             99 (19.8%)  
+>         |
   |----------------------------------------------------------------------------
-> |
-  | care_home                        0                             416 (83.2%) 
-> |
-  |                                  1                             84 (16.8%)  
-> |
+> --------|
+  | care_home                        0                             428 (85.6%) 
+>         |
+  |                                  1                             72 (14.4%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | smoking                          Never smoked                  43 ( 8.6%)  
+>         |
+  |                                  Current smoker                102 (20.4%) 
+>         |
+  |                                  Ex-smoker                     78 (15.6%)  
+>         |
+  |                                  Unknown                       277 (55.4%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | time_ra                                                        54.33595 (31
+> .36543) |
   +----------------------------------------------------------------------------
-> +
-Data are presented as n (%).
+> --------+
+Data are presented as mean (SD) for continuous measures, and n (%) for categori
+> cal measures.
  
 
 . export delimited using ./output/tables/op_chars.csv
 file ./output/tables/op_chars.csv saved
 
+. restore
+
+. * Tabulate characteristics by category of outpatient appointments for each ye
+> ar
+. tempfile tempfile
+
+. forvalues i=2019/2021 {
+  2.     preserve
+  3.     keep if op_appt_`i'_cat==0
+  4.     table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5
+>  cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate 
+> \ time_ra contn) clear
+  5.     save `tempfile', replace
+  6.     restore
+  7.     forvalues j=1/2 {
+  8.         preserve
+  9.         keep if op_appt_`i'_cat==`j'
+ 10.         table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rur
+> al_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking c
+> ate \ time_ra contn) clear
+ 11.         append using `tempfile'
+ 12.         save `tempfile', replace
+ 13.         if `j'==2 {
+ 14.             export delimited using ./output/tables/characteristics_strata`
+> i'.csv
+ 15.         }
+ 16.         restore
+ 17.         }
+ 18.     * Tabulate characteristics by whether hospitalised with RA for each ye
+> ar
+.     preserve
+ 19.     keep if ra_hosp_`i'==1
+ 20.     table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5
+>  cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate 
+> \ time_ra contn) clear
+ 21.     export delimited using ./output/tables/characteristics_ra_hosp_`i'.csv
+ 22.     restore
+ 23.     }
+(483 observations deleted)
+
+  +--------------------------------------------+
+  | factor                           N_1   m_1 |
+  |--------------------------------------------|
+  | age_cat                           14     3 |
+  |--------------------------------------------|
+  | male                              17     0 |
+  |--------------------------------------------|
+  | region of England                 13     4 |
+  |--------------------------------------------|
+  | Rural Urban in five categories    17     0 |
+  |--------------------------------------------|
+  | prescribed_biologics              17     0 |
+  |--------------------------------------------|
+  | imd                               17     0 |
+  |--------------------------------------------|
+  | care_home                         17     0 |
+  |--------------------------------------------|
+  | smoking                           17     0 |
+  |--------------------------------------------|
+  | time_ra                            8     9 |
+  +--------------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------
+> -------+
+  |                                                                Total       
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  |                                                                N=17        
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | age_cat                          18 - 40 years                 5 (36%)     
+>        |
+  |                                  41 - 60 years                 5 (36%)     
+>        |
+  |                                  61 - 80 years                 3 (21%)     
+>        |
+  |                                  >80 years                     1 ( 7%)     
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | male                             Female                        11 (65%)    
+>        |
+  |                                  Male                          6 (35%)     
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | region of England                East Midlands                 3 (23%)     
+>        |
+  |                                  London                        2 (15%)     
+>        |
+  |                                  North East                    1 ( 8%)     
+>        |
+  |                                  North West                    3 (23%)     
+>        |
+  |                                  South East                    2 (15%)     
+>        |
+  |                                  West Midlands                 2 (15%)     
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | Rural Urban in five categories   Urban major conurbation       2 (12%)     
+>        |
+  |                                  Urban minor conurbation       2 (12%)     
+>        |
+  |                                  Urban city and town           7 (41%)     
+>        |
+  |                                  Rural town and fringe         4 (24%)     
+>        |
+  |                                  Rural village and dispersed   2 (12%)     
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | prescribed_biologics             0                             5 (29%)     
+>        |
+  |                                  1                             12 (71%)    
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | imd                              0                             2 (12%)     
+>        |
+  |                                  1                             1 ( 6%)     
+>        |
+  |                                  2                             1 ( 6%)     
+>        |
+  |                                  3                             7 (41%)     
+>        |
+  |                                  4                             4 (24%)     
+>        |
+  |                                  5                             2 (12%)     
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | care_home                        0                             16 (94%)    
+>        |
+  |                                  1                             1 ( 6%)     
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | smoking                          Current smoker                6 (35%)     
+>        |
+  |                                  Ex-smoker                     1 ( 6%)     
+>        |
+  |                                  Unknown                       10 (59%)    
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | time_ra                                                        49.8436 (36.
+> 18821) |
+  +----------------------------------------------------------------------------
+> -------+
+Data are presented as mean (SD) for continuous measures, and n (%) for categori
+> cal measures.
+ 
+(note: file /tmp/St00012.000003 not found)
+file /tmp/St00012.000003 saved
+(275 observations deleted)
+
+  +--------------------------------------------+
+  | factor                           N_1   m_1 |
+  |--------------------------------------------|
+  | age_cat                          184    41 |
+  |--------------------------------------------|
+  | male                             225     0 |
+  |--------------------------------------------|
+  | region of England                184    41 |
+  |--------------------------------------------|
+  | Rural Urban in five categories   225     0 |
+  |--------------------------------------------|
+  | prescribed_biologics             225     0 |
+  |--------------------------------------------|
+  | imd                              225     0 |
+  |--------------------------------------------|
+  | care_home                        225     0 |
+  |--------------------------------------------|
+  | smoking                          225     0 |
+  |--------------------------------------------|
+  | time_ra                          108   117 |
+  +--------------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------
+> --------+
+  |                                                                Total       
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  |                                                                N=225       
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | age_cat                          18 - 40 years                 70 (38.0%)  
+>         |
+  |                                  41 - 60 years                 66 (35.9%)  
+>         |
+  |                                  61 - 80 years                 36 (19.6%)  
+>         |
+  |                                  >80 years                     12 ( 6.5%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | male                             Female                        122 (54.2%) 
+>         |
+  |                                  Male                          103 (45.8%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | region of England                East Midlands                 28 (15.2%)  
+>         |
+  |                                  London                        46 (25.0%)  
+>         |
+  |                                  North East                    16 ( 8.7%)  
+>         |
+  |                                  North West                    23 (12.5%)  
+>         |
+  |                                  South East                    42 (22.8%)  
+>         |
+  |                                  West Midlands                 29 (15.8%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | Rural Urban in five categories   Urban major conurbation       16 ( 7.1%)  
+>         |
+  |                                  Urban minor conurbation       27 (12.0%)  
+>         |
+  |                                  Urban city and town           67 (29.8%)  
+>         |
+  |                                  Rural town and fringe         57 (25.3%)  
+>         |
+  |                                  Rural village and dispersed   58 (25.8%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | prescribed_biologics             0                             106 (47.1%) 
+>         |
+  |                                  1                             119 (52.9%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | imd                              0                             11 ( 4.9%)  
+>         |
+  |                                  1                             34 (15.1%)  
+>         |
+  |                                  2                             53 (23.6%)  
+>         |
+  |                                  3                             39 (17.3%)  
+>         |
+  |                                  4                             48 (21.3%)  
+>         |
+  |                                  5                             40 (17.8%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | care_home                        0                             187 (83.1%) 
+>         |
+  |                                  1                             38 (16.9%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | smoking                          Never smoked                  20 ( 8.9%)  
+>         |
+  |                                  Current smoker                43 (19.1%)  
+>         |
+  |                                  Ex-smoker                     38 (16.9%)  
+>         |
+  |                                  Unknown                       124 (55.1%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | time_ra                                                        58.04102 (30
+> .52652) |
+  +----------------------------------------------------------------------------
+> --------+
+Data are presented as mean (SD) for continuous measures, and n (%) for categori
+> cal measures.
+ 
+file /tmp/St00012.000003 saved
+(242 observations deleted)
+
+  +--------------------------------------------+
+  | factor                           N_1   m_1 |
+  |--------------------------------------------|
+  | age_cat                          201    57 |
+  |--------------------------------------------|
+  | male                             258     0 |
+  |--------------------------------------------|
+  | region of England                215    43 |
+  |--------------------------------------------|
+  | Rural Urban in five categories   258     0 |
+  |--------------------------------------------|
+  | prescribed_biologics             258     0 |
+  |--------------------------------------------|
+  | imd                              258     0 |
+  |--------------------------------------------|
+  | care_home                        258     0 |
+  |--------------------------------------------|
+  | smoking                          258     0 |
+  |--------------------------------------------|
+  | time_ra                          114   144 |
+  +--------------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------
+> --------+
+  |                                                                Total       
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  |                                                                N=258       
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | age_cat                          18 - 40 years                 77 (38.3%)  
+>         |
+  |                                  41 - 60 years                 62 (30.8%)  
+>         |
+  |                                  61 - 80 years                 50 (24.9%)  
+>         |
+  |                                  >80 years                     12 ( 6.0%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | male                             Female                        136 (52.7%) 
+>         |
+  |                                  Male                          122 (47.3%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | region of England                East Midlands                 28 (13.0%)  
+>         |
+  |                                  London                        53 (24.7%)  
+>         |
+  |                                  North East                    24 (11.2%)  
+>         |
+  |                                  North West                    23 (10.7%)  
+>         |
+  |                                  South East                    63 (29.3%)  
+>         |
+  |                                  West Midlands                 24 (11.2%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | Rural Urban in five categories   Urban major conurbation       41 (15.9%)  
+>         |
+  |                                  Urban minor conurbation       24 ( 9.3%)  
+>         |
+  |                                  Urban city and town           50 (19.4%)  
+>         |
+  |                                  Rural town and fringe         73 (28.3%)  
+>         |
+  |                                  Rural village and dispersed   70 (27.1%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | prescribed_biologics             0                             129 (50.0%) 
+>         |
+  |                                  1                             129 (50.0%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | imd                              0                             7 ( 2.7%)   
+>         |
+  |                                  1                             52 (20.2%)  
+>         |
+  |                                  2                             45 (17.4%)  
+>         |
+  |                                  3                             47 (18.2%)  
+>         |
+  |                                  4                             50 (19.4%)  
+>         |
+  |                                  5                             57 (22.1%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | care_home                        0                             225 (87.2%) 
+>         |
+  |                                  1                             33 (12.8%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | smoking                          Never smoked                  23 ( 8.9%)  
+>         |
+  |                                  Current smoker                53 (20.5%)  
+>         |
+  |                                  Ex-smoker                     39 (15.1%)  
+>         |
+  |                                  Unknown                       143 (55.4%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | time_ra                                                        51.14113 (31
+> .70708) |
+  +----------------------------------------------------------------------------
+> --------+
+Data are presented as mean (SD) for continuous measures, and n (%) for categori
+> cal measures.
+ 
+file /tmp/St00012.000003 saved
+file ./output/tables/characteristics_strata2019.csv saved
+(431 observations deleted)
+
+  +--------------------------------------------+
+  | factor                           N_1   m_1 |
+  |--------------------------------------------|
+  | age_cat                           54    15 |
+  |--------------------------------------------|
+  | male                              69     0 |
+  |--------------------------------------------|
+  | region of England                 56    13 |
+  |--------------------------------------------|
+  | Rural Urban in five categories    69     0 |
+  |--------------------------------------------|
+  | prescribed_biologics              69     0 |
+  |--------------------------------------------|
+  | imd                               69     0 |
+  |--------------------------------------------|
+  | care_home                         69     0 |
+  |--------------------------------------------|
+  | smoking                           69     0 |
+  |--------------------------------------------|
+  | time_ra                           32    37 |
+  +--------------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------
+> --------+
+  |                                                                Total       
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  |                                                                N=69        
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | age_cat                          18 - 40 years                 21 (39%)    
+>         |
+  |                                  41 - 60 years                 19 (35%)    
+>         |
+  |                                  61 - 80 years                 8 (15%)     
+>         |
+  |                                  >80 years                     6 (11%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | male                             Female                        41 (59%)    
+>         |
+  |                                  Male                          28 (41%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | region of England                East Midlands                 10 (18%)    
+>         |
+  |                                  London                        8 (14%)     
+>         |
+  |                                  North East                    5 ( 9%)     
+>         |
+  |                                  North West                    12 (21%)    
+>         |
+  |                                  South East                    14 (25%)    
+>         |
+  |                                  West Midlands                 7 (12%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | Rural Urban in five categories   Urban major conurbation       4 ( 6%)     
+>         |
+  |                                  Urban minor conurbation       10 (14%)    
+>         |
+  |                                  Urban city and town           21 (30%)    
+>         |
+  |                                  Rural town and fringe         21 (30%)    
+>         |
+  |                                  Rural village and dispersed   13 (19%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | prescribed_biologics             0                             33 (48%)    
+>         |
+  |                                  1                             36 (52%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | imd                              0                             2 ( 3%)     
+>         |
+  |                                  1                             12 (17%)    
+>         |
+  |                                  2                             9 (13%)     
+>         |
+  |                                  3                             16 (23%)    
+>         |
+  |                                  4                             17 (25%)    
+>         |
+  |                                  5                             13 (19%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | care_home                        0                             62 (90%)    
+>         |
+  |                                  1                             7 (10%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | smoking                          Never smoked                  4 ( 6%)     
+>         |
+  |                                  Current smoker                17 (25%)    
+>         |
+  |                                  Ex-smoker                     8 (12%)     
+>         |
+  |                                  Unknown                       40 (58%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | time_ra                                                        53.99623 (30
+> .66897) |
+  +----------------------------------------------------------------------------
+> --------+
+Data are presented as mean (SD) for continuous measures, and n (%) for categori
+> cal measures.
+ 
+file ./output/tables/characteristics_ra_hosp_2019.csv saved
+(488 observations deleted)
+
+  +--------------------------------------------+
+  | factor                           N_1   m_1 |
+  |--------------------------------------------|
+  | age_cat                            9     3 |
+  |--------------------------------------------|
+  | male                              12     0 |
+  |--------------------------------------------|
+  | region of England                 10     2 |
+  |--------------------------------------------|
+  | Rural Urban in five categories    12     0 |
+  |--------------------------------------------|
+  | prescribed_biologics              12     0 |
+  |--------------------------------------------|
+  | imd                               12     0 |
+  |--------------------------------------------|
+  | care_home                         12     0 |
+  |--------------------------------------------|
+  | smoking                           12     0 |
+  |--------------------------------------------|
+  | time_ra                            7     5 |
+  +--------------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------
+> ----+
+  |                                                            Total           
+>     |
+  |----------------------------------------------------------------------------
+> ----|
+  |                                                            N=12            
+>     |
+  |----------------------------------------------------------------------------
+> ----|
+  | age_cat                          18 - 40 years             4 (44%)         
+>     |
+  |                                  41 - 60 years             4 (44%)         
+>     |
+  |                                  61 - 80 years             1 (11%)         
+>     |
+  |----------------------------------------------------------------------------
+> ----|
+  | male                             Female                    5 (42%)         
+>     |
+  |                                  Male                      7 (58%)         
+>     |
+  |----------------------------------------------------------------------------
+> ----|
+  | region of England                East Midlands             1 (10%)         
+>     |
+  |                                  London                    4 (40%)         
+>     |
+  |                                  North East                3 (30%)         
+>     |
+  |                                  South East                1 (10%)         
+>     |
+  |                                  West Midlands             1 (10%)         
+>     |
+  |----------------------------------------------------------------------------
+> ----|
+  | Rural Urban in five categories   Urban major conurbation   2 (17%)         
+>     |
+  |                                  Urban minor conurbation   3 (25%)         
+>     |
+  |                                  Urban city and town       3 (25%)         
+>     |
+  |                                  Rural town and fringe     4 (33%)         
+>     |
+  |----------------------------------------------------------------------------
+> ----|
+  | prescribed_biologics             0                         4 (33%)         
+>     |
+  |                                  1                         8 (67%)         
+>     |
+  |----------------------------------------------------------------------------
+> ----|
+  | imd                              0                         1 ( 8%)         
+>     |
+  |                                  1                         3 (25%)         
+>     |
+  |                                  2                         4 (33%)         
+>     |
+  |                                  3                         2 (17%)         
+>     |
+  |                                  4                         1 ( 8%)         
+>     |
+  |                                  5                         1 ( 8%)         
+>     |
+  |----------------------------------------------------------------------------
+> ----|
+  | care_home                        0                         12 (100%)       
+>     |
+  |----------------------------------------------------------------------------
+> ----|
+  | smoking                          Never smoked              3 (25%)         
+>     |
+  |                                  Current smoker            2 (17%)         
+>     |
+  |                                  Ex-smoker                 4 (33%)         
+>     |
+  |                                  Unknown                   3 (25%)         
+>     |
+  |----------------------------------------------------------------------------
+> ----|
+  | time_ra                                                    66.78557 (23.670
+> 09) |
+  +----------------------------------------------------------------------------
+> ----+
+Data are presented as mean (SD) for continuous measures, and n (%) for categori
+> cal measures.
+ 
+file /tmp/St00012.000003 saved
+(250 observations deleted)
+
+  +--------------------------------------------+
+  | factor                           N_1   m_1 |
+  |--------------------------------------------|
+  | age_cat                          201    49 |
+  |--------------------------------------------|
+  | male                             250     0 |
+  |--------------------------------------------|
+  | region of England                205    45 |
+  |--------------------------------------------|
+  | Rural Urban in five categories   250     0 |
+  |--------------------------------------------|
+  | prescribed_biologics             250     0 |
+  |--------------------------------------------|
+  | imd                              250     0 |
+  |--------------------------------------------|
+  | care_home                        250     0 |
+  |--------------------------------------------|
+  | smoking                          250     0 |
+  |--------------------------------------------|
+  | time_ra                          120   130 |
+  +--------------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------
+> --------+
+  |                                                                Total       
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  |                                                                N=250       
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | age_cat                          18 - 40 years                 73 (36.3%)  
+>         |
+  |                                  41 - 60 years                 72 (35.8%)  
+>         |
+  |                                  61 - 80 years                 43 (21.4%)  
+>         |
+  |                                  >80 years                     13 ( 6.5%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | male                             Female                        131 (52.4%) 
+>         |
+  |                                  Male                          119 (47.6%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | region of England                East Midlands                 29 (14.1%)  
+>         |
+  |                                  London                        51 (24.9%)  
+>         |
+  |                                  North East                    18 ( 8.8%)  
+>         |
+  |                                  North West                    26 (12.7%)  
+>         |
+  |                                  South East                    53 (25.9%)  
+>         |
+  |                                  West Midlands                 28 (13.7%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | Rural Urban in five categories   Urban major conurbation       27 (10.8%)  
+>         |
+  |                                  Urban minor conurbation       29 (11.6%)  
+>         |
+  |                                  Urban city and town           63 (25.2%)  
+>         |
+  |                                  Rural town and fringe         70 (28.0%)  
+>         |
+  |                                  Rural village and dispersed   61 (24.4%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | prescribed_biologics             0                             117 (46.8%) 
+>         |
+  |                                  1                             133 (53.2%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | imd                              0                             5 ( 2.0%)   
+>         |
+  |                                  1                             38 (15.2%)  
+>         |
+  |                                  2                             48 (19.2%)  
+>         |
+  |                                  3                             47 (18.8%)  
+>         |
+  |                                  4                             60 (24.0%)  
+>         |
+  |                                  5                             52 (20.8%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | care_home                        0                             219 (87.6%) 
+>         |
+  |                                  1                             31 (12.4%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | smoking                          Never smoked                  24 ( 9.6%)  
+>         |
+  |                                  Current smoker                53 (21.2%)  
+>         |
+  |                                  Ex-smoker                     35 (14.0%)  
+>         |
+  |                                  Unknown                       138 (55.2%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | time_ra                                                        53.74536 (34
+> .26059) |
+  +----------------------------------------------------------------------------
+> --------+
+Data are presented as mean (SD) for continuous measures, and n (%) for categori
+> cal measures.
+ 
+file /tmp/St00012.000003 saved
+(262 observations deleted)
+
+  +--------------------------------------------+
+  | factor                           N_1   m_1 |
+  |--------------------------------------------|
+  | age_cat                          189    49 |
+  |--------------------------------------------|
+  | male                             238     0 |
+  |--------------------------------------------|
+  | region of England                197    41 |
+  |--------------------------------------------|
+  | Rural Urban in five categories   238     0 |
+  |--------------------------------------------|
+  | prescribed_biologics             238     0 |
+  |--------------------------------------------|
+  | imd                              238     0 |
+  |--------------------------------------------|
+  | care_home                        238     0 |
+  |--------------------------------------------|
+  | smoking                          238     0 |
+  |--------------------------------------------|
+  | time_ra                          103   135 |
+  +--------------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------
+> --------+
+  |                                                                Total       
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  |                                                                N=238       
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | age_cat                          18 - 40 years                 75 (39.7%)  
+>         |
+  |                                  41 - 60 years                 57 (30.2%)  
+>         |
+  |                                  61 - 80 years                 45 (23.8%)  
+>         |
+  |                                  >80 years                     12 ( 6.3%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | male                             Female                        133 (55.9%) 
+>         |
+  |                                  Male                          105 (44.1%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | region of England                East Midlands                 29 (14.7%)  
+>         |
+  |                                  London                        46 (23.4%)  
+>         |
+  |                                  North East                    20 (10.2%)  
+>         |
+  |                                  North West                    23 (11.7%)  
+>         |
+  |                                  South East                    53 (26.9%)  
+>         |
+  |                                  West Midlands                 26 (13.2%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | Rural Urban in five categories   Urban major conurbation       30 (12.6%)  
+>         |
+  |                                  Urban minor conurbation       21 ( 8.8%)  
+>         |
+  |                                  Urban city and town           58 (24.4%)  
+>         |
+  |                                  Rural town and fringe         60 (25.2%)  
+>         |
+  |                                  Rural village and dispersed   69 (29.0%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | prescribed_biologics             0                             119 (50.0%) 
+>         |
+  |                                  1                             119 (50.0%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | imd                              0                             14 ( 5.9%)  
+>         |
+  |                                  1                             46 (19.3%)  
+>         |
+  |                                  2                             47 (19.7%)  
+>         |
+  |                                  3                             44 (18.5%)  
+>         |
+  |                                  4                             41 (17.2%)  
+>         |
+  |                                  5                             46 (19.3%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | care_home                        0                             197 (82.8%) 
+>         |
+  |                                  1                             41 (17.2%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | smoking                          Never smoked                  16 ( 6.7%)  
+>         |
+  |                                  Current smoker                47 (19.7%)  
+>         |
+  |                                  Ex-smoker                     39 (16.4%)  
+>         |
+  |                                  Unknown                       136 (57.1%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | time_ra                                                        54.17792 (28
+> .20028) |
+  +----------------------------------------------------------------------------
+> --------+
+Data are presented as mean (SD) for continuous measures, and n (%) for categori
+> cal measures.
+ 
+file /tmp/St00012.000003 saved
+file ./output/tables/characteristics_strata2020.csv saved
+(434 observations deleted)
+
+  +--------------------------------------------+
+  | factor                           N_1   m_1 |
+  |--------------------------------------------|
+  | age_cat                           49    17 |
+  |--------------------------------------------|
+  | male                              66     0 |
+  |--------------------------------------------|
+  | region of England                 55    11 |
+  |--------------------------------------------|
+  | Rural Urban in five categories    66     0 |
+  |--------------------------------------------|
+  | prescribed_biologics              66     0 |
+  |--------------------------------------------|
+  | imd                               66     0 |
+  |--------------------------------------------|
+  | care_home                         66     0 |
+  |--------------------------------------------|
+  | smoking                           66     0 |
+  |--------------------------------------------|
+  | time_ra                           25    41 |
+  +--------------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------
+> --------+
+  |                                                                Total       
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  |                                                                N=66        
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | age_cat                          18 - 40 years                 20 (41%)    
+>         |
+  |                                  41 - 60 years                 13 (27%)    
+>         |
+  |                                  61 - 80 years                 13 (27%)    
+>         |
+  |                                  >80 years                     3 ( 6%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | male                             Female                        37 (56%)    
+>         |
+  |                                  Male                          29 (44%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | region of England                East Midlands                 8 (15%)     
+>         |
+  |                                  London                        12 (22%)    
+>         |
+  |                                  North East                    8 (15%)     
+>         |
+  |                                  North West                    8 (15%)     
+>         |
+  |                                  South East                    14 (25%)    
+>         |
+  |                                  West Midlands                 5 ( 9%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | Rural Urban in five categories   Urban major conurbation       7 (11%)     
+>         |
+  |                                  Urban minor conurbation       7 (11%)     
+>         |
+  |                                  Urban city and town           14 (21%)    
+>         |
+  |                                  Rural town and fringe         20 (30%)    
+>         |
+  |                                  Rural village and dispersed   18 (27%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | prescribed_biologics             0                             27 (41%)    
+>         |
+  |                                  1                             39 (59%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | imd                              0                             1 ( 2%)     
+>         |
+  |                                  1                             9 (14%)     
+>         |
+  |                                  2                             9 (14%)     
+>         |
+  |                                  3                             17 (26%)    
+>         |
+  |                                  4                             13 (20%)    
+>         |
+  |                                  5                             17 (26%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | care_home                        0                             59 (89%)    
+>         |
+  |                                  1                             7 (11%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | smoking                          Never smoked                  6 ( 9%)     
+>         |
+  |                                  Current smoker                16 (24%)    
+>         |
+  |                                  Ex-smoker                     11 (17%)    
+>         |
+  |                                  Unknown                       33 (50%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | time_ra                                                        57.90324 (38
+> .66061) |
+  +----------------------------------------------------------------------------
+> --------+
+Data are presented as mean (SD) for continuous measures, and n (%) for categori
+> cal measures.
+ 
+file ./output/tables/characteristics_ra_hosp_2020.csv saved
+(490 observations deleted)
+
+  +--------------------------------------------+
+  | factor                           N_1   m_1 |
+  |--------------------------------------------|
+  | age_cat                            9     1 |
+  |--------------------------------------------|
+  | male                              10     0 |
+  |--------------------------------------------|
+  | region of England                  9     1 |
+  |--------------------------------------------|
+  | Rural Urban in five categories    10     0 |
+  |--------------------------------------------|
+  | prescribed_biologics              10     0 |
+  |--------------------------------------------|
+  | imd                               10     0 |
+  |--------------------------------------------|
+  | care_home                         10     0 |
+  |--------------------------------------------|
+  | smoking                           10     0 |
+  |--------------------------------------------|
+  | time_ra                            4     6 |
+  +--------------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------
+> --------+
+  |                                                                Total       
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  |                                                                N=10        
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | age_cat                          18 - 40 years                 3 (33%)     
+>         |
+  |                                  41 - 60 years                 2 (22%)     
+>         |
+  |                                  61 - 80 years                 3 (33%)     
+>         |
+  |                                  >80 years                     1 (11%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | male                             Female                        5 (50%)     
+>         |
+  |                                  Male                          5 (50%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | region of England                East Midlands                 1 (11%)     
+>         |
+  |                                  London                        3 (33%)     
+>         |
+  |                                  North East                    1 (11%)     
+>         |
+  |                                  South East                    4 (44%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | Rural Urban in five categories   Urban minor conurbation       1 (10%)     
+>         |
+  |                                  Urban city and town           1 (10%)     
+>         |
+  |                                  Rural town and fringe         5 (50%)     
+>         |
+  |                                  Rural village and dispersed   3 (30%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | prescribed_biologics             0                             4 (40%)     
+>         |
+  |                                  1                             6 (60%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | imd                              0                             1 (10%)     
+>         |
+  |                                  2                             2 (20%)     
+>         |
+  |                                  3                             2 (20%)     
+>         |
+  |                                  4                             2 (20%)     
+>         |
+  |                                  5                             3 (30%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | care_home                        0                             8 (80%)     
+>         |
+  |                                  1                             2 (20%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | smoking                          Current smoker                2 (20%)     
+>         |
+  |                                  Ex-smoker                     2 (20%)     
+>         |
+  |                                  Unknown                       6 (60%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | time_ra                                                        40.17385 (34
+> .91994) |
+  +----------------------------------------------------------------------------
+> --------+
+Data are presented as mean (SD) for continuous measures, and n (%) for categori
+> cal measures.
+ 
+file /tmp/St00012.000003 saved
+(258 observations deleted)
+
+  +--------------------------------------------+
+  | factor                           N_1   m_1 |
+  |--------------------------------------------|
+  | age_cat                          197    45 |
+  |--------------------------------------------|
+  | male                             242     0 |
+  |--------------------------------------------|
+  | region of England                197    45 |
+  |--------------------------------------------|
+  | Rural Urban in five categories   242     0 |
+  |--------------------------------------------|
+  | prescribed_biologics             242     0 |
+  |--------------------------------------------|
+  | imd                              242     0 |
+  |--------------------------------------------|
+  | care_home                        242     0 |
+  |--------------------------------------------|
+  | smoking                          242     0 |
+  |--------------------------------------------|
+  | time_ra                          107   135 |
+  +--------------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------
+> --------+
+  |                                                                Total       
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  |                                                                N=242       
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | age_cat                          18 - 40 years                 74 (37.6%)  
+>         |
+  |                                  41 - 60 years                 62 (31.5%)  
+>         |
+  |                                  61 - 80 years                 47 (23.9%)  
+>         |
+  |                                  >80 years                     14 ( 7.1%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | male                             Female                        129 (53.3%) 
+>         |
+  |                                  Male                          113 (46.7%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | region of England                East Midlands                 23 (11.7%)  
+>         |
+  |                                  London                        47 (23.9%)  
+>         |
+  |                                  North East                    25 (12.7%)  
+>         |
+  |                                  North West                    21 (10.7%)  
+>         |
+  |                                  South East                    54 (27.4%)  
+>         |
+  |                                  West Midlands                 27 (13.7%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | Rural Urban in five categories   Urban major conurbation       29 (12.0%)  
+>         |
+  |                                  Urban minor conurbation       21 ( 8.7%)  
+>         |
+  |                                  Urban city and town           68 (28.1%)  
+>         |
+  |                                  Rural town and fringe         62 (25.6%)  
+>         |
+  |                                  Rural village and dispersed   62 (25.6%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | prescribed_biologics             0                             115 (47.5%) 
+>         |
+  |                                  1                             127 (52.5%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | imd                              0                             7 ( 2.9%)   
+>         |
+  |                                  1                             38 (15.7%)  
+>         |
+  |                                  2                             45 (18.6%)  
+>         |
+  |                                  3                             45 (18.6%)  
+>         |
+  |                                  4                             52 (21.5%)  
+>         |
+  |                                  5                             55 (22.7%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | care_home                        0                             204 (84.3%) 
+>         |
+  |                                  1                             38 (15.7%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | smoking                          Never smoked                  21 ( 8.7%)  
+>         |
+  |                                  Current smoker                57 (23.6%)  
+>         |
+  |                                  Ex-smoker                     34 (14.0%)  
+>         |
+  |                                  Unknown                       130 (53.7%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | time_ra                                                        53.62539 (33
+> .28261) |
+  +----------------------------------------------------------------------------
+> --------+
+Data are presented as mean (SD) for continuous measures, and n (%) for categori
+> cal measures.
+ 
+file /tmp/St00012.000003 saved
+(252 observations deleted)
+
+  +--------------------------------------------+
+  | factor                           N_1   m_1 |
+  |--------------------------------------------|
+  | age_cat                          193    55 |
+  |--------------------------------------------|
+  | male                             248     0 |
+  |--------------------------------------------|
+  | region of England                206    42 |
+  |--------------------------------------------|
+  | Rural Urban in five categories   248     0 |
+  |--------------------------------------------|
+  | prescribed_biologics             248     0 |
+  |--------------------------------------------|
+  | imd                              248     0 |
+  |--------------------------------------------|
+  | care_home                        248     0 |
+  |--------------------------------------------|
+  | smoking                          248     0 |
+  |--------------------------------------------|
+  | time_ra                          119   129 |
+  +--------------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------
+> --------+
+  |                                                                Total       
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  |                                                                N=248       
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | age_cat                          18 - 40 years                 75 (38.9%)  
+>         |
+  |                                  41 - 60 years                 69 (35.8%)  
+>         |
+  |                                  61 - 80 years                 39 (20.2%)  
+>         |
+  |                                  >80 years                     10 ( 5.2%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | male                             Female                        135 (54.4%) 
+>         |
+  |                                  Male                          113 (45.6%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | region of England                East Midlands                 35 (17.0%)  
+>         |
+  |                                  London                        51 (24.8%)  
+>         |
+  |                                  North East                    15 ( 7.3%)  
+>         |
+  |                                  North West                    28 (13.6%)  
+>         |
+  |                                  South East                    49 (23.8%)  
+>         |
+  |                                  West Midlands                 28 (13.6%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | Rural Urban in five categories   Urban major conurbation       30 (12.1%)  
+>         |
+  |                                  Urban minor conurbation       31 (12.5%)  
+>         |
+  |                                  Urban city and town           55 (22.2%)  
+>         |
+  |                                  Rural town and fringe         67 (27.0%)  
+>         |
+  |                                  Rural village and dispersed   65 (26.2%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | prescribed_biologics             0                             121 (48.8%) 
+>         |
+  |                                  1                             127 (51.2%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | imd                              0                             12 ( 4.8%)  
+>         |
+  |                                  1                             49 (19.8%)  
+>         |
+  |                                  2                             52 (21.0%)  
+>         |
+  |                                  3                             46 (18.5%)  
+>         |
+  |                                  4                             48 (19.4%)  
+>         |
+  |                                  5                             41 (16.5%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | care_home                        0                             216 (87.1%) 
+>         |
+  |                                  1                             32 (12.9%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | smoking                          Never smoked                  22 ( 8.9%)  
+>         |
+  |                                  Current smoker                43 (17.3%)  
+>         |
+  |                                  Ex-smoker                     42 (16.9%)  
+>         |
+  |                                  Unknown                       141 (56.9%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | time_ra                                                        55.45089 (29
+> .57408) |
+  +----------------------------------------------------------------------------
+> --------+
+Data are presented as mean (SD) for continuous measures, and n (%) for categori
+> cal measures.
+ 
+file /tmp/St00012.000003 saved
+file ./output/tables/characteristics_strata2021.csv saved
+(425 observations deleted)
+
+  +--------------------------------------------+
+  | factor                           N_1   m_1 |
+  |--------------------------------------------|
+  | age_cat                           65    10 |
+  |--------------------------------------------|
+  | male                              75     0 |
+  |--------------------------------------------|
+  | region of England                 65    10 |
+  |--------------------------------------------|
+  | Rural Urban in five categories    75     0 |
+  |--------------------------------------------|
+  | prescribed_biologics              75     0 |
+  |--------------------------------------------|
+  | imd                               75     0 |
+  |--------------------------------------------|
+  | care_home                         75     0 |
+  |--------------------------------------------|
+  | smoking                           75     0 |
+  |--------------------------------------------|
+  | time_ra                           39    36 |
+  +--------------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------
+> --------+
+  |                                                                Total       
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  |                                                                N=75        
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | age_cat                          18 - 40 years                 22 (34%)    
+>         |
+  |                                  41 - 60 years                 24 (37%)    
+>         |
+  |                                  61 - 80 years                 13 (20%)    
+>         |
+  |                                  >80 years                     6 ( 9%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | male                             Female                        40 (53%)    
+>         |
+  |                                  Male                          35 (47%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | region of England                East Midlands                 12 (18%)    
+>         |
+  |                                  London                        16 (25%)    
+>         |
+  |                                  North East                    9 (14%)     
+>         |
+  |                                  North West                    8 (12%)     
+>         |
+  |                                  South East                    8 (12%)     
+>         |
+  |                                  West Midlands                 12 (18%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | Rural Urban in five categories   Urban major conurbation       10 (13%)    
+>         |
+  |                                  Urban minor conurbation       3 ( 4%)     
+>         |
+  |                                  Urban city and town           19 (25%)    
+>         |
+  |                                  Rural town and fringe         26 (35%)    
+>         |
+  |                                  Rural village and dispersed   17 (23%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | prescribed_biologics             0                             37 (49%)    
+>         |
+  |                                  1                             38 (51%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | imd                              0                             4 ( 5%)     
+>         |
+  |                                  1                             11 (15%)    
+>         |
+  |                                  2                             13 (17%)    
+>         |
+  |                                  3                             14 (19%)    
+>         |
+  |                                  4                             20 (27%)    
+>         |
+  |                                  5                             13 (17%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | care_home                        0                             64 (85%)    
+>         |
+  |                                  1                             11 (15%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | smoking                          Never smoked                  9 (12%)     
+>         |
+  |                                  Current smoker                15 (20%)    
+>         |
+  |                                  Ex-smoker                     12 (16%)    
+>         |
+  |                                  Unknown                       39 (52%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | time_ra                                                        50.71279 (29
+> .69341) |
+  +----------------------------------------------------------------------------
+> --------+
+Data are presented as mean (SD) for continuous measures, and n (%) for categori
+> cal measures.
+ 
+file ./output/tables/characteristics_ra_hosp_2021.csv saved
+
+. preserve
+
+.     keep if ra_hosp_2018==1
+(432 observations deleted)
+
+.     table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 ca
+> te \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate \ t
+> ime_ra contn) clear
+
+  +--------------------------------------------+
+  | factor                           N_1   m_1 |
+  |--------------------------------------------|
+  | age_cat                           51    17 |
+  |--------------------------------------------|
+  | male                              68     0 |
+  |--------------------------------------------|
+  | region of England                 52    16 |
+  |--------------------------------------------|
+  | Rural Urban in five categories    68     0 |
+  |--------------------------------------------|
+  | prescribed_biologics              68     0 |
+  |--------------------------------------------|
+  | imd                               68     0 |
+  |--------------------------------------------|
+  | care_home                         68     0 |
+  |--------------------------------------------|
+  | smoking                           68     0 |
+  |--------------------------------------------|
+  | time_ra                           25    43 |
+  +--------------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------
+> --------+
+  |                                                                Total       
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  |                                                                N=68        
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | age_cat                          18 - 40 years                 24 (47%)    
+>         |
+  |                                  41 - 60 years                 12 (24%)    
+>         |
+  |                                  61 - 80 years                 11 (22%)    
+>         |
+  |                                  >80 years                     4 ( 8%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | male                             Female                        32 (47%)    
+>         |
+  |                                  Male                          36 (53%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | region of England                East Midlands                 8 (15%)     
+>         |
+  |                                  London                        18 (35%)    
+>         |
+  |                                  North East                    6 (12%)     
+>         |
+  |                                  North West                    3 ( 6%)     
+>         |
+  |                                  South East                    13 (25%)    
+>         |
+  |                                  West Midlands                 4 ( 8%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | Rural Urban in five categories   Urban major conurbation       12 (18%)    
+>         |
+  |                                  Urban minor conurbation       8 (12%)     
+>         |
+  |                                  Urban city and town           8 (12%)     
+>         |
+  |                                  Rural town and fringe         16 (24%)    
+>         |
+  |                                  Rural village and dispersed   24 (35%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | prescribed_biologics             0                             25 (37%)    
+>         |
+  |                                  1                             43 (63%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | imd                              0                             3 ( 4%)     
+>         |
+  |                                  1                             12 (18%)    
+>         |
+  |                                  2                             12 (18%)    
+>         |
+  |                                  3                             16 (24%)    
+>         |
+  |                                  4                             11 (16%)    
+>         |
+  |                                  5                             14 (21%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | care_home                        0                             59 (87%)    
+>         |
+  |                                  1                             9 (13%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | smoking                          Never smoked                  6 ( 9%)     
+>         |
+  |                                  Current smoker                9 (13%)     
+>         |
+  |                                  Ex-smoker                     7 (10%)     
+>         |
+  |                                  Unknown                       46 (68%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | time_ra                                                        39.42878 (31
+> .27445) |
+  +----------------------------------------------------------------------------
+> --------+
+Data are presented as mean (SD) for continuous measures, and n (%) for categori
+> cal measures.
+ 
+
+.     export delimited using ./output/tables/characteristics_ra_hosp_2018.csv
+file ./output/tables/characteristics_ra_hosp_2018.csv saved
+
+.     restore
+
 . log close
       name:  <unnamed>
        log:  /workspace/logs/outpatients.log
   log type:  text
- closed on:  11 Aug 2022, 10:59:16
+ closed on:  16 Aug 2022, 14:48:38
 -------------------------------------------------------------------------------

@@ -167,6 +167,18 @@
       "url": "https://codelists.opensafely.org/codelist/user/emilyherrett/depression_icd10/0aaf5048/",
       "downloaded_at": "2022-08-09 10:35:16.751310Z",
       "sha": "0b364f07654123840f01c96d4645785ac195b47f"
+    },
+    "opensafely-smoking-clear.csv": {
+      "id": "opensafely/smoking-clear/2020-04-29",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/smoking-clear/2020-04-29/",
+      "downloaded_at": "2022-08-16 13:25:38.490284Z",
+      "sha": "0b5f3afe1db96dcce5141220e893a42ba2e5a8f7"
+    },
+    "opensafely-smoking-unclear.csv": {
+      "id": "opensafely/smoking-unclear/2020-04-29",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/smoking-unclear/2020-04-29/",
+      "downloaded_at": "2022-08-16 13:25:38.726787Z",
+      "sha": "d9dad3e9d9491f765863b2617114c521957b6db1"
     }
   }
 }
