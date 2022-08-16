@@ -51,8 +51,10 @@ gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
 gen month=mofd(temp_date)
 format month %tm
 drop temp_date
-*Value to rate per 100k
-gen rate = value*100000
+* Generate new population as all those with medium described
+bys date: egen pop_new = total(population)
+* Calculate rate
+gen rate = (op_appt/pop_new)*100000
 label variable rate "Rate of op appts per 100,000"
 *Set time series
 tsset op_appt_medium month
@@ -112,8 +114,10 @@ gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
 gen month=mofd(temp_date)
 format month %tm
 drop temp_date
-*Value to rate per 100k
-gen rate = value*100000
+* Generate new population as all those with type of admission
+bys date: egen pop_new = total(population)
+* Calculate rate
+gen rate = (ra_hosp/pop_new)*100000
 label variable rate "Rate of op appts per 100,000"
 *Set time series
 tsset ra_daycase month
