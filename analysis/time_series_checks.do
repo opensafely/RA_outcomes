@@ -45,8 +45,10 @@ gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
 gen month=mofd(temp_date)
 format month %tm
 drop temp_date
-*Value to rate per 100k
-gen rate = value*100000
+* Generate new population as all those with medium described
+bys date: egen pop_new = total(population)
+* Calculate rate
+gen rate = (op_appt/pop_new)*100000
 label variable rate "Rate of op appts per 100,000"
 *Set time series
 tsset op_appt_medium month
@@ -71,7 +73,7 @@ graph export ./output/time_series/checks_ac_op_appt_medium.svg, as(svg) replace
 graph combine pac_op_appt_medium_1 pac_op_appt_medium_2 pac_op_appt_medium_3, altshrink
 graph export ./output/time_series/checks_pac_op_appt_medium.svg, as(svg) replace
 
-/* Hospitalisations
+* Hospitalisations
 local a "cardiac ild ra sepsis vasculitis"
 forvalues i=1/5 {
     local c: word `i' of `a' 
@@ -97,7 +99,7 @@ forvalues i=1/5 {
 		graph combine kd_`c' ac_`c' pac_`c' , altshrink
 		graph export ./output/time_series/checks_`c'.svg, as(svg) replace
 	}
-*/
+
 * RA daycase
 import delimited "./output/measures/measure_hosp_ra_daycase_rate.csv", clear	//get csv
 drop if ra_daycase==. | ra_daycase==5
@@ -107,8 +109,10 @@ gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
 gen month=mofd(temp_date)
 format month %tm
 drop temp_date
-*Value to rate per 100k
-gen rate = value*100000
+* Generate new population as all those with type of admission
+bys date: egen pop_new = total(population)
+* Calculate rate
+gen rate = (ra_hosp/pop_new)*100000
 label variable rate "Rate of op appts per 100,000"
 *Set time series
 tsset ra_daycase month
@@ -136,7 +140,7 @@ graph export ./output/time_series/checks_ac_ra_daycase.svg, as(svg) replace
 graph combine pac_ra_daycase_1 pac_ra_daycase_2 pac_ra_daycase_3, altshrink
 graph export ./output/time_series/checks_pac_ra_daycase.svg, as(svg) replace
 
-/*import delimited "./output/measures/measure_med_gc_rate.csv", clear	//get csv
+import delimited "./output/measures/measure_med_gc_rate.csv", clear	//get csv
 gen temp_date=date(date, "YMD")
 format temp_date %td
 gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
@@ -157,4 +161,3 @@ pac rate, name(pac_gc, replace)
 *Combine Graphs
 graph combine kd_gc ac_gc pac_gc , altshrink
 graph export ./output/time_series/checks_gc.svg, as(svg) replace
-*/

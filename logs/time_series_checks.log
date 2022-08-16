@@ -65,8 +65,11 @@
 
 . drop temp_date
 
-. *Value to rate per 100k
-. gen rate = value*100000
+. * Generate new population as all those with medium described
+. bys date: egen pop_new = total(population)
+
+. * Calculate rate
+. gen rate = (op_appt/pop_new)*100000
 
 . label variable rate "Rate of op appts per 100,000"
 
@@ -124,37 +127,64 @@
 (file ./output/time_series/checks_pac_op_appt_medium.svg written in SVG format)
 
 . 
-. /* Hospitalisations
-> local a "cardiac ild ra sepsis vasculitis"
-> forvalues i=1/5 {
->     local c: word `i' of `a' 
->                 import delimited "./output/measures/measure_hosp_`c'_rate.csv
-> ", clear   //get csv
->                 gen temp_date=date(date, "YMD")
->                 format temp_date %td
->                 gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
->                 gen month=mofd(temp_date)
->                 format month %tm
->                 drop temp_date
->                 *Value to rate per 100k
->                 gen rate = value*100000
->                 label variable rate "Rate of hospitalisations `c' per 100,000
-> "
->                 *Set time series
->                 tsset month 
->                 *Kernel density plots to check for normality and extreme valu
-> es
->                 kdensity rate, normal name(kd_`c', replace)
->                 *Autoregression plots by ethnicity
->                 ac rate, name(ac_`c', replace)
->                 *Partial autoregression plots by ethnicity
->                 pac rate, name(pac_`c', replace)
->                 *Combine Graphs
->                 graph combine kd_`c' ac_`c' pac_`c' , altshrink
->                 graph export ./output/time_series/checks_`c'.svg, as(svg) rep
-> lace
->         }
-> */
+. * Hospitalisations
+. local a "cardiac ild ra sepsis vasculitis"
+
+. forvalues i=1/5 {
+  2.     local c: word `i' of `a' 
+  3.                 import delimited "./output/measures/measure_hosp_`c'_rate.
+> csv", clear   //get csv
+  4.                 gen temp_date=date(date, "YMD")
+  5.                 format temp_date %td
+  6.                 gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
+  7.                 gen month=mofd(temp_date)
+  8.                 format month %tm
+  9.                 drop temp_date
+ 10.                 *Value to rate per 100k
+.                 gen rate = value*100000
+ 11.                 label variable rate "Rate of hospitalisations `c' per 100,
+> 000"
+ 12.                 *Set time series
+.                 tsset month 
+ 13.                 *Kernel density plots to check for normality and extreme v
+> alues
+.                 kdensity rate, normal name(kd_`c', replace)
+ 14.                 *Autoregression plots by ethnicity
+.                 ac rate, name(ac_`c', replace)
+ 15.                 *Partial autoregression plots by ethnicity
+.                 pac rate, name(pac_`c', replace)
+ 16.                 *Combine Graphs
+.                 graph combine kd_`c' ac_`c' pac_`c' , altshrink
+ 17.                 graph export ./output/time_series/checks_`c'.svg, as(svg) 
+> replace
+ 18.         }
+(4 vars, 50 obs)
+        time variable:  month, 2018m3 to 2022m4
+                delta:  1 month
+(note: file ./output/time_series/checks_cardiac.svg not found)
+(file ./output/time_series/checks_cardiac.svg written in SVG format)
+(4 vars, 50 obs)
+        time variable:  month, 2018m3 to 2022m4
+                delta:  1 month
+(note: file ./output/time_series/checks_ild.svg not found)
+(file ./output/time_series/checks_ild.svg written in SVG format)
+(4 vars, 50 obs)
+        time variable:  month, 2018m3 to 2022m4
+                delta:  1 month
+(note: file ./output/time_series/checks_ra.svg not found)
+(file ./output/time_series/checks_ra.svg written in SVG format)
+(4 vars, 50 obs)
+        time variable:  month, 2018m3 to 2022m4
+                delta:  1 month
+(note: file ./output/time_series/checks_sepsis.svg not found)
+(file ./output/time_series/checks_sepsis.svg written in SVG format)
+(4 vars, 50 obs)
+        time variable:  month, 2018m3 to 2022m4
+                delta:  1 month
+(note: file ./output/time_series/checks_vasculitis.svg not found)
+(file ./output/time_series/checks_vasculitis.svg written in SVG format)
+
+. 
 . * RA daycase
 . import delimited "./output/measures/measure_hosp_ra_daycase_rate.csv", clear 
 >    //get csv
@@ -175,8 +205,11 @@
 
 . drop temp_date
 
-. *Value to rate per 100k
-. gen rate = value*100000
+. * Generate new population as all those with type of admission
+. bys date: egen pop_new = total(population)
+
+. * Calculate rate
+. gen rate = (ra_hosp/pop_new)*100000
 
 . label variable rate "Rate of op appts per 100,000"
 
@@ -234,33 +267,52 @@
 (file ./output/time_series/checks_pac_ra_daycase.svg written in SVG format)
 
 . 
-. /*import delimited "./output/measures/measure_med_gc_rate.csv", clear   //get
+. import delimited "./output/measures/measure_med_gc_rate.csv", clear     //get
 >  csv
-> gen temp_date=date(date, "YMD")
-> format temp_date %td
-> gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
-> gen month=mofd(temp_date)
-> format month %tm
-> drop temp_date
-> *Value to rate per 100k
-> gen rate = value*100000
-> label variable rate "Rate of GC prescribing per 100,000"
-> *Set time series
-> tsset month 
-> *Kernel density plots to check for normality and extreme values
-> kdensity rate, normal name(kd_gc, replace)
-> *Autoregression plots by ethnicity
-> ac rate, name(ac_gc, replace)
-> *Partial autoregression plots by ethnicity
-> pac rate, name(pac_gc, replace)
-> *Combine Graphs
-> graph combine kd_gc ac_gc pac_gc , altshrink
-> graph export ./output/time_series/checks_gc.svg, as(svg) replace
-> */
+(4 vars, 50 obs)
+
+. gen temp_date=date(date, "YMD")
+
+. format temp_date %td
+
+. gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
+
+. gen month=mofd(temp_date)
+
+. format month %tm
+
+. drop temp_date
+
+. *Value to rate per 100k
+. gen rate = value*100000
+
+. label variable rate "Rate of GC prescribing per 100,000"
+
+. *Set time series
+. tsset month 
+        time variable:  month, 2018m3 to 2022m4
+                delta:  1 month
+
+. *Kernel density plots to check for normality and extreme values
+. kdensity rate, normal name(kd_gc, replace)
+
+. *Autoregression plots by ethnicity
+. ac rate, name(ac_gc, replace)
+
+. *Partial autoregression plots by ethnicity
+. pac rate, name(pac_gc, replace)
+
+. *Combine Graphs
+. graph combine kd_gc ac_gc pac_gc , altshrink
+
+. graph export ./output/time_series/checks_gc.svg, as(svg) replace
+(note: file ./output/time_series/checks_gc.svg not found)
+(file ./output/time_series/checks_gc.svg written in SVG format)
+
 . 
 end of do-file
 
-. . file open output using "/tmp/tmp.z9xOXUtoPw", write text replace
+. . file open output using "/tmp/tmp.YBmcyUSNEC", write text replace
 
 . . file write output "success" 
 
