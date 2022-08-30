@@ -20,7 +20,7 @@ foreach this_group in appt_rate appt_first_rate {
         * Generate line graph
         graph twoway line rate dateA, tlabel(01Apr2019(120)01Apr2022, angle(45) ///
         format(%dM-CY) labsize(small)) ytitle("Rate per 100,000") xtitle("Date") ylabel(#5, labsize(small) ///
-        angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6)
+        angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6) graphregion(fcolor(white))
 
         graph export ./output/graphs/line_`this_group'.svg, as(svg) replace
         }
@@ -48,7 +48,7 @@ label var rate2 "Telephone"
 graph twoway line rate1 rate2 dateA, tlabel(01Apr2019(120)01Apr2022, angle(45) ///
 format(%dM-CY) labsize(small)) ytitle("Rate per 100,000") xtitle("Date") ylabel(#5, labsize(small) ///
 angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6) legend(row(1) size(small) ///
-title("Consultation medium", size(small)))
+title("Consultation medium", size(small))) graphregion(fcolor(white))
 
 graph export ./output/graphs/line_op_appt_medium.svg, as(svg) replace
 
@@ -64,7 +64,7 @@ foreach this_group in ra cardiac vasculitis ild sepsis {
         * Generate line graph
         graph twoway line rate dateA, tlabel(01Mar2018(120)01Apr2022, angle(45) ///
         format(%dM-CY) labsize(small)) ytitle("Rate per 100,000") xtitle("Date") ylabel(#5, labsize(small) ///
-        angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6)
+        angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6) graphregion(fcolor(white))
 
         graph export ./output/graphs/line_hosp_`this_group'.svg, as(svg) replace
         }
@@ -90,10 +90,10 @@ label var rate1 "Ordinary admission"
 label var rate2 "Day case"
 label var rate3 "Regular admission"
 * Generate line graph
-graph twoway line rate1 rate2 rate3 dateA, tlabel(01Apr2019(120)01Apr2022, angle(45) ///
+graph twoway line rate1 rate2 rate3 dateA, tlabel(01Mar2018(120)01Apr2022, angle(45) ///
 format(%dM-CY) labsize(small)) ytitle("Rate per 100,000") xtitle("Date") ylabel(#5, labsize(small) ///
 angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6) legend(row(1) size(small) ///
-title("Type of admission", size(small)))
+title("Type of admission", size(small))) graphregion(fcolor(white))
 
 graph export ./output/graphs/line_ra_daycase.svg, as(svg) replace
 
@@ -109,7 +109,7 @@ foreach this_group in gc {
         * Generate line graph
         graph twoway line rate dateA, tlabel(01Mar2018(120)01Apr2022, angle(45) ///
         format(%dM-CY) labsize(small)) ytitle("Rate per 100,000") xtitle("Date") ylabel(#5, labsize(small) ///
-        angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6)
+        angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6) graphregion(fcolor(white))
 
         graph export ./output/graphs/line_med_`this_group'.svg, as(svg) replace
         }
