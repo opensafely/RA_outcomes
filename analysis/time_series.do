@@ -5,10 +5,12 @@ Date:     		11/08/2022
 Author:         Ruth Costello (based on code by Dominik Piehlmaier)
 Description:    Run model checks before time-series
 ==============================================================================*/
+adopath + ./analysis/ado 
 
 *Log file
 cap log using ./logs/time_series.log, replace
 cap mkdir ./output/time_series
+
 * Outpatient appointments
 local a "appt_first appt"
 forvalues i=1/2 {
@@ -34,9 +36,11 @@ forvalues i=1/2 {
         matrix a = r(table)'
         putexcel A6 = matrix(a), rownames
         putexcel save
-        quietly margins postcovid
-        marginsplot
-        graph export ./output/time_series/margins_op_`c'.svg, as(svg) replace
+        *quietly margins postcovid
+        *marginsplot
+        *graph export ./output/time_series/margins_op_`c'.svg, as(svg) replace
+        itsa rate, trperiod(2020m3) figure single lag(1)
+        graph export ./output/time_series/itsa_`c'.svg, as(svg) replace
         import excel using ./output/time_series/tsreg_tables.xlsx, sheet (op_`c') clear
         export delimited using ./output/time_series/tsreg_op_`c'.csv, replace
         }
@@ -66,9 +70,12 @@ putexcel E3=("Prob > F") G3=(Ftail(e(df_m), e(df_r), e(F)))
 matrix a = r(table)'
 putexcel A6 = matrix(a), rownames
 putexcel save
-quietly margins postcovid
-marginsplot
-graph export ./output/time_series/margins_op_appt_medium.svg, as(svg) replace
+*quietly margins postcovid
+*marginsplot
+*graph export ./output/time_series/margins_op_appt_medium.svg, as(svg) replace
+* Itsa model
+itsa rate, trperiod(2020m3) figure treatid(1) lag(1)
+graph export ./output/time_series/itsa_appt_medium.svg, as(svg) replace
 import excel using ./output/time_series/tsreg_tables.xlsx, sheet (op_appt_medium) clear
 export delimited using ./output/time_series/tsreg_op_appt_medium.csv, replace
 
@@ -97,9 +104,11 @@ forvalues i=1/5 {
         matrix a = r(table)'
         putexcel A6 = matrix(a), rownames
         putexcel save
-        quietly margins postcovid
-        marginsplot
-        graph export ./output/time_series/margins_hosp_`c'.svg, as(svg) replace
+        *quietly margins postcovid
+        *marginsplot
+        *graph export ./output/time_series/margins_hosp_`c'.svg, as(svg) replace
+        itsa rate, trperiod(2020m3) figure single lag(1)
+        graph export ./output/time_series/itsa_`c'.svg, as(svg) replace
         import excel using ./output/time_series/tsreg_tables.xlsx, sheet (hosp_`c') clear
         export delimited using ./output/time_series/tsreg_hosp_`c'.csv, replace
 	}
@@ -129,9 +138,12 @@ putexcel E3=("Prob > F") G3=(Ftail(e(df_m), e(df_r), e(F)))
 matrix a = r(table)'
 putexcel A6 = matrix(a), rownames
 putexcel save
-quietly margins postcovid
-marginsplot
-graph export ./output/time_series/margins_hosp_ra_daycase.svg, as(svg) replace
+*quietly margins postcovid
+*marginsplot
+*graph export ./output/time_series/margins_hosp_ra_daycase.svg, as(svg) replace
+* Itsa model
+itsa rate, trperiod(2020m3) figure treatid(2) lag(1)
+graph export ./output/time_series/itsa_ra_daycase.svg, as(svg) replace
 import excel using ./output/time_series/tsreg_tables.xlsx, sheet (hosp_ra_daycase) clear
 export delimited using ./output/time_series/tsreg_hosp_ra_daycase.csv, replace
 
@@ -156,8 +168,10 @@ putexcel E3=("Prob > F") G3=(Ftail(e(df_m), e(df_r), e(F)))
 matrix a = r(table)'
 putexcel A6 = matrix(a), rownames
 putexcel save
-quietly margins postcovid
-marginsplot
-graph export ./output/time_series/margins_med_gc.svg, as(svg) replace
+*quietly margins postcovid
+*marginsplot
+*graph export ./output/time_series/margins_med_gc.svg, as(svg) replace
+itsa rate, trperiod(2020m3) figure single lag(1)
+graph export ./output/time_series/itsa_med_gc.svg, as(svg) replace
 import excel using ./output/time_series/tsreg_tables.xlsx, sheet (med_gc) clear
 export delimited using ./output/time_series/tsreg_med_gc.csv, replace

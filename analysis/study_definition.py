@@ -222,8 +222,8 @@ study = StudyDefinition(
         attended="True",
         between=["2019-04-01", "2020-03-31"],
         return_expectations={
-                "int": {"distribution": "normal", "mean": 3, "stddev": 1},
-                "incidence": 1,
+                "int": {"distribution": "normal", "mean": 8, "stddev": 2},
+                "incidence": 0.9,
             },
     ),
     outpatient_appt_2020=patients.outpatient_appointment_date(
@@ -232,8 +232,8 @@ study = StudyDefinition(
         attended="True",
         between=["2020-04-01", "2021-03-31"],
         return_expectations={
-                "int": {"distribution": "normal", "mean": 3, "stddev": 1},
-                "incidence": 1,
+                "int": {"distribution": "normal", "mean": 8, "stddev": 2},
+                "incidence": 0.9,
             },
     ),
     outpatient_appt_2021=patients.outpatient_appointment_date(
@@ -242,8 +242,8 @@ study = StudyDefinition(
         attended="True",
         between=["2021-04-01", "2022-03-31"],
         return_expectations={
-                "int": {"distribution": "normal", "mean": 3, "stddev": 1},
-                "incidence": 1,
+                "int": {"distribution": "normal", "mean": 8, "stddev": 2,},
+                "incidence": 0.9,
             },
     ),
     # Medium of last consultation for each year

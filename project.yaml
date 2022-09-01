@@ -92,6 +92,6 @@ actions:
     outputs: 
       moderately_sensitive: 
         log: logs/time_series.log
-        graphs: output/time_series/margins*.svg
+        graphs: output/time_series/itsa*.svg
         tables: output/time_series/tsreg*.csv
   
