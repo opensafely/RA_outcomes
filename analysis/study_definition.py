@@ -19,7 +19,7 @@ study = StudyDefinition(
         "rate": "uniform",
         "incidence": 0.5,
     },
-    index_date="2019-04-01",
+    index_date="2018-03-01",
     population=patients.satisfying(
         """
         has_follow_up AND

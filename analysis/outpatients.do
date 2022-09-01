@@ -165,7 +165,7 @@ forvalues i=2019/2021 {
     table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
     save `tempfile', replace
     restore
-    forvalues j=1/2 {
+    forvalues j=1/4 {
         preserve
         keep if op_appt_`i'_cat==`j'
         table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
