@@ -48,7 +48,7 @@ forvalues i=1/2 {
 * Outpatient medium
 import delimited "./output/measures/measure_op_appt_medium_rate.csv", clear	//get csv
 putexcel set ./output/time_series/tsreg_tables, sheet(op_appt_medium) modify
-drop if op_appt_medium==. | op_appt_medium>=4
+drop if op_appt_medium==. | op_appt_medium>=3
 gen temp_date=date(date, "YMD")
 format temp_date %td
 gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
