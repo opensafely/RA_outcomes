@@ -171,7 +171,7 @@ forvalues i=2019/2021 {
         table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
         append using `tempfile'
         save `tempfile', replace
-        if `j'==2 {
+        if `j'==4 {
             export delimited using ./output/tables/characteristics_strata`i'.csv
         }
         restore
