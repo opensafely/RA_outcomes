@@ -1,9 +1,19 @@
-from cohortextractor import StudyDefinition, patients, codelist, codelist_from_csv, Measure  
+from cohortextractor import StudyDefinition, patients, codelist, codelist_from_csv, Measure, combine_codelists  
 
 from common_variables import common_variables
 from codelists import *
 
 ild_code = codelist(["J849"], system="icd10")
+
+opioid_codes = combine_codelists(
+    opioid_high_codes,
+    opioid_non_high_codes,
+    opioid_oral_codes,
+    opioid_nasal_codes,
+    opioid_parental_codes,
+    opioid_rectal_codes,
+    opioid_transdermal_codes
+)
 
 # Inclusion criteria
 # age 18+, 
@@ -48,6 +58,17 @@ study = StudyDefinition(
                 "category": {"ratios": {"STP1": 0.3, "STP2": 0.2, "STP3": 0.5}},
                 },
         ),
+    ),
+    dereg_date=patients.date_deregistered_from_all_supported_practices(
+        on_or_after="index_date",
+        date_format="YYYY-MM-DD",
+        return_expectations={"date": {"earliest": "2020-03-01"}}
+    ),
+    died_fu=patients.died_from_any_cause(
+            on_or_after="index_date",
+            returning="date_of_death",
+            date_format="YYYY-MM-DD",
+            return_expectations={"date": {"earliest": "2020-03-01"}}
     ),
     household=patients.household_as_of(
         "2020-02-01",
@@ -269,6 +290,12 @@ study = StudyDefinition(
         returning="binary_flag",
         return_expectations={"incidence": 0.1},
     ),
+    opioid_prescribing=patients.with_these_medications(
+        opioid_codes,
+        between=["index_date", "last_day_of_month(index_date)"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.1},
+    ),
 
     **common_variables
 )
@@ -313,6 +340,12 @@ measures = [
     Measure(
         id="med_gc_rate",
         numerator="gc_prescribing",
+        denominator="population",
+        group_by="population",
+    ),
+    Measure(
+        id="med_opioid_rate",
+        numerator="opioid_prescribing",
         denominator="population",
         group_by="population",
     ),

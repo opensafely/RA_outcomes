@@ -223,23 +223,23 @@ Contains data
 variable name   type    format     label      variable label
 -------------------------------------------------------------------------------
 dateA           float   %dD/M/Y               
-ra_hosp1        byte    %8.0g                 1 ra_hosp
+ra_hosp1        int     %8.0g                 1 ra_hosp
 population1     int     %8.0g                 1 population
 value1          float   %9.0g                 1 value
 proportion1     float   %9.0g                 1 proportion
-ra_hosp2        byte    %8.0g                 2 ra_hosp
+ra_hosp2        int     %8.0g                 2 ra_hosp
 population2     int     %8.0g                 2 population
 value2          float   %9.0g                 2 value
 proportion2     float   %9.0g                 2 proportion
-ra_hosp3        byte    %8.0g                 3 ra_hosp
+ra_hosp3        int     %8.0g                 3 ra_hosp
 population3     int     %8.0g                 3 population
 value3          float   %9.0g                 3 value
 proportion3     float   %9.0g                 3 proportion
-ra_hosp4        byte    %8.0g                 4 ra_hosp
+ra_hosp4        int     %8.0g                 4 ra_hosp
 population4     int     %8.0g                 4 population
 value4          float   %9.0g                 4 value
 proportion4     float   %9.0g                 4 proportion
-ra_hosp5        byte    %8.0g                 5 ra_hosp
+ra_hosp5        int     %8.0g                 5 ra_hosp
 population5     int     %8.0g                 5 population
 value5          float   %9.0g                 5 value
 proportion5     float   %9.0g                 5 proportion
@@ -271,7 +271,7 @@ Sorted by: dateA
 
 . 
 . * Generates line graphs with rate of prescriptions over time
-. foreach this_group in gc {
+. foreach this_group in gc opioid {
   2.         import delimited using ./output/measures/measure_med_`this_group'_
 > rate.csv, numericcols(3) clear
   3.         * Generate rate per 100,000
@@ -294,11 +294,14 @@ Sorted by: dateA
 (4 vars, 50 obs)
 (note: file ./output/graphs/line_med_gc.svg not found)
 (file ./output/graphs/line_med_gc.svg written in SVG format)
+(4 vars, 50 obs)
+(note: file ./output/graphs/line_med_opioid.svg not found)
+(file ./output/graphs/line_med_opioid.svg written in SVG format)
 
 . 
 end of do-file
 
-. . file open output using "/tmp/tmp.UiItoyqcFl", write text replace
+. . file open output using "/tmp/tmp.ibcOk3jESn", write text replace
 
 . . file write output "success" 
 

@@ -164,3 +164,45 @@ unclear_smoking_codes = codelist_from_csv(
     column="CTV3Code",
     category_column="Category",
 )
+
+opioid_non_high_codes = codelist_from_csv(
+    "codelists/opensafely-non-high-dose-long-acting-opioids-openprescribing-dmd.csv",
+    system="snomed",
+    column="dmd_id",
+)
+
+opioid_high_codes = codelist_from_csv(
+    "codelists/opensafely-high-dose-long-acting-opioids-openprescribing-dmd.csv",
+    system="snomed",
+    column="dmd_id",
+)
+
+opioid_nasal_codes = codelist_from_csv(
+    "codelists/opensafely-opioid-containing-medicines-buccal-nasal-and-oromucosal-excluding-drugs-for-substance-misuse-dmd.csv",
+    system="snomed",
+    column="dmd_id",
+)
+
+opioid_oral_codes = codelist_from_csv(
+    "codelists/opensafely-opioid-containing-medicines-oral-excluding-drugs-for-substance-misuse-dmd.csv",
+    system="snomed",
+    column="dmd_id",
+)
+
+opioid_parental_codes = codelist_from_csv(
+    "codelists/opensafely-opioid-containing-medicines-parenteral-excluding-drugs-for-substance-misuse-dmd.csv",
+    system="snomed",
+    column="dmd_id",
+)
+
+opioid_rectal_codes = codelist_from_csv(
+    "codelists/opensafely-opioid-containing-medicines-rectal-excluding-drugs-for-substance-misuse-dmd.csv",
+    system="snomed",
+    column="dmd_id",
+)
+
+opioid_transdermal_codes = codelist_from_csv(
+    "codelists/opensafely-opioid-containing-medicines-transdermal-excluding-drugs-for-substance-misuse-dmd.csv",
+    system="snomed",
+    column="dmd_id",
+)

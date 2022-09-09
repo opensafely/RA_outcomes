@@ -108,7 +108,7 @@ title("Type of admission", size(small))) graphregion(fcolor(white))
 graph export ./output/graphs/line_ra_daycase.svg, as(svg) replace
 
 * Generates line graphs with rate of prescriptions over time
-foreach this_group in gc {
+foreach this_group in gc opioid {
         import delimited using ./output/measures/measure_med_`this_group'_rate.csv, numericcols(3) clear
         * Generate rate per 100,000
         gen rate = value*100000 

@@ -59,7 +59,13 @@ user/ruthcostello/sepsis/26427682
 opensafely/asthma-oral-prednisolone-medication/2020-04-27
 
 # Opioids
-# TBC
+opensafely/non-high-dose-long-acting-opioids-openprescribing-dmd/39e300ce
+opensafely/high-dose-long-acting-opioids-openprescribing-dmd/52f27403
+opensafely/opioid-containing-medicines-buccal-nasal-and-oromucosal-excluding-drugs-for-substance-misuse-dmd/20d38d99
+opensafely/opioid-containing-medicines-oral-excluding-drugs-for-substance-misuse-dmd/6eb4a72e
+opensafely/opioid-containing-medicines-parenteral-excluding-drugs-for-substance-misuse-dmd/55a533f9
+opensafely/opioid-containing-medicines-rectal-excluding-drugs-for-substance-misuse-dmd/3c95c0c4
+opensafely/opioid-containing-medicines-transdermal-excluding-drugs-for-substance-misuse-dmd/23864d8f
 
 # depression (based on HDR UK https://phenotypes.healthdatagateway.org/phenotypes/PH149/version/298/detail/#home)
  user/emilyherrett/depression_icd10/0aaf5048
