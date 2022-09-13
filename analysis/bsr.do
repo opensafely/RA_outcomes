@@ -105,7 +105,7 @@ restore
 tempfile tempfile
 forvalues i=2019/2021 {
     preserve
-    keep if outpatient_medium_`i'_cat==0
+    keep if outpatient_medium_`i'==0
     table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate ) clear
     save `tempfile', replace
     restore
