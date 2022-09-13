@@ -5,40 +5,18 @@ Date:           08/06/2022
 Author:         Ruth Costello
 Description:    Check data, tabulates frequency of outpatient appointments
 ==============================================================================*/
+adopath + ./analysis/ado 
+
 cap log using ./logs/bsr.log, replace
 
 cap mkdir ./output/tables
 * Import data
-import delimited using ./output/input.csv
+import delimited using ./output/input_bsr.csv
 
-keep if has_ra
+* Drop variables not required
+drop first_ra_code-has_ra
 
-/* Format dates
-gen died_fuA = date(died_fu, "YMD")
-gen dereg_dateA = date(dereg_date, "YMD")
-* Flag if either died or deregistered after 1st September 2019, 2020 and 2021
-gen out_2019 = (died_fuA<date("01Sep2019", "DMY") | dereg_dateA<date("01Sep2019", "DMY"))
-gen out_2020 = (died_fuA<date("01Sep2020", "DMY") | dereg_dateA<date("01Sep2020", "DMY"))
-gen out_2021 = (died_fuA<date("01Sep2021", "DMY") | dereg_dateA<date("01Sep2021", "DMY"))
-*/
 * Format variables
-*re-order ethnicity
- gen eth5=1 if ethnicity==1
- replace eth5=2 if ethnicity==3
- replace eth5=3 if ethnicity==4
- replace eth5=4 if ethnicity==2
- replace eth5=5 if ethnicity==5
- replace eth5=. if ethnicity==.
-
- label define eth5 			1 "White"  					///
-							2 "South Asian"				///						
-							3 "Black"  					///
-							4 "Mixed"					///
-							5 "Other"					
-					
-
-label values eth5 eth5
-safetab eth5, m
 
 * formatting gender
 gen male=(sex=="M")
@@ -46,24 +24,6 @@ replace male = 0 if sex == "F"
 label define male 0"Female" 1"Male"
 label values male male
 safetab male, miss
-
-* Make region numeric
-generate region2=.
-replace region2=0 if region=="East"
-replace region2=1 if region=="East Midlands"
-replace region2=2 if region=="London"
-replace region2=3 if region=="North East"
-replace region2=4 if region=="North West"
-replace region2=5 if region=="South East"
-replace region2=6 if region=="South West"
-replace region2=7 if region=="West Midlands"
-replace region2=8 if region=="Yorkshire and The Humber"
-drop region
-rename region2 region
-label var region "region of England"
-label define region 0 "East" 1 "East Midlands"  2 "London" 3 "North East" 4 "North West" 5 "South East" 6 "South West" 7 "West Midlands" 8 "Yorkshire and The Humber"
-label values region region
-safetab region, miss
 
 *create a 4 category rural urban variable 
 generate urban_rural_5=.
@@ -93,32 +53,92 @@ label define age 0 "18 - 40 years" 1 "41 - 60 years" 2 "61 - 80 years" 3 ">80 ye
 label values age_cat age
 safetab age_cat, miss
 
-* Flag if in a care-home
-    gen care_home=care_home_type!="PR"
-
-* Smoking status
-gen smoking = 0 if smoking_status=="N"
-replace smoking = 1 if smoking_status=="S"
-replace smoking = 2 if smoking_status=="E"
-replace smoking = 3 if smoking==.
-
-label define smok 1 "Current smoker" 2 "Ex-smoker" 0 "Never smoked" 3 "Unknown"
-label values smoking smok
-
-* BMI categories
-egen bmi_cat = cut(bmi), at(0, 1, 18.5, 24.9, 29.9, 39.9, 100) icodes
-bys bmi_cat: sum bmi
-label define bmi 0 "Missing" 1 "Underweight" 2 "Healthy range" 3 "Overweight" 4 "Obese" 5 "Morbidly obese"
-label values bmi_cat bmi
-
-* Categorise number of outpatient appointments
-label define appt 0 "No appointments" 1 "1-2 per year" 2 "3-6 per year" 3 "7-12 per year" 4 "More than 12 per year"
-forvalues i=2019/2021 {
-    egen op_appt_`i'_cat = cut(outpatient_appt_`i'), at(0, 1, 3, 7, 13, 1000) icodes
-    label values op_appt_`i'_cat appt
-    }
-
 * Determine frequency that mode of appointment captured each year
 tab outpatient_medium_2019, m 
 tab outpatient_medium_2020, m 
 tab outpatient_medium_2021, m 
+
+forvalues i=2019/2021 {
+    * set talk type (medium=4) to missing and combine telephone and telemedicine
+    replace outpatient_medium_`i' = . if outpatient_medium_`i'==4
+    replace outpatient_medium_`i' = 2 if outpatient_medium_`i'==3
+    replace outpatient_medium_`i' = 0 if outpatient_medium_`i'==.
+    }
+
+* Format dates
+gen died_fuA = date(died_fu, "YMD")
+gen dereg_dateA = date(dereg_date, "YMD")
+* Follow-up time
+gen end_date = min(died_fuA, dereg_dateA)
+replace end_date=. if end_date>date("31Mar2022", "DMY") & end_date!=.
+gen end_2019 = end_date<date("31Mar2020", "DMY")
+gen end_2020 = end_date<date("31Mar2021", "DMY") & end_2019!=1
+gen end_2021 = end_date<date("31Dec2021", "DMY") & end_2020!=1
+
+tab end_2019 
+tab end_2020
+tab end_2021
+
+* Categorise number of outpatient appointments
+label define appt 0 "No appointments" 1 "1-2 per year" 2 "3-6 per year" 3 "7+ per year"
+forvalues i=2019/2021 {
+    egen op_appt_`i'_cat = cut(outpatient_appt_`i'), at(0, 1, 3, 7, 1000) icodes
+    label values op_appt_`i'_cat appt
+    }
+
+preserve
+* Tabulate number of appointments per year
+table1_mc, vars(op_appt_2019_cat cate \ op_appt_2020_cat cate \ op_appt_2021_cat cate) clear
+export delimited using ./output/tables/op_appt_yrs.csv
+restore 
+* Tabulate mode of last appointments per year
+preserve 
+table1_mc, vars(outpatient_medium_2019 cate \ outpatient_medium_2020 cate \ outpatient_medium_2021 cate) clear
+export delimited using ./output/tables/bsr_op_appt_medium_yr.csv
+restore 
+* Tabulate overall characteristics 
+preserve
+table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate) clear
+export delimited using ./output/tables/bsr_op_chars.csv
+restore
+* Characteristics by mode of appointment
+tempfile tempfile
+forvalues i=2019/2021 {
+    preserve
+    keep if op_appt_`i'_cat==0
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate ) clear
+    save `tempfile', replace
+    restore
+    forvalues j=0/2 {
+        preserve
+        keep if outpatient_medium_`i'==`j'
+        table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate) clear
+        append using `tempfile'
+        save `tempfile', replace
+        if `j'==2 {
+            export delimited using ./output/tables/bsr_characteristics_strata`i'.csv
+        }
+        restore
+    }
+}   
+/*gen fu_2019 = ((end_date - date("01Apr2019", "DMY")) /365) if end_date<date("31Mar2020", "DMY")
+gen exit = end_date!=.
+replace end_date = date("31Mar2022", "DMY") if end_date==.
+gen start = date("01Apr2019", "DMY")
+
+stset end_date, failure(exit) origin(start) id(patient_id)
+stsplit time_period, at(365, 730, 1095)
+preserve 
+
+gen total_appt_2019 = total(outpatient_appt_2019) if time_period==0
+gen total_appt_2020 = total(outpatient_appt_2020) if time_period==365
+gen total_appt_2021 = total(outpatient_appt_2021) if time_period==730
+gen op_appt_no = outpatient_appt_2019 if time_period==0
+replace op_appt_no = outpatient_appt_2020 if time_period==365
+replace op_appt_no = outpatient_appt_2021 if time_period==730
+tab time_period
+sum op_appt_no
+
+strate op_appt_no if time_period==0*/
+log close
+ 

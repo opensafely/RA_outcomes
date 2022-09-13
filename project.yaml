@@ -95,9 +95,16 @@ actions:
         graphs: output/time_series/itsa*.svg
         tables: output/time_series/tsreg*.csv
   
+  #Study definition for outpatient objectives 1 & 2
+  generate_study_population_bsr:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_bsr
+    outputs:
+      highly_sensitive:
+        cohort: output/input_bsr.csv
   bsr: 
     run: stata-mp:latest analysis/bsr.do
-    needs: [generate_study_population]
+    needs: [generate_study_population_bsr]
     outputs:
       moderately_sensitive:
         log: logs/bsr.log
+        output: output/tables/bsr_*.csv
