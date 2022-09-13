@@ -1,0 +1,421 @@
+
+. 
+. cap mkdir ./output/tables
+
+. * Import data
+. import delimited using ./output/input.csv
+(44 vars, 10,000 obs)
+
+. 
+. keep if has_ra
+(5,000 observations deleted)
+
+. 
+. * Format dates
+. gen died_fuA = date(died_fu, "YMD")
+(2,480 missing values generated)
+
+. gen dereg_dateA = date(dereg_date, "YMD")
+(2,514 missing values generated)
+
+. * Flag if either died or deregistered after 1st September 2019, 2020 and 2021
+. gen out_2019 = (died_fuA<date("01Sep2019", "DMY") | dereg_dateA<date("01Sep20
+> 19", "DMY"))
+
+. gen out_2020 = (died_fuA<date("01Sep2020", "DMY") | dereg_dateA<date("01Sep20
+> 20", "DMY"))
+
+. gen out_2021 = (died_fuA<date("01Sep2021", "DMY") | dereg_dateA<date("01Sep20
+> 21", "DMY"))
+
+. 
+. * Format variables
+. *re-order ethnicity
+.  gen eth5=1 if ethnicity==1
+(3,964 missing values generated)
+
+.  replace eth5=2 if ethnicity==3
+(1,011 real changes made)
+
+.  replace eth5=3 if ethnicity==4
+(967 real changes made)
+
+.  replace eth5=4 if ethnicity==2
+(948 real changes made)
+
+.  replace eth5=5 if ethnicity==5
+(1,038 real changes made)
+
+.  replace eth5=. if ethnicity==.
+(0 real changes made)
+
+. 
+.  label define eth5                      1 "White"                            
+>            ///
+>                                                         2 "South Asian"      
+>                    ///                                             
+>                                                         3 "Black"            
+>                            ///
+>                                                         4 "Mixed"            
+>                            ///
+>                                                         5 "Other"            
+>                            
+
+.                                         
+. 
+. label values eth5 eth5
+
+. safetab eth5, m
+5
+
+       eth5 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+      White |      1,036       20.72       20.72
+South Asian |      1,011       20.22       40.94
+      Black |        967       19.34       60.28
+      Mixed |        948       18.96       79.24
+      Other |      1,038       20.76      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+. 
+. * formatting gender
+. gen male=(sex=="M")
+
+. replace male = 0 if sex == "F"
+(0 real changes made)
+
+. label define male 0"Female" 1"Male"
+
+. label values male male
+
+. safetab male, miss
+5
+
+       male |      Freq.     Percent        Cum.
+------------+-----------------------------------
+     Female |      2,571       51.42       51.42
+       Male |      2,429       48.58      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+. 
+. * Make region numeric
+. generate region2=.
+(5,000 missing values generated)
+
+. replace region2=0 if region=="East"
+(0 real changes made)
+
+. replace region2=1 if region=="East Midlands"
+(538 real changes made)
+
+. replace region2=2 if region=="London"
+(978 real changes made)
+
+. replace region2=3 if region=="North East"
+(483 real changes made)
+
+. replace region2=4 if region=="North West"
+(507 real changes made)
+
+. replace region2=5 if region=="South East"
+(986 real changes made)
+
+. replace region2=6 if region=="South West"
+(0 real changes made)
+
+. replace region2=7 if region=="West Midlands"
+(490 real changes made)
+
+. replace region2=8 if region=="Yorkshire and The Humber"
+(0 real changes made)
+
+. drop region
+
+. rename region2 region
+
+. label var region "region of England"
+
+. label define region 0 "East" 1 "East Midlands"  2 "London" 3 "North East" 4 "
+> North West" 5 "South East" 6 "South West" 7 "West Midlands" 8 "Yorkshire and 
+> The Humber"
+
+. label values region region
+
+. safetab region, miss
+7
+
+       region of England |      Freq.     Percent        Cum.
+-------------------------+-----------------------------------
+           East Midlands |        538       10.76       10.76
+                  London |        978       19.56       30.32
+              North East |        483        9.66       39.98
+              North West |        507       10.14       50.12
+              South East |        986       19.72       69.84
+           West Midlands |        490        9.80       79.64
+                       . |      1,018       20.36      100.00
+-------------------------+-----------------------------------
+                   Total |      5,000      100.00
+
+. 
+. *create a 4 category rural urban variable 
+. generate urban_rural_5=.
+(5,000 missing values generated)
+
+. la var urban_rural_5 "Rural Urban in five categories"
+
+. replace urban_rural_5=1 if urban_rural==1
+(633 real changes made)
+
+. replace urban_rural_5=2 if urban_rural==2
+(624 real changes made)
+
+. replace urban_rural_5=3 if urban_rural==3|urban_rural==4
+(1,218 real changes made)
+
+. replace urban_rural_5=4 if urban_rural==5|urban_rural==6
+(1,241 real changes made)
+
+. replace urban_rural_5=5 if urban_rural==7|urban_rural==8
+(1,284 real changes made)
+
+. label define urban_rural_5 1 "Urban major conurbation" 2 "Urban minor conurba
+> tion" 3 "Urban city and town" 4 "Rural town and fringe" 5 "Rural village and 
+> dispersed"
+
+. label values urban_rural_5 urban_rural_5
+
+. safetab urban_rural_5, miss
+14
+
+        Rural Urban in five |
+                 categories |      Freq.     Percent        Cum.
+----------------------------+-----------------------------------
+    Urban major conurbation |        633       12.66       12.66
+    Urban minor conurbation |        624       12.48       25.14
+        Urban city and town |      1,218       24.36       49.50
+      Rural town and fringe |      1,241       24.82       74.32
+Rural village and dispersed |      1,284       25.68      100.00
+----------------------------+-----------------------------------
+                      Total |      5,000      100.00
+
+. 
+. *generate a binary rural urban (with missing assigned to urban)
+. generate urban_rural_bin=.
+(5,000 missing values generated)
+
+. replace urban_rural_bin=1 if urban_rural<=4|urban_rural==.
+(2,475 real changes made)
+
+. replace urban_rural_bin=0 if urban_rural>4 & urban_rural!=.
+(2,525 real changes made)
+
+. label define urban_rural_bin 0 "Rural" 1 "Urban"
+
+. label values urban_rural_bin urban_rural_bin
+
+. safetab urban_rural_bin urban_rural, miss
+28
+
+urban_rura |                      urban_rural
+     l_bin |         1          2          3          4          5 |     Total
+-----------+-------------------------------------------------------+----------
+     Rural |         0          0          0          0        613 |     2,525 
+     Urban |       633        624        608        610          0 |     2,475 
+-----------+-------------------------------------------------------+----------
+     Total |       633        624        608        610        613 |     5,000 
+
+
+urban_rura |           urban_rural
+     l_bin |         6          7          8 |     Total
+-----------+---------------------------------+----------
+     Rural |       628        642        642 |     2,525 
+     Urban |         0          0          0 |     2,475 
+-----------+---------------------------------+----------
+     Total |       628        642        642 |     5,000 
+
+. label var urban_rural_bin "Rural-Urban"
+
+. 
+. * Define age categories
+. * Create age categories
+. egen age_cat = cut(age), at(18, 40, 60, 80, 120) icodes
+(1048 missing values generated)
+
+. label define age 0 "18 - 40 years" 1 "41 - 60 years" 2 "61 - 80 years" 3 ">80
+>  years"
+
+. label values age_cat age
+
+. safetab age_cat, miss
+8
+
+      age_cat |      Freq.     Percent        Cum.
+--------------+-----------------------------------
+18 - 40 years |      1,419       28.38       28.38
+41 - 60 years |      1,322       26.44       54.82
+61 - 80 years |        925       18.50       73.32
+    >80 years |        286        5.72       79.04
+            . |      1,048       20.96      100.00
+--------------+-----------------------------------
+        Total |      5,000      100.00
+
+. 
+. * Flag if in a care-home
+.     gen care_home=care_home_type!="PR"
+
+. 
+. * Smoking status
+. gen smoking = 0 if smoking_status=="N"
+(4,504 missing values generated)
+
+. replace smoking = 1 if smoking_status=="S"
+(1,017 real changes made)
+
+. replace smoking = 2 if smoking_status=="E"
+(756 real changes made)
+
+. replace smoking = 3 if smoking==.
+(2,731 real changes made)
+
+. 
+. label define smok 1 "Current smoker" 2 "Ex-smoker" 0 "Never smoked" 3 "Unknow
+> n"
+
+. label values smoking smok
+
+. 
+. * BMI categories
+. egen bmi_cat = cut(bmi), at(0, 1, 18.5, 24.9, 29.9, 39.9, 100) icodes
+
+. bys bmi_cat: sum bmi
+
+-------------------------------------------------------------------------------
+-> bmi_cat = 0
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         bmi |        976    .0003728    .0116475          0   .3638808
+
+-------------------------------------------------------------------------------
+-> bmi_cat = 1
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         bmi |        505    14.65387    3.323411    1.42284   18.48668
+
+-------------------------------------------------------------------------------
+-> bmi_cat = 2
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         bmi |        930    21.99686    1.825191   18.52963   24.89248
+
+-------------------------------------------------------------------------------
+-> bmi_cat = 3
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         bmi |        979    27.43343    1.432518    24.9101   29.89699
+
+-------------------------------------------------------------------------------
+-> bmi_cat = 4
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         bmi |      1,324    34.03153    2.674341   29.90074   39.89174
+
+-------------------------------------------------------------------------------
+-> bmi_cat = 5
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         bmi |        286    43.53089     3.11236   39.91799   56.76962
+
+
+. label define bmi 0 "Missing" 1 "Underweight" 2 "Healthy range" 3 "Overweight"
+>  4 "Obese" 5 "Morbidly obese"
+
+. label values bmi_cat bmi
+
+. 
+. * Categorise number of outpatient appointments
+. label define appt 0 "No appointments" 1 "1-2 per year" 2 "3-6 per year" 3 "7-
+> 12 per year" 4 "More than 12 per year"
+
+. forvalues i=2019/2021 {
+  2.     egen op_appt_`i'_cat = cut(outpatient_appt_`i'), at(0, 1, 3, 7, 13, 10
+> 00) icodes
+  3.     label values op_appt_`i'_cat appt
+  4.     }
+
+. 
+. * Determine frequency that mode of appointment captured each year
+. tab outpatient_medium_2019, m 
+
+outpatient_ |
+medium_2019 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |        495        9.90        9.90
+          2 |        269        5.38       15.28
+          3 |        276        5.52       20.80
+          4 |        221        4.42       25.22
+          5 |        271        5.42       30.64
+          6 |        230        4.60       35.24
+          7 |        245        4.90       40.14
+          8 |        236        4.72       44.86
+         98 |        266        5.32       50.18
+          . |      2,491       49.82      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+. tab outpatient_medium_2020, m 
+
+outpatient_ |
+medium_2020 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |        562       11.24       11.24
+          2 |        240        4.80       16.04
+          3 |        233        4.66       20.70
+          4 |        240        4.80       25.50
+          5 |        247        4.94       30.44
+          6 |        253        5.06       35.50
+          7 |        247        4.94       40.44
+          8 |        240        4.80       45.24
+         98 |        213        4.26       49.50
+          . |      2,525       50.50      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+. tab outpatient_medium_2021, m 
+
+outpatient_ |
+medium_2021 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |        511       10.22       10.22
+          2 |        251        5.02       15.24
+          3 |        260        5.20       20.44
+          4 |        252        5.04       25.48
+          5 |        247        4.94       30.42
+          6 |        260        5.20       35.62
+          7 |        216        4.32       39.94
+          8 |        258        5.16       45.10
+         98 |        274        5.48       50.58
+          . |      2,471       49.42      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+. 
+end of do-file
+
+. . file open output using "/tmp/tmp.z3Y3aA3Xr9", write text replace
+
+. . file write output "success" 
+
+. . file close output
+
+. 
+end of do-file
+
+
