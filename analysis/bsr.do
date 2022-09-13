@@ -105,11 +105,11 @@ restore
 tempfile tempfile
 forvalues i=2019/2021 {
     preserve
-    keep if op_appt_`i'_cat==0
+    keep if outpatient_medium_`i'_cat==0
     table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate ) clear
     save `tempfile', replace
     restore
-    forvalues j=0/2 {
+    forvalues j=1/2 {
         preserve
         keep if outpatient_medium_`i'==`j'
         table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate) clear
@@ -139,6 +139,7 @@ replace op_appt_no = outpatient_appt_2021 if time_period==730
 tab time_period
 sum op_appt_no
 
-strate op_appt_no if time_period==0*/
+strate op_appt_no if time_period==0
+*/
 log close
  
