@@ -11,10 +11,11 @@ cap log using ./logs/bsr.log, replace
 
 cap mkdir ./output/tables
 * Import data
-import delimited using ./output/input_bsr.csv
+import delimited using ./output/measures/op/input_bsr_2019-04-01.csv
 
 * Drop variables not required
-drop first_ra_code-has_ra
+/*drop first_ra_code-has_ra*/
+drop ethnicity-region
 
 * Format variables
 
@@ -53,38 +54,42 @@ label define age 0 "18 - 40 years" 1 "41 - 60 years" 2 "61 - 80 years" 3 ">80 ye
 label values age_cat age
 safetab age_cat, miss
 
-* Determine frequency that mode of appointment captured each year
-tab outpatient_medium_2019, m 
-tab outpatient_medium_2020, m 
-tab outpatient_medium_2021, m 
+* Reshape to long format 
+reshape long op_appt_date_ op_appt_medium_, i(patient_id) j(op_appt_number) 
+rename op_appt_date_ op_appt_date 
+rename op_appt_medium_ op_appt_medium
 
-forvalues i=2019/2021 {
-    * set talk type (medium=4) to missing and combine telephone and telemedicine
-    replace outpatient_medium_`i' = . if outpatient_medium_`i'==4
-    replace outpatient_medium_`i' = 2 if outpatient_medium_`i'==3
-    replace outpatient_medium_`i' = 0 if outpatient_medium_`i'==.
-    }
+* set talk type (medium=4) to missing and combine telephone and telemedicine
+replace op_appt_medium = . if op_appt_medium==4
+replace op_appt_medium = 2 if op_appt_medium==3
+replace op_appt_medium = 0 if op_appt_medium==.
 
 * Format dates
+gen op_appt_dateA = date(op_appt_date, "YMD")
 gen died_fuA = date(died_fu, "YMD")
 gen dereg_dateA = date(dereg_date, "YMD")
 * Follow-up time
-gen end_date = min(died_fuA, dereg_dateA)
-replace end_date=. if end_date>date("31Mar2022", "DMY") & end_date!=.
-gen end_2019 = end_date<date("31Mar2020", "DMY")
-gen end_2020 = end_date<date("31Mar2021", "DMY") & end_2019!=1
-gen end_2021 = end_date<date("31Dec2021", "DMY") & end_2020!=1
-
-tab end_2019 
-tab end_2020
-tab end_2021
+gen end_date = min(died_fuA, dereg_dateA, date("2020-03-31", "YMD"))
+* display value of end date in period
+di date("2020-03-31", "YMD")
+* determine range of dates for outpatient appointments to determine which should be dropped
+sum op_appt_dateA
+drop if op_appt_dateA > end_date
+sum op_appt_dateA
 
 * Categorise number of outpatient appointments
-label define appt 0 "No appointments" 1 "1-2 per year" 2 "3-6 per year" 3 "7+ per year"
-forvalues i=2019/2021 {
-    egen op_appt_`i'_cat = cut(outpatient_appt_`i'), at(0, 1, 3, 7, 1000) icodes
-    label values op_appt_`i'_cat appt
+bys patient_id: egen tot_appts = total(op_appt_dateA!=.)
+sum tot_appts, d
+
+* Determine total number and proportion of in-person and telephone appointments
+forvalues i=0/2 {
+    bys patient_id: egen tot_medium_`i' = total(op_appt_medium==`i')
+    sum tot_medium_`i', d
+    gen prop_medium_`i' = (tot_medium_`i'/tot_appts)*100
+    sum prop_medium_`i', d
     }
+
+/*gen year = 2019
 
 preserve
 * Tabulate number of appointments per year
@@ -120,7 +125,8 @@ forvalues i=2019/2021 {
         }
         restore
     }
-}   
+} 
+*/  
 /*gen fu_2019 = ((end_date - date("01Apr2019", "DMY")) /365) if end_date<date("31Mar2020", "DMY")
 gen exit = end_date!=.
 replace end_date = date("31Mar2022", "DMY") if end_date==.

@@ -3,12 +3,13 @@
 . cap mkdir ./output/tables
 
 . * Import data
-. import delimited using ./output/input_bsr.csv
-(35 vars, 10,000 obs)
+. import delimited using ./output/measures/op/input_bsr_2019-04-01.csv
+(36 vars, 10,000 obs)
 
 . 
 . * Drop variables not required
-. drop first_ra_code-has_ra
+. /*drop first_ra_code-has_ra*/
+. drop ethnicity-region
 
 . 
 . * Format variables
@@ -28,8 +29,8 @@
 
        male |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-     Female |      5,027       50.27       50.27
-       Male |      4,973       49.73      100.00
+     Female |      5,068       50.68       50.68
+       Male |      4,932       49.32      100.00
 ------------+-----------------------------------
       Total |     10,000      100.00
 
@@ -41,19 +42,19 @@
 . la var urban_rural_5 "Rural Urban in five categories"
 
 . replace urban_rural_5=1 if urban_rural==1
-(1,210 real changes made)
+(1,303 real changes made)
 
 . replace urban_rural_5=2 if urban_rural==2
-(1,243 real changes made)
+(1,232 real changes made)
 
 . replace urban_rural_5=3 if urban_rural==3|urban_rural==4
-(2,478 real changes made)
+(2,451 real changes made)
 
 . replace urban_rural_5=4 if urban_rural==5|urban_rural==6
-(2,540 real changes made)
+(2,461 real changes made)
 
 . replace urban_rural_5=5 if urban_rural==7|urban_rural==8
-(2,529 real changes made)
+(2,553 real changes made)
 
 . label define urban_rural_5 1 "Urban major conurbation" 2 "Urban minor conurba
 > tion" 3 "Urban city and town" 4 "Rural town and fringe" 5 "Rural village and 
@@ -67,11 +68,11 @@
         Rural Urban in five |
                  categories |      Freq.     Percent        Cum.
 ----------------------------+-----------------------------------
-    Urban major conurbation |      1,210       12.10       12.10
-    Urban minor conurbation |      1,243       12.43       24.53
-        Urban city and town |      2,478       24.78       49.31
-      Rural town and fringe |      2,540       25.40       74.71
-Rural village and dispersed |      2,529       25.29      100.00
+    Urban major conurbation |      1,303       13.03       13.03
+    Urban minor conurbation |      1,232       12.32       25.35
+        Urban city and town |      2,451       24.51       49.86
+      Rural town and fringe |      2,461       24.61       74.47
+Rural village and dispersed |      2,553       25.53      100.00
 ----------------------------+-----------------------------------
                       Total |     10,000      100.00
 
@@ -81,10 +82,10 @@ Rural village and dispersed |      2,529       25.29      100.00
 (10,000 missing values generated)
 
 . replace urban_rural_bin=1 if urban_rural<=4|urban_rural==.
-(4,931 real changes made)
+(4,986 real changes made)
 
 . replace urban_rural_bin=0 if urban_rural>4 & urban_rural!=.
-(5,069 real changes made)
+(5,014 real changes made)
 
 . label define urban_rural_bin 0 "Rural" 1 "Urban"
 
@@ -96,19 +97,19 @@ Rural village and dispersed |      2,529       25.29      100.00
 urban_rura |                      urban_rural
      l_bin |         1          2          3          4          5 |     Total
 -----------+-------------------------------------------------------+----------
-     Rural |         0          0          0          0      1,264 |     5,069 
-     Urban |     1,210      1,243      1,231      1,247          0 |     4,931 
+     Rural |         0          0          0          0      1,258 |     5,014 
+     Urban |     1,303      1,232      1,208      1,243          0 |     4,986 
 -----------+-------------------------------------------------------+----------
-     Total |     1,210      1,243      1,231      1,247      1,264 |    10,000 
+     Total |     1,303      1,232      1,208      1,243      1,258 |    10,000 
 
 
 urban_rura |           urban_rural
      l_bin |         6          7          8 |     Total
 -----------+---------------------------------+----------
-     Rural |     1,276      1,255      1,274 |     5,069 
-     Urban |         0          0          0 |     4,931 
+     Rural |     1,203      1,284      1,269 |     5,014 
+     Urban |         0          0          0 |     4,986 
 -----------+---------------------------------+----------
-     Total |     1,276      1,255      1,274 |    10,000 
+     Total |     1,203      1,284      1,269 |    10,000 
 
 . label var urban_rural_bin "Rural-Urban"
 
@@ -116,7 +117,7 @@ urban_rura |           urban_rural
 . * Define age categories
 . * Create age categories
 . egen age_cat = cut(age), at(18, 40, 60, 80, 120) icodes
-(2145 missing values generated)
+(2152 missing values generated)
 
 . label define age 0 "18 - 40 years" 1 "41 - 60 years" 2 "61 - 80 years" 3 ">80
 >  years"
@@ -128,839 +129,196 @@ urban_rura |           urban_rural
 
       age_cat |      Freq.     Percent        Cum.
 --------------+-----------------------------------
-18 - 40 years |      2,865       28.65       28.65
-41 - 60 years |      2,598       25.98       54.63
-61 - 80 years |      1,897       18.97       73.60
-    >80 years |        495        4.95       78.55
-            . |      2,145       21.45      100.00
+18 - 40 years |      2,850       28.50       28.50
+41 - 60 years |      2,663       26.63       55.13
+61 - 80 years |      1,860       18.60       73.73
+    >80 years |        475        4.75       78.48
+            . |      2,152       21.52      100.00
 --------------+-----------------------------------
         Total |     10,000      100.00
 
 . 
-. * Determine frequency that mode of appointment captured each year
-. tab outpatient_medium_2019, m 
+. * Reshape to long format 
+. reshape long op_appt_date_ op_appt_medium_, i(patient_id) j(op_appt_number) 
+(note: j = 1 2 3 4 5 6 7 8 9 10)
 
-outpatient_ |
-medium_2019 |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          1 |      1,025       10.25       10.25
-          2 |        505        5.05       15.30
-          3 |        506        5.06       20.36
-          4 |        526        5.26       25.62
-          5 |        503        5.03       30.65
-          6 |        460        4.60       35.25
-          7 |        488        4.88       40.13
-          8 |        484        4.84       44.97
-         98 |        503        5.03       50.00
-          . |      5,000       50.00      100.00
-------------+-----------------------------------
-      Total |     10,000      100.00
+Data                               wide   ->   long
+-----------------------------------------------------------------------------
+Number of obs.                    10000   ->  100000
+Number of variables                  36   ->      19
+j variable (10 values)                    ->   op_appt_number
+xij variables:
+op_appt_date_1 op_appt_date_2 ... op_appt_date_10->op_appt_date_
+op_appt_medium_1 op_appt_medium_2 ... op_appt_medium_10->op_appt_medium_
+-----------------------------------------------------------------------------
 
-. tab outpatient_medium_2020, m 
+. rename op_appt_date_ op_appt_date 
 
-outpatient_ |
-medium_2020 |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          1 |      1,000       10.00       10.00
-          2 |        524        5.24       15.24
-          3 |        498        4.98       20.22
-          4 |        514        5.14       25.36
-          5 |        484        4.84       30.20
-          6 |        508        5.08       35.28
-          7 |        456        4.56       39.84
-          8 |        526        5.26       45.10
-         98 |        490        4.90       50.00
-          . |      5,000       50.00      100.00
-------------+-----------------------------------
-      Total |     10,000      100.00
-
-. tab outpatient_medium_2021, m 
-
-outpatient_ |
-medium_2021 |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          1 |        989        9.89        9.89
-          2 |        507        5.07       14.96
-          3 |        500        5.00       19.96
-          4 |        527        5.27       25.23
-          5 |        480        4.80       30.03
-          6 |        498        4.98       35.01
-          7 |        506        5.06       40.07
-          8 |        502        5.02       45.09
-         98 |        491        4.91       50.00
-          . |      5,000       50.00      100.00
-------------+-----------------------------------
-      Total |     10,000      100.00
+. rename op_appt_medium_ op_appt_medium
 
 . 
-. forvalues i=2019/2021 {
-  2.     * set talk type (medium=4) to missing and combine telephone and teleme
-> dicine
-.     replace outpatient_medium_`i' = . if outpatient_medium_`i'==4
-  3.     replace outpatient_medium_`i' = 2 if outpatient_medium_`i'==3
-  4.     replace outpatient_medium_`i' = 0 if outpatient_medium_`i'==.
-  5.     }
-(526 real changes made, 526 to missing)
-(506 real changes made)
-(5,526 real changes made)
-(514 real changes made, 514 to missing)
-(498 real changes made)
-(5,514 real changes made)
-(527 real changes made, 527 to missing)
-(500 real changes made)
-(5,527 real changes made)
+. * set talk type (medium=4) to missing and combine telephone and telemedicine
+. replace op_appt_medium = . if op_appt_medium==4
+(5,088 real changes made, 5,088 to missing)
+
+. replace op_appt_medium = 2 if op_appt_medium==3
+(5,030 real changes made)
+
+. replace op_appt_medium = 0 if op_appt_medium==.
+(55,088 real changes made)
 
 . 
 . * Format dates
+. gen op_appt_dateA = date(op_appt_date, "YMD")
+(54,848 missing values generated)
+
 . gen died_fuA = date(died_fu, "YMD")
-(5,000 missing values generated)
+(50,000 missing values generated)
 
 . gen dereg_dateA = date(dereg_date, "YMD")
-(5,000 missing values generated)
+(50,000 missing values generated)
 
 . * Follow-up time
-. gen end_date = min(died_fuA, dereg_dateA)
-(2,488 missing values generated)
+. gen end_date = min(died_fuA, dereg_dateA, date("2020-03-31", "YMD"))
 
-. replace end_date=. if end_date>date("31Mar2022", "DMY") & end_date!=.
-(967 real changes made, 967 to missing)
+. * display value of end date in period
+. di date("2020-03-31", "YMD")
+22005
 
-. gen end_2019 = end_date<date("31Mar2020", "DMY")
+. * determine range of dates for outpatient appointments to determine which sho
+> uld be dropped
+. sum op_appt_dateA
 
-. gen end_2020 = end_date<date("31Mar2021", "DMY") & end_2019!=1
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+op_appt_da~A |     45,152    544.3818    12992.89     -21913      22902
 
-. gen end_2021 = end_date<date("31Dec2021", "DMY") & end_2020!=1
+. drop if op_appt_dateA > end_date
+(55,860 observations deleted)
 
-. 
-. tab end_2019 
+. sum op_appt_dateA
 
-   end_2019 |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          0 |      9,698       96.98       96.98
-          1 |        302        3.02      100.00
-------------+-----------------------------------
-      Total |     10,000      100.00
-
-. tab end_2020
-
-   end_2020 |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          0 |      6,492       64.92       64.92
-          1 |      3,508       35.08      100.00
-------------+-----------------------------------
-      Total |     10,000      100.00
-
-. tab end_2021
-
-   end_2021 |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          0 |      7,589       75.89       75.89
-          1 |      2,411       24.11      100.00
-------------+-----------------------------------
-      Total |     10,000      100.00
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+op_appt_da~A |     44,140    42.08758     12705.4     -21913      22004
 
 . 
 . * Categorise number of outpatient appointments
-. label define appt 0 "No appointments" 1 "1-2 per year" 2 "3-6 per year" 3 "7+
->  per year"
+. bys patient_id: egen tot_appts = total(op_appt_dateA!=.)
 
-. forvalues i=2019/2021 {
-  2.     egen op_appt_`i'_cat = cut(outpatient_appt_`i'), at(0, 1, 3, 7, 1000) 
-> icodes
-  3.     label values op_appt_`i'_cat appt
-  4.     }
+. sum tot_appts, d
+
+                          tot_appts
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            2              1
+ 5%            3              1
+10%            3              1       Obs              44,140
+25%            4              1       Sum of Wgt.      44,140
+
+50%            5                      Mean           4.935025
+                        Largest       Std. Dev.      1.437615
+75%            6             10
+90%            7             10       Variance       2.066736
+95%            7             10       Skewness       .0897944
+99%            8             10       Kurtosis       2.862019
 
 . 
-. preserve
+. * Determine total number and proportion of in-person and telephone appointmen
+> ts
+. forvalues i=0/2 {
+  2.     bys patient_id: egen tot_medium_`i' = total(op_appt_medium==`i')
+  3.     gen prop_medium_`i' = (tot_medium_`i'/tot_appts)*100
+  4.     sum prop_medium_`i', d
+  5.     }
 
-. * Tabulate number of appointments per year
-. table1_mc, vars(op_appt_2019_cat cate \ op_appt_2020_cat cate \ op_appt_2021_
+                        prop_medium_0
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%     16.66667              0
+10%           25              0       Obs              44,140
+25%           40              0       Sum of Wgt.      44,140
+
+50%           50                      Mean           54.99773
+                        Largest       Std. Dev.      23.80864
+75%     71.42857            100
+90%     83.33334            100       Variance       566.8515
+95%          100            100       Skewness      -.0985371
+99%          100            100       Kurtosis       2.696028
+
+                        prop_medium_1
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs              44,140
+25%            0              0       Sum of Wgt.      44,140
+
+50%            0                      Mean           10.07476
+                        Largest       Std. Dev.      14.41599
+75%           20            100
+90%     33.33333            100       Variance       207.8209
+95%           40            100       Skewness        1.53317
+99%           50            100       Kurtosis       5.888591
+
+                        prop_medium_2
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs              44,140
+25%            0              0       Sum of Wgt.      44,140
+
+50%            0                      Mean           10.01586
+                        Largest       Std. Dev.      14.03179
+75%           20            100
+90%     28.57143            100       Variance       196.8911
+95%     33.33333            100       Skewness       1.395069
+99%           50            100       Kurtosis       5.028208
+
+. 
+. /*gen year = 2019
+> 
+> preserve
+> * Tabulate number of appointments per year
+> table1_mc, vars(op_appt_2019_cat cate \ op_appt_2020_cat cate \ op_appt_2021_
 > cat cate) clear
-
-  +---------------------------------+
-  | factor                N_1   m_1 |
-  |---------------------------------|
-  | op_appt_2019_cat   10,000     0 |
-  |---------------------------------|
-  | op_appt_2020_cat   10,000     0 |
-  |---------------------------------|
-  | op_appt_2021_cat   10,000     0 |
-  +---------------------------------+
-   N_ ... #records used below,   m_ ... #records not used
- 
-  +----------------------------------------------------+
-  |                                      Total         |
-  |----------------------------------------------------|
-  |                                      N=10,000      |
-  |----------------------------------------------------|
-  | op_appt_2019_cat   No appointments   1,001 (10.0%) |
-  |                    1-2 per year      52 ( 0.5%)    |
-  |                    3-6 per year      2,747 (27.5%) |
-  |                    7+ per year       6,200 (62.0%) |
-  |----------------------------------------------------|
-  | op_appt_2020_cat   No appointments   1,000 (10.0%) |
-  |                    1-2 per year      55 ( 0.5%)    |
-  |                    3-6 per year      2,710 (27.1%) |
-  |                    7+ per year       6,235 (62.4%) |
-  |----------------------------------------------------|
-  | op_appt_2021_cat   No appointments   1,002 (10.0%) |
-  |                    1-2 per year      49 ( 0.5%)    |
-  |                    3-6 per year      2,642 (26.4%) |
-  |                    7+ per year       6,307 (63.1%) |
-  +----------------------------------------------------+
-Data are presented as n (%).
- 
-
-. export delimited using ./output/tables/op_appt_yrs.csv
-file ./output/tables/op_appt_yrs.csv saved
-
-. restore 
-
-. * Tabulate mode of last appointments per year
-. preserve 
-
-. table1_mc, vars(outpatient_medium_2019 cate \ outpatient_medium_2020 cate \ o
+> export delimited using ./output/tables/op_appt_yrs.csv
+> restore 
+> * Tabulate mode of last appointments per year
+> preserve 
+> table1_mc, vars(outpatient_medium_2019 cate \ outpatient_medium_2020 cate \ o
 > utpatient_medium_2021 cate) clear
-
-  +---------------------------------------+
-  | factor                      N_1   m_1 |
-  |---------------------------------------|
-  | outpatient_medium_2019   10,000     0 |
-  |---------------------------------------|
-  | outpatient_medium_2020   10,000     0 |
-  |---------------------------------------|
-  | outpatient_medium_2021   10,000     0 |
-  +---------------------------------------+
-   N_ ... #records used below,   m_ ... #records not used
- 
-  +------------------------------------------------+
-  |                                  Total         |
-  |------------------------------------------------|
-  |                                  N=10,000      |
-  |------------------------------------------------|
-  | outpatient_medium_2019   0       5,526 (55.3%) |
-  |                          1       1,025 (10.2%) |
-  |                          2       1,011 (10.1%) |
-  |                          5       503 ( 5.0%)   |
-  |                          6       460 ( 4.6%)   |
-  |                          7       488 ( 4.9%)   |
-  |                          8       484 ( 4.8%)   |
-  |                          98      503 ( 5.0%)   |
-  |------------------------------------------------|
-  | outpatient_medium_2020   0       5,514 (55.1%) |
-  |                          1       1,000 (10.0%) |
-  |                          2       1,022 (10.2%) |
-  |                          5       484 ( 4.8%)   |
-  |                          6       508 ( 5.1%)   |
-  |                          7       456 ( 4.6%)   |
-  |                          8       526 ( 5.3%)   |
-  |                          98      490 ( 4.9%)   |
-  |------------------------------------------------|
-  | outpatient_medium_2021   0       5,527 (55.3%) |
-  |                          1       989 ( 9.9%)   |
-  |                          2       1,007 (10.1%) |
-  |                          5       480 ( 4.8%)   |
-  |                          6       498 ( 5.0%)   |
-  |                          7       506 ( 5.1%)   |
-  |                          8       502 ( 5.0%)   |
-  |                          98      491 ( 4.9%)   |
-  +------------------------------------------------+
-Data are presented as n (%).
- 
-
-. export delimited using ./output/tables/bsr_op_appt_medium_yr.csv
-file ./output/tables/bsr_op_appt_medium_yr.csv saved
-
-. restore 
-
-. * Tabulate overall characteristics 
-. preserve
-
-. table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate) clear
-
-  +-------------------------------------------------+
-  | factor                              N_1     m_1 |
-  |-------------------------------------------------|
-  | age_cat                           7,855   2,145 |
-  |-------------------------------------------------|
-  | male                             10,000       0 |
-  |-------------------------------------------------|
-  | Rural Urban in five categories   10,000       0 |
-  +-------------------------------------------------+
-   N_ ... #records used below,   m_ ... #records not used
- 
-  +----------------------------------------------------------------------------
-> --+
-  |                                                                Total       
->   |
-  |----------------------------------------------------------------------------
-> --|
-  |                                                                N=10,000    
->   |
-  |----------------------------------------------------------------------------
-> --|
-  | age_cat                          18 - 40 years                 2,865 (36.5%
-> ) |
-  |                                  41 - 60 years                 2,598 (33.1%
-> ) |
-  |                                  61 - 80 years                 1,897 (24.2%
-> ) |
-  |                                  >80 years                     495 ( 6.3%) 
->   |
-  |----------------------------------------------------------------------------
-> --|
-  | male                             Female                        5,027 (50.3%
-> ) |
-  |                                  Male                          4,973 (49.7%
-> ) |
-  |----------------------------------------------------------------------------
-> --|
-  | Rural Urban in five categories   Urban major conurbation       1,210 (12.1%
-> ) |
-  |                                  Urban minor conurbation       1,243 (12.4%
-> ) |
-  |                                  Urban city and town           2,478 (24.8%
-> ) |
-  |                                  Rural town and fringe         2,540 (25.4%
-> ) |
-  |                                  Rural village and dispersed   2,529 (25.3%
-> ) |
-  +----------------------------------------------------------------------------
-> --+
-Data are presented as n (%).
- 
-
-. export delimited using ./output/tables/bsr_op_chars.csv
-file ./output/tables/bsr_op_chars.csv saved
-
-. restore
-
-. * Characteristics by mode of appointment
-. tempfile tempfile
-
-. forvalues i=2019/2021 {
-  2.     preserve
-  3.     keep if outpatient_medium_`i'==0
-  4.     table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate ) clear
-  5.     save `tempfile', replace
-  6.     restore
-  7.     forvalues j=1/2 {
-  8.         preserve
-  9.         keep if outpatient_medium_`i'==`j'
- 10.         table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate) cle
-> ar
- 11.         append using `tempfile'
- 12.         save `tempfile', replace
- 13.         if `j'==2 {
- 14.             export delimited using ./output/tables/bsr_characteristics_str
-> ata`i'.csv
- 15.         }
- 16.         restore
- 17.     }
- 18. }   
-(4,474 observations deleted)
-
-  +------------------------------------------------+
-  | factor                             N_1     m_1 |
-  |------------------------------------------------|
-  | age_cat                          4,371   1,155 |
-  |------------------------------------------------|
-  | male                             5,526       0 |
-  |------------------------------------------------|
-  | Rural Urban in five categories   5,526       0 |
-  +------------------------------------------------+
-   N_ ... #records used below,   m_ ... #records not used
- 
-  +----------------------------------------------------------------------------
-> --+
-  |                                                                Total       
->   |
-  |----------------------------------------------------------------------------
-> --|
-  |                                                                N=5,526     
->   |
-  |----------------------------------------------------------------------------
-> --|
-  | age_cat                          18 - 40 years                 1,614 (36.9%
-> ) |
-  |                                  41 - 60 years                 1,446 (33.1%
-> ) |
-  |                                  61 - 80 years                 1,030 (23.6%
-> ) |
-  |                                  >80 years                     281 ( 6.4%) 
->   |
-  |----------------------------------------------------------------------------
-> --|
-  | male                             Female                        2,795 (50.6%
-> ) |
-  |                                  Male                          2,731 (49.4%
-> ) |
-  |----------------------------------------------------------------------------
-> --|
-  | Rural Urban in five categories   Urban major conurbation       676 (12.2%) 
->   |
-  |                                  Urban minor conurbation       690 (12.5%) 
->   |
-  |                                  Urban city and town           1,389 (25.1%
-> ) |
-  |                                  Rural town and fringe         1,381 (25.0%
-> ) |
-  |                                  Rural village and dispersed   1,390 (25.2%
-> ) |
-  +----------------------------------------------------------------------------
-> --+
-Data are presented as n (%).
- 
-(note: file /tmp/St00011.000004 not found)
-file /tmp/St00011.000004 saved
-(8,975 observations deleted)
-
-  +----------------------------------------------+
-  | factor                             N_1   m_1 |
-  |----------------------------------------------|
-  | age_cat                            812   213 |
-  |----------------------------------------------|
-  | male                             1,025     0 |
-  |----------------------------------------------|
-  | Rural Urban in five categories   1,025     0 |
-  +----------------------------------------------+
-   N_ ... #records used below,   m_ ... #records not used
- 
-  +----------------------------------------------------------------------------
-> +
-  |                                                                Total       
-> |
-  |----------------------------------------------------------------------------
-> |
-  |                                                                N=1,025     
-> |
-  |----------------------------------------------------------------------------
-> |
-  | age_cat                          18 - 40 years                 278 (34.2%) 
-> |
-  |                                  41 - 60 years                 284 (35.0%) 
-> |
-  |                                  61 - 80 years                 202 (24.9%) 
-> |
-  |                                  >80 years                     48 ( 5.9%)  
-> |
-  |----------------------------------------------------------------------------
-> |
-  | male                             Female                        502 (49.0%) 
-> |
-  |                                  Male                          523 (51.0%) 
-> |
-  |----------------------------------------------------------------------------
-> |
-  | Rural Urban in five categories   Urban major conurbation       133 (13.0%) 
-> |
-  |                                  Urban minor conurbation       132 (12.9%) 
-> |
-  |                                  Urban city and town           238 (23.2%) 
-> |
-  |                                  Rural town and fringe         275 (26.8%) 
-> |
-  |                                  Rural village and dispersed   247 (24.1%) 
-> |
-  +----------------------------------------------------------------------------
-> +
-Data are presented as n (%).
- 
-(note: variable Total was str11, now str13 to accommodate using data's
-       values)
-file /tmp/St00011.000004 saved
-(8,989 observations deleted)
-
-  +----------------------------------------------+
-  | factor                             N_1   m_1 |
-  |----------------------------------------------|
-  | age_cat                            805   206 |
-  |----------------------------------------------|
-  | male                             1,011     0 |
-  |----------------------------------------------|
-  | Rural Urban in five categories   1,011     0 |
-  +----------------------------------------------+
-   N_ ... #records used below,   m_ ... #records not used
- 
-  +----------------------------------------------------------------------------
-> +
-  |                                                                Total       
-> |
-  |----------------------------------------------------------------------------
-> |
-  |                                                                N=1,011     
-> |
-  |----------------------------------------------------------------------------
-> |
-  | age_cat                          18 - 40 years                 277 (34.4%) 
-> |
-  |                                  41 - 60 years                 294 (36.5%) 
-> |
-  |                                  61 - 80 years                 190 (23.6%) 
-> |
-  |                                  >80 years                     44 ( 5.5%)  
-> |
-  |----------------------------------------------------------------------------
-> |
-  | male                             Female                        503 (49.8%) 
-> |
-  |                                  Male                          508 (50.2%) 
-> |
-  |----------------------------------------------------------------------------
-> |
-  | Rural Urban in five categories   Urban major conurbation       116 (11.5%) 
-> |
-  |                                  Urban minor conurbation       112 (11.1%) 
-> |
-  |                                  Urban city and town           233 (23.0%) 
-> |
-  |                                  Rural town and fringe         281 (27.8%) 
-> |
-  |                                  Rural village and dispersed   269 (26.6%) 
-> |
-  +----------------------------------------------------------------------------
-> +
-Data are presented as n (%).
- 
-(note: variable Total was str11, now str13 to accommodate using data's
-       values)
-file /tmp/St00011.000004 saved
-file ./output/tables/bsr_characteristics_strata2019.csv saved
-(4,486 observations deleted)
-
-  +------------------------------------------------+
-  | factor                             N_1     m_1 |
-  |------------------------------------------------|
-  | age_cat                          4,351   1,163 |
-  |------------------------------------------------|
-  | male                             5,514       0 |
-  |------------------------------------------------|
-  | Rural Urban in five categories   5,514       0 |
-  +------------------------------------------------+
-   N_ ... #records used below,   m_ ... #records not used
- 
-  +----------------------------------------------------------------------------
-> --+
-  |                                                                Total       
->   |
-  |----------------------------------------------------------------------------
-> --|
-  |                                                                N=5,514     
->   |
-  |----------------------------------------------------------------------------
-> --|
-  | age_cat                          18 - 40 years                 1,595 (36.7%
-> ) |
-  |                                  41 - 60 years                 1,420 (32.6%
-> ) |
-  |                                  61 - 80 years                 1,050 (24.1%
-> ) |
-  |                                  >80 years                     286 ( 6.6%) 
->   |
-  |----------------------------------------------------------------------------
-> --|
-  | male                             Female                        2,825 (51.2%
-> ) |
-  |                                  Male                          2,689 (48.8%
-> ) |
-  |----------------------------------------------------------------------------
-> --|
-  | Rural Urban in five categories   Urban major conurbation       669 (12.1%) 
->   |
-  |                                  Urban minor conurbation       662 (12.0%) 
->   |
-  |                                  Urban city and town           1,375 (24.9%
-> ) |
-  |                                  Rural town and fringe         1,450 (26.3%
-> ) |
-  |                                  Rural village and dispersed   1,358 (24.6%
-> ) |
-  +----------------------------------------------------------------------------
-> --+
-Data are presented as n (%).
- 
-file /tmp/St00011.000004 saved
-(9,000 observations deleted)
-
-  +----------------------------------------------+
-  | factor                             N_1   m_1 |
-  |----------------------------------------------|
-  | age_cat                            774   226 |
-  |----------------------------------------------|
-  | male                             1,000     0 |
-  |----------------------------------------------|
-  | Rural Urban in five categories   1,000     0 |
-  +----------------------------------------------+
-   N_ ... #records used below,   m_ ... #records not used
- 
-  +----------------------------------------------------------------------------
-> +
-  |                                                                Total       
-> |
-  |----------------------------------------------------------------------------
-> |
-  |                                                                N=1,000     
-> |
-  |----------------------------------------------------------------------------
-> |
-  | age_cat                          18 - 40 years                 296 (38.2%) 
-> |
-  |                                  41 - 60 years                 261 (33.7%) 
-> |
-  |                                  61 - 80 years                 172 (22.2%) 
-> |
-  |                                  >80 years                     45 ( 5.8%)  
-> |
-  |----------------------------------------------------------------------------
-> |
-  | male                             Female                        480 (48.0%) 
-> |
-  |                                  Male                          520 (52.0%) 
-> |
-  |----------------------------------------------------------------------------
-> |
-  | Rural Urban in five categories   Urban major conurbation       138 (13.8%) 
-> |
-  |                                  Urban minor conurbation       128 (12.8%) 
-> |
-  |                                  Urban city and town           237 (23.7%) 
-> |
-  |                                  Rural town and fringe         246 (24.6%) 
-> |
-  |                                  Rural village and dispersed   251 (25.1%) 
-> |
-  +----------------------------------------------------------------------------
-> +
-Data are presented as n (%).
- 
-(note: variable Total was str11, now str13 to accommodate using data's
-       values)
-file /tmp/St00011.000004 saved
-(8,978 observations deleted)
-
-  +----------------------------------------------+
-  | factor                             N_1   m_1 |
-  |----------------------------------------------|
-  | age_cat                            793   229 |
-  |----------------------------------------------|
-  | male                             1,022     0 |
-  |----------------------------------------------|
-  | Rural Urban in five categories   1,022     0 |
-  +----------------------------------------------+
-   N_ ... #records used below,   m_ ... #records not used
- 
-  +----------------------------------------------------------------------------
-> +
-  |                                                                Total       
-> |
-  |----------------------------------------------------------------------------
-> |
-  |                                                                N=1,022     
-> |
-  |----------------------------------------------------------------------------
-> |
-  | age_cat                          18 - 40 years                 280 (35.3%) 
-> |
-  |                                  41 - 60 years                 250 (31.5%) 
-> |
-  |                                  61 - 80 years                 217 (27.4%) 
-> |
-  |                                  >80 years                     46 ( 5.8%)  
-> |
-  |----------------------------------------------------------------------------
-> |
-  | male                             Female                        513 (50.2%) 
-> |
-  |                                  Male                          509 (49.8%) 
-> |
-  |----------------------------------------------------------------------------
-> |
-  | Rural Urban in five categories   Urban major conurbation       132 (12.9%) 
-> |
-  |                                  Urban minor conurbation       127 (12.4%) 
-> |
-  |                                  Urban city and town           252 (24.7%) 
-> |
-  |                                  Rural town and fringe         249 (24.4%) 
-> |
-  |                                  Rural village and dispersed   262 (25.6%) 
-> |
-  +----------------------------------------------------------------------------
-> +
-Data are presented as n (%).
- 
-(note: variable Total was str11, now str13 to accommodate using data's
-       values)
-file /tmp/St00011.000004 saved
-file ./output/tables/bsr_characteristics_strata2020.csv saved
-(4,473 observations deleted)
-
-  +------------------------------------------------+
-  | factor                             N_1     m_1 |
-  |------------------------------------------------|
-  | age_cat                          4,332   1,195 |
-  |------------------------------------------------|
-  | male                             5,527       0 |
-  |------------------------------------------------|
-  | Rural Urban in five categories   5,527       0 |
-  +------------------------------------------------+
-   N_ ... #records used below,   m_ ... #records not used
- 
-  +----------------------------------------------------------------------------
-> --+
-  |                                                                Total       
->   |
-  |----------------------------------------------------------------------------
-> --|
-  |                                                                N=5,527     
->   |
-  |----------------------------------------------------------------------------
-> --|
-  | age_cat                          18 - 40 years                 1,581 (36.5%
-> ) |
-  |                                  41 - 60 years                 1,439 (33.2%
-> ) |
-  |                                  61 - 80 years                 1,031 (23.8%
-> ) |
-  |                                  >80 years                     281 ( 6.5%) 
->   |
-  |----------------------------------------------------------------------------
-> --|
-  | male                             Female                        2,732 (49.4%
-> ) |
-  |                                  Male                          2,795 (50.6%
-> ) |
-  |----------------------------------------------------------------------------
-> --|
-  | Rural Urban in five categories   Urban major conurbation       685 (12.4%) 
->   |
-  |                                  Urban minor conurbation       689 (12.5%) 
->   |
-  |                                  Urban city and town           1,348 (24.4%
-> ) |
-  |                                  Rural town and fringe         1,394 (25.2%
-> ) |
-  |                                  Rural village and dispersed   1,411 (25.5%
-> ) |
-  +----------------------------------------------------------------------------
-> --+
-Data are presented as n (%).
- 
-file /tmp/St00011.000004 saved
-(9,011 observations deleted)
-
-  +--------------------------------------------+
-  | factor                           N_1   m_1 |
-  |--------------------------------------------|
-  | age_cat                          772   217 |
-  |--------------------------------------------|
-  | male                             989     0 |
-  |--------------------------------------------|
-  | Rural Urban in five categories   989     0 |
-  +--------------------------------------------+
-   N_ ... #records used below,   m_ ... #records not used
- 
-  +----------------------------------------------------------------------------
-> +
-  |                                                                Total       
-> |
-  |----------------------------------------------------------------------------
-> |
-  |                                                                N=989       
-> |
-  |----------------------------------------------------------------------------
-> |
-  | age_cat                          18 - 40 years                 265 (34.3%) 
-> |
-  |                                  41 - 60 years                 261 (33.8%) 
-> |
-  |                                  61 - 80 years                 190 (24.6%) 
-> |
-  |                                  >80 years                     56 ( 7.3%)  
-> |
-  |----------------------------------------------------------------------------
-> |
-  | male                             Female                        530 (53.6%) 
-> |
-  |                                  Male                          459 (46.4%) 
-> |
-  |----------------------------------------------------------------------------
-> |
-  | Rural Urban in five categories   Urban major conurbation       118 (11.9%) 
-> |
-  |                                  Urban minor conurbation       126 (12.7%) 
-> |
-  |                                  Urban city and town           235 (23.8%) 
-> |
-  |                                  Rural town and fringe         248 (25.1%) 
-> |
-  |                                  Rural village and dispersed   262 (26.5%) 
-> |
-  +----------------------------------------------------------------------------
-> +
-Data are presented as n (%).
- 
-(note: variable Total was str11, now str13 to accommodate using data's
-       values)
-file /tmp/St00011.000004 saved
-(8,993 observations deleted)
-
-  +----------------------------------------------+
-  | factor                             N_1   m_1 |
-  |----------------------------------------------|
-  | age_cat                            797   210 |
-  |----------------------------------------------|
-  | male                             1,007     0 |
-  |----------------------------------------------|
-  | Rural Urban in five categories   1,007     0 |
-  +----------------------------------------------+
-   N_ ... #records used below,   m_ ... #records not used
- 
-  +----------------------------------------------------------------------------
-> +
-  |                                                                Total       
-> |
-  |----------------------------------------------------------------------------
-> |
-  |                                                                N=1,007     
-> |
-  |----------------------------------------------------------------------------
-> |
-  | age_cat                          18 - 40 years                 316 (39.6%) 
-> |
-  |                                  41 - 60 years                 251 (31.5%) 
-> |
-  |                                  61 - 80 years                 190 (23.8%) 
-> |
-  |                                  >80 years                     40 ( 5.0%)  
-> |
-  |----------------------------------------------------------------------------
-> |
-  | male                             Female                        522 (51.8%) 
-> |
-  |                                  Male                          485 (48.2%) 
-> |
-  |----------------------------------------------------------------------------
-> |
-  | Rural Urban in five categories   Urban major conurbation       124 (12.3%) 
-> |
-  |                                  Urban minor conurbation       108 (10.7%) 
-> |
-  |                                  Urban city and town           265 (26.3%) 
-> |
-  |                                  Rural town and fringe         260 (25.8%) 
-> |
-  |                                  Rural village and dispersed   250 (24.8%) 
-> |
-  +----------------------------------------------------------------------------
-> +
-Data are presented as n (%).
- 
-(note: variable Total was str11, now str13 to accommodate using data's
-       values)
-file /tmp/St00011.000004 saved
-file ./output/tables/bsr_characteristics_strata2021.csv saved
-
+> export delimited using ./output/tables/bsr_op_appt_medium_yr.csv
+> restore 
+> * Tabulate overall characteristics 
+> preserve
+> table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate) clear
+> export delimited using ./output/tables/bsr_op_chars.csv
+> restore
+> * Characteristics by mode of appointment
+> tempfile tempfile
+> forvalues i=2019/2021 {
+>     preserve
+>     keep if outpatient_medium_`i'==0
+>     table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate ) clear
+>     save `tempfile', replace
+>     restore
+>     forvalues j=1/2 {
+>         preserve
+>         keep if outpatient_medium_`i'==`j'
+>         table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate) clear
+>         append using `tempfile'
+>         save `tempfile', replace
+>         if `j'==2 {
+>             export delimited using ./output/tables/bsr_characteristics_strata
+> `i'.csv
+>         }
+>         restore
+>     }
+> } 
+> */  
 . /*gen fu_2019 = ((end_date - date("01Apr2019", "DMY")) /365) if end_date<date
 > ("31Mar2020", "DMY")
 > gen exit = end_date!=.
@@ -986,5 +344,5 @@ file ./output/tables/bsr_characteristics_strata2021.csv saved
       name:  <unnamed>
        log:  /workspace/logs/bsr.log
   log type:  text
- closed on:  13 Sep 2022, 15:43:18
+ closed on:  14 Sep 2022, 13:29:14
 -------------------------------------------------------------------------------
