@@ -2,29 +2,108 @@
 . 
 . cap mkdir ./output/tables
 
-. * Import data
-. import delimited using ./output/measures/op/input_bsr_2019-04-01.csv
+. forvalues i=2019/2021 {
+  2.     local j = `i'+1
+  3.     * Import data
+.     import delimited using ./output/measures/op/input_bsr_`i'-04-01.csv, clea
+> r
+  4. 
+.     * Drop variables not required
+.     /*drop first_ra_code-has_ra*/
+.     drop ethnicity-region
+  5. 
+.     * Format variables
+. 
+.     * formatting gender
+.     gen male=(sex=="M")
+  6.     replace male = 0 if sex == "F"
+  7.     label define male 0"Female" 1"Male"
+  8.     label values male male
+  9.     safetab male, miss
+ 10. 
+.     *create a 4 category rural urban variable 
+.     generate urban_rural_5=.
+ 11.     la var urban_rural_5 "Rural Urban in five categories"
+ 12.     replace urban_rural_5=1 if urban_rural==1
+ 13.     replace urban_rural_5=2 if urban_rural==2
+ 14.     replace urban_rural_5=3 if urban_rural==3|urban_rural==4
+ 15.     replace urban_rural_5=4 if urban_rural==5|urban_rural==6
+ 16.     replace urban_rural_5=5 if urban_rural==7|urban_rural==8
+ 17.     label define urban_rural_5 1 "Urban major conurbation" 2 "Urban minor 
+> conurbation" 3 "Urban city and town" 4 "Rural town and fringe" 5 "Rural villa
+> ge and dispersed"
+ 18.     label values urban_rural_5 urban_rural_5
+ 19.     safetab urban_rural_5, miss
+ 20. 
+.     *generate a binary rural urban (with missing assigned to urban)
+.     generate urban_rural_bin=.
+ 21.     replace urban_rural_bin=1 if urban_rural<=4|urban_rural==.
+ 22.     replace urban_rural_bin=0 if urban_rural>4 & urban_rural!=.
+ 23.     label define urban_rural_bin 0 "Rural" 1 "Urban"
+ 24.     label values urban_rural_bin urban_rural_bin
+ 25.     safetab urban_rural_bin urban_rural, miss
+ 26.     label var urban_rural_bin "Rural-Urban"
+ 27. 
+.     * Define age categories
+.     * Create age categories
+.     egen age_cat = cut(age), at(18, 40, 60, 80, 120) icodes
+ 28.     label define age 0 "18 - 40 years" 1 "41 - 60 years" 2 "61 - 80 years"
+>  3 ">80 years"
+ 29.     label values age_cat age
+ 30.     safetab age_cat, miss
+ 31. 
+.     * Reshape to long format 
+.     reshape long op_appt_date_ op_appt_medium_, i(patient_id) j(op_appt_numbe
+> r) 
+ 32.     rename op_appt_date_ op_appt_date 
+ 33.     rename op_appt_medium_ op_appt_medium
+ 34. 
+.     * set talk type (medium=4) to missing and combine telephone and telemedic
+> ine
+.     replace op_appt_medium = . if op_appt_medium==4
+ 35.     replace op_appt_medium = 2 if op_appt_medium==3
+ 36.     replace op_appt_medium = 0 if op_appt_medium==.
+ 37. 
+.     * Format dates
+.     gen op_appt_dateA = date(op_appt_date, "YMD")
+ 38.     gen died_fuA = date(died_fu, "YMD")
+ 39.     gen dereg_dateA = date(dereg_date, "YMD")
+ 40.     * Follow-up time
+.     gen end_date = min(died_fuA, dereg_dateA, date("`j'-03-31", "YMD"))
+ 41.     count if end_date<date("`j'-03-31", "YMD")
+ 42.     * display value of end date in period
+.     di date("`j'-03-31", "YMD")
+ 43.     * determine range of dates for outpatient appointments to determine wh
+> ich should be dropped
+.     sum op_appt_dateA
+ 44.     drop if op_appt_dateA > end_date
+ 45.     sum op_appt_dateA
+ 46.     * take out records where end_date prior to start of follow-up
+.     drop if end_date<=date("`i'-04-01", "YMD")
+ 47.     * determine length of follow-up during year
+.     gen days_fu = end_date - date("`i'-04-01", "YMD")
+ 48.     sum days_fu
+ 49.     gen fu_`i' = days_fu/365
+ 50.     sum fu_`i', d 
+ 51. 
+.     * Categorise number of outpatient appointments
+.     bys patient_id: egen tot_appts = total(op_appt_dateA!=.)
+ 52.     sum tot_appts, d
+ 53. 
+.     gen rate_`i' = tot_appts / fu_`i' 
+ 54.     sum rate_`i', d 
+ 55. 
+.     * Determine total number and proportion of in-person and telephone appoin
+> tments
+.     forvalues i=0/2 {
+ 56.         bys patient_id: egen tot_medium_`i' = total(op_appt_medium==`i')
+ 57.         sum tot_medium_`i', d
+ 58.         gen prop_medium_`i' = (tot_medium_`i'/tot_appts)*100
+ 59.         sum prop_medium_`i', d
+ 60.         }
+ 61.     }
 (36 vars, 10,000 obs)
-
-. 
-. * Drop variables not required
-. /*drop first_ra_code-has_ra*/
-. drop ethnicity-region
-
-. 
-. * Format variables
-. 
-. * formatting gender
-. gen male=(sex=="M")
-
-. replace male = 0 if sex == "F"
 (0 real changes made)
-
-. label define male 0"Female" 1"Male"
-
-. label values male male
-
-. safetab male, miss
 5
 
        male |      Freq.     Percent        Cum.
@@ -33,36 +112,12 @@
        Male |      4,932       49.32      100.00
 ------------+-----------------------------------
       Total |     10,000      100.00
-
-. 
-. *create a 4 category rural urban variable 
-. generate urban_rural_5=.
 (10,000 missing values generated)
-
-. la var urban_rural_5 "Rural Urban in five categories"
-
-. replace urban_rural_5=1 if urban_rural==1
 (1,303 real changes made)
-
-. replace urban_rural_5=2 if urban_rural==2
 (1,232 real changes made)
-
-. replace urban_rural_5=3 if urban_rural==3|urban_rural==4
 (2,451 real changes made)
-
-. replace urban_rural_5=4 if urban_rural==5|urban_rural==6
 (2,461 real changes made)
-
-. replace urban_rural_5=5 if urban_rural==7|urban_rural==8
 (2,553 real changes made)
-
-. label define urban_rural_5 1 "Urban major conurbation" 2 "Urban minor conurba
-> tion" 3 "Urban city and town" 4 "Rural town and fringe" 5 "Rural village and 
-> dispersed"
-
-. label values urban_rural_5 urban_rural_5
-
-. safetab urban_rural_5, miss
 14
 
         Rural Urban in five |
@@ -75,23 +130,9 @@
 Rural village and dispersed |      2,553       25.53      100.00
 ----------------------------+-----------------------------------
                       Total |     10,000      100.00
-
-. 
-. *generate a binary rural urban (with missing assigned to urban)
-. generate urban_rural_bin=.
 (10,000 missing values generated)
-
-. replace urban_rural_bin=1 if urban_rural<=4|urban_rural==.
 (4,986 real changes made)
-
-. replace urban_rural_bin=0 if urban_rural>4 & urban_rural!=.
 (5,014 real changes made)
-
-. label define urban_rural_bin 0 "Rural" 1 "Urban"
-
-. label values urban_rural_bin urban_rural_bin
-
-. safetab urban_rural_bin urban_rural, miss
 28
 
 urban_rura |                      urban_rural
@@ -110,21 +151,7 @@ urban_rura |           urban_rural
      Urban |         0          0          0 |     4,986 
 -----------+---------------------------------+----------
      Total |     1,203      1,284      1,269 |    10,000 
-
-. label var urban_rural_bin "Rural-Urban"
-
-. 
-. * Define age categories
-. * Create age categories
-. egen age_cat = cut(age), at(18, 40, 60, 80, 120) icodes
 (2152 missing values generated)
-
-. label define age 0 "18 - 40 years" 1 "41 - 60 years" 2 "61 - 80 years" 3 ">80
->  years"
-
-. label values age_cat age
-
-. safetab age_cat, miss
 8
 
       age_cat |      Freq.     Percent        Cum.
@@ -136,10 +163,6 @@ urban_rura |           urban_rural
             . |      2,152       21.52      100.00
 --------------+-----------------------------------
         Total |     10,000      100.00
-
-. 
-. * Reshape to long format 
-. reshape long op_appt_date_ op_appt_medium_, i(patient_id) j(op_appt_number) 
 (note: j = 1 2 3 4 5 6 7 8 9 10)
 
 Data                               wide   ->   long
@@ -151,62 +174,43 @@ xij variables:
 op_appt_date_1 op_appt_date_2 ... op_appt_date_10->op_appt_date_
 op_appt_medium_1 op_appt_medium_2 ... op_appt_medium_10->op_appt_medium_
 -----------------------------------------------------------------------------
-
-. rename op_appt_date_ op_appt_date 
-
-. rename op_appt_medium_ op_appt_medium
-
-. 
-. * set talk type (medium=4) to missing and combine telephone and telemedicine
-. replace op_appt_medium = . if op_appt_medium==4
 (5,088 real changes made, 5,088 to missing)
-
-. replace op_appt_medium = 2 if op_appt_medium==3
 (5,030 real changes made)
-
-. replace op_appt_medium = 0 if op_appt_medium==.
 (55,088 real changes made)
-
-. 
-. * Format dates
-. gen op_appt_dateA = date(op_appt_date, "YMD")
 (54,848 missing values generated)
-
-. gen died_fuA = date(died_fu, "YMD")
 (50,000 missing values generated)
-
-. gen dereg_dateA = date(dereg_date, "YMD")
 (50,000 missing values generated)
-
-. * Follow-up time
-. gen end_date = min(died_fuA, dereg_dateA, date("2020-03-31", "YMD"))
-
-. * display value of end date in period
-. di date("2020-03-31", "YMD")
+  3,300
 22005
-
-. * determine range of dates for outpatient appointments to determine which sho
-> uld be dropped
-. sum op_appt_dateA
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
 op_appt_da~A |     45,152    544.3818    12992.89     -21913      22902
-
-. drop if op_appt_dateA > end_date
 (55,860 observations deleted)
-
-. sum op_appt_dateA
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
 op_appt_da~A |     44,140    42.08758     12705.4     -21913      22004
+(0 observations deleted)
 
-. 
-. * Categorise number of outpatient appointments
-. bys patient_id: egen tot_appts = total(op_appt_dateA!=.)
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+     days_fu |     44,140    364.4866    3.172653        336        365
 
-. sum tot_appts, d
+                           fu_2019
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     .9397261        .920548
+ 5%            1        .920548
+10%            1        .920548       Obs              44,140
+25%            1        .920548       Sum of Wgt.      44,140
+
+50%            1                      Mean           .9985935
+                        Largest       Std. Dev.      .0086922
+75%            1              1
+90%            1              1       Variance       .0000756
+95%            1              1       Skewness      -6.772223
+99%            1              1       Kurtosis       49.81662
 
                           tot_appts
 -------------------------------------------------------------
@@ -223,14 +227,35 @@ op_appt_da~A |     44,140    42.08758     12705.4     -21913      22004
 95%            7             10       Skewness       .0897944
 99%            8             10       Kurtosis       2.862019
 
-. 
-. * Determine total number and proportion of in-person and telephone appointmen
-> ts
-. forvalues i=0/2 {
-  2.     bys patient_id: egen tot_medium_`i' = total(op_appt_medium==`i')
-  3.     gen prop_medium_`i' = (tot_medium_`i'/tot_appts)*100
-  4.     sum prop_medium_`i', d
-  5.     }
+                          rate_2019
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            2              1
+ 5%            3              1
+10%            3              1       Obs              44,140
+25%            4              1       Sum of Wgt.      44,140
+
+50%            5                      Mean            4.94231
+                        Largest       Std. Dev.      1.440003
+75%            6             10
+90%            7             10       Variance       2.073608
+95%            7             10       Skewness       .0877504
+99%            8             10       Kurtosis       2.854069
+
+                        tot_medium_0
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            1              0
+10%            1              0       Obs              44,140
+25%            2              0       Sum of Wgt.      44,140
+
+50%            3                      Mean           2.715496
+                        Largest       Std. Dev.       1.36482
+75%            4              9
+90%            4              9       Variance       1.862734
+95%            5              9       Skewness         .30324
+99%            6              9       Kurtosis       2.891592
 
                         prop_medium_0
 -------------------------------------------------------------
@@ -247,6 +272,21 @@ op_appt_da~A |     44,140    42.08758     12705.4     -21913      22004
 95%          100            100       Skewness      -.0985371
 99%          100            100       Kurtosis       2.696028
 
+                        tot_medium_1
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs              44,140
+25%            0              0       Sum of Wgt.      44,140
+
+50%            0                      Mean           .4997734
+                        Largest       Std. Dev.      .6942296
+75%            1              4
+90%            1              4       Variance       .4819547
+95%            2              4       Skewness       1.325482
+99%            3              4       Kurtosis       4.494902
+
                         prop_medium_1
 -------------------------------------------------------------
       Percentiles      Smallest
@@ -262,6 +302,21 @@ op_appt_da~A |     44,140    42.08758     12705.4     -21913      22004
 95%           40            100       Skewness        1.53317
 99%           50            100       Kurtosis       5.888591
 
+                        tot_medium_2
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs              44,140
+25%            0              0       Sum of Wgt.      44,140
+
+50%            0                      Mean           .4925238
+                        Largest       Std. Dev.      .6710565
+75%            1              4
+90%            1              4       Variance       .4503168
+95%            2              4       Skewness       1.253049
+99%            2              4       Kurtosis       4.297609
+
                         prop_medium_2
 -------------------------------------------------------------
       Percentiles      Smallest
@@ -276,11 +331,467 @@ op_appt_da~A |     44,140    42.08758     12705.4     -21913      22004
 90%     28.57143            100       Variance       196.8911
 95%     33.33333            100       Skewness       1.395069
 99%           50            100       Kurtosis       5.028208
+(30 vars, 10,000 obs)
+(0 real changes made)
+5
+
+       male |      Freq.     Percent        Cum.
+------------+-----------------------------------
+     Female |      5,108       51.08       51.08
+       Male |      4,892       48.92      100.00
+------------+-----------------------------------
+      Total |     10,000      100.00
+(10,000 missing values generated)
+(1,185 real changes made)
+(1,211 real changes made)
+(2,516 real changes made)
+(2,493 real changes made)
+(2,595 real changes made)
+14
+
+        Rural Urban in five |
+                 categories |      Freq.     Percent        Cum.
+----------------------------+-----------------------------------
+    Urban major conurbation |      1,185       11.85       11.85
+    Urban minor conurbation |      1,211       12.11       23.96
+        Urban city and town |      2,516       25.16       49.12
+      Rural town and fringe |      2,493       24.93       74.05
+Rural village and dispersed |      2,595       25.95      100.00
+----------------------------+-----------------------------------
+                      Total |     10,000      100.00
+(10,000 missing values generated)
+(4,912 real changes made)
+(5,088 real changes made)
+28
+
+urban_rura |                      urban_rural
+     l_bin |         1          2          3          4          5 |     Total
+-----------+-------------------------------------------------------+----------
+     Rural |         0          0          0          0      1,248 |     5,088 
+     Urban |     1,185      1,211      1,232      1,284          0 |     4,912 
+-----------+-------------------------------------------------------+----------
+     Total |     1,185      1,211      1,232      1,284      1,248 |    10,000 
+
+
+urban_rura |           urban_rural
+     l_bin |         6          7          8 |     Total
+-----------+---------------------------------+----------
+     Rural |     1,245      1,256      1,339 |     5,088 
+     Urban |         0          0          0 |     4,912 
+-----------+---------------------------------+----------
+     Total |     1,245      1,256      1,339 |    10,000 
+(2019 missing values generated)
+8
+
+      age_cat |      Freq.     Percent        Cum.
+--------------+-----------------------------------
+18 - 40 years |      2,914       29.14       29.14
+41 - 60 years |      2,595       25.95       55.09
+61 - 80 years |      1,973       19.73       74.82
+    >80 years |        499        4.99       79.81
+            . |      2,019       20.19      100.00
+--------------+-----------------------------------
+        Total |     10,000      100.00
+(note: j = 1 2 3 4 5 6 7 8 9 10)
+
+Data                               wide   ->   long
+-----------------------------------------------------------------------------
+Number of obs.                    10000   ->  100000
+Number of variables                  30   ->      13
+j variable (10 values)                    ->   op_appt_number
+xij variables:
+op_appt_date_1 op_appt_date_2 ... op_appt_date_10->op_appt_date_
+op_appt_medium_1 op_appt_medium_2 ... op_appt_medium_10->op_appt_medium_
+-----------------------------------------------------------------------------
+(4,907 real changes made, 4,907 to missing)
+(4,932 real changes made)
+(54,907 real changes made)
+(54,853 missing values generated)
+(50,000 missing values generated)
+(50,000 missing values generated)
+  38,170
+22370
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+op_appt_da~A |     45,147    565.8258    13017.01     -21913      22902
+(55,607 observations deleted)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+op_appt_da~A |     44,393    191.7354    12803.92     -21913      22370
+(1,382 observations deleted)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+     days_fu |     43,011    295.4955    110.2117          1        364
+
+                           fu_2020
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     .0273973       .0027397
+ 5%     .1315068       .0027397
+10%      .260274       .0027397       Obs              43,011
+25%     .6575342       .0027397       Sum of Wgt.      43,011
+
+50%     .9972603                      Mean           .8095768
+                        Largest       Std. Dev.      .3019499
+75%     .9972603       .9972603
+90%     .9972603       .9972603       Variance       .0911737
+95%     .9972603       .9972603       Skewness      -1.342322
+99%     .9972603       .9972603       Kurtosis       3.301548
+
+                          tot_appts
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            2              1
+ 5%            3              1
+10%            3              1       Obs              43,011
+25%            4              1       Sum of Wgt.      43,011
+
+50%            5                      Mean           4.947223
+                        Largest       Std. Dev.      1.410198
+75%            6             10
+90%            7             10       Variance       1.988658
+95%            7             10       Skewness        .014167
+99%            8             10       Kurtosis       2.787853
+
+                          rate_2020
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     2.005495       1.002747
+ 5%     3.008242       1.002747
+10%     3.008242       1.002747       Obs              43,011
+25%     4.010989       1.002747       Sum of Wgt.      43,011
+
+50%     6.016483                      Mean           14.09952
+                        Largest       Std. Dev.      60.27488
+75%     8.021978           1825
+90%     19.06717           1825       Variance       3633.061
+95%         36.5           1825       Skewness       19.72383
+99%        182.5           1825       Kurtosis       505.2025
+
+                        tot_medium_0
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            1              0
+10%            1              0       Obs              43,011
+25%            2              0       Sum of Wgt.      43,011
+
+50%            3                      Mean           2.705331
+                        Largest       Std. Dev.      1.344803
+75%            4              8
+90%            4              8       Variance       1.808495
+95%            5              8       Skewness        .296165
+99%            6              8       Kurtosis       2.893809
+
+                        prop_medium_0
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%     16.66667              0
+10%           25              0       Obs              43,011
+25%           40              0       Sum of Wgt.      43,011
+
+50%           50                      Mean           54.72554
+                        Largest       Std. Dev.       23.4325
+75%     71.42857            100
+90%     83.33334            100       Variance       549.0819
+95%          100            100       Skewness      -.1098139
+99%          100            100       Kurtosis       2.750923
+
+                        tot_medium_1
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs              43,011
+25%            0              0       Sum of Wgt.      43,011
+
+50%            0                      Mean           .5028016
+                        Largest       Std. Dev.       .691571
+75%            1              4
+90%            1              4       Variance       .4782705
+95%            2              4       Skewness       1.282903
+99%            3              4       Kurtosis       4.332967
+
+                        prop_medium_1
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs              43,011
+25%            0              0       Sum of Wgt.      43,011
+
+50%            0                      Mean           10.17879
+                        Largest       Std. Dev.      14.28857
+75%           20            100
+90%     33.33333            100       Variance       204.1634
+95%           40            100       Skewness       1.362243
+99%           50            100       Kurtosis       4.695955
+
+                        tot_medium_2
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs              43,011
+25%            0              0       Sum of Wgt.      43,011
+
+50%            0                      Mean           .5051731
+                        Largest       Std. Dev.      .6901775
+75%            1              5
+90%            1              5       Variance        .476345
+95%            2              5       Skewness       1.300691
+99%            3              5       Kurtosis       4.582089
+
+                        prop_medium_2
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs              43,011
+25%            0              0       Sum of Wgt.      43,011
+
+50%            0                      Mean           10.16252
+                        Largest       Std. Dev.      14.20826
+75%           20            100
+90%     33.33333            100       Variance       201.8748
+95%     33.33333            100       Skewness       1.408259
+99%           50            100       Kurtosis       5.138436
+(30 vars, 10,000 obs)
+(0 real changes made)
+5
+
+       male |      Freq.     Percent        Cum.
+------------+-----------------------------------
+     Female |      5,210       52.10       52.10
+       Male |      4,790       47.90      100.00
+------------+-----------------------------------
+      Total |     10,000      100.00
+(10,000 missing values generated)
+(1,250 real changes made)
+(1,219 real changes made)
+(2,573 real changes made)
+(2,526 real changes made)
+(2,432 real changes made)
+14
+
+        Rural Urban in five |
+                 categories |      Freq.     Percent        Cum.
+----------------------------+-----------------------------------
+    Urban major conurbation |      1,250       12.50       12.50
+    Urban minor conurbation |      1,219       12.19       24.69
+        Urban city and town |      2,573       25.73       50.42
+      Rural town and fringe |      2,526       25.26       75.68
+Rural village and dispersed |      2,432       24.32      100.00
+----------------------------+-----------------------------------
+                      Total |     10,000      100.00
+(10,000 missing values generated)
+(5,042 real changes made)
+(4,958 real changes made)
+28
+
+urban_rura |                      urban_rural
+     l_bin |         1          2          3          4          5 |     Total
+-----------+-------------------------------------------------------+----------
+     Rural |         0          0          0          0      1,252 |     4,958 
+     Urban |     1,250      1,219      1,273      1,300          0 |     5,042 
+-----------+-------------------------------------------------------+----------
+     Total |     1,250      1,219      1,273      1,300      1,252 |    10,000 
+
+
+urban_rura |           urban_rural
+     l_bin |         6          7          8 |     Total
+-----------+---------------------------------+----------
+     Rural |     1,274      1,241      1,191 |     4,958 
+     Urban |         0          0          0 |     5,042 
+-----------+---------------------------------+----------
+     Total |     1,274      1,241      1,191 |    10,000 
+(2126 missing values generated)
+8
+
+      age_cat |      Freq.     Percent        Cum.
+--------------+-----------------------------------
+18 - 40 years |      2,800       28.00       28.00
+41 - 60 years |      2,621       26.21       54.21
+61 - 80 years |      1,925       19.25       73.46
+    >80 years |        528        5.28       78.74
+            . |      2,126       21.26      100.00
+--------------+-----------------------------------
+        Total |     10,000      100.00
+(note: j = 1 2 3 4 5 6 7 8 9 10)
+
+Data                               wide   ->   long
+-----------------------------------------------------------------------------
+Number of obs.                    10000   ->  100000
+Number of variables                  30   ->      13
+j variable (10 values)                    ->   op_appt_number
+xij variables:
+op_appt_date_1 op_appt_date_2 ... op_appt_date_10->op_appt_date_
+op_appt_medium_1 op_appt_medium_2 ... op_appt_medium_10->op_appt_medium_
+-----------------------------------------------------------------------------
+(5,061 real changes made, 5,061 to missing)
+(4,930 real changes made)
+(55,061 real changes made)
+(54,869 missing values generated)
+(50,000 missing values generated)
+(50,000 missing values generated)
+  65,290
+22735
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+op_appt_da~A |     45,131    535.6183    12979.65     -21913      22902
+(55,337 observations deleted)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+op_appt_da~A |     44,663    304.4701    12848.49     -21913      22735
+(17,191 observations deleted)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+     days_fu |     27,472    281.4332     116.316          1        364
+
+                           fu_2021
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     .0219178       .0027397
+ 5%     .0986301       .0027397
+10%     .2191781       .0027397       Obs              27,472
+25%     .5424657       .0027397       Sum of Wgt.      27,472
+
+50%     .9972603                      Mean           .7710499
+                        Largest       Std. Dev.      .3186739
+75%     .9972603       .9972603
+90%     .9972603       .9972603       Variance       .1015531
+95%     .9972603       .9972603       Skewness      -1.074091
+99%     .9972603       .9972603       Kurtosis        2.65306
+
+                          tot_appts
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            2              1
+ 5%            3              1
+10%            3              1       Obs              27,472
+25%            4              1       Sum of Wgt.      27,472
+
+50%            5                      Mean           4.976776
+                        Largest       Std. Dev.      1.415669
+75%            6              9
+90%            7              9       Variance        2.00412
+95%            7              9       Skewness       .0276383
+99%            8              9       Kurtosis        2.76874
+
+                          rate_2021
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     2.005495       1.002747
+ 5%     3.008242       1.002747
+10%     3.711864       1.002747       Obs              27,472
+25%     4.965986       1.002747       Sum of Wgt.      27,472
+
+50%     6.016483                      Mean           18.36402
+                        Largest       Std. Dev.      86.55704
+75%     9.279661           2555
+90%     22.34694           2555       Variance       7492.121
+95%     48.02631           2555       Skewness        17.2161
+99%     260.7143           2555       Kurtosis       383.6137
+
+                        tot_medium_0
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            1              0
+10%            1              0       Obs              27,472
+25%            2              0       Sum of Wgt.      27,472
+
+50%            3                      Mean            2.71218
+                        Largest       Std. Dev.      1.331556
+75%            4              8
+90%            4              8       Variance       1.773041
+95%            5              8       Skewness       .2740073
+99%            6              8       Kurtosis       2.888022
+
+                        prop_medium_0
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%     16.66667              0
+10%           25              0       Obs              27,472
+25%           40              0       Sum of Wgt.      27,472
+
+50%           50                      Mean           54.70297
+                        Largest       Std. Dev.      23.45867
+75%     71.42857            100
+90%     83.33334            100       Variance       550.3093
+95%          100            100       Skewness       -.080309
+99%          100            100       Kurtosis       2.753206
+
+                        tot_medium_1
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs              27,472
+25%            0              0       Sum of Wgt.      27,472
+
+50%            0                      Mean           .5156523
+                        Largest       Std. Dev.      .7072553
+75%            1              5
+90%            1              5       Variance         .50021
+95%            2              5       Skewness       1.347355
+99%            3              5       Kurtosis         4.8159
+
+                        prop_medium_1
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs              27,472
+25%            0              0       Sum of Wgt.      27,472
+
+50%            0                      Mean            10.2468
+                        Largest       Std. Dev.      14.33197
+75%           20            100
+90%     33.33333            100       Variance       205.4053
+95%           40            100       Skewness       1.428232
+99%           50            100       Kurtosis       5.226363
+
+                        tot_medium_2
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs              27,472
+25%            0              0       Sum of Wgt.      27,472
+
+50%            0                      Mean           .5081538
+                        Largest       Std. Dev.      .6816998
+75%            1              4
+90%            1              4       Variance       .4647146
+95%            2              4       Skewness       1.222598
+99%            3              4       Kurtosis       4.180913
+
+                        prop_medium_2
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs              27,472
+25%            0              0       Sum of Wgt.      27,472
+
+50%            0                      Mean           10.28684
+                        Largest       Std. Dev.      14.22784
+75%           20            100
+90%     33.33333            100       Variance       202.4313
+95%           40            100       Skewness       1.403886
+99%           50            100       Kurtosis        5.24301
 
 . 
-. /*gen year = 2019
-> 
-> preserve
+. /*preserve
 > * Tabulate number of appointments per year
 > table1_mc, vars(op_appt_2019_cat cate \ op_appt_2020_cat cate \ op_appt_2021_
 > cat cate) clear
@@ -344,5 +855,5 @@ op_appt_da~A |     44,140    42.08758     12705.4     -21913      22004
       name:  <unnamed>
        log:  /workspace/logs/bsr.log
   log type:  text
- closed on:  14 Sep 2022, 13:29:14
+ closed on:  14 Sep 2022, 14:28:54
 -------------------------------------------------------------------------------

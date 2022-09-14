@@ -10,88 +10,100 @@ adopath + ./analysis/ado
 cap log using ./logs/bsr.log, replace
 
 cap mkdir ./output/tables
-* Import data
-import delimited using ./output/measures/op/input_bsr_2019-04-01.csv
+forvalues i=2019/2021 {
+    local j = `i'+1
+    * Import data
+    import delimited using ./output/measures/op/input_bsr_`i'-04-01.csv, clear
 
-* Drop variables not required
-/*drop first_ra_code-has_ra*/
-drop ethnicity-region
+    * Drop variables not required
+    /*drop first_ra_code-has_ra*/
+    drop ethnicity-region
 
-* Format variables
+    * Format variables
 
-* formatting gender
-gen male=(sex=="M")
-replace male = 0 if sex == "F"
-label define male 0"Female" 1"Male"
-label values male male
-safetab male, miss
+    * formatting gender
+    gen male=(sex=="M")
+    replace male = 0 if sex == "F"
+    label define male 0"Female" 1"Male"
+    label values male male
+    safetab male, miss
 
-*create a 4 category rural urban variable 
-generate urban_rural_5=.
-la var urban_rural_5 "Rural Urban in five categories"
-replace urban_rural_5=1 if urban_rural==1
-replace urban_rural_5=2 if urban_rural==2
-replace urban_rural_5=3 if urban_rural==3|urban_rural==4
-replace urban_rural_5=4 if urban_rural==5|urban_rural==6
-replace urban_rural_5=5 if urban_rural==7|urban_rural==8
-label define urban_rural_5 1 "Urban major conurbation" 2 "Urban minor conurbation" 3 "Urban city and town" 4 "Rural town and fringe" 5 "Rural village and dispersed"
-label values urban_rural_5 urban_rural_5
-safetab urban_rural_5, miss
+    *create a 4 category rural urban variable 
+    generate urban_rural_5=.
+    la var urban_rural_5 "Rural Urban in five categories"
+    replace urban_rural_5=1 if urban_rural==1
+    replace urban_rural_5=2 if urban_rural==2
+    replace urban_rural_5=3 if urban_rural==3|urban_rural==4
+    replace urban_rural_5=4 if urban_rural==5|urban_rural==6
+    replace urban_rural_5=5 if urban_rural==7|urban_rural==8
+    label define urban_rural_5 1 "Urban major conurbation" 2 "Urban minor conurbation" 3 "Urban city and town" 4 "Rural town and fringe" 5 "Rural village and dispersed"
+    label values urban_rural_5 urban_rural_5
+    safetab urban_rural_5, miss
 
-*generate a binary rural urban (with missing assigned to urban)
-generate urban_rural_bin=.
-replace urban_rural_bin=1 if urban_rural<=4|urban_rural==.
-replace urban_rural_bin=0 if urban_rural>4 & urban_rural!=.
-label define urban_rural_bin 0 "Rural" 1 "Urban"
-label values urban_rural_bin urban_rural_bin
-safetab urban_rural_bin urban_rural, miss
-label var urban_rural_bin "Rural-Urban"
+    *generate a binary rural urban (with missing assigned to urban)
+    generate urban_rural_bin=.
+    replace urban_rural_bin=1 if urban_rural<=4|urban_rural==.
+    replace urban_rural_bin=0 if urban_rural>4 & urban_rural!=.
+    label define urban_rural_bin 0 "Rural" 1 "Urban"
+    label values urban_rural_bin urban_rural_bin
+    safetab urban_rural_bin urban_rural, miss
+    label var urban_rural_bin "Rural-Urban"
 
-* Define age categories
-* Create age categories
-egen age_cat = cut(age), at(18, 40, 60, 80, 120) icodes
-label define age 0 "18 - 40 years" 1 "41 - 60 years" 2 "61 - 80 years" 3 ">80 years"
-label values age_cat age
-safetab age_cat, miss
+    * Define age categories
+    * Create age categories
+    egen age_cat = cut(age), at(18, 40, 60, 80, 120) icodes
+    label define age 0 "18 - 40 years" 1 "41 - 60 years" 2 "61 - 80 years" 3 ">80 years"
+    label values age_cat age
+    safetab age_cat, miss
 
-* Reshape to long format 
-reshape long op_appt_date_ op_appt_medium_, i(patient_id) j(op_appt_number) 
-rename op_appt_date_ op_appt_date 
-rename op_appt_medium_ op_appt_medium
+    * Reshape to long format 
+    reshape long op_appt_date_ op_appt_medium_, i(patient_id) j(op_appt_number) 
+    rename op_appt_date_ op_appt_date 
+    rename op_appt_medium_ op_appt_medium
 
-* set talk type (medium=4) to missing and combine telephone and telemedicine
-replace op_appt_medium = . if op_appt_medium==4
-replace op_appt_medium = 2 if op_appt_medium==3
-replace op_appt_medium = 0 if op_appt_medium==.
+    * set talk type (medium=4) to missing and combine telephone and telemedicine
+    replace op_appt_medium = . if op_appt_medium==4
+    replace op_appt_medium = 2 if op_appt_medium==3
+    replace op_appt_medium = 0 if op_appt_medium==.
 
-* Format dates
-gen op_appt_dateA = date(op_appt_date, "YMD")
-gen died_fuA = date(died_fu, "YMD")
-gen dereg_dateA = date(dereg_date, "YMD")
-* Follow-up time
-gen end_date = min(died_fuA, dereg_dateA, date("2020-03-31", "YMD"))
-* display value of end date in period
-di date("2020-03-31", "YMD")
-* determine range of dates for outpatient appointments to determine which should be dropped
-sum op_appt_dateA
-drop if op_appt_dateA > end_date
-sum op_appt_dateA
+    * Format dates
+    gen op_appt_dateA = date(op_appt_date, "YMD")
+    gen died_fuA = date(died_fu, "YMD")
+    gen dereg_dateA = date(dereg_date, "YMD")
+    * Follow-up time
+    gen end_date = min(died_fuA, dereg_dateA, date("`j'-03-31", "YMD"))
+    count if end_date<date("`j'-03-31", "YMD")
+    * display value of end date in period
+    di date("`j'-03-31", "YMD")
+    * determine range of dates for outpatient appointments to determine which should be dropped
+    sum op_appt_dateA
+    drop if op_appt_dateA > end_date
+    sum op_appt_dateA
+    * take out records where end_date prior to start of follow-up
+    drop if end_date<=date("`i'-04-01", "YMD")
+    * determine length of follow-up during year
+    gen days_fu = end_date - date("`i'-04-01", "YMD")
+    sum days_fu
+    gen fu_`i' = days_fu/365
+    sum fu_`i', d 
 
-* Categorise number of outpatient appointments
-bys patient_id: egen tot_appts = total(op_appt_dateA!=.)
-sum tot_appts, d
+    * Categorise number of outpatient appointments
+    bys patient_id: egen tot_appts = total(op_appt_dateA!=.)
+    sum tot_appts, d
 
-* Determine total number and proportion of in-person and telephone appointments
-forvalues i=0/2 {
-    bys patient_id: egen tot_medium_`i' = total(op_appt_medium==`i')
-    sum tot_medium_`i', d
-    gen prop_medium_`i' = (tot_medium_`i'/tot_appts)*100
-    sum prop_medium_`i', d
+    gen rate_`i' = tot_appts / fu_`i' 
+    sum rate_`i', d 
+
+    * Determine total number and proportion of in-person and telephone appointments
+    forvalues i=0/2 {
+        bys patient_id: egen tot_medium_`i' = total(op_appt_medium==`i')
+        sum tot_medium_`i', d
+        gen prop_medium_`i' = (tot_medium_`i'/tot_appts)*100
+        sum prop_medium_`i', d
+        }
     }
 
-/*gen year = 2019
-
-preserve
+/*preserve
 * Tabulate number of appointments per year
 table1_mc, vars(op_appt_2019_cat cate \ op_appt_2020_cat cate \ op_appt_2021_cat cate) clear
 export delimited using ./output/tables/op_appt_yrs.csv
