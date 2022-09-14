@@ -15,6 +15,8 @@ forvalues i=2019/2021 {
     * Import data
     import delimited using ./output/measures/op/input_bsr_`i'-04-01.csv, clear
 
+    * flag first record for each patient for summarising
+    bys patient_id: gen flag=1 if _n==1
     * Drop variables not required
     /*drop first_ra_code-has_ra*/
     drop ethnicity-region
@@ -72,6 +74,7 @@ forvalues i=2019/2021 {
     gen dereg_dateA = date(dereg_date, "YMD")
     * Follow-up time
     gen end_date = min(died_fuA, dereg_dateA, date("`j'-03-31", "YMD"))
+    di "Number where end date prior to follow-up start
     count if end_date<date("`j'-03-31", "YMD")
     * display value of end date in period
     di date("`j'-03-31", "YMD")
@@ -81,6 +84,8 @@ forvalues i=2019/2021 {
     sum op_appt_dateA
     * take out records where end_date prior to start of follow-up
     drop if end_date<=date("`i'-04-01", "YMD")
+    di "count if <6 months follow-up"
+    count if end_date<date("`i'-10-01", "YMD") & flag==1
     * determine length of follow-up during year
     gen days_fu = end_date - date("`i'-04-01", "YMD")
     sum days_fu
@@ -88,20 +93,33 @@ forvalues i=2019/2021 {
     sum fu_`i', d 
 
     * Categorise number of outpatient appointments
-    bys patient_id: egen tot_appts = total(op_appt_dateA!=.)
-    sum tot_appts, d
+    bys patient_id: egen tot_appts_`i' = total(op_appt_dateA!=.)
+    sum tot_appts_`i' if flag==1, d
+    * Categorise number of outpatient appointments
+    label define appt 0 "No appointments" 1 "1-2 per year" 2 "3-6 per year" 3 "7+ per year"
+    egen tot_appts_`i'_cat = cut(tot_appts_`i'), at(0, 1, 3, 7, 1000) icodes
+    label values tot_appts_`i'_cat appt
+    tab tot_appts_`i'_cat if flag==1
 
-    gen rate_`i' = tot_appts / fu_`i' 
-    sum rate_`i', d 
+    gen rate_`i' = tot_appts_`i' / fu_`i' 
+    sum rate_`i' if flag==1, d 
 
     * Determine total number and proportion of in-person and telephone appointments
-    forvalues i=0/2 {
-        bys patient_id: egen tot_medium_`i' = total(op_appt_medium==`i')
-        sum tot_medium_`i', d
-        gen prop_medium_`i' = (tot_medium_`i'/tot_appts)*100
-        sum prop_medium_`i', d
+    * Determine number of appointments where medium is known
+    bys patient_id: egen tot_appts_`i'_medium = total(op_appt_medium!=0)
+    tab tot_appts_`i'_medium if flag==1
+    forvalues k=0/2 {
+        bys patient_id: egen tot_medium_`k' = total(op_appt_medium==`k')
+        sum tot_medium_`k' if flag==1, d
+        gen prop_medium_`k' = (tot_medium_`k'/tot_appts_`i'_medium)*100
+        sum prop_medium_`k' if flag==1, d
         }
+        gen medium_person_`i' = prop_medium_1>=50
+        
     }
+
+
+
 
 /*preserve
 * Tabulate number of appointments per year
