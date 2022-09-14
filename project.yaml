@@ -95,15 +95,27 @@ actions:
         graphs: output/time_series/itsa*.svg
         tables: output/time_series/tsreg*.csv
   
-  #Study definition for outpatient objectives 1 & 2
-  generate_study_population_bsr:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_bsr
+  #Study definition for outpatient objectives - population for BSR abstract
+  generate_study_population_bsr_2019:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_bsr --index-date-range "2019-04-01" --output-dir=output/measures/op 
     outputs:
       highly_sensitive:
-        cohort: output/input_bsr.csv
+        cohort: output/measures/op/input_bsr_2019-04-01.csv
+
+  generate_study_population_bsr_2020:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_bsr --index-date-range "2020-04-01" --output-dir=output/measures/op 
+    outputs:
+      highly_sensitive:
+        cohort: output/measures/op/input_bsr_2020-04-01.csv
+
+  generate_study_population_bsr_2021:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_bsr --index-date-range "2021-04-01" --output-dir=output/measures/op 
+    outputs:
+      highly_sensitive:
+        cohort: output/measures/op/input_bsr_2021-04-01.csv
   bsr: 
     run: stata-mp:latest analysis/bsr.do
-    needs: [generate_study_population_bsr]
+    needs: [generate_study_population_bsr_2019, generate_study_population_bsr_2020, generate_study_population_bsr_2021]
     outputs:
       moderately_sensitive:
         log: logs/bsr.log
