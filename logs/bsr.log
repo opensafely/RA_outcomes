@@ -8,892 +8,1189 @@
 .     import delimited using ./output/measures/op/input_bsr_`i'-04-01.csv, clea
 > r
   4. 
-.     * flag first record for each patient for summarising
-.     bys patient_id: gen flag=1 if _n==1
+.     keep if has_ra==1
   5.     * Drop variables not required
 .     /*drop first_ra_code-has_ra*/
 .     drop ethnicity-region
   6. 
+.     * Check if any missing outpatient info
+.     egen all_miss_appts = rowmiss(op_appt_date_1 op_appt_date_2 op_appt_date_
+> 3 op_appt_date_4 op_appt_date_5 op_appt_date_6 op_appt_date_7 op_appt_date_8 
+> op_appt_date_9 op_appt_date_10)
+  7.     tab all_miss_appts
+  8.     forvalues a=1/10 {
+  9.         gen op_nodate_medium_`a' = (op_appt_date_`a'=="" & op_appt_medium_
+> `a'!=.)
+ 10.         tab op_nodate_medium_`a'
+ 11.     }
+ 12. 
 .     * Format variables
 . 
 .     * formatting gender
 .     gen male=(sex=="M")
-  7.     replace male = 0 if sex == "F"
-  8.     label define male 0"Female" 1"Male"
-  9.     label values male male
- 10.     safetab male, miss
- 11. 
+ 13.     replace male = 0 if sex == "F"
+ 14.     label define male 0"Female" 1"Male"
+ 15.     label values male male
+ 16.     safetab male, miss
+ 17. 
 .     *create a 4 category rural urban variable 
 .     generate urban_rural_5=.
- 12.     la var urban_rural_5 "Rural Urban in five categories"
- 13.     replace urban_rural_5=1 if urban_rural==1
- 14.     replace urban_rural_5=2 if urban_rural==2
- 15.     replace urban_rural_5=3 if urban_rural==3|urban_rural==4
- 16.     replace urban_rural_5=4 if urban_rural==5|urban_rural==6
- 17.     replace urban_rural_5=5 if urban_rural==7|urban_rural==8
- 18.     label define urban_rural_5 1 "Urban major conurbation" 2 "Urban minor 
+ 18.     la var urban_rural_5 "Rural Urban in five categories"
+ 19.     replace urban_rural_5=1 if urban_rural==1
+ 20.     replace urban_rural_5=2 if urban_rural==2
+ 21.     replace urban_rural_5=3 if urban_rural==3|urban_rural==4
+ 22.     replace urban_rural_5=4 if urban_rural==5|urban_rural==6
+ 23.     replace urban_rural_5=5 if urban_rural==7|urban_rural==8
+ 24.     label define urban_rural_5 1 "Urban major conurbation" 2 "Urban minor 
 > conurbation" 3 "Urban city and town" 4 "Rural town and fringe" 5 "Rural villa
 > ge and dispersed"
- 19.     label values urban_rural_5 urban_rural_5
- 20.     safetab urban_rural_5, miss
- 21. 
+ 25.     label values urban_rural_5 urban_rural_5
+ 26.     safetab urban_rural_5, miss
+ 27. 
 .     *generate a binary rural urban (with missing assigned to urban)
 .     generate urban_rural_bin=.
- 22.     replace urban_rural_bin=1 if urban_rural<=4|urban_rural==.
- 23.     replace urban_rural_bin=0 if urban_rural>4 & urban_rural!=.
- 24.     label define urban_rural_bin 0 "Rural" 1 "Urban"
- 25.     label values urban_rural_bin urban_rural_bin
- 26.     safetab urban_rural_bin urban_rural, miss
- 27.     label var urban_rural_bin "Rural-Urban"
- 28. 
+ 28.     replace urban_rural_bin=1 if urban_rural<=4|urban_rural==.
+ 29.     replace urban_rural_bin=0 if urban_rural>4 & urban_rural!=.
+ 30.     label define urban_rural_bin 0 "Rural" 1 "Urban"
+ 31.     label values urban_rural_bin urban_rural_bin
+ 32.     safetab urban_rural_bin urban_rural, miss
+ 33.     label var urban_rural_bin "Rural-Urban"
+ 34. 
 .     * Define age categories
 .     * Create age categories
 .     egen age_cat = cut(age), at(18, 40, 60, 80, 120) icodes
- 29.     label define age 0 "18 - 40 years" 1 "41 - 60 years" 2 "61 - 80 years"
+ 35.     label define age 0 "18 - 40 years" 1 "41 - 60 years" 2 "61 - 80 years"
 >  3 ">80 years"
- 30.     label values age_cat age
- 31.     safetab age_cat, miss
- 32. 
+ 36.     label values age_cat age
+ 37.     safetab age_cat, miss
+ 38. 
 .     * Reshape to long format 
 .     reshape long op_appt_date_ op_appt_medium_, i(patient_id) j(op_appt_numbe
 > r) 
- 33.     rename op_appt_date_ op_appt_date 
- 34.     rename op_appt_medium_ op_appt_medium
- 35. 
+ 39.     rename op_appt_date_ op_appt_date 
+ 40.     rename op_appt_medium_ op_appt_medium
+ 41. 
 .     * set talk type (medium=4) to missing and combine telephone and telemedic
 > ine
 .     replace op_appt_medium = . if op_appt_medium==4
- 36.     replace op_appt_medium = 2 if op_appt_medium==3
- 37.     replace op_appt_medium = 0 if op_appt_medium==.
- 38. 
+ 42.     replace op_appt_medium = 2 if op_appt_medium==3
+ 43.     replace op_appt_medium = 0 if op_appt_medium==.
+ 44. 
+.      * flag first record for each patient for summarising
+.     bys patient_id: gen flag=1 if _n==1
+ 45. 
 .     * Format dates
 .     gen op_appt_dateA = date(op_appt_date, "YMD")
- 39.     gen died_fuA = date(died_fu, "YMD")
- 40.     gen dereg_dateA = date(dereg_date, "YMD")
- 41.     * Follow-up time
+ 46.     gen died_fuA = date(died_fu, "YMD")
+ 47.     gen dereg_dateA = date(dereg_date, "YMD")
+ 48.     * Follow-up time
 .     gen end_date = min(died_fuA, dereg_dateA, date("`j'-03-31", "YMD"))
- 42.     di "Number where end date prior to follow-up start
- 43.     count if end_date<date("`j'-03-31", "YMD")
- 44.     * display value of end date in period
+ 49.     di "Number where end date prior to follow-up start
+ 50.     count if end_date<date("`j'-03-31", "YMD")
+ 51.     * display value of end date in period
 .     di date("`j'-03-31", "YMD")
- 45.     * determine range of dates for outpatient appointments to determine wh
+ 52.     * determine range of dates for outpatient appointments to determine wh
 > ich should be dropped
 .     sum op_appt_dateA
- 46.     drop if op_appt_dateA > end_date
- 47.     sum op_appt_dateA
- 48.     * take out records where end_date prior to start of follow-up
+ 53.     drop if op_appt_dateA > end_date
+ 54.     sum op_appt_dateA
+ 55.     * take out records where end_date prior to start of follow-up
 .     drop if end_date<=date("`i'-04-01", "YMD")
- 49.     di "count if <6 months follow-up"
- 50.     count if end_date<date("`i'-10-01", "YMD") & flag==1
- 51.     * determine length of follow-up during year
+ 56.     di "count if <6 months follow-up"
+ 57.     count if end_date<date("`i'-10-01", "YMD") & flag==1
+ 58.     * determine length of follow-up during year
 .     gen days_fu = end_date - date("`i'-04-01", "YMD")
- 52.     sum days_fu
- 53.     gen fu_`i' = days_fu/365
- 54.     sum fu_`i', d 
- 55. 
+ 59.     sum days_fu
+ 60.     gen fu_`i' = days_fu/365
+ 61.     sum fu_`i', d 
+ 62. 
 .     * Categorise number of outpatient appointments
 .     bys patient_id: egen tot_appts_`i' = total(op_appt_dateA!=.)
- 56.     sum tot_appts_`i' if flag==1, d
- 57.     * Categorise number of outpatient appointments
+ 63.     sum tot_appts_`i' if flag==1, d
+ 64.     * Categorise number of outpatient appointments
 .     label define appt 0 "No appointments" 1 "1-2 per year" 2 "3-6 per year" 3
 >  "7+ per year"
- 58.     egen tot_appts_`i'_cat = cut(tot_appts_`i'), at(0, 1, 3, 7, 1000) icod
+ 65.     egen tot_appts_`i'_cat = cut(tot_appts_`i'), at(0, 1, 3, 7, 1000) icod
 > es
- 59.     label values tot_appts_`i'_cat appt
- 60.     tab tot_appts_`i'_cat if flag==1
- 61. 
+ 66.     label values tot_appts_`i'_cat appt
+ 67.     tab tot_appts_`i'_cat if flag==1
+ 68. 
 .     gen rate_`i' = tot_appts_`i' / fu_`i' 
- 62.     sum rate_`i' if flag==1, d 
- 63. 
+ 69.     sum rate_`i' if flag==1, d 
+ 70. 
 .     * Determine total number and proportion of in-person and telephone appoin
 > tments
 .     * Determine number of appointments where medium is known
 .     bys patient_id: egen tot_appts_`i'_medium = total(op_appt_medium!=0)
- 64.     tab tot_appts_`i'_medium if flag==1
- 65.     forvalues k=0/2 {
- 66.         bys patient_id: egen tot_medium_`k' = total(op_appt_medium==`k')
- 67.         sum tot_medium_`k' if flag==1, d
- 68.         gen prop_medium_`k' = (tot_medium_`k'/tot_appts_`i'_medium)*100
- 69.         sum prop_medium_`k' if flag==1, d
- 70.         }
- 71.         gen medium_person_`i' = prop_medium_1>=50
- 72.         
+ 71.     tab tot_appts_`i'_medium if flag==1
+ 72.     forvalues k=0/2 {
+ 73.         bys patient_id: egen tot_medium_`k' = total(op_appt_medium==`k')
+ 74.         sum tot_medium_`k' if flag==1, d
+ 75.         gen prop_medium_`k' = (tot_medium_`k'/tot_appts_`i'_medium)*100
+ 76.         sum prop_medium_`k' if flag==1, d
+ 77.         }
+ 78.         gen medium_person_`i' = prop_medium_1>=50
+ 79.         
 .     }
-(36 vars, 10,000 obs)
+(31 vars, 10,000 obs)
+(5,000 observations deleted)
+
+all_miss_ap |
+        pts |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |          9        0.18        0.18
+          2 |         89        1.78        1.96
+          3 |        367        7.34        9.30
+          4 |        796       15.92       25.22
+          5 |      1,269       25.38       50.60
+          6 |      1,227       24.54       75.14
+          7 |        832       16.64       91.78
+          8 |        320        6.40       98.18
+          9 |         86        1.72       99.90
+         10 |          5        0.10      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_1 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      2,558       51.16       51.16
+          1 |      2,442       48.84      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_2 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,811       76.22       76.22
+          1 |      1,189       23.78      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_3 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,737       74.74       74.74
+          1 |      1,263       25.26      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_4 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,749       74.98       74.98
+          1 |      1,251       25.02      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_5 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,756       75.12       75.12
+          1 |      1,244       24.88      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_6 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,746       74.92       74.92
+          1 |      1,254       25.08      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_7 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,744       74.88       74.88
+          1 |      1,256       25.12      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_8 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,770       75.40       75.40
+          1 |      1,230       24.60      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_9 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,710       74.20       74.20
+          1 |      1,290       25.80      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+   edium_10 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,769       75.38       75.38
+          1 |      1,231       24.62      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
 (0 real changes made)
 5
 
        male |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-     Female |      5,068       50.68       50.68
-       Male |      4,932       49.32      100.00
+     Female |      2,543       50.86       50.86
+       Male |      2,457       49.14      100.00
 ------------+-----------------------------------
-      Total |     10,000      100.00
-(10,000 missing values generated)
-(1,303 real changes made)
-(1,232 real changes made)
-(2,451 real changes made)
-(2,461 real changes made)
-(2,553 real changes made)
+      Total |      5,000      100.00
+(5,000 missing values generated)
+(621 real changes made)
+(626 real changes made)
+(1,225 real changes made)
+(1,231 real changes made)
+(1,297 real changes made)
 14
 
         Rural Urban in five |
                  categories |      Freq.     Percent        Cum.
 ----------------------------+-----------------------------------
-    Urban major conurbation |      1,303       13.03       13.03
-    Urban minor conurbation |      1,232       12.32       25.35
-        Urban city and town |      2,451       24.51       49.86
-      Rural town and fringe |      2,461       24.61       74.47
-Rural village and dispersed |      2,553       25.53      100.00
+    Urban major conurbation |        621       12.42       12.42
+    Urban minor conurbation |        626       12.52       24.94
+        Urban city and town |      1,225       24.50       49.44
+      Rural town and fringe |      1,231       24.62       74.06
+Rural village and dispersed |      1,297       25.94      100.00
 ----------------------------+-----------------------------------
-                      Total |     10,000      100.00
-(10,000 missing values generated)
-(4,986 real changes made)
-(5,014 real changes made)
+                      Total |      5,000      100.00
+(5,000 missing values generated)
+(2,472 real changes made)
+(2,528 real changes made)
 28
 
 urban_rura |                      urban_rural
      l_bin |         1          2          3          4          5 |     Total
 -----------+-------------------------------------------------------+----------
-     Rural |         0          0          0          0      1,258 |     5,014 
-     Urban |     1,303      1,232      1,208      1,243          0 |     4,986 
+     Rural |         0          0          0          0        646 |     2,528 
+     Urban |       621        626        613        612          0 |     2,472 
 -----------+-------------------------------------------------------+----------
-     Total |     1,303      1,232      1,208      1,243      1,258 |    10,000 
+     Total |       621        626        613        612        646 |     5,000 
 
 
 urban_rura |           urban_rural
      l_bin |         6          7          8 |     Total
 -----------+---------------------------------+----------
-     Rural |     1,203      1,284      1,269 |     5,014 
-     Urban |         0          0          0 |     4,986 
+     Rural |       585        652        645 |     2,528 
+     Urban |         0          0          0 |     2,472 
 -----------+---------------------------------+----------
-     Total |     1,203      1,284      1,269 |    10,000 
-(2152 missing values generated)
+     Total |       585        652        645 |     5,000 
+(1062 missing values generated)
 8
 
       age_cat |      Freq.     Percent        Cum.
 --------------+-----------------------------------
-18 - 40 years |      2,850       28.50       28.50
-41 - 60 years |      2,663       26.63       55.13
-61 - 80 years |      1,860       18.60       73.73
-    >80 years |        475        4.75       78.48
-            . |      2,152       21.52      100.00
+18 - 40 years |      1,466       29.32       29.32
+41 - 60 years |      1,298       25.96       55.28
+61 - 80 years |        952       19.04       74.32
+    >80 years |        222        4.44       78.76
+            . |      1,062       21.24      100.00
 --------------+-----------------------------------
-        Total |     10,000      100.00
+        Total |      5,000      100.00
 (note: j = 1 2 3 4 5 6 7 8 9 10)
 
 Data                               wide   ->   long
 -----------------------------------------------------------------------------
-Number of obs.                    10000   ->  100000
-Number of variables                  37   ->      20
+Number of obs.                     5000   ->   50000
+Number of variables                  42   ->      25
 j variable (10 values)                    ->   op_appt_number
 xij variables:
 op_appt_date_1 op_appt_date_2 ... op_appt_date_10->op_appt_date_
 op_appt_medium_1 op_appt_medium_2 ... op_appt_medium_10->op_appt_medium_
 -----------------------------------------------------------------------------
-(5,088 real changes made, 5,088 to missing)
-(5,030 real changes made)
-(55,088 real changes made)
-(54,848 missing values generated)
-(50,000 missing values generated)
-(50,000 missing values generated)
+(2,538 real changes made, 2,538 to missing)
+(2,457 real changes made)
+(27,626 real changes made)
+(45,000 missing values generated)
+(27,387 missing values generated)
+(24,800 missing values generated)
+(25,480 missing values generated)
 Number where end date prior to follow-up start
-  3,300
+  1,720
 22005
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-op_appt_da~A |     45,152    544.3818    12992.89     -21913      22902
-(55,860 observations deleted)
+op_appt_da~A |     22,613    450.8299    12967.76     -21913      22900
+(27,900 observations deleted)
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-op_appt_da~A |     44,140    42.08758     12705.4     -21913      22004
+op_appt_da~A |     22,100   -59.64086    12671.94     -21913      22003
 (0 observations deleted)
 count if <6 months follow-up
   0
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-     days_fu |     44,140    364.4866    3.172653        336        365
+     days_fu |     22,100    364.4793    3.182287        336        365
 
                            fu_2019
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%     .9397261        .920548
+ 1%     .9424658        .920548
  5%            1        .920548
-10%            1        .920548       Obs              44,140
-25%            1        .920548       Sum of Wgt.      44,140
+10%            1        .920548       Obs              22,100
+25%            1        .920548       Sum of Wgt.      22,100
 
-50%            1                      Mean           .9985935
-                        Largest       Std. Dev.      .0086922
+50%            1                      Mean           .9985734
+                        Largest       Std. Dev.      .0087186
 75%            1              1
-90%            1              1       Variance       .0000756
-95%            1              1       Skewness      -6.772223
-99%            1              1       Kurtosis       49.81662
+90%            1              1       Variance        .000076
+95%            1              1       Skewness      -6.694249
+99%            1              1       Kurtosis       48.95348
 
                        tot_appts_2019
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%            2              1
- 5%            3              1
-10%            3              1       Obs              44,140
-25%            4              1       Sum of Wgt.      44,140
+ 1%            4              4
+ 5%            4              4
+10%            4              4       Obs                  22
+25%            5              5       Sum of Wgt.          22
 
-50%            5                      Mean           4.935025
-                        Largest       Std. Dev.      1.437615
-75%            6             10
-90%            7             10       Variance       2.066736
-95%            7             10       Skewness       .0897944
-99%            8             10       Kurtosis       2.862019
+50%            5                      Mean           5.681818
+                        Largest       Std. Dev.      1.249242
+75%            6              7
+90%            8              8       Variance       1.560606
+95%            8              8       Skewness       .6247969
+99%            8              8       Kurtosis       2.430838
 
 tot_appts_2019_ |
             cat |      Freq.     Percent        Cum.
 ----------------+-----------------------------------
-   1-2 per year |      1,719        3.89        3.89
-   3-6 per year |     36,444       82.56       86.46
-    7+ per year |      5,977       13.54      100.00
+   3-6 per year |         17       77.27       77.27
+    7+ per year |          5       22.73      100.00
 ----------------+-----------------------------------
-          Total |     44,140      100.00
+          Total |         22      100.00
 
                           rate_2019
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%            2              1
- 5%            3              1
-10%            3              1       Obs              44,140
-25%            4              1       Sum of Wgt.      44,140
+ 1%            4              4
+ 5%            4              4
+10%            4              4       Obs                  22
+25%            5              5       Sum of Wgt.          22
 
-50%            5                      Mean            4.94231
-                        Largest       Std. Dev.      1.440003
-75%            6             10
-90%            7             10       Variance       2.073608
-95%            7             10       Skewness       .0877504
-99%            8             10       Kurtosis       2.854069
+50%            5                      Mean           5.681818
+                        Largest       Std. Dev.      1.249242
+75%            6              7
+90%            8              8       Variance       1.560606
+95%            8              8       Skewness       .6247969
+99%            8              8       Kurtosis       2.430838
 
 tot_appts_2 |
  019_medium |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |      3,398        7.70        7.70
-          1 |     10,086       22.85       30.55
-          2 |     13,466       30.51       61.06
-          3 |     10,151       23.00       84.05
-          4 |      5,140       11.64       95.70
-          5 |      1,540        3.49       99.19
-          6 |        274        0.62       99.81
-          7 |         85        0.19      100.00
+          1 |          4       18.18       18.18
+          2 |          6       27.27       45.45
+          3 |          7       31.82       77.27
+          4 |          4       18.18       95.45
+          5 |          1        4.55      100.00
 ------------+-----------------------------------
-      Total |     44,140      100.00
+      Total |         22      100.00
 
                         tot_medium_0
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%            0              0
- 5%            1              0
-10%            1              0       Obs              44,140
-25%            2              0       Sum of Wgt.      44,140
+ 1%            2              2
+ 5%            2              2
+10%            2              2       Obs                  22
+25%            2              2       Sum of Wgt.          22
 
-50%            3                      Mean           2.715496
-                        Largest       Std. Dev.       1.36482
-75%            4              9
-90%            4              9       Variance       1.862734
-95%            5              9       Skewness         .30324
-99%            6              9       Kurtosis       2.891592
-(3,398 missing values generated)
+50%            3                      Mean           3.045455
+                        Largest       Std. Dev.      1.214095
+75%            3              4
+90%            4              4       Variance       1.474026
+95%            5              5       Skewness       1.709717
+99%            7              7       Kurtosis        6.22683
+(1,636 missing values generated)
 
                         prop_medium_0
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%            0              0
- 5%           20              0
-10%     33.33333              0       Obs              40,742
-25%     66.66666              0       Sum of Wgt.      40,742
+ 1%           50             50
+ 5%           50             50
+10%           60             60       Obs                  22
+25%     66.66666       66.66666       Sum of Wgt.          22
 
-50%          100                      Mean           153.8154
-                        Largest       Std. Dev.      131.0355
-75%          200            700
-90%          400            700       Variance       17170.31
-95%          400            700       Skewness       1.364398
-99%          600            700       Kurtosis       4.459422
+50%          100                      Mean           163.3333
+                        Largest       Std. Dev.      158.2636
+75%     166.6667            300
+90%          400            400       Variance       25047.35
+95%          400            400       Skewness       2.135083
+99%          700            700       Kurtosis        7.20067
 
                         tot_medium_1
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs              44,140
-25%            0              0       Sum of Wgt.      44,140
+10%            0              0       Obs                  22
+25%            0              0       Sum of Wgt.          22
 
-50%            0                      Mean           .4997734
-                        Largest       Std. Dev.      .6942296
-75%            1              4
-90%            1              4       Variance       .4819547
-95%            2              4       Skewness       1.325482
-99%            3              4       Kurtosis       4.494902
-(3,398 missing values generated)
+50%            0                      Mean           .4090909
+                        Largest       Std. Dev.      .6661253
+75%            1              1
+90%            1              1       Variance       .4437229
+95%            2              2       Skewness       1.328721
+99%            2              2       Kurtosis       3.507079
+(1,636 missing values generated)
 
                         prop_medium_1
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs              40,742
-25%            0              0       Sum of Wgt.      40,742
+10%            0              0       Obs                  22
+25%            0              0       Sum of Wgt.          22
 
-50%            0                      Mean           22.38898
-                        Largest       Std. Dev.      30.53745
-75%           50            100
-90%     66.66666            100       Variance       932.5356
-95%          100            100       Skewness       1.229581
-99%          100            100       Kurtosis       3.545781
+50%            0                      Mean           16.06061
+                        Largest       Std. Dev.      30.53988
+75%           25       33.33333
+90%           50             50       Variance        932.684
+95%          100            100       Skewness        1.99592
+99%          100            100       Kurtosis       5.833056
 
                         tot_medium_2
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs              44,140
-25%            0              0       Sum of Wgt.      44,140
+10%            0              0       Obs                  22
+25%            0              0       Sum of Wgt.          22
 
-50%            0                      Mean           .4925238
-                        Largest       Std. Dev.      .6710565
-75%            1              4
-90%            1              4       Variance       .4503168
-95%            2              4       Skewness       1.253049
-99%            2              4       Kurtosis       4.297609
-(3,398 missing values generated)
+50%            1                      Mean           .8181818
+                        Largest       Std. Dev.      .7950061
+75%            1              1
+90%            2              2       Variance       .6320346
+95%            2              2       Skewness        .909073
+99%            3              3       Kurtosis       3.766373
+(1,636 missing values generated)
 
                         prop_medium_2
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs              40,742
-25%            0              0       Sum of Wgt.      40,742
+10%            0              0       Obs                  22
+25%            0              0       Sum of Wgt.          22
 
-50%            0                      Mean           22.49958
-                        Largest       Std. Dev.      30.52986
-75%           50            100
-90%     66.66666            100       Variance       932.0723
-95%          100            100       Skewness       1.235094
-99%          100            100       Kurtosis       3.578429
-(30 vars, 10,000 obs)
+50%     29.16667                      Mean           30.07576
+                        Largest       Std. Dev.      31.61222
+75%     33.33333       66.66666
+90%           75             75       Variance       999.3326
+95%          100            100       Skewness        .945173
+99%          100            100       Kurtosis       3.016867
+(31 vars, 10,000 obs)
+(5,000 observations deleted)
+
+all_miss_ap |
+        pts |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |         15        0.30        0.30
+          2 |         81        1.62        1.92
+          3 |        359        7.18        9.10
+          4 |        843       16.86       25.96
+          5 |      1,228       24.56       50.52
+          6 |      1,170       23.40       73.92
+          7 |        852       17.04       90.96
+          8 |        344        6.88       97.84
+          9 |         99        1.98       99.82
+         10 |          9        0.18      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_1 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      2,515       50.30       50.30
+          1 |      2,485       49.70      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_2 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,810       76.20       76.20
+          1 |      1,190       23.80      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_3 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,739       74.78       74.78
+          1 |      1,261       25.22      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_4 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,753       75.06       75.06
+          1 |      1,247       24.94      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_5 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,769       75.38       75.38
+          1 |      1,231       24.62      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_6 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,764       75.28       75.28
+          1 |      1,236       24.72      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_7 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,728       74.56       74.56
+          1 |      1,272       25.44      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_8 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,759       75.18       75.18
+          1 |      1,241       24.82      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_9 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,717       74.34       74.34
+          1 |      1,283       25.66      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+   edium_10 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,702       74.04       74.04
+          1 |      1,298       25.96      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
 (0 real changes made)
 5
 
        male |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-     Female |      5,108       51.08       51.08
-       Male |      4,892       48.92      100.00
+     Female |      2,553       51.06       51.06
+       Male |      2,447       48.94      100.00
 ------------+-----------------------------------
-      Total |     10,000      100.00
-(10,000 missing values generated)
-(1,185 real changes made)
-(1,211 real changes made)
-(2,516 real changes made)
-(2,493 real changes made)
-(2,595 real changes made)
+      Total |      5,000      100.00
+(5,000 missing values generated)
+(625 real changes made)
+(648 real changes made)
+(1,230 real changes made)
+(1,210 real changes made)
+(1,287 real changes made)
 14
 
         Rural Urban in five |
                  categories |      Freq.     Percent        Cum.
 ----------------------------+-----------------------------------
-    Urban major conurbation |      1,185       11.85       11.85
-    Urban minor conurbation |      1,211       12.11       23.96
-        Urban city and town |      2,516       25.16       49.12
-      Rural town and fringe |      2,493       24.93       74.05
-Rural village and dispersed |      2,595       25.95      100.00
+    Urban major conurbation |        625       12.50       12.50
+    Urban minor conurbation |        648       12.96       25.46
+        Urban city and town |      1,230       24.60       50.06
+      Rural town and fringe |      1,210       24.20       74.26
+Rural village and dispersed |      1,287       25.74      100.00
 ----------------------------+-----------------------------------
-                      Total |     10,000      100.00
-(10,000 missing values generated)
-(4,912 real changes made)
-(5,088 real changes made)
+                      Total |      5,000      100.00
+(5,000 missing values generated)
+(2,503 real changes made)
+(2,497 real changes made)
 28
 
 urban_rura |                      urban_rural
      l_bin |         1          2          3          4          5 |     Total
 -----------+-------------------------------------------------------+----------
-     Rural |         0          0          0          0      1,248 |     5,088 
-     Urban |     1,185      1,211      1,232      1,284          0 |     4,912 
+     Rural |         0          0          0          0        612 |     2,497 
+     Urban |       625        648        616        614          0 |     2,503 
 -----------+-------------------------------------------------------+----------
-     Total |     1,185      1,211      1,232      1,284      1,248 |    10,000 
+     Total |       625        648        616        614        612 |     5,000 
 
 
 urban_rura |           urban_rural
      l_bin |         6          7          8 |     Total
 -----------+---------------------------------+----------
-     Rural |     1,245      1,256      1,339 |     5,088 
-     Urban |         0          0          0 |     4,912 
+     Rural |       598        636        651 |     2,497 
+     Urban |         0          0          0 |     2,503 
 -----------+---------------------------------+----------
-     Total |     1,245      1,256      1,339 |    10,000 
-(2019 missing values generated)
+     Total |       598        636        651 |     5,000 
+(1071 missing values generated)
 8
 
       age_cat |      Freq.     Percent        Cum.
 --------------+-----------------------------------
-18 - 40 years |      2,914       29.14       29.14
-41 - 60 years |      2,595       25.95       55.09
-61 - 80 years |      1,973       19.73       74.82
-    >80 years |        499        4.99       79.81
-            . |      2,019       20.19      100.00
+18 - 40 years |      1,416       28.32       28.32
+41 - 60 years |      1,299       25.98       54.30
+61 - 80 years |      1,006       20.12       74.42
+    >80 years |        208        4.16       78.58
+            . |      1,071       21.42      100.00
 --------------+-----------------------------------
-        Total |     10,000      100.00
+        Total |      5,000      100.00
 (note: j = 1 2 3 4 5 6 7 8 9 10)
 
 Data                               wide   ->   long
 -----------------------------------------------------------------------------
-Number of obs.                    10000   ->  100000
-Number of variables                  31   ->      14
+Number of obs.                     5000   ->   50000
+Number of variables                  42   ->      25
 j variable (10 values)                    ->   op_appt_number
 xij variables:
 op_appt_date_1 op_appt_date_2 ... op_appt_date_10->op_appt_date_
 op_appt_medium_1 op_appt_medium_2 ... op_appt_medium_10->op_appt_medium_
 -----------------------------------------------------------------------------
-(4,907 real changes made, 4,907 to missing)
-(4,932 real changes made)
-(54,907 real changes made)
-(54,853 missing values generated)
-(50,000 missing values generated)
-(50,000 missing values generated)
+(2,582 real changes made, 2,582 to missing)
+(2,507 real changes made)
+(27,487 real changes made)
+(45,000 missing values generated)
+(27,483 missing values generated)
+(24,830 missing values generated)
+(25,060 missing values generated)
 Number where end date prior to follow-up start
-  38,170
+  19,190
 22370
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-op_appt_da~A |     45,147    565.8258    13017.01     -21913      22902
-(55,607 observations deleted)
+op_appt_da~A |     22,517    442.6074    12949.24     -21913      22903
+(27,835 observations deleted)
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-op_appt_da~A |     44,393    191.7354    12803.92     -21913      22370
-(1,382 observations deleted)
+op_appt_da~A |     22,165    90.90792     12744.9     -21913      22369
+(786 observations deleted)
 count if <6 months follow-up
-  8,342
+  9
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-     days_fu |     43,011    295.4955    110.2117          1        364
+     days_fu |     21,379    293.5544    111.8701          1        364
 
                            fu_2020
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%     .0273973       .0027397
- 5%     .1315068       .0027397
-10%      .260274       .0027397       Obs              43,011
-25%     .6575342       .0027397       Sum of Wgt.      43,011
+ 1%     .0246575       .0027397
+ 5%     .1260274       .0027397
+10%     .2520548       .0027397       Obs              21,379
+25%     .6383561       .0027397       Sum of Wgt.      21,379
 
-50%     .9972603                      Mean           .8095768
-                        Largest       Std. Dev.      .3019499
+50%     .9972603                      Mean           .8042587
+                        Largest       Std. Dev.      .3064934
 75%     .9972603       .9972603
-90%     .9972603       .9972603       Variance       .0911737
-95%     .9972603       .9972603       Skewness      -1.342322
-99%     .9972603       .9972603       Kurtosis       3.301548
+90%     .9972603       .9972603       Variance       .0939382
+95%     .9972603       .9972603       Skewness      -1.304331
+99%     .9972603       .9972603       Kurtosis       3.181255
 
                        tot_appts_2020
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%            2              1
- 5%            3              1
-10%            3              1       Obs              43,011
-25%            4              1       Sum of Wgt.      43,011
+ 1%            2              2
+ 5%            3              2
+10%            3              3       Obs                  43
+25%            4              3       Sum of Wgt.          43
 
-50%            5                      Mean           4.947223
-                        Largest       Std. Dev.      1.410198
-75%            6             10
-90%            7             10       Variance       1.988658
-95%            7             10       Skewness        .014167
-99%            8             10       Kurtosis       2.787853
+50%            6                      Mean           5.372093
+                        Largest       Std. Dev.      1.543392
+75%            7              7
+90%            7              7       Variance        2.38206
+95%            7              8       Skewness       -.366273
+99%            8              8       Kurtosis       2.359613
 
 tot_appts_2020_ |
             cat |      Freq.     Percent        Cum.
 ----------------+-----------------------------------
-   1-2 per year |      1,652        3.84        3.84
-   3-6 per year |     35,549       82.65       86.49
-    7+ per year |      5,810       13.51      100.00
+   1-2 per year |          2        4.65        4.65
+   3-6 per year |         29       67.44       72.09
+    7+ per year |         12       27.91      100.00
 ----------------+-----------------------------------
-          Total |     43,011      100.00
+          Total |         43      100.00
 
                           rate_2020
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%     2.005495       1.002747
- 5%     3.008242       1.002747
-10%     3.008242       1.002747       Obs              43,011
-25%     4.010989       1.002747       Sum of Wgt.      43,011
+ 1%     2.005495       2.005495
+ 5%     3.008242       2.005495
+10%     4.010989       3.008242       Obs                  43
+25%      4.25656       3.008242       Sum of Wgt.          43
 
-50%     6.016483                      Mean           14.09952
-                        Largest       Std. Dev.      60.27488
-75%     8.021978           1825
-90%     19.06717           1825       Variance       3633.061
-95%         36.5           1825       Skewness       19.72383
-99%        182.5           1825       Kurtosis       505.2025
+50%     6.016483                      Mean           11.72602
+                        Largest       Std. Dev.      20.04736
+75%     8.021978       22.34694
+90%     21.00719       49.77273       Variance       401.8965
+95%     49.77273       53.22917       Skewness       4.327607
+99%     121.6667       121.6667       Kurtosis       22.82676
 
 tot_appts_2 |
  020_medium |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |      3,042        7.07        7.07
-          1 |      9,712       22.58       29.65
-          2 |     13,425       31.21       60.87
-          3 |     10,022       23.30       84.17
-          4 |      4,733       11.00       95.17
-          5 |      1,658        3.85       99.03
-          6 |        357        0.83       99.86
-          7 |         62        0.14      100.00
+          0 |          1        2.33        2.33
+          1 |          6       13.95       16.28
+          2 |         17       39.53       55.81
+          3 |          8       18.60       74.42
+          4 |          8       18.60       93.02
+          5 |          3        6.98      100.00
 ------------+-----------------------------------
-      Total |     43,011      100.00
+      Total |         43      100.00
 
                         tot_medium_0
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%            0              0
- 5%            1              0
-10%            1              0       Obs              43,011
-25%            2              0       Sum of Wgt.      43,011
+ 1%            1              1
+ 5%            1              1
+10%            1              1       Obs                  43
+25%            1              1       Sum of Wgt.          43
 
-50%            3                      Mean           2.705331
-                        Largest       Std. Dev.      1.344803
-75%            4              8
-90%            4              8       Variance       1.808495
-95%            5              8       Skewness        .296165
-99%            6              8       Kurtosis       2.893809
-(3,042 missing values generated)
+50%            3                      Mean           2.790698
+                        Largest       Std. Dev.      1.456646
+75%            4              5
+90%            5              5       Variance       2.121816
+95%            5              5       Skewness       .3223181
+99%            6              6       Kurtosis       2.047275
+(1,645 missing values generated)
 
                         prop_medium_0
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%            0              0
- 5%           20              0
-10%     33.33333              0       Obs              39,969
-25%     66.66666              0       Sum of Wgt.      39,969
+ 1%           20             20
+ 5%           25             20
+10%           25             25       Obs                  42
+25%           50             25       Sum of Wgt.          42
 
-50%          100                      Mean           152.5616
-                        Largest       Std. Dev.      128.4473
-75%          200            700
-90%          300            700       Variance       16498.71
-95%          400            700       Skewness        1.38187
-99%          600            700       Kurtosis       4.627549
+50%          100                      Mean           141.5873
+                        Largest       Std. Dev.       113.608
+75%          200            300
+90%          300            300       Variance       12906.77
+95%          300            400       Skewness       1.134639
+99%          500            500       Kurtosis       3.884708
 
                         tot_medium_1
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs              43,011
-25%            0              0       Sum of Wgt.      43,011
+10%            0              0       Obs                  43
+25%            0              0       Sum of Wgt.          43
 
-50%            0                      Mean           .5028016
-                        Largest       Std. Dev.       .691571
-75%            1              4
-90%            1              4       Variance       .4782705
-95%            2              4       Skewness       1.282903
-99%            3              4       Kurtosis       4.332967
-(3,042 missing values generated)
+50%            0                      Mean           .6511628
+                        Largest       Std. Dev.      .8418721
+75%            1              2
+90%            2              2       Variance       .7087486
+95%            2              2       Skewness       .9681039
+99%            3              3       Kurtosis       2.818752
+(1,645 missing values generated)
 
                         prop_medium_1
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs              39,969
-25%            0              0       Sum of Wgt.      39,969
+10%            0              0       Obs                  42
+25%            0              0       Sum of Wgt.          42
 
-50%            0                      Mean           22.29617
-                        Largest       Std. Dev.      30.44113
-75%           40            100
-90%     66.66666            100       Variance       926.6626
-95%          100            100       Skewness       1.237749
-99%          100            100       Kurtosis       3.570559
+50%            0                      Mean           23.53175
+                        Largest       Std. Dev.      30.95412
+75%           50       66.66666
+90%           60            100       Variance       958.1575
+95%          100            100       Skewness       1.099226
+99%          100            100       Kurtosis       3.233252
 
                         tot_medium_2
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs              43,011
-25%            0              0       Sum of Wgt.      43,011
+10%            0              0       Obs                  43
+25%            0              0       Sum of Wgt.          43
 
-50%            0                      Mean           .5051731
-                        Largest       Std. Dev.      .6901775
-75%            1              5
-90%            1              5       Variance        .476345
-95%            2              5       Skewness       1.300691
-99%            3              5       Kurtosis       4.582089
-(3,042 missing values generated)
+50%            0                      Mean           .6511628
+                        Largest       Std. Dev.      .7522576
+75%            1              2
+90%            2              2       Variance       .5658915
+95%            2              2       Skewness       .6620338
+99%            2              2       Kurtosis       2.080624
+(1,645 missing values generated)
 
                         prop_medium_2
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs              39,969
-25%            0              0       Sum of Wgt.      39,969
+10%            0              0       Obs                  42
+25%            0              0       Sum of Wgt.          42
 
-50%            0                      Mean            22.4816
-                        Largest       Std. Dev.      30.42741
-75%           50            100
-90%     66.66666            100       Variance       925.8272
-95%          100            100       Skewness       1.220483
-99%          100            100       Kurtosis       3.535205
-(30 vars, 10,000 obs)
+50%           10                      Mean           24.64286
+                        Largest       Std. Dev.      30.14539
+75%           50       66.66666
+90%           50            100       Variance       908.7447
+95%          100            100       Skewness       1.063622
+99%          100            100       Kurtosis       3.358077
+(31 vars, 10,000 obs)
+(5,000 observations deleted)
+
+all_miss_ap |
+        pts |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |         13        0.26        0.26
+          2 |         85        1.70        1.96
+          3 |        380        7.60        9.56
+          4 |        835       16.70       26.26
+          5 |      1,213       24.26       50.52
+          6 |      1,224       24.48       75.00
+          7 |        826       16.52       91.52
+          8 |        336        6.72       98.24
+          9 |         83        1.66       99.90
+         10 |          5        0.10      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_1 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      2,502       50.04       50.04
+          1 |      2,498       49.96      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_2 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,733       74.66       74.66
+          1 |      1,267       25.34      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_3 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,680       73.60       73.60
+          1 |      1,320       26.40      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_4 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,779       75.58       75.58
+          1 |      1,221       24.42      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_5 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,788       75.76       75.76
+          1 |      1,212       24.24      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_6 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,774       75.48       75.48
+          1 |      1,226       24.52      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_7 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,711       74.22       74.22
+          1 |      1,289       25.78      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_8 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,796       75.92       75.92
+          1 |      1,204       24.08      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+    edium_9 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,760       75.20       75.20
+          1 |      1,240       24.80      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+op_nodate_m |
+   edium_10 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,748       74.96       74.96
+          1 |      1,252       25.04      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
 (0 real changes made)
 5
 
        male |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-     Female |      5,210       52.10       52.10
-       Male |      4,790       47.90      100.00
+     Female |      2,530       50.60       50.60
+       Male |      2,470       49.40      100.00
 ------------+-----------------------------------
-      Total |     10,000      100.00
-(10,000 missing values generated)
-(1,250 real changes made)
-(1,219 real changes made)
-(2,573 real changes made)
-(2,526 real changes made)
-(2,432 real changes made)
+      Total |      5,000      100.00
+(5,000 missing values generated)
+(594 real changes made)
+(611 real changes made)
+(1,249 real changes made)
+(1,284 real changes made)
+(1,262 real changes made)
 14
 
         Rural Urban in five |
                  categories |      Freq.     Percent        Cum.
 ----------------------------+-----------------------------------
-    Urban major conurbation |      1,250       12.50       12.50
-    Urban minor conurbation |      1,219       12.19       24.69
-        Urban city and town |      2,573       25.73       50.42
-      Rural town and fringe |      2,526       25.26       75.68
-Rural village and dispersed |      2,432       24.32      100.00
+    Urban major conurbation |        594       11.88       11.88
+    Urban minor conurbation |        611       12.22       24.10
+        Urban city and town |      1,249       24.98       49.08
+      Rural town and fringe |      1,284       25.68       74.76
+Rural village and dispersed |      1,262       25.24      100.00
 ----------------------------+-----------------------------------
-                      Total |     10,000      100.00
-(10,000 missing values generated)
-(5,042 real changes made)
-(4,958 real changes made)
+                      Total |      5,000      100.00
+(5,000 missing values generated)
+(2,454 real changes made)
+(2,546 real changes made)
 28
 
 urban_rura |                      urban_rural
      l_bin |         1          2          3          4          5 |     Total
 -----------+-------------------------------------------------------+----------
-     Rural |         0          0          0          0      1,252 |     4,958 
-     Urban |     1,250      1,219      1,273      1,300          0 |     5,042 
+     Rural |         0          0          0          0        644 |     2,546 
+     Urban |       594        611        613        636          0 |     2,454 
 -----------+-------------------------------------------------------+----------
-     Total |     1,250      1,219      1,273      1,300      1,252 |    10,000 
+     Total |       594        611        613        636        644 |     5,000 
 
 
 urban_rura |           urban_rural
      l_bin |         6          7          8 |     Total
 -----------+---------------------------------+----------
-     Rural |     1,274      1,241      1,191 |     4,958 
-     Urban |         0          0          0 |     5,042 
+     Rural |       640        649        613 |     2,546 
+     Urban |         0          0          0 |     2,454 
 -----------+---------------------------------+----------
-     Total |     1,274      1,241      1,191 |    10,000 
-(2126 missing values generated)
+     Total |       640        649        613 |     5,000 
+(1038 missing values generated)
 8
 
       age_cat |      Freq.     Percent        Cum.
 --------------+-----------------------------------
-18 - 40 years |      2,800       28.00       28.00
-41 - 60 years |      2,621       26.21       54.21
-61 - 80 years |      1,925       19.25       73.46
-    >80 years |        528        5.28       78.74
-            . |      2,126       21.26      100.00
+18 - 40 years |      1,441       28.82       28.82
+41 - 60 years |      1,314       26.28       55.10
+61 - 80 years |        943       18.86       73.96
+    >80 years |        264        5.28       79.24
+            . |      1,038       20.76      100.00
 --------------+-----------------------------------
-        Total |     10,000      100.00
+        Total |      5,000      100.00
 (note: j = 1 2 3 4 5 6 7 8 9 10)
 
 Data                               wide   ->   long
 -----------------------------------------------------------------------------
-Number of obs.                    10000   ->  100000
-Number of variables                  31   ->      14
+Number of obs.                     5000   ->   50000
+Number of variables                  42   ->      25
 j variable (10 values)                    ->   op_appt_number
 xij variables:
 op_appt_date_1 op_appt_date_2 ... op_appt_date_10->op_appt_date_
 op_appt_medium_1 op_appt_medium_2 ... op_appt_medium_10->op_appt_medium_
 -----------------------------------------------------------------------------
-(5,061 real changes made, 5,061 to missing)
-(4,930 real changes made)
-(55,061 real changes made)
-(54,869 missing values generated)
-(50,000 missing values generated)
-(50,000 missing values generated)
+(2,494 real changes made, 2,494 to missing)
+(2,443 real changes made)
+(27,542 real changes made)
+(45,000 missing values generated)
+(27,339 missing values generated)
+(25,090 missing values generated)
+(25,120 missing values generated)
 Number where end date prior to follow-up start
-  65,290
+  32,300
 22735
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-op_appt_da~A |     45,131    535.6183    12979.65     -21913      22902
-(55,337 observations deleted)
+op_appt_da~A |     22,661    473.0778       12958     -21913      22902
+(27,593 observations deleted)
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-op_appt_da~A |     44,663    304.4701    12848.49     -21913      22735
-(17,191 observations deleted)
+op_appt_da~A |     22,407    221.9811    12813.57     -21913      22731
+(8,187 observations deleted)
 count if <6 months follow-up
-  6,393
+  8
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-     days_fu |     27,472    281.4332     116.316          1        364
+     days_fu |     14,220    279.0462    118.4562          1        364
 
                            fu_2021
 -------------------------------------------------------------
       Percentiles      Smallest
  1%     .0219178       .0027397
- 5%     .0986301       .0027397
-10%     .2191781       .0027397       Obs              27,472
-25%     .5424657       .0027397       Sum of Wgt.      27,472
+ 5%     .0958904       .0027397
+10%     .1945205       .0027397       Obs              14,220
+25%     .5260274       .0027397       Sum of Wgt.      14,220
 
-50%     .9972603                      Mean           .7710499
-                        Largest       Std. Dev.      .3186739
+50%     .9972603                      Mean           .7645101
+                        Largest       Std. Dev.      .3245374
 75%     .9972603       .9972603
-90%     .9972603       .9972603       Variance       .1015531
-95%     .9972603       .9972603       Skewness      -1.074091
-99%     .9972603       .9972603       Kurtosis        2.65306
+90%     .9972603       .9972603       Variance       .1053245
+95%     .9972603       .9972603       Skewness       -1.03562
+99%     .9972603       .9972603       Kurtosis       2.534602
 
                        tot_appts_2021
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%            2              1
- 5%            3              1
-10%            3              1       Obs              27,472
-25%            4              1       Sum of Wgt.      27,472
+ 1%            3              3
+ 5%            3              3
+10%            3              3       Obs                  37
+25%            4              3       Sum of Wgt.          37
 
-50%            5                      Mean           4.976776
-                        Largest       Std. Dev.      1.415669
-75%            6              9
-90%            7              9       Variance        2.00412
-95%            7              9       Skewness       .0276383
-99%            8              9       Kurtosis        2.76874
+50%            5                      Mean           4.918919
+                        Largest       Std. Dev.      1.421626
+75%            6              7
+90%            7              7       Variance       2.021021
+95%            7              7       Skewness       .4971038
+99%            9              9       Kurtosis       3.121417
 
 tot_appts_2021_ |
             cat |      Freq.     Percent        Cum.
 ----------------+-----------------------------------
-   1-2 per year |        956        3.48        3.48
-   3-6 per year |     22,674       82.53       86.01
-    7+ per year |      3,842       13.99      100.00
+   3-6 per year |         33       89.19       89.19
+    7+ per year |          4       10.81      100.00
 ----------------+-----------------------------------
-          Total |     27,472      100.00
+          Total |         37      100.00
 
                           rate_2021
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%     2.005495       1.002747
- 5%     3.008242       1.002747
-10%     3.711864       1.002747       Obs              27,472
-25%     4.965986       1.002747       Sum of Wgt.      27,472
+ 1%     3.008242       3.008242
+ 5%     3.008242       3.008242
+10%     3.008242       3.008242       Obs                  37
+25%     4.010989       3.008242       Sum of Wgt.          37
 
-50%     6.016483                      Mean           18.36402
-                        Largest       Std. Dev.      86.55704
-75%     9.279661           2555
-90%     22.34694           2555       Variance       7492.121
-95%     48.02631           2555       Skewness        17.2161
-99%     260.7143           2555       Kurtosis       383.6137
+50%     6.016483                      Mean           12.64089
+                        Largest       Std. Dev.      19.23623
+75%     9.024725             30
+90%           30       31.73913       Variance       370.0326
+95%     79.34783       79.34783       Skewness       3.111406
+99%        91.25          91.25       Kurtosis       12.17864
 
 tot_appts_2 |
  021_medium |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |      2,035        7.41        7.41
-          1 |      5,981       21.77       29.18
-          2 |      8,377       30.49       59.67
-          3 |      6,539       23.80       83.47
-          4 |      3,126       11.38       94.85
-          5 |      1,177        4.28       99.14
-          6 |        196        0.71       99.85
-          7 |         32        0.12       99.97
-          8 |          9        0.03      100.00
+          0 |          4       10.81       10.81
+          1 |          5       13.51       24.32
+          2 |         16       43.24       67.57
+          3 |          6       16.22       83.78
+          4 |          5       13.51       97.30
+          5 |          1        2.70      100.00
 ------------+-----------------------------------
-      Total |     27,472      100.00
+      Total |         37      100.00
 
                         tot_medium_0
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%            0              0
- 5%            1              0
-10%            1              0       Obs              27,472
-25%            2              0       Sum of Wgt.      27,472
+ 1%            1              1
+ 5%            1              1
+10%            1              1       Obs                  37
+25%            2              1       Sum of Wgt.          37
 
-50%            3                      Mean            2.71218
-                        Largest       Std. Dev.      1.331556
-75%            4              8
-90%            4              8       Variance       1.773041
-95%            5              8       Skewness       .2740073
-99%            6              8       Kurtosis       2.888022
-(2,035 missing values generated)
+50%            3                      Mean           2.756757
+                        Largest       Std. Dev.      1.256216
+75%            3              5
+90%            5              5       Variance       1.578078
+95%            5              5       Skewness       .6390887
+99%            6              6       Kurtosis       2.871475
+(1,101 missing values generated)
 
                         prop_medium_0
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%            0              0
- 5%           20              0
-10%     33.33333              0       Obs              25,437
-25%     66.66666              0       Sum of Wgt.      25,437
+ 1%           20             20
+ 5%           25             25
+10%           50             50       Obs                  33
+25%     66.66666             50       Sum of Wgt.          33
 
-50%          100                      Mean           150.4508
-                        Largest       Std. Dev.       126.024
-75%          200            700
-90%          300            700       Variance       15882.04
-95%          400            700       Skewness       1.374979
-99%          500            700       Kurtosis       4.609103
+50%          100                      Mean           142.7778
+                        Largest       Std. Dev.      125.2911
+75%          200            250
+90%          250            300       Variance       15697.86
+95%          500            500       Skewness       2.212425
+99%          600            600       Kurtosis       8.075819
 
                         tot_medium_1
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs              27,472
-25%            0              0       Sum of Wgt.      27,472
+10%            0              0       Obs                  37
+25%            0              0       Sum of Wgt.          37
 
-50%            0                      Mean           .5156523
-                        Largest       Std. Dev.      .7072553
-75%            1              5
-90%            1              5       Variance         .50021
-95%            2              5       Skewness       1.347355
-99%            3              5       Kurtosis         4.8159
-(2,035 missing values generated)
+50%            0                      Mean           .3513514
+                        Largest       Std. Dev.      .4839775
+75%            1              1
+90%            1              1       Variance       .2342342
+95%            1              1       Skewness       .6227524
+99%            1              1       Kurtosis       1.387821
+(1,101 missing values generated)
 
                         prop_medium_1
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs              25,437
-25%            0              0       Sum of Wgt.      25,437
+10%            0              0       Obs                  33
+25%            0              0       Sum of Wgt.          33
 
-50%            0                      Mean           22.62485
-                        Largest       Std. Dev.      30.48733
-75%           40            100
-90%     66.66666            100       Variance       929.4773
-95%          100            100       Skewness       1.221554
-99%          100            100       Kurtosis       3.546103
+50%            0                      Mean           17.52525
+                        Largest       Std. Dev.      25.46485
+75%     33.33333             50
+90%           50             50       Variance       648.4585
+95%           50             50       Skewness       1.342001
+99%          100            100       Kurtosis       4.292719
 
                         tot_medium_2
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs              27,472
-25%            0              0       Sum of Wgt.      27,472
+10%            0              0       Obs                  37
+25%            0              0       Sum of Wgt.          37
 
-50%            0                      Mean           .5081538
-                        Largest       Std. Dev.      .6816998
-75%            1              4
-90%            1              4       Variance       .4647146
-95%            2              4       Skewness       1.222598
-99%            3              4       Kurtosis       4.180913
-(2,035 missing values generated)
+50%            0                      Mean           .2972973
+                        Largest       Std. Dev.      .5198752
+75%            1              1
+90%            1              1       Variance       .2702703
+95%            1              1       Skewness       1.473094
+99%            2              2       Kurtosis       4.225278
+(1,101 missing values generated)
 
                         prop_medium_2
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs              25,437
-25%            0              0       Sum of Wgt.      25,437
+10%            0              0       Obs                  33
+25%            0              0       Sum of Wgt.          33
 
-50%            0                      Mean           22.63006
-                        Largest       Std. Dev.       30.2732
-75%           50            100
-90%     66.66666            100       Variance       916.4664
-95%          100            100       Skewness       1.220042
-99%          100            100       Kurtosis       3.574749
+50%            0                      Mean           14.49495
+                        Largest       Std. Dev.      27.67459
+75%           25             50
+90%           50       66.66666       Variance       765.8828
+95%          100            100       Skewness       2.072179
+99%          100            100       Kurtosis       6.439375
 
 . 
 . 
@@ -963,5 +1260,5 @@ tot_appts_2 |
       name:  <unnamed>
        log:  /workspace/logs/bsr.log
   log type:  text
- closed on:  14 Sep 2022, 16:33:36
+ closed on:  15 Sep 2022, 10:18:01
 -------------------------------------------------------------------------------

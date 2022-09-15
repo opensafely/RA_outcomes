@@ -15,11 +15,18 @@ forvalues i=2019/2021 {
     * Import data
     import delimited using ./output/measures/op/input_bsr_`i'-04-01.csv, clear
 
-    * flag first record for each patient for summarising
-    bys patient_id: gen flag=1 if _n==1
+    *keep if has_ra==1
     * Drop variables not required
     /*drop first_ra_code-has_ra*/
     drop ethnicity-region
+
+    * Check if any missing outpatient info
+    egen all_miss_appts = rowmiss(op_appt_date_1 op_appt_date_2 op_appt_date_3 op_appt_date_4 op_appt_date_5 op_appt_date_6 op_appt_date_7 op_appt_date_8 op_appt_date_9 op_appt_date_10)
+    tab all_miss_appts
+    forvalues a=1/10 {
+        gen op_nodate_medium_`a' = (op_appt_date_`a'=="" & op_appt_medium_`a'!=.)
+        tab op_nodate_medium_`a'
+    }
 
     * Format variables
 
@@ -67,6 +74,9 @@ forvalues i=2019/2021 {
     replace op_appt_medium = . if op_appt_medium==4
     replace op_appt_medium = 2 if op_appt_medium==3
     replace op_appt_medium = 0 if op_appt_medium==.
+
+     * flag first record for each patient for summarising
+    bys patient_id: gen flag=1 if _n==1
 
     * Format dates
     gen op_appt_dateA = date(op_appt_date, "YMD")
