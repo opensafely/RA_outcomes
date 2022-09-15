@@ -132,7 +132,7 @@ forvalues i=2019/2021 {
         gen prop_medium_`k' = (tot_medium_`k'/tot_appts_`i'_medium)*100
         sum prop_medium_`k' if flag==1, d
         }
-        gen medium_person_`i' = prop_medium_1>=50 & propr_medium!=.
+        gen medium_person_`i' = prop_medium_1>=50 & prop_medium!=.
         tab medium_person_`i' tot_appts_`i'_cat, m
         
     }
