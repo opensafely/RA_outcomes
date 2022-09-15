@@ -116,8 +116,9 @@ forvalues i=2019/2021 {
     * Categorise number of outpatient appointments
     label define appt 0 "No appointments" 1 "1-2 per year" 2 "3+ per year"
     egen tot_appts_`i'_cat = cut(tot_appts_`i'), at(0, 1, 3, 1000) icodes
+    bys tot_appts_`i'_cat: sum tot_appts_`i'
     label values tot_appts_`i'_cat appt
-    tab tot_appts_`i'_cat if flag==1
+    tab tot_appts_`i'_cat if flag==1, m
 
     gen rate_`i' = tot_appts_`i' / fu_`i' 
     sum rate_`i' if flag==1, d 
@@ -132,9 +133,22 @@ forvalues i=2019/2021 {
         gen prop_medium_`k' = (tot_medium_`k'/tot_appts_`i'_medium)*100
         sum prop_medium_`k' if flag==1, d
         }
-        gen medium_person_`i' = prop_medium_1>=50 & prop_medium!=.
-        tab medium_person_`i' tot_appts_`i'_cat, m
-        
+    tab tot_medium_1 tot_medium_2, m 
+    egen medium_person_`i' = cut(prop_medium_1), at(0, 1, 50, 101) icodes
+    bys medium_person_`i': sum prop_medium_1 
+
+    tab medium_person_`i' tot_appts_`i'_cat, m
+
+    /*keep patient_id tot_appts_`i'_cat medium_person_`i' tot_medium_1 prop_medium_1 tot_medium_2 prop_medium_2 age_cat male urban_rural_bin
+    describe
+    duplicates drop 
+    codebook patient_id
+    preserve
+    table1_mc, vars(medium_person_`i' cate) by(tot_appts_`i') missing clear 
+    export delimited using ./output/tables/bsr_op_appt_`i'.csv
+    restore
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) by(medium_person_`i') clear
+    export delimited using ./output/tables/bsr_op_chars_`i'.csv*/
     }
 
 
