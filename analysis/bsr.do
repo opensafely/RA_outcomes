@@ -77,20 +77,28 @@ forvalues i=2019/2021 {
 
      * flag first record for each patient for summarising
     bys patient_id: gen flag=1 if _n==1
+    tab flag 
 
     * Format dates
     gen op_appt_dateA = date(op_appt_date, "YMD")
     gen died_fuA = date(died_fu, "YMD")
     gen dereg_dateA = date(dereg_date, "YMD")
+    if `i'!=2021 {
+        gen end_fu = date("`j'-03-31", "YMD")
+        }
+    else {
+        gen end_fu = date("`i'-12-31", "YMD")
+        }
     * Follow-up time
-    gen end_date = min(died_fuA, dereg_dateA, date("`j'-03-31", "YMD"))
+    gen end_date = min(died_fuA, dereg_dateA, end_fu)
+    drop end_fu
     di "Number where end date prior to follow-up start
     count if end_date<date("`j'-03-31", "YMD")
     * display value of end date in period
     di date("`j'-03-31", "YMD")
     * determine range of dates for outpatient appointments to determine which should be dropped
     sum op_appt_dateA
-    drop if op_appt_dateA > end_date
+    drop if op_appt_dateA > end_date & op_appt_dateA!=.
     sum op_appt_dateA
     * take out records where end_date prior to start of follow-up
     drop if end_date<=date("`i'-04-01", "YMD")
@@ -106,8 +114,8 @@ forvalues i=2019/2021 {
     bys patient_id: egen tot_appts_`i' = total(op_appt_dateA!=.)
     sum tot_appts_`i' if flag==1, d
     * Categorise number of outpatient appointments
-    label define appt 0 "No appointments" 1 "1-2 per year" 2 "3-6 per year" 3 "7+ per year"
-    egen tot_appts_`i'_cat = cut(tot_appts_`i'), at(0, 1, 3, 7, 1000) icodes
+    label define appt 0 "No appointments" 1 "1-2 per year" 2 "3+ per year"
+    egen tot_appts_`i'_cat = cut(tot_appts_`i'), at(0, 1, 3, 1000) icodes
     label values tot_appts_`i'_cat appt
     tab tot_appts_`i'_cat if flag==1
 
@@ -124,7 +132,8 @@ forvalues i=2019/2021 {
         gen prop_medium_`k' = (tot_medium_`k'/tot_appts_`i'_medium)*100
         sum prop_medium_`k' if flag==1, d
         }
-        gen medium_person_`i' = prop_medium_1>=50
+        gen medium_person_`i' = prop_medium_1>=50 & propr_medium!=.
+        tab medium_person_`i' tot_appts_`i'_cat, m
         
     }
 

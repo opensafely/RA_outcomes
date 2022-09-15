@@ -86,7 +86,14 @@ study = StudyDefinition(
             "category": {"ratios": {"STP1": 0.3, "STP2": 0.2, "STP3": 0.5}},
             },
         ),
-        # Flags to identify people with RA 
+       
+    ),
+    has_ra=patients.satisfying(
+            """
+            has_dmards OR
+            (number_ra_codes>=2 AND NOT alt_diag)
+            """,
+             # Flags to identify people with RA 
         # Including date range as seemed to be some implausible dates
         # 1909 is 110 years prior to 2018 - so a person who was that old at 
         # baseline and was diagnosed at birth would be the maximum date
@@ -216,12 +223,6 @@ study = StudyDefinition(
             hydrox_count>=2 OR
             leflu_count>=2) AND NOT
             has_alt_dmard_diag
-            """,
-        ),
-        has_ra=patients.satisfying(
-            """
-            has_dmards OR
-            (number_ra_codes>=2 AND NOT alt_diag)
             """,
         ),
     ),
