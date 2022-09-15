@@ -104,52 +104,64 @@ forvalues i=2019/2021 {
     drop if end_date<=date("`i'-04-01", "YMD")
     di "count if <6 months follow-up"
     count if end_date<date("`i'-10-01", "YMD") & flag==1
+    * People with less than 6 months follow-up 
+    gen short_fu = end_date<date("`i'-10-01", "YMD")
+    tab short_fu 
     * determine length of follow-up during year
     gen days_fu = end_date - date("`i'-04-01", "YMD")
     sum days_fu
-    gen fu_`i' = days_fu/365
-    sum fu_`i', d 
+    gen fu_yr = days_fu/365
+    sum fu_yr, d 
 
     * Categorise number of outpatient appointments
-    bys patient_id: egen tot_appts_`i' = total(op_appt_dateA!=.)
-    sum tot_appts_`i' if flag==1, d
+    bys patient_id: egen tot_appts = total(op_appt_dateA!=.)
+    sum tot_appts if flag==1, d
     * Categorise number of outpatient appointments
     label define appt 0 "No appointments" 1 "1-2 per year" 2 "3+ per year"
-    egen tot_appts_`i'_cat = cut(tot_appts_`i'), at(0, 1, 3, 1000) icodes
-    bys tot_appts_`i'_cat: sum tot_appts_`i'
-    label values tot_appts_`i'_cat appt
-    tab tot_appts_`i'_cat if flag==1, m
+    egen tot_appts_cat = cut(tot_appts), at(0, 1, 3, 1000) icodes
+    bys tot_appts_cat: sum tot_appts
+    label values tot_appts_cat appt
+    tab tot_appts_cat if flag==1, m
 
-    gen rate_`i' = tot_appts_`i' / fu_`i' 
-    sum rate_`i' if flag==1, d 
+    gen rate = tot_appts / fu_yr
+    sum rate if flag==1, d 
 
     * Determine total number and proportion of in-person and telephone appointments
     * Determine number of appointments where medium is known
-    bys patient_id: egen tot_appts_`i'_medium = total(op_appt_medium!=0)
-    tab tot_appts_`i'_medium if flag==1
+    bys patient_id: egen tot_appts_medium = total(op_appt_medium!=0)
+    tab tot_appts_medium if flag==1
     forvalues k=0/2 {
         bys patient_id: egen tot_medium_`k' = total(op_appt_medium==`k')
         sum tot_medium_`k' if flag==1, d
-        gen prop_medium_`k' = (tot_medium_`k'/tot_appts_`i'_medium)*100
+        gen prop_medium_`k' = (tot_medium_`k'/tot_appts_medium)*100
         sum prop_medium_`k' if flag==1, d
         }
     tab tot_medium_1 tot_medium_2, m 
-    egen medium_person_`i' = cut(prop_medium_1), at(0, 1, 50, 101) icodes
-    bys medium_person_`i': sum prop_medium_1 
+    egen medium_person = cut(prop_medium_1), at(0, 1, 50, 101) icodes
+    bys medium_person: sum prop_medium_1 
 
-    tab medium_person_`i' tot_appts_`i'_cat, m
+    tab medium_person tot_appts_cat, m
 
-    /*keep patient_id tot_appts_`i'_cat medium_person_`i' tot_medium_1 prop_medium_1 tot_medium_2 prop_medium_2 age_cat male urban_rural_bin
+    /*keep patient_id tot_appts_cat medium_person tot_medium_1 prop_medium_1 tot_medium_2 prop_medium_2 age_cat male urban_rural_bin
     describe
     duplicates drop 
     codebook patient_id
     preserve
-    table1_mc, vars(medium_person_`i' cate) by(tot_appts_`i') missing clear 
+    table1_mc, vars(medium_person cate) by(tot_appts) missing clear 
     export delimited using ./output/tables/bsr_op_appt_`i'.csv
     restore
-    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) by(medium_person_`i') clear
-    export delimited using ./output/tables/bsr_op_chars_`i'.csv*/
+    tempfile tempfile
+    forvalues b=0/2 {
+        preserve 
+        keep if medium_person==`b'
+        table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
+        save tempfile
+        restore 
+
+        export delimited using ./output/tables/bsr_op_chars_`i'.csv
+    */
     }
+    
 
 
 
