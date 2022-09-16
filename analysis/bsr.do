@@ -74,6 +74,7 @@ forvalues i=2019/2021 {
     replace op_appt_medium = . if op_appt_medium==4
     replace op_appt_medium = 2 if op_appt_medium==3
     replace op_appt_medium = 0 if op_appt_medium==.
+    tab op_appt_medium, m 
 
      * flag first record for each patient for summarising
     bys patient_id: gen flag=1 if _n==1
@@ -130,25 +131,29 @@ forvalues i=2019/2021 {
     * Determine number of appointments where medium is known
     bys patient_id: egen tot_appts_medium = total(op_appt_medium!=0)
     tab tot_appts_medium if flag==1
-    * Determine proportion of appointments where mode is known 
-    gen prop_medium_known = tot_appts_medium/tot_appts 
-    sum prop_medium_known, d 
-    count if prop_medium_known>0 & prop_medium_known!=1 & prop_medium_known!=. & flag==1
+    * Determine appointments where mode is known 
+    gen all_mode_available = (tot_appts_medium==tot_appts)
+    replace all_mode_available = 2 if all_mode_available==0 & tot_appts_medium!=0
+    label define ava 0 "No mode info" 1 "All appts have mode" 2 "Some appts have mode"
+    label values all_mode_available ava 
+
     forvalues k=1/2 {
         bys patient_id: egen tot_medium_`k' = total(op_appt_medium==`k')
         sum tot_medium_`k' if flag==1, d
         gen prop_medium_`k' = (tot_medium_`k'/tot_appts_medium)*100
         sum prop_medium_`k' if flag==1, d
         }
-    egen medium_person = cut(prop_medium_1), at(0, 1, 50, 101) icodes
+    egen medium_person = cut(prop_medium_1), at(0, 1, 51, 101) icodes
     bys medium_person: sum prop_medium_1 
 
-    keep patient_id tot_appts_cat tot_appts tot_appts_medium medium_person tot_medium_1 prop_medium_1 tot_medium_2 prop_medium_2 age_cat male urban_rural_bin short_fu 
+    keep patient_id tot_appts_cat tot_appts tot_appts_medium medium_person tot_medium_1 prop_medium_1 tot_medium_2 prop_medium_2 age_cat male urban_rural_bin short_fu all_mode_available 
     describe
     duplicates drop 
     codebook patient_id
     sum tot_appts tot_appts_medium, d 
-    
+
+    list in 1/10
+
     tab tot_appts_cat 
     tab tot_appts_cat if short_fu==0
 
