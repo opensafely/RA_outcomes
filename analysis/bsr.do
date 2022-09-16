@@ -99,9 +99,12 @@ forvalues i=2019/2021 {
     di date("`j'-03-31", "YMD")
     * determine range of dates for outpatient appointments to determine which should be dropped
     sum op_appt_dateA
-    drop if op_appt_dateA > end_date & op_appt_dateA!=.
+    replace op_appt_dateA=. if op_appt_dateA > end_date & op_appt_dateA!=.
+    replace op_appt_medium=. if op_appt_dateA > end_date & op_appt_dateA!=.
     sum op_appt_dateA
     * take out records where end_date prior to start of follow-up
+    di "Count of people where end date prior to start of follow-up" 
+    count if end_date<=date("`i'-04-01", "YMD") & flag==1
     drop if end_date<=date("`i'-04-01", "YMD")
     di "count if <6 months follow-up"
     count if end_date<date("`i'-10-01", "YMD") & flag==1
@@ -143,7 +146,7 @@ forvalues i=2019/2021 {
         gen prop_medium_`k' = (tot_medium_`k'/tot_appts_medium)*100
         sum prop_medium_`k' if flag==1, d
         }
-    egen medium_person = cut(prop_medium_1), at(0, 1, 51, 101) icodes
+    egen medium_person = cut(prop_medium_1), at(0, 1, 50, 101) icodes
     bys medium_person: sum prop_medium_1 
 
     keep patient_id tot_appts_cat tot_appts tot_appts_medium medium_person tot_medium_1 prop_medium_1 tot_medium_2 prop_medium_2 age_cat male urban_rural_bin short_fu all_mode_available 
@@ -157,8 +160,9 @@ forvalues i=2019/2021 {
     tab tot_appts_cat 
     tab tot_appts_cat if short_fu==0
 
-    tab tot_appts_cat medium_person 
-    tab tot_appts_cat medium_person  if short_fu==0
+    tab tot_appts_cat medium_person, row col 
+    tab tot_appts_cat medium_person  if short_fu==0, row col
+    bys all_mode_available: tab tot_appts_cat medium_person  if short_fu==0, row col
 
     di "Number where number of appointments does not equal number where medium is known"
     count if tot_appts!=tot_appts_medium

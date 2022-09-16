@@ -101,78 +101,84 @@
  60.     * determine range of dates for outpatient appointments to determine wh
 > ich should be dropped
 .     sum op_appt_dateA
- 61.     drop if op_appt_dateA > end_date & op_appt_dateA!=.
- 62.     sum op_appt_dateA
- 63.     * take out records where end_date prior to start of follow-up
-.     drop if end_date<=date("`i'-04-01", "YMD")
- 64.     di "count if <6 months follow-up"
- 65.     count if end_date<date("`i'-10-01", "YMD") & flag==1
- 66.     * People with less than 6 months follow-up 
+ 61.     replace op_appt_dateA=. if op_appt_dateA > end_date & op_appt_dateA!=.
+ 62.     replace op_appt_medium=. if op_appt_dateA > end_date & op_appt_dateA!=
+> .
+ 63.     sum op_appt_dateA
+ 64.     * take out records where end_date prior to start of follow-up
+.     di "Count of people where end date prior to start of follow-up" 
+ 65.     count if end_date<=date("`i'-04-01", "YMD") & flag==1
+ 66.     drop if end_date<=date("`i'-04-01", "YMD")
+ 67.     di "count if <6 months follow-up"
+ 68.     count if end_date<date("`i'-10-01", "YMD") & flag==1
+ 69.     * People with less than 6 months follow-up 
 .     gen short_fu = end_date<date("`i'-10-01", "YMD")
- 67.     tab short_fu 
- 68.     * determine length of follow-up during year
+ 70.     tab short_fu 
+ 71.     * determine length of follow-up during year
 .     gen days_fu = end_date - date("`i'-04-01", "YMD")
- 69.     sum days_fu
- 70.     gen fu_yr = days_fu/365
- 71.     sum fu_yr, d 
- 72. 
+ 72.     sum days_fu
+ 73.     gen fu_yr = days_fu/365
+ 74.     sum fu_yr, d 
+ 75. 
 .     * Categorise number of outpatient appointments
 .     bys patient_id: egen tot_appts = total(op_appt_dateA!=.)
- 73.     sum tot_appts if flag==1, d
- 74.     * Categorise number of outpatient appointments
+ 76.     sum tot_appts if flag==1, d
+ 77.     * Categorise number of outpatient appointments
 .     label define appt 0 "No appointments" 1 "1-2 per year" 2 "3+ per year"
- 75.     egen tot_appts_cat = cut(tot_appts), at(0, 1, 3, 1000) icodes
- 76.     bys tot_appts_cat: sum tot_appts
- 77.     label values tot_appts_cat appt
- 78.     tab tot_appts_cat if flag==1, m
- 79. 
+ 78.     egen tot_appts_cat = cut(tot_appts), at(0, 1, 3, 1000) icodes
+ 79.     bys tot_appts_cat: sum tot_appts
+ 80.     label values tot_appts_cat appt
+ 81.     tab tot_appts_cat if flag==1, m
+ 82. 
 .     gen rate = tot_appts / fu_yr
- 80.     sum rate if flag==1, d 
- 81. 
+ 83.     sum rate if flag==1, d 
+ 84. 
 .     * Determine total number and proportion of in-person and telephone appoin
 > tments
 .     * Determine number of appointments where medium is known
 .     bys patient_id: egen tot_appts_medium = total(op_appt_medium!=0)
- 82.     tab tot_appts_medium if flag==1
- 83.     * Determine appointments where mode is known 
+ 85.     tab tot_appts_medium if flag==1
+ 86.     * Determine appointments where mode is known 
 .     gen all_mode_available = (tot_appts_medium==tot_appts)
- 84.     replace all_mode_available = 2 if all_mode_available==0 & tot_appts_me
+ 87.     replace all_mode_available = 2 if all_mode_available==0 & tot_appts_me
 > dium!=0
- 85.     label define ava 0 "No mode info" 1 "All appts have mode" 2 "Some appt
+ 88.     label define ava 0 "No mode info" 1 "All appts have mode" 2 "Some appt
 > s have mode"
- 86.     label values all_mode_available ava 
- 87. 
+ 89.     label values all_mode_available ava 
+ 90. 
 .     forvalues k=1/2 {
- 88.         bys patient_id: egen tot_medium_`k' = total(op_appt_medium==`k')
- 89.         sum tot_medium_`k' if flag==1, d
- 90.         gen prop_medium_`k' = (tot_medium_`k'/tot_appts_medium)*100
- 91.         sum prop_medium_`k' if flag==1, d
- 92.         }
- 93.     egen medium_person = cut(prop_medium_1), at(0, 1, 51, 101) icodes
- 94.     bys medium_person: sum prop_medium_1 
- 95. 
+ 91.         bys patient_id: egen tot_medium_`k' = total(op_appt_medium==`k')
+ 92.         sum tot_medium_`k' if flag==1, d
+ 93.         gen prop_medium_`k' = (tot_medium_`k'/tot_appts_medium)*100
+ 94.         sum prop_medium_`k' if flag==1, d
+ 95.         }
+ 96.     egen medium_person = cut(prop_medium_1), at(0, 1, 50, 101) icodes
+ 97.     bys medium_person: sum prop_medium_1 
+ 98. 
 .     keep patient_id tot_appts_cat tot_appts tot_appts_medium medium_person to
 > t_medium_1 prop_medium_1 tot_medium_2 prop_medium_2 age_cat male urban_rural_
 > bin short_fu all_mode_available 
- 96.     describe
- 97.     duplicates drop 
- 98.     codebook patient_id
- 99.     sum tot_appts tot_appts_medium, d 
-100. 
-.     list in 1/10
-101. 
-.     tab tot_appts_cat 
-102.     tab tot_appts_cat if short_fu==0
+ 99.     describe
+100.     duplicates drop 
+101.     codebook patient_id
+102.     sum tot_appts tot_appts_medium, d 
 103. 
-.     tab tot_appts_cat medium_person 
-104.     tab tot_appts_cat medium_person  if short_fu==0
-105. 
+.     list in 1/10
+104. 
+.     tab tot_appts_cat 
+105.     tab tot_appts_cat if short_fu==0
+106. 
+.     tab tot_appts_cat medium_person, row col 
+107.     tab tot_appts_cat medium_person  if short_fu==0, row col
+108.     bys all_mode_available: tab tot_appts_cat medium_person  if short_fu==
+> 0, row col
+109. 
 .     di "Number where number of appointments does not equal number where mediu
 > m is known"
-106.     count if tot_appts!=tot_appts_medium
-107. 
+110.     count if tot_appts!=tot_appts_medium
+111. 
 .     sum prop_medium_*
-108. 
+112. 
 .     /*preserve
 >     table1_mc, vars(medium_person cate) by(tot_appts) missing clear 
 >     export delimited using ./output/tables/bsr_op_appt_`i'.csv
@@ -397,201 +403,204 @@ Number where end date prior to follow-up start
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
 op_appt_da~A |     45,152    544.3818    12992.89     -21913      22902
-(1,012 observations deleted)
+(1,012 real changes made, 1,012 to missing)
+(0 real changes made)
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
 op_appt_da~A |     44,140    42.08758     12705.4     -21913      22004
+Count of people where end date prior to start of follow-up
+  0
 (0 observations deleted)
 count if <6 months follow-up
   0
 
    short_fu |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |     98,988      100.00      100.00
+          0 |    100,000      100.00      100.00
 ------------+-----------------------------------
-      Total |     98,988      100.00
+      Total |    100,000      100.00
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-     days_fu |     98,988    364.4811    3.197342        336        365
+     days_fu |    100,000      364.48    3.201203        336        365
 
                             fu_yr
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%     .9397261        .920548
+ 1%     .9383562        .920548
  5%            1        .920548
-10%            1        .920548       Obs              98,988
-25%            1        .920548       Sum of Wgt.      98,988
+10%            1        .920548       Obs             100,000
+25%            1        .920548       Sum of Wgt.     100,000
 
-50%            1                      Mean           .9985784
-                        Largest       Std. Dev.      .0087598
+50%            1                      Mean           .9985753
+                        Largest       Std. Dev.      .0087704
 75%            1              1
-90%            1              1       Variance       .0000767
-95%            1              1       Skewness      -6.745351
-99%            1              1       Kurtosis       49.44573
+90%            1              1       Variance       .0000769
+95%            1              1       Skewness      -6.736721
+99%            1              1       Kurtosis       49.31679
 
                           tot_appts
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            1              0
  5%            2              0
-10%            3              0       Obs               9,912
-25%            3              0       Sum of Wgt.       9,912
+10%            3              0       Obs              10,000
+25%            3              0       Sum of Wgt.      10,000
 
-50%            4                      Mean           4.413842
-                        Largest       Std. Dev.      1.516346
+50%            4                      Mean              4.414
+                        Largest       Std. Dev.      1.516586
 75%            5              9
-90%            6              9       Variance       2.299306
-95%            7             10       Skewness       .0463939
-99%            8             10       Kurtosis       2.898223
+90%            6              9       Variance       2.300034
+95%            7             10       Skewness       .0485382
+99%            8             10       Kurtosis       2.895318
 
 -------------------------------------------------------------------------------
 -> tot_appts_cat = 0
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-   tot_appts |        267           0           0          0          0
+   tot_appts |        270           0           0          0          0
 
 -------------------------------------------------------------------------------
 -> tot_appts_cat = 1
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-   tot_appts |      9,543    1.772713    .4191015          1          2
+   tot_appts |      9,690    1.773994    .4182648          1          2
 
 -------------------------------------------------------------------------------
 -> tot_appts_cat = 2
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-   tot_appts |     89,178    4.715255    1.280582          3         10
+   tot_appts |     90,040    4.711351    1.280035          3         10
 
 
   tot_appts_cat |      Freq.     Percent        Cum.
 ----------------+-----------------------------------
 No appointments |         27        0.27        0.27
-   1-2 per year |        961        9.70        9.97
-    3+ per year |      8,924       90.03      100.00
+   1-2 per year |        969        9.69        9.96
+    3+ per year |      9,004       90.04      100.00
 ----------------+-----------------------------------
-          Total |      9,912      100.00
+          Total |     10,000      100.00
 
                             rate
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            1              0
  5%            2              0
-10%            3              0       Obs               9,912
-25%            3              0       Sum of Wgt.       9,912
+10%            3              0       Obs              10,000
+25%            3              0       Sum of Wgt.      10,000
 
-50%            4                      Mean           4.420393
-                        Largest       Std. Dev.      1.519056
+50%            4                      Mean           4.420573
+                        Largest       Std. Dev.      1.519267
 75%            5              9
-90%            6       9.074586       Variance        2.30753
-95%            7             10       Skewness       .0460861
-99%            8             10       Kurtosis       2.892466
+90%            6       9.074586       Variance       2.308171
+95%            7             10       Skewness       .0481118
+99%            8             10       Kurtosis       2.889592
 
 tot_appts_m |
       edium |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |         24        0.24        0.24
-          1 |        229        2.31        2.55
-          2 |        788        7.95       10.50
-          3 |      1,704       17.19       27.69
-          4 |      2,382       24.03       51.73
-          5 |      2,307       23.27       75.00
-          6 |      1,533       15.47       90.47
-          7 |        697        7.03       97.50
-          8 |        200        2.02       99.52
-          9 |         46        0.46       99.98
+          0 |         23        0.23        0.23
+          1 |        217        2.17        2.40
+          2 |        768        7.68       10.08
+          3 |      1,663       16.63       26.71
+          4 |      2,400       24.00       50.71
+          5 |      2,339       23.39       74.10
+          6 |      1,581       15.81       89.91
+          7 |        738        7.38       97.29
+          8 |        218        2.18       99.47
+          9 |         51        0.51       99.98
          10 |          2        0.02      100.00
 ------------+-----------------------------------
-      Total |      9,912      100.00
-(80,503 real changes made)
+      Total |     10,000      100.00
+(81,410 real changes made)
 
                         tot_medium_1
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs               9,912
-25%            0              0       Sum of Wgt.       9,912
+10%            0              0       Obs              10,000
+25%            0              0       Sum of Wgt.      10,000
 
-50%            1                      Mean           .9822437
-                        Largest       Std. Dev.      .9443647
+50%            1                      Mean              .9893
+                        Largest       Std. Dev.      .9481959
 75%            2              5
-90%            2              5       Variance       .8918247
-95%            3              5       Skewness       .8267808
-99%            4              5       Kurtosis       3.339209
-(237 missing values generated)
+90%            2              5       Variance       .8990754
+95%            3              5       Skewness       .8244744
+99%            4              5       Kurtosis        3.33314
+(230 missing values generated)
 
                         prop_medium_1
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs               9,888
-25%            0              0       Sum of Wgt.       9,888
+10%            0              0       Obs               9,977
+25%            0              0       Sum of Wgt.       9,977
 
-50%           20                      Mean           22.22723
-                        Largest       Std. Dev.      21.76512
+50%           20                      Mean           22.17974
+                        Largest       Std. Dev.      21.62995
 75%     33.33333            100
-90%           50            100       Variance       473.7204
-95%           60            100       Skewness       .9201305
-99%          100            100       Kurtosis       3.763121
+90%           50            100       Variance       467.8549
+95%           60            100       Skewness       .9123256
+99%          100            100       Kurtosis       3.746121
 
                         tot_medium_2
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs               9,912
-25%            0              0       Sum of Wgt.       9,912
+10%            0              0       Obs              10,000
+25%            0              0       Sum of Wgt.      10,000
 
-50%            1                      Mean            .993745
-                        Largest       Std. Dev.      .9394767
+50%            1                      Mean             1.0047
+                        Largest       Std. Dev.      .9449694
 75%            2              5
-90%            2              5       Variance       .8826165
-95%            3              6       Skewness       .8396631
-99%            4              6       Kurtosis        3.52572
-(237 missing values generated)
+90%            2              6       Variance       .8929672
+95%            3              6       Skewness       .8319429
+99%            4              6       Kurtosis       3.519163
+(230 missing values generated)
 
                         prop_medium_2
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs               9,888
-25%            0              0       Sum of Wgt.       9,888
+10%            0              0       Obs               9,977
+25%            0              0       Sum of Wgt.       9,977
 
-50%           20                      Mean           22.32726
-                        Largest       Std. Dev.      21.30113
+50%           20                      Mean           22.34804
+                        Largest       Std. Dev.      21.18319
 75%     33.33333            100
-90%           50            100       Variance       453.7381
-95%           60            100       Skewness       .8718104
-99%          100            100       Kurtosis       3.712141
-(237 missing values generated)
+90%           50            100       Variance       448.7275
+95%           60            100       Skewness       .8607553
+99%          100            100       Kurtosis       3.699263
+(230 missing values generated)
 
 -------------------------------------------------------------------------------
 -> medium_person = 0
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-prop_mediu~1 |     35,262           0           0          0          0
+prop_mediu~1 |     35,360           0           0          0          0
 
 -------------------------------------------------------------------------------
 -> medium_person = 1
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-prop_mediu~1 |     56,794    30.09113    11.54337   11.11111         50
+prop_mediu~1 |     48,500    26.16366     8.27053   11.11111   42.85714
 
 -------------------------------------------------------------------------------
 -> medium_person = 2
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-prop_mediu~1 |      6,695    72.49433    14.20509   55.55556        100
+prop_mediu~1 |     15,910    59.32969    14.25614         50        100
 
 -------------------------------------------------------------------------------
 -> medium_person = .
@@ -602,7 +611,7 @@ prop_mediu~1 |          0
 
 
 Contains data
-  obs:        98,988                          
+  obs:       100,000                          
  vars:            14                          
 -------------------------------------------------------------------------------
               storage   display    value
@@ -629,7 +638,7 @@ Sorted by: medium_person
 
 Duplicates in terms of all variables
 
-(88,988 observations deleted)
+(90,000 observations deleted)
 
 -------------------------------------------------------------------------------
 patient_id                                                          (unlabeled)
@@ -669,130 +678,122 @@ patient_id                                                          (unlabeled)
 10%            2              0       Obs              10,000
 25%            3              0       Sum of Wgt.      10,000
 
-50%            4                      Mean             4.4451
-                        Largest       Std. Dev.      1.572524
-75%            5              9
-90%            6              9       Variance       2.472833
-95%            7             10       Skewness        .073476
-99%            8             10       Kurtosis       2.813446
+50%            4                      Mean             4.4912
+                        Largest       Std. Dev.      1.574348
+75%            6              9
+90%            7              9       Variance        2.47857
+95%            7             10       Skewness       .0724914
+99%            8             10       Kurtosis       2.818051
 
-     +----------------------------------------------------------------------+
-  1. | patien~d |   male | urban_~n |       age_cat | short_fu  | tot_ap~s  |
-     |    19203 | Female |    Rural | 61 - 80 years |        0  |        6  |
-     |----------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        5 | Some appts have mode |        0 |        0 |
-     |----------------------------------------------------------------------|
-     |       tot_me~2       |       prop_m~2        |       medium~n        |
-     |              2       |             40        |              0        |
-     +----------------------------------------------------------------------+
+     +---------------------------------------------------------------------+
+  1. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    76228 |   Male |    Urban | 18 - 40 years |        0 |        3  |
+     |---------------------------------------------------------------------|
+     | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
+     | 3+ per year |        3 |  All appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |       tot_me~2       |       prop_m~2       |       medium~n        |
+     |              1       |       33.33333       |              0        |
+     +---------------------------------------------------------------------+
 
-     +----------------------------------------------------------------------+
-  2. | patien~d |   male | urban_~n |       age_cat | short_fu  | tot_ap~s  |
-     |    94645 |   Male |    Urban | 61 - 80 years |        0  |        3  |
-     |----------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        6 | Some appts have mode |        0 |        0 |
-     |----------------------------------------------------------------------|
-     |       tot_me~2       |       prop_m~2        |       medium~n        |
-     |              0       |              0        |              0        |
-     +----------------------------------------------------------------------+
+     +---------------------------------------------------------------------+
+  2. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    64557 | Female |    Rural | 18 - 40 years |        0 |        4  |
+     |---------------------------------------------------------------------|
+     | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
+     | 3+ per year |        5 | Some appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |       tot_me~2       |       prop_m~2       |       medium~n        |
+     |              2       |             40       |              0        |
+     +---------------------------------------------------------------------+
 
-     +----------------------------------------------------------------------+
-  3. | patien~d |   male | urban_~n |       age_cat | short_fu  | tot_ap~s  |
-     |    80398 | Female |    Urban | 18 - 40 years |        0  |        4  |
-     |----------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        1 | Some appts have mode |        0 |        0 |
-     |----------------------------------------------------------------------|
-     |       tot_me~2       |       prop_m~2        |       medium~n        |
-     |              0       |              0        |              0        |
-     +----------------------------------------------------------------------+
+     +---------------------------------------------------------------------+
+  3. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    50130 |   Male |    Rural | 61 - 80 years |        0 |        6  |
+     |---------------------------------------------------------------------|
+     | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
+     | 3+ per year |        4 | Some appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |       tot_me~2       |       prop_m~2       |       medium~n        |
+     |              2       |             50       |              0        |
+     +---------------------------------------------------------------------+
 
-     +----------------------------------------------------------------------+
-  4. | patien~d |   male | urban_~n |       age_cat | short_fu  | tot_ap~s  |
-     |     7650 | Female |    Urban | 18 - 40 years |        0  |        3  |
-     |----------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        3 |  All appts have mode |        0 |        0 |
-     |----------------------------------------------------------------------|
-     |       tot_me~2       |       prop_m~2        |       medium~n        |
-     |              0       |              0        |              0        |
-     +----------------------------------------------------------------------+
+     +---------------------------------------------------------------------+
+  4. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    25528 |   Male |    Urban |             . |        0 |        4  |
+     |---------------------------------------------------------------------|
+     | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
+     | 3+ per year |        3 | Some appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |       tot_me~2       |       prop_m~2       |       medium~n        |
+     |              2       |       66.66666       |              0        |
+     +---------------------------------------------------------------------+
 
-     +----------------------------------------------------------------------+
-  5. | patien~d |   male | urban_~n |       age_cat | short_fu  | tot_ap~s  |
-     |    99188 |   Male |    Urban |             . |        0  |        4  |
-     |----------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        4 |  All appts have mode |        0 |        0 |
-     |----------------------------------------------------------------------|
-     |       tot_me~2       |       prop_m~2        |       medium~n        |
-     |              1       |             25        |              0        |
-     +----------------------------------------------------------------------+
+     +---------------------------------------------------------------------+
+  5. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    94802 |   Male |    Rural | 18 - 40 years |        0 |        5  |
+     |---------------------------------------------------------------------|
+     | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
+     | 3+ per year |        1 | Some appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |       tot_me~2       |       prop_m~2       |       medium~n        |
+     |              0       |              0       |              0        |
+     +---------------------------------------------------------------------+
 
-     +----------------------------------------------------------------------+
-  6. | patien~d |   male | urban_~n |       age_cat | short_fu  | tot_ap~s  |
-     |    53286 |   Male |    Urban |             . |        0  |        5  |
-     |----------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        6 | Some appts have mode |        0 |        0 |
-     |----------------------------------------------------------------------|
-     |       tot_me~2       |       prop_m~2        |       medium~n        |
-     |              0       |              0        |              0        |
-     +----------------------------------------------------------------------+
+     +---------------------------------------------------------------------+
+  6. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    27447 |   Male |    Rural |     >80 years |        0 |        4  |
+     |---------------------------------------------------------------------|
+     | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
+     | 3+ per year |        5 | Some appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |       tot_me~2       |       prop_m~2       |       medium~n        |
+     |              2       |             40       |              0        |
+     +---------------------------------------------------------------------+
 
-     +----------------------------------------------------------------------+
-  7. | patien~d |   male | urban_~n |       age_cat | short_fu  | tot_ap~s  |
-     |    31526 | Female |    Urban | 41 - 60 years |        0  |        2  |
-     |----------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
-     | 1-2 per year |        5 | Some appts have mode |        0 |        0 |
-     |----------------------------------------------------------------------|
-     |       tot_me~2       |       prop_m~2        |       medium~n        |
-     |              2       |             40        |              0        |
-     +----------------------------------------------------------------------+
+     +---------------------------------------------------------------------+
+  7. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    98644 | Female |    Rural | 18 - 40 years |        0 |        5  |
+     |---------------------------------------------------------------------|
+     | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
+     | 3+ per year |        4 | Some appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |       tot_me~2       |       prop_m~2       |       medium~n        |
+     |              0       |              0       |              0        |
+     +---------------------------------------------------------------------+
 
-     +----------------------------------------------------------------------+
-  8. | patien~d |   male | urban_~n |       age_cat | short_fu  | tot_ap~s  |
-     |    39042 |   Male |    Rural | 18 - 40 years |        0  |        4  |
-     |----------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        5 | Some appts have mode |        0 |        0 |
-     |----------------------------------------------------------------------|
-     |       tot_me~2       |       prop_m~2        |       medium~n        |
-     |              1       |             20        |              0        |
-     +----------------------------------------------------------------------+
+     +---------------------------------------------------------------------+
+  8. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    65774 |   Male |    Rural |             . |        0 |        6  |
+     |---------------------------------------------------------------------|
+     | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
+     | 3+ per year |        4 | Some appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |       tot_me~2       |       prop_m~2       |       medium~n        |
+     |              0       |              0       |              0        |
+     +---------------------------------------------------------------------+
 
-     +----------------------------------------------------------------------+
-  9. | patien~d |   male | urban_~n |       age_cat | short_fu  | tot_ap~s  |
-     |    90432 |   Male |    Rural | 18 - 40 years |        0  |        4  |
-     |----------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        5 | Some appts have mode |        0 |        0 |
-     |----------------------------------------------------------------------|
-     |       tot_me~2       |       prop_m~2        |       medium~n        |
-     |              3       |             60        |              0        |
-     +----------------------------------------------------------------------+
+     +---------------------------------------------------------------------+
+  9. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    12017 |   Male |    Rural |             . |        0 |        6  |
+     |---------------------------------------------------------------------|
+     | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
+     | 3+ per year |        1 | Some appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |       tot_me~2       |       prop_m~2       |       medium~n        |
+     |              0       |              0       |              0        |
+     +---------------------------------------------------------------------+
 
-     +----------------------------------------------------------------------+
- 10. | patien~d |   male | urban_~n |       age_cat | short_fu  | tot_ap~s  |
-     |    84932 |   Male |    Urban |             . |        0  |        4  |
-     |----------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        4 |  All appts have mode |        0 |        0 |
-     |----------------------------------------------------------------------|
-     |       tot_me~2       |       prop_m~2        |       medium~n        |
-     |              0       |              0        |              0        |
-     +----------------------------------------------------------------------+
-
-  tot_appts_cat |      Freq.     Percent        Cum.
-----------------+-----------------------------------
-No appointments |         27        0.27        0.27
-   1-2 per year |        969        9.69        9.96
-    3+ per year |      9,004       90.04      100.00
-----------------+-----------------------------------
-          Total |     10,000      100.00
+     +---------------------------------------------------------------------+
+ 10. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    27416 |   Male |    Rural | 41 - 60 years |        0 |        3  |
+     |---------------------------------------------------------------------|
+     | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
+     | 3+ per year |        3 |  All appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |       tot_me~2       |       prop_m~2       |       medium~n        |
+     |              1       |       33.33333       |              0        |
+     +---------------------------------------------------------------------+
 
   tot_appts_cat |      Freq.     Percent        Cum.
 ----------------+-----------------------------------
@@ -802,30 +803,135 @@ No appointments |         27        0.27        0.27
 ----------------+-----------------------------------
           Total |     10,000      100.00
 
-                |          medium_person
-  tot_appts_cat |         0          1          2 |     Total
-----------------+---------------------------------+----------
-No appointments |        11         11          5 |        27 
-   1-2 per year |       391        512         65 |       968 
-    3+ per year |     3,166      5,208        607 |     8,981 
-----------------+---------------------------------+----------
-          Total |     3,568      5,731        677 |     9,976 
+  tot_appts_cat |      Freq.     Percent        Cum.
+----------------+-----------------------------------
+No appointments |         27        0.27        0.27
+   1-2 per year |        969        9.69        9.96
+    3+ per year |      9,004       90.04      100.00
+----------------+-----------------------------------
+          Total |     10,000      100.00
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+|  row percentage   |
+| column percentage |
++-------------------+
 
                 |          medium_person
   tot_appts_cat |         0          1          2 |     Total
 ----------------+---------------------------------+----------
-No appointments |        11         11          5 |        27 
-   1-2 per year |       391        512         65 |       968 
-    3+ per year |     3,166      5,208        607 |     8,981 
+No appointments |        11          9          7 |        27 
+                |     40.74      33.33      25.93 |    100.00 
+                |      0.31       0.19       0.44 |      0.27 
 ----------------+---------------------------------+----------
-          Total |     3,568      5,731        677 |     9,976 
+   1-2 per year |       387        444        137 |       968 
+                |     39.98      45.87      14.15 |    100.00 
+                |     10.94       9.15       8.61 |      9.70 
+----------------+---------------------------------+----------
+    3+ per year |     3,138      4,397      1,447 |     8,982 
+                |     34.94      48.95      16.11 |    100.00 
+                |     88.74      90.66      90.95 |     90.03 
+----------------+---------------------------------+----------
+          Total |     3,536      4,850      1,591 |     9,977 
+                |     35.44      48.61      15.95 |    100.00 
+                |    100.00     100.00     100.00 |    100.00 
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+|  row percentage   |
+| column percentage |
++-------------------+
+
+                |          medium_person
+  tot_appts_cat |         0          1          2 |     Total
+----------------+---------------------------------+----------
+No appointments |        11          9          7 |        27 
+                |     40.74      33.33      25.93 |    100.00 
+                |      0.31       0.19       0.44 |      0.27 
+----------------+---------------------------------+----------
+   1-2 per year |       387        444        137 |       968 
+                |     39.98      45.87      14.15 |    100.00 
+                |     10.94       9.15       8.61 |      9.70 
+----------------+---------------------------------+----------
+    3+ per year |     3,138      4,397      1,447 |     8,982 
+                |     34.94      48.95      16.11 |    100.00 
+                |     88.74      90.66      90.95 |     90.03 
+----------------+---------------------------------+----------
+          Total |     3,536      4,850      1,591 |     9,977 
+                |     35.44      48.61      15.95 |    100.00 
+                |    100.00     100.00     100.00 |    100.00 
+
+-------------------------------------------------------------------------------
+-> all_mode_available = No mode info
+no observations
+
+-------------------------------------------------------------------------------
+-> all_mode_available = All appts have mode
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+|  row percentage   |
+| column percentage |
++-------------------+
+
+                |          medium_person
+  tot_appts_cat |         0          1          2 |     Total
+----------------+---------------------------------+----------
+   1-2 per year |        43          0         18 |        61 
+                |     70.49       0.00      29.51 |    100.00 
+                |      6.54       0.00       6.19 |      3.32 
+----------------+---------------------------------+----------
+    3+ per year |       614        888        273 |     1,775 
+                |     34.59      50.03      15.38 |    100.00 
+                |     93.46     100.00      93.81 |     96.68 
+----------------+---------------------------------+----------
+          Total |       657        888        291 |     1,836 
+                |     35.78      48.37      15.85 |    100.00 
+                |    100.00     100.00     100.00 |    100.00 
+
+-------------------------------------------------------------------------------
+-> all_mode_available = Some appts have mode
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+|  row percentage   |
+| column percentage |
++-------------------+
+
+                |          medium_person
+  tot_appts_cat |         0          1          2 |     Total
+----------------+---------------------------------+----------
+No appointments |        11          9          7 |        27 
+                |     40.74      33.33      25.93 |    100.00 
+                |      0.38       0.23       0.54 |      0.33 
+----------------+---------------------------------+----------
+   1-2 per year |       344        444        119 |       907 
+                |     37.93      48.95      13.12 |    100.00 
+                |     11.95      11.21       9.15 |     11.14 
+----------------+---------------------------------+----------
+    3+ per year |     2,524      3,509      1,174 |     7,207 
+                |     35.02      48.69      16.29 |    100.00 
+                |     87.67      88.57      90.31 |     88.53 
+----------------+---------------------------------+----------
+          Total |     2,879      3,962      1,300 |     8,141 
+                |     35.36      48.67      15.97 |    100.00 
+                |    100.00     100.00     100.00 |    100.00 
+
 Number where number of appointments does not equal number where medium is known
-  8,155
+  8,164
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-prop_mediu~1 |      9,976     22.2083    21.77174          0        100
-prop_mediu~2 |      9,976    22.33357    21.31611          0        100
+prop_mediu~1 |      9,977    22.17974    21.62995          0        100
+prop_mediu~2 |      9,977    22.34804    21.18319          0        100
 (30 vars, 10,000 obs)
 
 all_miss_ap |
@@ -1029,202 +1135,205 @@ Number where end date prior to follow-up start
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
 op_appt_da~A |     45,147    565.8258    13017.01     -21913      22902
-(754 observations deleted)
+(754 real changes made, 754 to missing)
+(0 real changes made)
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
 op_appt_da~A |     44,393    191.7354    12803.92     -21913      22370
-(3,131 observations deleted)
+Count of people where end date prior to start of follow-up
+  317
+(3,170 observations deleted)
 count if <6 months follow-up
-  1,875
+  1,893
 
    short_fu |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |     77,375       80.50       80.50
-          1 |     18,740       19.50      100.00
+          0 |     77,900       80.45       80.45
+          1 |     18,930       19.55      100.00
 ------------+-----------------------------------
-      Total |     96,115      100.00
+      Total |     96,830      100.00
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-     days_fu |     96,115    295.2278    110.5098          1        364
+     days_fu |     96,830    295.0996    110.5909          1        364
 
                             fu_yr
 -------------------------------------------------------------
       Percentiles      Smallest
  1%     .0273973       .0027397
  5%     .1287671       .0027397
-10%      .260274       .0027397       Obs              96,115
-25%     .6547945       .0027397       Sum of Wgt.      96,115
+10%      .260274       .0027397       Obs              96,830
+25%     .6520548       .0027397       Sum of Wgt.      96,830
 
-50%     .9972603                      Mean           .8088432
-                        Largest       Std. Dev.      .3027665
+50%     .9972603                      Mean           .8084919
+                        Largest       Std. Dev.      .3029888
 75%     .9972603       .9972603
-90%     .9972603       .9972603       Variance       .0916676
-95%     .9972603       .9972603       Skewness      -1.337199
-99%     .9972603       .9972603       Kurtosis       3.284846
+90%     .9972603       .9972603       Variance       .0918022
+95%     .9972603       .9972603       Skewness      -1.334044
+99%     .9972603       .9972603       Kurtosis       3.275416
 
                           tot_appts
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            1              0
  5%            2              0
-10%            3              0       Obs               9,610
-25%            3              0       Sum of Wgt.       9,610
+10%            3              0       Obs               9,683
+25%            3              0       Sum of Wgt.       9,683
 
-50%            4                      Mean           4.443392
-                        Largest       Std. Dev.      1.499148
+50%            4                      Mean           4.441908
+                        Largest       Std. Dev.      1.498263
 75%            5              9
-90%            6              9       Variance       2.247446
-95%            7              9       Skewness       .0003457
-99%            8             10       Kurtosis       2.803699
+90%            6              9       Variance       2.244792
+95%            7              9       Skewness      -.0007995
+99%            8             10       Kurtosis       2.809068
 
 -------------------------------------------------------------------------------
 -> tot_appts_cat = 0
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-   tot_appts |        224           0           0          0          0
+   tot_appts |        230           0           0          0          0
 
 -------------------------------------------------------------------------------
 -> tot_appts_cat = 1
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-   tot_appts |      9,111    1.795741    .4031809          1          2
+   tot_appts |      9,200    1.795652    .4032462          1          2
 
 -------------------------------------------------------------------------------
 -> tot_appts_cat = 2
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-   tot_appts |     86,780    4.734536    1.264205          3         10
+   tot_appts |     87,400    4.732151    1.263469          3         10
 
 
   tot_appts_cat |      Freq.     Percent        Cum.
 ----------------+-----------------------------------
-No appointments |         22        0.23        0.23
-   1-2 per year |        914        9.51        9.74
-    3+ per year |      8,674       90.26      100.00
+No appointments |         23        0.24        0.24
+   1-2 per year |        920        9.50        9.74
+    3+ per year |      8,740       90.26      100.00
 ----------------+-----------------------------------
-          Total |      9,610      100.00
+          Total |      9,683      100.00
 
                             rate
 -------------------------------------------------------------
       Percentiles      Smallest
  1%     1.002747              0
  5%     2.005495              0
-10%     3.008242              0       Obs               9,610
-25%     4.010989              0       Sum of Wgt.       9,610
+10%     3.008242              0       Obs               9,683
+25%     4.010989              0       Sum of Wgt.       9,683
 
-50%     5.013736                      Mean           13.01266
-                        Largest       Std. Dev.      58.31203
+50%     5.013736                      Mean            12.9847
+                        Largest       Std. Dev.      58.10346
 75%     7.019231           1825
-90%     17.38095           1825       Variance       3400.293
-95%     33.18182           1825       Skewness         20.202
-99%     162.2222           1825       Kurtosis       530.9554
+90%     17.38095           1825       Variance       3376.012
+95%     33.18182           1825       Skewness       20.26807
+99%     162.2222           1825       Kurtosis       534.5983
 
 tot_appts_m |
       edium |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |         29        0.30        0.30
-          1 |        194        2.02        2.32
-          2 |        783        8.15       10.47
-          3 |      1,586       16.50       26.97
-          4 |      2,334       24.29       51.26
-          5 |      2,195       22.84       74.10
-          6 |      1,502       15.63       89.73
-          7 |        739        7.69       97.42
-          8 |        207        2.15       99.57
-          9 |         37        0.39       99.96
+          0 |         27        0.28        0.28
+          1 |        186        1.92        2.20
+          2 |        767        7.92       10.12
+          3 |      1,556       16.07       26.19
+          4 |      2,367       24.44       50.64
+          5 |      2,210       22.82       73.46
+          6 |      1,537       15.87       89.33
+          7 |        771        7.96       97.29
+          8 |        218        2.25       99.55
+          9 |         40        0.41       99.96
          10 |          4        0.04      100.00
 ------------+-----------------------------------
-      Total |      9,610      100.00
-(78,217 real changes made)
+      Total |      9,683      100.00
+(78,890 real changes made)
 
                         tot_medium_1
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs               9,610
-25%            0              0       Sum of Wgt.       9,610
+10%            0              0       Obs               9,683
+25%            0              0       Sum of Wgt.       9,683
 
-50%            1                      Mean           1.010406
-                        Largest       Std. Dev.      .9593117
+50%            1                      Mean            1.01766
+                        Largest       Std. Dev.       .962313
 75%            2              5
-90%            2              5       Variance       .9202788
-95%            3              6       Skewness       .8386391
-99%            4              7       Kurtosis       3.514029
-(296 missing values generated)
+90%            2              5       Variance       .9260463
+95%            3              6       Skewness       .8326656
+99%            4              7       Kurtosis       3.488866
+(270 missing values generated)
 
                         prop_medium_1
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs               9,581
-25%            0              0       Sum of Wgt.       9,581
+10%            0              0       Obs               9,656
+25%            0              0       Sum of Wgt.       9,656
 
-50%           20                      Mean           22.45597
-                        Largest       Std. Dev.      21.27445
+50%           20                      Mean           22.48646
+                        Largest       Std. Dev.      21.22669
 75%     33.33333            100
-90%           50            100       Variance       452.6022
-95%           60            100       Skewness       .8270825
-99%          100            100       Kurtosis       3.581643
+90%           50            100       Variance       450.5723
+95%           60            100       Skewness       .8232179
+99%     83.33334            100       Kurtosis       3.571322
 
                         tot_medium_2
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs               9,610
-25%            0              0       Sum of Wgt.       9,610
+10%            0              0       Obs               9,683
+25%            0              0       Sum of Wgt.       9,683
 
-50%            1                      Mean           .9851197
-                        Largest       Std. Dev.      .9434457
+50%            1                      Mean           .9916348
+                        Largest       Std. Dev.      .9471864
 75%            2              5
-90%            2              6       Variance       .8900897
-95%            3              6       Skewness       .8832645
-99%            4              6       Kurtosis       3.725659
-(296 missing values generated)
+90%            2              6       Variance        .897162
+95%            3              6       Skewness       .8808641
+99%            4              6       Kurtosis       3.709571
+(270 missing values generated)
 
                         prop_medium_2
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs               9,581
-25%            0              0       Sum of Wgt.       9,581
+10%            0              0       Obs               9,656
+25%            0              0       Sum of Wgt.       9,656
 
-50%           20                      Mean           22.06516
-                        Largest       Std. Dev.      21.28317
+50%           20                      Mean            22.0694
+                        Largest       Std. Dev.      21.21497
 75%     33.33333            100
-90%           50            100       Variance       452.9734
-95%           60            100       Skewness       .8910343
-99%          100            100       Kurtosis       3.762339
-(296 missing values generated)
+90%           50            100       Variance        450.075
+95%           60            100       Skewness       .8857655
+99%          100            100       Kurtosis       3.751725
+(270 missing values generated)
 
 -------------------------------------------------------------------------------
 -> medium_person = 0
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-prop_mediu~1 |     33,179           0           0          0          0
+prop_mediu~1 |     33,230           0           0          0          0
 
 -------------------------------------------------------------------------------
 -> medium_person = 1
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-prop_mediu~1 |     56,522    30.38268     11.3384         10         50
+prop_mediu~1 |     48,290    26.66647    8.284048         10   44.44444
 
 -------------------------------------------------------------------------------
 -> medium_person = 2
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-prop_mediu~1 |      6,118    71.38247    13.59124   55.55556        100
+prop_mediu~1 |     15,040    58.74792    13.56353         50        100
 
 -------------------------------------------------------------------------------
 -> medium_person = .
@@ -1235,7 +1344,7 @@ prop_mediu~1 |          0
 
 
 Contains data
-  obs:        96,115                          
+  obs:        96,830                          
  vars:            14                          
 -------------------------------------------------------------------------------
               storage   display    value
@@ -1262,7 +1371,7 @@ Sorted by: medium_person
 
 Duplicates in terms of all variables
 
-(86,432 observations deleted)
+(87,147 observations deleted)
 
 -------------------------------------------------------------------------------
 patient_id                                                          (unlabeled)
@@ -1302,38 +1411,49 @@ patient_id                                                          (unlabeled)
 10%            2              0       Obs               9,683
 25%            3              0       Sum of Wgt.       9,683
 
-50%            4                      Mean           4.476195
-                        Largest       Std. Dev.      1.578663
+50%            4                      Mean           4.509863
+                        Largest       Std. Dev.      1.579074
 75%            6             10
-90%            7             10       Variance       2.492178
-95%            7             10       Skewness       .0658616
-99%            8             10       Kurtosis         2.7851
+90%            7             10       Variance       2.493473
+95%            7             10       Skewness       .0652303
+99%            8             10       Kurtosis       2.785645
 
      +---------------------------------------------------------------------+
   1. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    13753 |   Male |    Rural | 18 - 40 years |        0 |        7  |
+     |    44599 |   Male |    Urban | 61 - 80 years |        0 |        7  |
      |---------------------------------------------------------------------|
      | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
-     | 3+ per year |        4 | Some appts have mode |        0 |        0 |
+     | 3+ per year |        6 | Some appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |       tot_me~2       |       prop_m~2       |       medium~n        |
-     |              1       |             25       |              0        |
+     |              1       |       16.66667       |              0        |
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
   2. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    71671 | Female |    Urban | 61 - 80 years |        0 |        4  |
+     |    46665 |   Male |    Urban | 41 - 60 years |        1 |        4  |
      |---------------------------------------------------------------------|
      | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
-     | 3+ per year |        5 | Some appts have mode |        0 |        0 |
+     | 3+ per year |        6 | Some appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |       tot_me~2       |       prop_m~2       |       medium~n        |
-     |              2       |             40       |              0        |
+     |              1       |       16.66667       |              0        |
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
   3. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    86680 |   Male |    Urban |             . |        0 |        5  |
+     |    21665 |   Male |    Urban | 41 - 60 years |        0 |        5  |
+     |---------------------------------------------------------------------|
+     | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
+     | 3+ per year |        6 | Some appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |       tot_me~2       |       prop_m~2       |       medium~n        |
+     |              2       |       33.33333       |              0        |
+     +---------------------------------------------------------------------+
+
+     +---------------------------------------------------------------------+
+  4. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    83517 |   Male |    Rural |             . |        0 |        5  |
      |---------------------------------------------------------------------|
      | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
      | 3+ per year |        4 | Some appts have mode |        0 |        0 |
@@ -1343,80 +1463,69 @@ patient_id                                                          (unlabeled)
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
-  4. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    16219 |   Male |    Rural |             . |        0 |        6  |
-     |---------------------------------------------------------------------|
-     | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
-     | 3+ per year |        5 | Some appts have mode |        0 |        0 |
-     |---------------------------------------------------------------------|
-     |       tot_me~2       |       prop_m~2       |       medium~n        |
-     |              3       |             60       |              0        |
-     +---------------------------------------------------------------------+
-
-     +---------------------------------------------------------------------+
   5. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    61067 | Female |    Rural | 18 - 40 years |        0 |        5  |
+     |    27161 |   Male |    Rural | 41 - 60 years |        0 |        3  |
      |---------------------------------------------------------------------|
      | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
-     | 3+ per year |        3 | Some appts have mode |        0 |        0 |
+     | 3+ per year |        6 | Some appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |       tot_me~2       |       prop_m~2       |       medium~n        |
-     |              1       |       33.33333       |              0        |
+     |              3       |             50       |              0        |
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
   6. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |     4380 | Female |    Urban |     >80 years |        0 |        5  |
+     |    51546 |   Male |    Urban | 41 - 60 years |        0 |        3  |
      |---------------------------------------------------------------------|
      | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
-     | 3+ per year |        3 | Some appts have mode |        0 |        0 |
+     | 3+ per year |        7 | Some appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |       tot_me~2       |       prop_m~2       |       medium~n        |
-     |              1       |       33.33333       |              0        |
+     |              2       |       28.57143       |              0        |
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
   7. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    64614 |   Male |    Rural | 41 - 60 years |        0 |        3  |
-     |---------------------------------------------------------------------|
-     | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
-     | 3+ per year |        3 |  All appts have mode |        0 |        0 |
-     |---------------------------------------------------------------------|
-     |       tot_me~2       |       prop_m~2       |       medium~n        |
-     |              2       |       66.66666       |              0        |
-     +---------------------------------------------------------------------+
-
-     +---------------------------------------------------------------------+
-  8. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    85087 | Female |    Urban | 61 - 80 years |        1 |        5  |
+     |    53323 | Female |    Urban | 18 - 40 years |        1 |        4  |
      |---------------------------------------------------------------------|
      | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
      | 3+ per year |        2 | Some appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |       tot_me~2       |       prop_m~2       |       medium~n        |
-     |              1       |             50       |              0        |
+     |              0       |              0       |              0        |
+     +---------------------------------------------------------------------+
+
+     +---------------------------------------------------------------------+
+  8. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    79841 | Female |    Urban |             . |        1 |        5  |
+     |---------------------------------------------------------------------|
+     | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
+     | 3+ per year |        2 | Some appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |       tot_me~2       |       prop_m~2       |       medium~n        |
+     |              2       |            100       |              0        |
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
   9. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    22657 |   Male |    Urban |             . |        1 |        5  |
+     |    73410 | Female |    Rural | 41 - 60 years |        0 |        4  |
      |---------------------------------------------------------------------|
      | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
-     | 3+ per year |        4 | Some appts have mode |        0 |        0 |
+     | 3+ per year |        2 | Some appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |       tot_me~2       |       prop_m~2       |       medium~n        |
-     |              1       |             25       |              0        |
+     |              0       |              0       |              0        |
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
  10. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    76959 | Female |    Rural | 18 - 40 years |        0 |        5  |
+     |    38353 |   Male |    Rural | 41 - 60 years |        1 |        3  |
      |---------------------------------------------------------------------|
      | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
-     | 3+ per year |        4 | Some appts have mode |        0 |        0 |
+     | 3+ per year |        1 | Some appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |       tot_me~2       |       prop_m~2       |       medium~n        |
-     |              1       |             25       |              0        |
+     |              0       |              0       |              0        |
      +---------------------------------------------------------------------+
 
   tot_appts_cat |      Freq.     Percent        Cum.
@@ -1435,30 +1544,127 @@ No appointments |         17        0.22        0.22
 ----------------+-----------------------------------
           Total |      7,790      100.00
 
-                |          medium_person
-  tot_appts_cat |         0          1          2 |     Total
-----------------+---------------------------------+----------
-No appointments |         3         17          2 |        22 
-   1-2 per year |       293        562         60 |       915 
-    3+ per year |     3,050      5,111        555 |     8,716 
-----------------+---------------------------------+----------
-          Total |     3,346      5,690        617 |     9,653 
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+|  row percentage   |
+| column percentage |
++-------------------+
 
                 |          medium_person
   tot_appts_cat |         0          1          2 |     Total
 ----------------+---------------------------------+----------
-No appointments |         2         13          2 |        17 
-   1-2 per year |       238        445         54 |       737 
-    3+ per year |     2,417      4,136        460 |     7,013 
+No appointments |         4         15          4 |        23 
+                |     17.39      65.22      17.39 |    100.00 
+                |      0.12       0.31       0.27 |      0.24 
 ----------------+---------------------------------+----------
-          Total |     2,657      4,594        516 |     7,767 
+   1-2 per year |       292        480        143 |       915 
+                |     31.91      52.46      15.63 |    100.00 
+                |      8.79       9.94       9.51 |      9.48 
+----------------+---------------------------------+----------
+    3+ per year |     3,027      4,334      1,357 |     8,718 
+                |     34.72      49.71      15.57 |    100.00 
+                |     91.09      89.75      90.23 |     90.29 
+----------------+---------------------------------+----------
+          Total |     3,323      4,829      1,504 |     9,656 
+                |     34.41      50.01      15.58 |    100.00 
+                |    100.00     100.00     100.00 |    100.00 
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+|  row percentage   |
+| column percentage |
++-------------------+
+
+                |          medium_person
+  tot_appts_cat |         0          1          2 |     Total
+----------------+---------------------------------+----------
+No appointments |         2         11          4 |        17 
+                |     11.76      64.71      23.53 |    100.00 
+                |      0.08       0.28       0.33 |      0.22 
+----------------+---------------------------------+----------
+   1-2 per year |       238        381        118 |       737 
+                |     32.29      51.70      16.01 |    100.00 
+                |      9.00       9.74       9.73 |      9.49 
+----------------+---------------------------------+----------
+    3+ per year |     2,404      3,520      1,091 |     7,015 
+                |     34.27      50.18      15.55 |    100.00 
+                |     90.92      89.98      89.94 |     90.29 
+----------------+---------------------------------+----------
+          Total |     2,644      3,912      1,213 |     7,769 
+                |     34.03      50.35      15.61 |    100.00 
+                |    100.00     100.00     100.00 |    100.00 
+
+-------------------------------------------------------------------------------
+-> all_mode_available = No mode info
+no observations
+
+-------------------------------------------------------------------------------
+-> all_mode_available = All appts have mode
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+|  row percentage   |
+| column percentage |
++-------------------+
+
+                |          medium_person
+  tot_appts_cat |         0          1          2 |     Total
+----------------+---------------------------------+----------
+   1-2 per year |        25          0         21 |        46 
+                |     54.35       0.00      45.65 |    100.00 
+                |      5.41       0.00       9.13 |      3.24 
+----------------+---------------------------------+----------
+    3+ per year |       437        727        209 |     1,373 
+                |     31.83      52.95      15.22 |    100.00 
+                |     94.59     100.00      90.87 |     96.76 
+----------------+---------------------------------+----------
+          Total |       462        727        230 |     1,419 
+                |     32.56      51.23      16.21 |    100.00 
+                |    100.00     100.00     100.00 |    100.00 
+
+-------------------------------------------------------------------------------
+-> all_mode_available = Some appts have mode
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+|  row percentage   |
+| column percentage |
++-------------------+
+
+                |          medium_person
+  tot_appts_cat |         0          1          2 |     Total
+----------------+---------------------------------+----------
+No appointments |         2         11          4 |        17 
+                |     11.76      64.71      23.53 |    100.00 
+                |      0.09       0.35       0.41 |      0.27 
+----------------+---------------------------------+----------
+   1-2 per year |       213        381         97 |       691 
+                |     30.82      55.14      14.04 |    100.00 
+                |      9.76      11.96       9.87 |     10.88 
+----------------+---------------------------------+----------
+    3+ per year |     1,967      2,793        882 |     5,642 
+                |     34.86      49.50      15.63 |    100.00 
+                |     90.15      87.69      89.73 |     88.85 
+----------------+---------------------------------+----------
+          Total |     2,182      3,185        983 |     6,350 
+                |     34.36      50.16      15.48 |    100.00 
+                |    100.00     100.00     100.00 |    100.00 
+
 Number where number of appointments does not equal number where medium is known
-  7,908
+  7,916
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-prop_mediu~1 |      9,653    22.47571    21.27442          0        100
-prop_mediu~2 |      9,653    22.09026    21.30718          0        100
+prop_mediu~1 |      9,656    22.48646    21.22669          0        100
+prop_mediu~2 |      9,656     22.0694    21.21497          0        100
 (30 vars, 10,000 obs)
 
 all_miss_ap |
@@ -1661,201 +1867,204 @@ Number where end date prior to follow-up start
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
 op_appt_da~A |     45,131    535.6183    12979.65     -21913      22902
-(504 observations deleted)
+(504 real changes made, 504 to missing)
+(0 real changes made)
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
 op_appt_da~A |     44,627    286.4147    12837.93     -21913      22643
-(38,264 observations deleted)
+Count of people where end date prior to start of follow-up
+  3,856
+(38,560 observations deleted)
 count if <6 months follow-up
-  1,440
+  1,444
 
    short_fu |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |     46,858       76.53       76.53
-          1 |     14,374       23.47      100.00
+          0 |     47,000       76.50       76.50
+          1 |     14,440       23.50      100.00
 ------------+-----------------------------------
-      Total |     61,232      100.00
+      Total |     61,440      100.00
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-     days_fu |     61,232    226.1036     80.9371          1        274
+     days_fu |     61,440      226.05    80.98232          1        274
 
                             fu_yr
 -------------------------------------------------------------
       Percentiles      Smallest
  1%     .0219178       .0027397
- 5%     .1013699       .0027397
-10%     .2164384       .0027397       Obs              61,232
-25%      .539726       .0027397       Sum of Wgt.      61,232
+ 5%     .0986301       .0027397
+10%     .2164384       .0027397       Obs              61,440
+25%      .539726       .0027397       Sum of Wgt.      61,440
 
-50%     .7506849                      Mean           .6194618
-                        Largest       Std. Dev.      .2217455
+50%     .7506849                      Mean            .619315
+                        Largest       Std. Dev.      .2218694
 75%     .7506849       .7506849
-90%     .7506849       .7506849       Variance       .0491711
-95%     .7506849       .7506849       Skewness      -1.470077
-99%     .7506849       .7506849       Kurtosis       3.702459
+90%     .7506849       .7506849       Variance        .049226
+95%     .7506849       .7506849       Skewness      -1.468609
+99%     .7506849       .7506849       Kurtosis       3.697675
 
                           tot_appts
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            1              0
  5%            2              0
-10%            3              0       Obs               6,123
-25%            3              0       Sum of Wgt.       6,123
+10%            3              0       Obs               6,144
+25%            3              0       Sum of Wgt.       6,144
 
-50%            4                      Mean           4.465458
-                        Largest       Std. Dev.      1.502989
+50%            4                      Mean           4.465495
+                        Largest       Std. Dev.      1.503411
 75%            5              9
-90%            6              9       Variance       2.258975
-95%            7              9       Skewness       .0010327
-99%            8              9       Kurtosis       2.842033
+90%            6              9       Variance       2.260245
+95%            7              9       Skewness       .0005047
+99%            8              9       Kurtosis       2.839989
 
 -------------------------------------------------------------------------------
 -> tot_appts_cat = 0
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-   tot_appts |        167           0           0          0          0
+   tot_appts |        170           0           0          0          0
 
 -------------------------------------------------------------------------------
 -> tot_appts_cat = 1
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-   tot_appts |      5,397    1.777469    .4159844          1          2
+   tot_appts |      5,430    1.777164    .4161875          1          2
 
 -------------------------------------------------------------------------------
 -> tot_appts_cat = 2
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-   tot_appts |     55,668    4.741449    1.277196          3          9
+   tot_appts |     55,840    4.740509    1.276942          3          9
 
 
   tot_appts_cat |      Freq.     Percent        Cum.
 ----------------+-----------------------------------
 No appointments |         17        0.28        0.28
-   1-2 per year |        541        8.84        9.11
-    3+ per year |      5,565       90.89      100.00
+   1-2 per year |        543        8.84        9.11
+    3+ per year |      5,584       90.89      100.00
 ----------------+-----------------------------------
-          Total |      6,123      100.00
+          Total |      6,144      100.00
 
                             rate
 -------------------------------------------------------------
       Percentiles      Smallest
  1%     1.332117              0
  5%     2.664234              0
-10%     3.996351              0       Obs               6,123
-25%     5.328467              0       Sum of Wgt.       6,123
+10%     3.996351              0       Obs               6,144
+25%     5.328467              0       Sum of Wgt.       6,144
 
-50%     6.660584                      Mean           17.27862
-                        Largest       Std. Dev.      77.32888
+50%     6.660584                      Mean            17.2436
+                        Largest       Std. Dev.      77.19905
 75%     9.324818           1460
-90%     20.27778           1825       Variance       5979.755
-95%     43.45238           2190       Skewness       18.17026
-99%      228.125           2555       Kurtosis       436.9784
+90%     20.09174           1825       Variance       5959.694
+95%     43.45238           2190       Skewness         18.201
+99%      228.125           2555       Kurtosis       438.4541
 
 tot_appts_m |
       edium |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |         16        0.26        0.26
-          1 |        124        2.03        2.29
-          2 |        481        7.86       10.14
-          3 |      1,031       16.84       26.98
-          4 |      1,465       23.93       50.91
-          5 |      1,417       23.14       74.05
-          6 |        959       15.66       89.71
-          7 |        471        7.69       97.40
-          8 |        127        2.07       99.48
-          9 |         32        0.52      100.00
+          0 |         15        0.24        0.24
+          1 |        122        1.99        2.23
+          2 |        479        7.80       10.03
+          3 |      1,027       16.72       26.74
+          4 |      1,462       23.80       50.54
+          5 |      1,425       23.19       73.73
+          6 |        973       15.84       89.57
+          7 |        480        7.81       97.38
+          8 |        128        2.08       99.46
+          9 |         33        0.54      100.00
 ------------+-----------------------------------
-      Total |      6,123      100.00
-(50,396 real changes made)
+      Total |      6,144      100.00
+(50,650 real changes made)
 
                         tot_medium_1
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs               6,123
-25%            0              0       Sum of Wgt.       6,123
+10%            0              0       Obs               6,144
+25%            0              0       Sum of Wgt.       6,144
 
-50%            1                      Mean            1.00147
-                        Largest       Std. Dev.      .9585485
+50%            1                      Mean           1.004069
+                        Largest       Std. Dev.       .960467
 75%            2              5
-90%            2              5       Variance       .9188152
-95%            3              6       Skewness       .9085232
-99%            4              6       Kurtosis       3.737243
-(159 missing values generated)
+90%            2              5       Variance       .9224969
+95%            3              6       Skewness       .9102234
+99%            4              6       Kurtosis       3.738739
+(150 missing values generated)
 
                         prop_medium_1
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs               6,107
-25%            0              0       Sum of Wgt.       6,107
+10%            0              0       Obs               6,129
+25%            0              0       Sum of Wgt.       6,129
 
-50%           20                      Mean           22.20937
-                        Largest       Std. Dev.      21.47876
+50%           20                      Mean           22.19858
+                        Largest       Std. Dev.      21.46008
 75%     33.33333            100
-90%           50            100       Variance        461.337
-95%           60            100       Skewness       .9506326
-99%          100            100       Kurtosis       3.926656
+90%           50            100       Variance       460.5351
+95%         62.5            100       Skewness       .9534526
+99%          100            100       Kurtosis       3.935526
 
                         tot_medium_2
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs               6,123
-25%            0              0       Sum of Wgt.       6,123
+10%            0              0       Obs               6,144
+25%            0              0       Sum of Wgt.       6,144
 
-50%            1                      Mean           1.011759
-                        Largest       Std. Dev.      .9592441
+50%            1                      Mean           1.015951
+                        Largest       Std. Dev.      .9619521
 75%            2              5
-90%            2              5       Variance       .9201492
-95%            3              5       Skewness       .8715823
-99%            4              5       Kurtosis       3.576621
-(159 missing values generated)
+90%            2              5       Variance       .9253519
+95%            3              5       Skewness       .8647066
+99%            4              5       Kurtosis       3.547972
+(150 missing values generated)
 
                         prop_medium_2
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs               6,107
-25%            0              0       Sum of Wgt.       6,107
+10%            0              0       Obs               6,129
+25%            0              0       Sum of Wgt.       6,129
 
-50%           20                      Mean           22.57159
-                        Largest       Std. Dev.      21.63603
+50%           20                      Mean           22.58818
+                        Largest       Std. Dev.      21.62164
 75%     33.33333            100
-90%           50            100       Variance       468.1176
-95%           60            100       Skewness       .9461851
-99%          100            100       Kurtosis       3.994412
-(159 missing values generated)
+90%           50            100       Variance       467.4952
+95%           60            100       Skewness       .9405362
+99%          100            100       Kurtosis       3.974497
+(150 missing values generated)
 
 -------------------------------------------------------------------------------
 -> medium_person = 0
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-prop_mediu~1 |     21,169           0           0          0          0
+prop_mediu~1 |     21,170           0           0          0          0
 
 -------------------------------------------------------------------------------
 -> medium_person = 1
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-prop_mediu~1 |     35,758    29.48909    11.19687   11.11111         50
+prop_mediu~1 |     31,080    26.19894    8.235799   11.11111   44.44444
 
 -------------------------------------------------------------------------------
 -> medium_person = 2
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-prop_mediu~1 |      4,146    72.56466      14.098   57.14286        100
+prop_mediu~1 |      9,040     60.4301    14.76588         50        100
 
 -------------------------------------------------------------------------------
 -> medium_person = .
@@ -1866,7 +2075,7 @@ prop_mediu~1 |          0
 
 
 Contains data
-  obs:        61,232                          
+  obs:        61,440                          
  vars:            14                          
 -------------------------------------------------------------------------------
               storage   display    value
@@ -1893,7 +2102,7 @@ Sorted by: medium_person
 
 Duplicates in terms of all variables
 
-(55,088 observations deleted)
+(55,296 observations deleted)
 
 -------------------------------------------------------------------------------
 patient_id                                                          (unlabeled)
@@ -1933,122 +2142,122 @@ patient_id                                                          (unlabeled)
 10%            2              0       Obs               6,144
 25%            3              0       Sum of Wgt.       6,144
 
-50%            4                      Mean           4.485189
-                        Largest       Std. Dev.      1.575836
+50%            4                      Mean           4.500814
+                        Largest       Std. Dev.      1.575595
 75%            6              9
-90%            7              9       Variance       2.483258
-95%            7              9       Skewness       .0726837
-99%            8              9       Kurtosis        2.77965
+90%            7              9       Variance         2.4825
+95%            7              9       Skewness          .0703
+99%            8              9       Kurtosis       2.772894
 
-     +--------------------------------------------------------------------+
-  1. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s |
-     |    59521 |   Male |    Rural | 41 - 60 years |        0 |        4 |
-     |------------------------------+-------------------------------------|
-     |   tot_appts_cat  | tot_ap~m  |    all_mode_available  |  tot_me~1  |
-     |     3+ per year  |        5  |  Some appts have mode  |         0  |
-     |--------------------------------------------------------------------|
-     |    prop_m~1    |    tot_me~2    |    prop_m~2    |    medium~n     |
-     |           0    |           2    |          40    |           0     |
-     +--------------------------------------------------------------------+
+     +---------------------------------------------------------------------+
+  1. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    15924 |   Male |    Rural | 18 - 40 years |        0 |        4  |
+     |---------------------------------------------------------------------|
+     | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
+     | 3+ per year |        2 | Some appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |       tot_me~2       |       prop_m~2       |       medium~n        |
+     |              1       |             50       |              0        |
+     +---------------------------------------------------------------------+
 
-     +--------------------------------------------------------------------+
-  2. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s |
-     |    70879 | Female |    Rural |     >80 years |        0 |        4 |
-     |------------------------------+-------------------------------------|
-     |   tot_appts_cat  | tot_ap~m  |    all_mode_available  |  tot_me~1  |
-     |     3+ per year  |        7  |  Some appts have mode  |         0  |
-     |--------------------------------------------------------------------|
-     |    prop_m~1    |    tot_me~2    |    prop_m~2    |    medium~n     |
-     |           0    |           1    |    14.28571    |           0     |
-     +--------------------------------------------------------------------+
+     +---------------------------------------------------------------------+
+  2. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    69285 |   Male |    Rural | 18 - 40 years |        1 |        5  |
+     |---------------------------------------------------------------------|
+     | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
+     | 3+ per year |        6 | Some appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |       tot_me~2       |       prop_m~2       |       medium~n        |
+     |              3       |             50       |              0        |
+     +---------------------------------------------------------------------+
 
-     +--------------------------------------------------------------------+
-  3. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s |
-     |    59573 | Female |    Urban | 41 - 60 years |        0 |        3 |
-     |------------------------------+-------------------------------------|
-     |   tot_appts_cat  | tot_ap~m  |    all_mode_available  |  tot_me~1  |
-     |     3+ per year  |        1  |  Some appts have mode  |         0  |
-     |--------------------------------------------------------------------|
-     |    prop_m~1    |    tot_me~2    |    prop_m~2    |    medium~n     |
-     |           0    |           1    |         100    |           0     |
-     +--------------------------------------------------------------------+
+     +---------------------------------------------------------------------+
+  3. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    34560 | Female |    Rural | 41 - 60 years |        0 |        4  |
+     |---------------------------------------------------------------------|
+     | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
+     | 3+ per year |        7 | Some appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |       tot_me~2       |       prop_m~2       |       medium~n        |
+     |              3       |       42.85714       |              0        |
+     +---------------------------------------------------------------------+
 
-     +--------------------------------------------------------------------+
-  4. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s |
-     |    81537 | Female |    Urban |             . |        0 |        4 |
-     |------------------------------+-------------------------------------|
-     |   tot_appts_cat  | tot_ap~m  |    all_mode_available  |  tot_me~1  |
-     |     3+ per year  |        6  |  Some appts have mode  |         0  |
-     |--------------------------------------------------------------------|
-     |    prop_m~1    |    tot_me~2    |    prop_m~2    |    medium~n     |
-     |           0    |           3    |          50    |           0     |
-     +--------------------------------------------------------------------+
+     +---------------------------------------------------------------------+
+  4. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |     3880 |   Male |    Rural | 61 - 80 years |        0 |        5  |
+     |---------------------------------------------------------------------|
+     | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
+     | 3+ per year |        6 | Some appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |       tot_me~2       |       prop_m~2       |       medium~n        |
+     |              4       |       66.66666       |              0        |
+     +---------------------------------------------------------------------+
 
-     +--------------------------------------------------------------------+
-  5. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s |
-     |    41702 | Female |    Rural | 18 - 40 years |        1 |        3 |
-     |------------------------------+-------------------------------------|
-     |   tot_appts_cat  | tot_ap~m  |    all_mode_available  |  tot_me~1  |
-     |     3+ per year  |        4  |  Some appts have mode  |         0  |
-     |--------------------------------------------------------------------|
-     |    prop_m~1    |    tot_me~2    |    prop_m~2    |    medium~n     |
-     |           0    |           2    |          50    |           0     |
-     +--------------------------------------------------------------------+
+     +---------------------------------------------------------------------+
+  5. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    58796 | Female |    Rural | 41 - 60 years |        0 |        6  |
+     |---------------------------------------------------------------------|
+     | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
+     | 3+ per year |        3 | Some appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |       tot_me~2       |       prop_m~2       |       medium~n        |
+     |              0       |              0       |              0        |
+     +---------------------------------------------------------------------+
 
-     +--------------------------------------------------------------------+
-  6. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s |
-     |    91374 |   Male |    Rural |             . |        0 |        1 |
-     |------------------------------+-------------------------------------|
-     |   tot_appts_cat  | tot_ap~m  |    all_mode_available  |  tot_me~1  |
-     |    1-2 per year  |        4  |  Some appts have mode  |         0  |
-     |--------------------------------------------------------------------|
-     |    prop_m~1    |    tot_me~2    |    prop_m~2    |    medium~n     |
-     |           0    |           1    |          25    |           0     |
-     +--------------------------------------------------------------------+
+     +---------------------------------------------------------------------+
+  6. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    30530 | Female |    Urban | 41 - 60 years |        0 |        6  |
+     |---------------------------------------------------------------------|
+     | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
+     | 3+ per year |        3 | Some appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |       tot_me~2       |       prop_m~2       |       medium~n        |
+     |              1       |       33.33333       |              0        |
+     +---------------------------------------------------------------------+
 
-     +--------------------------------------------------------------------+
-  7. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s |
-     |     4093 |   Male |    Urban | 61 - 80 years |        1 |        3 |
-     |------------------------------+-------------------------------------|
-     |   tot_appts_cat  | tot_ap~m  |    all_mode_available  |  tot_me~1  |
-     |     3+ per year  |        3  |   All appts have mode  |         0  |
-     |--------------------------------------------------------------------|
-     |    prop_m~1    |    tot_me~2    |    prop_m~2    |    medium~n     |
-     |           0    |           1    |    33.33333    |           0     |
-     +--------------------------------------------------------------------+
+     +---------------------------------------------------------------------+
+  7. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    55503 | Female |    Rural |     >80 years |        1 |        6  |
+     |---------------------------------------------------------------------|
+     | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
+     | 3+ per year |        2 | Some appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |       tot_me~2       |       prop_m~2       |       medium~n        |
+     |              0       |              0       |              0        |
+     +---------------------------------------------------------------------+
 
-     +--------------------------------------------------------------------+
-  8. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s |
-     |    76852 |   Male |    Rural |             . |        0 |        5 |
-     |------------------------------+-------------------------------------|
-     |   tot_appts_cat  | tot_ap~m  |    all_mode_available  |  tot_me~1  |
-     |     3+ per year  |        2  |  Some appts have mode  |         0  |
-     |--------------------------------------------------------------------|
-     |    prop_m~1    |    tot_me~2    |    prop_m~2    |    medium~n     |
-     |           0    |           1    |          50    |           0     |
-     +--------------------------------------------------------------------+
+     +---------------------------------------------------------------------+
+  8. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    40906 | Female |    Urban | 18 - 40 years |        0 |        8  |
+     |---------------------------------------------------------------------|
+     | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
+     | 3+ per year |        2 | Some appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |       tot_me~2       |       prop_m~2       |       medium~n        |
+     |              1       |             50       |              0        |
+     +---------------------------------------------------------------------+
 
-     +--------------------------------------------------------------------+
-  9. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s |
-     |    99637 | Female |    Rural | 18 - 40 years |        0 |        0 |
-     |------------------------------+-------------------------------------|
-     |   tot_appts_cat  | tot_ap~m  |    all_mode_available  |  tot_me~1  |
-     | No appointments  |        3  |  Some appts have mode  |         0  |
-     |--------------------------------------------------------------------|
-     |    prop_m~1    |    tot_me~2    |    prop_m~2    |    medium~n     |
-     |           0    |           0    |           0    |           0     |
-     +--------------------------------------------------------------------+
+     +---------------------------------------------------------------------+
+  9. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    80349 | Female |    Rural | 61 - 80 years |        0 |        4  |
+     |---------------------------------------------------------------------|
+     | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
+     | 3+ per year |        3 | Some appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |       tot_me~2       |       prop_m~2       |       medium~n        |
+     |              0       |              0       |              0        |
+     +---------------------------------------------------------------------+
 
-     +--------------------------------------------------------------------+
- 10. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s |
-     |    60589 | Female |    Urban | 18 - 40 years |        0 |        4 |
-     |------------------------------+-------------------------------------|
-     |   tot_appts_cat  | tot_ap~m  |    all_mode_available  |  tot_me~1  |
-     |     3+ per year  |        4  |   All appts have mode  |         0  |
-     |--------------------------------------------------------------------|
-     |    prop_m~1    |    tot_me~2    |    prop_m~2    |    medium~n     |
-     |           0    |           1    |          25    |           0     |
-     +--------------------------------------------------------------------+
+     +---------------------------------------------------------------------+
+ 10. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    44001 | Female |    Rural | 18 - 40 years |        0 |        3  |
+     |---------------------------------------------------------------------|
+     | tot_appts~t | tot_ap~m |   all_mode_available | tot_me~1 | prop_m~1 |
+     | 3+ per year |        5 | Some appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |       tot_me~2       |       prop_m~2       |       medium~n        |
+     |              2       |             40       |              0        |
+     +---------------------------------------------------------------------+
 
   tot_appts_cat |      Freq.     Percent        Cum.
 ----------------+-----------------------------------
@@ -2066,30 +2275,127 @@ No appointments |         13        0.28        0.28
 ----------------+-----------------------------------
           Total |      4,700      100.00
 
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+|  row percentage   |
+| column percentage |
++-------------------+
+
                 |          medium_person
   tot_appts_cat |         0          1          2 |     Total
 ----------------+---------------------------------+----------
-No appointments |         5         11          1 |        17 
-   1-2 per year |       180        322         40 |       542 
-    3+ per year |     1,940      3,254        375 |     5,569 
+No appointments |         5         10          2 |        17 
+                |     29.41      58.82      11.76 |    100.00 
+                |      0.24       0.32       0.22 |      0.28 
 ----------------+---------------------------------+----------
-          Total |     2,125      3,587        416 |     6,128 
+   1-2 per year |       179        286         77 |       542 
+                |     33.03      52.77      14.21 |    100.00 
+                |      8.46       9.20       8.52 |      8.84 
+----------------+---------------------------------+----------
+    3+ per year |     1,933      2,812        825 |     5,570 
+                |     34.70      50.48      14.81 |    100.00 
+                |     91.31      90.48      91.26 |     90.88 
+----------------+---------------------------------+----------
+          Total |     2,117      3,108        904 |     6,129 
+                |     34.54      50.71      14.75 |    100.00 
+                |    100.00     100.00     100.00 |    100.00 
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+|  row percentage   |
+| column percentage |
++-------------------+
 
                 |          medium_person
   tot_appts_cat |         0          1          2 |     Total
 ----------------+---------------------------------+----------
 No appointments |         4          9          0 |        13 
-   1-2 per year |       137        243         32 |       412 
-    3+ per year |     1,498      2,478        290 |     4,266 
+                |     30.77      69.23       0.00 |    100.00 
+                |      0.24       0.38       0.00 |      0.28 
 ----------------+---------------------------------+----------
-          Total |     1,639      2,730        322 |     4,691 
+   1-2 per year |       136        221         55 |       412 
+                |     33.01      53.64      13.35 |    100.00 
+                |      8.32       9.34       7.96 |      8.78 
+----------------+---------------------------------+----------
+    3+ per year |     1,494      2,136        636 |     4,266 
+                |     35.02      50.07      14.91 |    100.00 
+                |     91.43      90.28      92.04 |     90.94 
+----------------+---------------------------------+----------
+          Total |     1,634      2,366        691 |     4,691 
+                |     34.83      50.44      14.73 |    100.00 
+                |    100.00     100.00     100.00 |    100.00 
+
+-------------------------------------------------------------------------------
+-> all_mode_available = No mode info
+no observations
+
+-------------------------------------------------------------------------------
+-> all_mode_available = All appts have mode
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+|  row percentage   |
+| column percentage |
++-------------------+
+
+                |          medium_person
+  tot_appts_cat |         0          1          2 |     Total
+----------------+---------------------------------+----------
+   1-2 per year |        18          0          9 |        27 
+                |     66.67       0.00      33.33 |    100.00 
+                |      6.08       0.00       7.38 |      3.24 
+----------------+---------------------------------+----------
+    3+ per year |       278        415        113 |       806 
+                |     34.49      51.49      14.02 |    100.00 
+                |     93.92     100.00      92.62 |     96.76 
+----------------+---------------------------------+----------
+          Total |       296        415        122 |       833 
+                |     35.53      49.82      14.65 |    100.00 
+                |    100.00     100.00     100.00 |    100.00 
+
+-------------------------------------------------------------------------------
+-> all_mode_available = Some appts have mode
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+|  row percentage   |
+| column percentage |
++-------------------+
+
+                |          medium_person
+  tot_appts_cat |         0          1          2 |     Total
+----------------+---------------------------------+----------
+No appointments |         4          9          0 |        13 
+                |     30.77      69.23       0.00 |    100.00 
+                |      0.30       0.46       0.00 |      0.34 
+----------------+---------------------------------+----------
+   1-2 per year |       118        221         46 |       385 
+                |     30.65      57.40      11.95 |    100.00 
+                |      8.82      11.33       8.08 |      9.98 
+----------------+---------------------------------+----------
+    3+ per year |     1,216      1,721        523 |     3,460 
+                |     35.14      49.74      15.12 |    100.00 
+                |     90.88      88.21      91.92 |     89.68 
+----------------+---------------------------------+----------
+          Total |     1,338      1,951        569 |     3,858 
+                |     34.68      50.57      14.75 |    100.00 
+                |    100.00     100.00     100.00 |    100.00 
+
 Number where number of appointments does not equal number where medium is known
-  5,072
+  5,080
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-prop_mediu~1 |      6,128    22.19162    21.47704          0        100
-prop_mediu~2 |      6,128    22.58252    21.64818          0        100
+prop_mediu~1 |      6,129    22.19858    21.46008          0        100
+prop_mediu~2 |      6,129    22.58818    21.62164          0        100
 
 .     
 . 
@@ -2160,5 +2466,5 @@ prop_mediu~2 |      6,128    22.58252    21.64818          0        100
       name:  <unnamed>
        log:  /workspace/logs/bsr.log
   log type:  text
- closed on:  16 Sep 2022, 14:32:40
+ closed on:  16 Sep 2022, 15:10:20
 -------------------------------------------------------------------------------
