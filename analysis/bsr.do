@@ -147,13 +147,14 @@ forvalues i=2019/2021 {
     describe
     duplicates drop 
     codebook patient_id
+    sum tot_appts tot_appts_medium, d 
     
     tab tot_appts_cat 
     tab tot_appts_cat if short_fu==0
 
     tab tot_appts_cat medium_person 
     tab tot_appts_cat medium_person  if short_fu==0
-    
+
     di "Number where number of appointments does not equal number where medium is known"
     count if tot_appts!=tot_appts_medium
 
