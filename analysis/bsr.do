@@ -139,6 +139,7 @@ forvalues i=2019/2021 {
     replace all_mode_available = 2 if all_mode_available==0 & tot_appts_medium!=0
     label define ava 0 "No mode info" 1 "All appts have mode" 2 "Some appts have mode"
     label values all_mode_available ava 
+    
 
     forvalues k=1/2 {
         bys patient_id: egen tot_medium_`k' = total(op_appt_medium==`k')
@@ -154,6 +155,7 @@ forvalues i=2019/2021 {
     duplicates drop 
     codebook patient_id
     sum tot_appts tot_appts_medium, d 
+    tab all_mode_available, m
 
     list in 1/10
 
