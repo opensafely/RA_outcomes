@@ -133,6 +133,7 @@ forvalues i=2019/2021 {
     * Determine proportion of appointments where mode is known 
     gen prop_medium_known = tot_appts_medium/tot_appts 
     sum prop_medium_known, d 
+    count if prop_medium_known>0 & prop_medium_known!=1
     forvalues k=0/2 {
         bys patient_id: egen tot_medium_`k' = total(op_appt_medium==`k')
         sum tot_medium_`k' if flag==1, d
