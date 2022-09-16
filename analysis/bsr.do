@@ -133,24 +133,33 @@ forvalues i=2019/2021 {
     * Determine proportion of appointments where mode is known 
     gen prop_medium_known = tot_appts_medium/tot_appts 
     sum prop_medium_known, d 
-    count if prop_medium_known>0 & prop_medium_known!=1
-    forvalues k=0/2 {
+    count if prop_medium_known>0 & prop_medium_known!=1 & prop_medium_known!=. & flag==1
+    forvalues k=1/2 {
         bys patient_id: egen tot_medium_`k' = total(op_appt_medium==`k')
         sum tot_medium_`k' if flag==1, d
         gen prop_medium_`k' = (tot_medium_`k'/tot_appts_medium)*100
         sum prop_medium_`k' if flag==1, d
         }
-    tab tot_medium_1 tot_medium_2, m 
     egen medium_person = cut(prop_medium_1), at(0, 1, 50, 101) icodes
     bys medium_person: sum prop_medium_1 
 
-    tab medium_person tot_appts_cat, m
-
-    /*keep patient_id tot_appts_cat medium_person tot_medium_1 prop_medium_1 tot_medium_2 prop_medium_2 age_cat male urban_rural_bin
+    keep patient_id tot_appts_cat tot_appts tot_appts_medium medium_person tot_medium_1 prop_medium_1 tot_medium_2 prop_medium_2 age_cat male urban_rural_bin short_fu 
     describe
     duplicates drop 
     codebook patient_id
-    preserve
+    
+    tab tot_appts_cat 
+    tab tot_appts_cat if short_fu==0
+
+    tab tot_appts_cat medium_person 
+    tab tot_appts_cat medium_person  if short_fu==0
+    
+    di "Number where number of appointments does not equal number where medium is known"
+    count if tot_appts!=tot_appts_medium
+
+    sum prop_medium_*
+
+    /*preserve
     table1_mc, vars(medium_person cate) by(tot_appts) missing clear 
     export delimited using ./output/tables/bsr_op_appt_`i'.csv
     restore
@@ -163,6 +172,11 @@ forvalues i=2019/2021 {
         restore 
 
         export delimited using ./output/tables/bsr_op_chars_`i'.csv
+    
+
+    tab tot_medium_1 tot_medium_2, m 
+    
+    tab medium_person tot_appts_cat, m
     */
     }
     

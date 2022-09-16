@@ -136,24 +136,36 @@
  82.     * Determine proportion of appointments where mode is known 
 .     gen prop_medium_known = tot_appts_medium/tot_appts 
  83.     sum prop_medium_known, d 
- 84.     forvalues k=0/2 {
- 85.         bys patient_id: egen tot_medium_`k' = total(op_appt_medium==`k')
- 86.         sum tot_medium_`k' if flag==1, d
- 87.         gen prop_medium_`k' = (tot_medium_`k'/tot_appts_medium)*100
- 88.         sum prop_medium_`k' if flag==1, d
- 89.         }
- 90.     tab tot_medium_1 tot_medium_2, m 
+ 84.     count if prop_medium_known>0 & prop_medium_known!=1 & prop_medium_know
+> n!=. & flag==1
+ 85.     forvalues k=1/2 {
+ 86.         bys patient_id: egen tot_medium_`k' = total(op_appt_medium==`k')
+ 87.         sum tot_medium_`k' if flag==1, d
+ 88.         gen prop_medium_`k' = (tot_medium_`k'/tot_appts_medium)*100
+ 89.         sum prop_medium_`k' if flag==1, d
+ 90.         }
  91.     egen medium_person = cut(prop_medium_1), at(0, 1, 50, 101) icodes
  92.     bys medium_person: sum prop_medium_1 
  93. 
-.     tab medium_person tot_appts_cat, m
- 94. 
-.     /*keep patient_id tot_appts_cat medium_person tot_medium_1 prop_medium_1 
-> tot_medium_2 prop_medium_2 age_cat male urban_rural_bin
->     describe
->     duplicates drop 
->     codebook patient_id
->     preserve
+.     keep patient_id tot_appts_cat tot_appts tot_appts_medium medium_person to
+> t_medium_1 prop_medium_1 tot_medium_2 prop_medium_2 age_cat male urban_rural_
+> bin short_fu 
+ 94.     describe
+ 95.     duplicates drop 
+ 96.     codebook patient_id
+ 97.     
+.     tab tot_appts_cat 
+ 98.     tab tot_appts_cat if short_fu==0
+ 99. 
+.     tab tot_appts_cat medium_person 
+100. 
+.     di "Number where number of appointments does not equal number where mediu
+> m is known"
+101.     count if tot_appts!=tot_appts_medium
+102. 
+.     sum prop_medium_*
+103. 
+.     /*preserve
 >     table1_mc, vars(medium_person cate) by(tot_appts) missing clear 
 >     export delimited using ./output/tables/bsr_op_appt_`i'.csv
 >     restore
@@ -167,6 +179,11 @@
 >         restore 
 > 
 >         export delimited using ./output/tables/bsr_op_chars_`i'.csv
+>     
+> 
+>     tab tot_medium_1 tot_medium_2, m 
+>     
+>     tab medium_person tot_appts_cat, m
 >     */
 .     }
 (36 vars, 10,000 obs)
@@ -484,37 +501,7 @@ tot_appts_m |
 90%            2              9       Variance       .6571483
 95%          2.5              9       Skewness       3.156157
 99%            5              9       Kurtosis       19.30989
-
-                        tot_medium_0
--------------------------------------------------------------
-      Percentiles      Smallest
- 1%            2              0
- 5%            3              0
-10%            3              1       Obs               9,912
-25%            4              1       Sum of Wgt.       9,912
-
-50%            5                      Mean           5.459241
-                        Largest       Std. Dev.      1.572437
-75%            7             10
-90%            7             10       Variance       2.472559
-95%            8             10       Skewness      -.0587543
-99%            9             10       Kurtosis       2.812369
-(237 missing values generated)
-
-                        prop_medium_0
--------------------------------------------------------------
-      Percentiles      Smallest
- 1%           25              0
- 5%     42.85714              0
-10%           50       11.11111       Obs               9,888
-25%     66.66666       11.11111       Sum of Wgt.       9,888
-
-50%          125                      Mean           163.5303
-                        Largest       Std. Dev.      145.6558
-75%     233.3333            900
-90%          350            900       Variance       21215.61
-95%          400            900       Skewness       3.045128
-99%          900            900       Kurtosis       14.81343
+  8,029
 
                         tot_medium_1
 -------------------------------------------------------------
@@ -577,31 +564,6 @@ tot_appts_m |
 90%           50            100       Variance       453.7381
 95%           60            100       Skewness       .8718104
 99%          100            100       Kurtosis       3.712141
-
-tot_medium |                      tot_medium_2
-        _1 |         0          1          2          3          4 |     Total
------------+-------------------------------------------------------+----------
-         0 |    10,777     14,001      7,553      2,643        416 |    35,499 
-         1 |    13,142     14,907      7,448      2,034        397 |    37,958 
-         2 |     7,296      7,159      2,984        890        110 |    18,459 
-         3 |     2,709      2,284        846        129         40 |     6,008 
-         4 |       440        407         78         10          0 |       935 
-         5 |        40         89          0          0          0 |       129 
------------+-------------------------------------------------------+----------
-     Total |    34,404     38,847     18,909      5,706        963 |    98,988 
-
-
-tot_medium |     tot_medium_2
-        _1 |         5          6 |     Total
------------+----------------------+----------
-         0 |       109          0 |    35,499 
-         1 |        20         10 |    37,958 
-         2 |        10         10 |    18,459 
-         3 |         0          0 |     6,008 
-         4 |         0          0 |       935 
-         5 |         0          0 |       129 
------------+----------------------+----------
-     Total |       139         20 |    98,988 
 (237 missing values generated)
 
 -------------------------------------------------------------------------------
@@ -633,15 +595,81 @@ prop_mediu~1 |     15,861    59.49496     14.4431         50        100
 prop_mediu~1 |          0
 
 
-medium_per |          tot_appts_cat
-       son | No appoin  1-2 per y  3+ per ye |     Total
------------+---------------------------------+----------
-         0 |       108      3,835     31,319 |    35,262 
-         1 |        90      4,313     43,225 |    47,628 
-         2 |        69      1,385     14,407 |    15,861 
-         . |         0         10        227 |       237 
------------+---------------------------------+----------
-     Total |       267      9,543     89,178 |    98,988 
+Contains data
+  obs:        98,988                          
+ vars:            13                          
+-------------------------------------------------------------------------------
+              storage   display    value
+variable name   type    format     label      variable label
+-------------------------------------------------------------------------------
+patient_id      long    %12.0g                
+male            float   %9.0g      male       
+urban_rural_bin float   %9.0g      urban_rural_bin
+                                              Rural-Urban
+age_cat         float   %13.0g     age        
+short_fu        float   %9.0g                 
+tot_appts       float   %9.0g                 
+tot_appts_cat   float   %15.0g     appt       
+tot_appts_med~m float   %9.0g                 
+tot_medium_1    float   %9.0g                 
+prop_medium_1   float   %9.0g                 
+tot_medium_2    float   %9.0g                 
+prop_medium_2   float   %9.0g                 
+medium_person   float   %9.0g                 
+-------------------------------------------------------------------------------
+Sorted by: medium_person
+     Note: Dataset has changed since last saved.
+
+Duplicates in terms of all variables
+
+(88,988 observations deleted)
+
+-------------------------------------------------------------------------------
+patient_id                                                          (unlabeled)
+-------------------------------------------------------------------------------
+
+                  type:  numeric (long)
+
+                 range:  [8,99971]                    units:  1
+         unique values:  10,000                   missing .:  0/10,000
+
+                  mean:   49967.2
+              std. dev:   28661.1
+
+           percentiles:        10%       25%       50%       75%       90%
+                             10260   24997.5     50201   74684.5     89747
+
+  tot_appts_cat |      Freq.     Percent        Cum.
+----------------+-----------------------------------
+No appointments |         27        0.27        0.27
+   1-2 per year |        969        9.69        9.96
+    3+ per year |      9,004       90.04      100.00
+----------------+-----------------------------------
+          Total |     10,000      100.00
+
+  tot_appts_cat |      Freq.     Percent        Cum.
+----------------+-----------------------------------
+No appointments |         27        0.27        0.27
+   1-2 per year |        969        9.69        9.96
+    3+ per year |      9,004       90.04      100.00
+----------------+-----------------------------------
+          Total |     10,000      100.00
+
+                |          medium_person
+  tot_appts_cat |         0          1          2 |     Total
+----------------+---------------------------------+----------
+No appointments |        11          9          7 |        27 
+   1-2 per year |       391        437        140 |       968 
+    3+ per year |     3,166      4,361      1,454 |     8,981 
+----------------+---------------------------------+----------
+          Total |     3,568      4,807      1,601 |     9,976 
+Number where number of appointments does not equal number where medium is known
+  8,155
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+prop_mediu~1 |      9,976     22.2083    21.77174          0        100
+prop_mediu~2 |      9,976    22.33357    21.31611          0        100
 (30 vars, 10,000 obs)
 
 all_miss_ap |
@@ -958,37 +986,7 @@ tot_appts_m |
 90%            2              9       Variance       .5975256
 95%          2.5              9       Skewness       2.985593
 99%            4              9       Kurtosis       18.20719
-
-                        tot_medium_0
--------------------------------------------------------------
-      Percentiles      Smallest
- 1%            2              0
- 5%            3              0
-10%            3              0       Obs               9,610
-25%            4              0       Sum of Wgt.       9,610
-
-50%            5                      Mean           5.454943
-                        Largest       Std. Dev.      1.576145
-75%            7             10
-90%            7             10       Variance       2.484233
-95%            8             10       Skewness      -.0545606
-99%            9             10       Kurtosis       2.789512
-(296 missing values generated)
-
-                        prop_medium_0
--------------------------------------------------------------
-      Percentiles      Smallest
- 1%           25              0
- 5%     42.85714              0
-10%     42.85714              0       Obs               9,581
-25%     66.66666              0       Sum of Wgt.       9,581
-
-50%          125                      Mean           161.2843
-                        Largest       Std. Dev.      141.1961
-75%     233.3333            900
-90%          350            900       Variance       19936.33
-95%          400            900       Skewness       3.024733
-99%          900            900       Kurtosis       15.07769
+  7,806
 
                         tot_medium_1
 -------------------------------------------------------------
@@ -1051,35 +1049,6 @@ tot_appts_m |
 90%           50            100       Variance       452.9734
 95%           60            100       Skewness       .8910343
 99%          100            100       Kurtosis       3.762339
-
-tot_medium |                      tot_medium_2
-        _1 |         0          1          2          3          4 |     Total
------------+-------------------------------------------------------+----------
-         0 |    10,271     13,176      7,135      2,204        559 |    33,475 
-         1 |    12,818     14,267      7,101      1,969        338 |    36,543 
-         2 |     7,682      7,264      3,281        747         90 |    19,094 
-         3 |     2,542      2,038        889        200         20 |     5,689 
-         4 |       597        469        100         10          0 |     1,176 
-         5 |        60         48          0         10          0 |       118 
-         6 |        10          0          0          0          0 |        10 
-         7 |        10          0          0          0          0 |        10 
------------+-------------------------------------------------------+----------
-     Total |    33,990     37,262     18,506      5,140      1,007 |    96,115 
-
-
-tot_medium |     tot_medium_2
-        _1 |         5          6 |     Total
------------+----------------------+----------
-         0 |       110         20 |    33,475 
-         1 |        40         10 |    36,543 
-         2 |        30          0 |    19,094 
-         3 |         0          0 |     5,689 
-         4 |         0          0 |     1,176 
-         5 |         0          0 |       118 
-         6 |         0          0 |        10 
-         7 |         0          0 |        10 
------------+----------------------+----------
-     Total |       180         30 |    96,115 
 (296 missing values generated)
 
 -------------------------------------------------------------------------------
@@ -1111,15 +1080,81 @@ prop_mediu~1 |     14,914    58.77149     13.6526         50        100
 prop_mediu~1 |          0
 
 
-medium_per |          tot_appts_cat
-       son | No appoin  1-2 per y  3+ per ye |     Total
------------+---------------------------------+----------
-         0 |        30      2,898     30,251 |    33,179 
-         1 |       137      4,752     42,837 |    47,726 
-         2 |        49      1,411     13,454 |    14,914 
-         . |         8         50        238 |       296 
------------+---------------------------------+----------
-     Total |       224      9,111     86,780 |    96,115 
+Contains data
+  obs:        96,115                          
+ vars:            13                          
+-------------------------------------------------------------------------------
+              storage   display    value
+variable name   type    format     label      variable label
+-------------------------------------------------------------------------------
+patient_id      long    %12.0g                
+male            float   %9.0g      male       
+urban_rural_bin float   %9.0g      urban_rural_bin
+                                              Rural-Urban
+age_cat         float   %13.0g     age        
+short_fu        float   %9.0g                 
+tot_appts       float   %9.0g                 
+tot_appts_cat   float   %15.0g     appt       
+tot_appts_med~m float   %9.0g                 
+tot_medium_1    float   %9.0g                 
+prop_medium_1   float   %9.0g                 
+tot_medium_2    float   %9.0g                 
+prop_medium_2   float   %9.0g                 
+medium_person   float   %9.0g                 
+-------------------------------------------------------------------------------
+Sorted by: medium_person
+     Note: Dataset has changed since last saved.
+
+Duplicates in terms of all variables
+
+(86,432 observations deleted)
+
+-------------------------------------------------------------------------------
+patient_id                                                          (unlabeled)
+-------------------------------------------------------------------------------
+
+                  type:  numeric (long)
+
+                 range:  [13,99968]                   units:  1
+         unique values:  9,683                    missing .:  0/9,683
+
+                  mean:     50166
+              std. dev:   28962.5
+
+           percentiles:        10%       25%       50%       75%       90%
+                              9655     24913     50802     75160     89832
+
+  tot_appts_cat |      Freq.     Percent        Cum.
+----------------+-----------------------------------
+No appointments |         23        0.24        0.24
+   1-2 per year |        920        9.50        9.74
+    3+ per year |      8,740       90.26      100.00
+----------------+-----------------------------------
+          Total |      9,683      100.00
+
+  tot_appts_cat |      Freq.     Percent        Cum.
+----------------+-----------------------------------
+No appointments |         17        0.22        0.22
+   1-2 per year |        742        9.53        9.74
+    3+ per year |      7,031       90.26      100.00
+----------------+-----------------------------------
+          Total |      7,790      100.00
+
+                |          medium_person
+  tot_appts_cat |         0          1          2 |     Total
+----------------+---------------------------------+----------
+No appointments |         3         14          5 |        22 
+   1-2 per year |       293        480        142 |       915 
+    3+ per year |     3,050      4,310      1,356 |     8,716 
+----------------+---------------------------------+----------
+          Total |     3,346      4,804      1,503 |     9,653 
+Number where number of appointments does not equal number where medium is known
+  7,908
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+prop_mediu~1 |      9,653    22.47571    21.27442          0        100
+prop_mediu~2 |      9,653    22.09026    21.30718          0        100
 (30 vars, 10,000 obs)
 
 all_miss_ap |
@@ -1434,37 +1469,7 @@ tot_appts_m |
 90%            2              8       Variance       .5913321
 95%          2.5              8       Skewness       2.896127
 99%            4              8       Kurtosis       16.59634
-
-                        tot_medium_0
--------------------------------------------------------------
-      Percentiles      Smallest
- 1%            2              1
- 5%            3              1
-10%            3              1       Obs               6,123
-25%            4              1       Sum of Wgt.       6,123
-
-50%            6                      Mean            5.48179
-                        Largest       Std. Dev.      1.575639
-75%            7             10
-90%            7             10       Variance        2.48264
-95%            8             10       Skewness      -.0618285
-99%            9             10       Kurtosis       2.774994
-(159 missing values generated)
-
-                        prop_medium_0
--------------------------------------------------------------
-      Percentiles      Smallest
- 1%           25       11.11111
- 5%     42.85714       11.11111
-10%     42.85714       11.11111       Obs               6,107
-25%     66.66666       11.11111       Sum of Wgt.       6,107
-
-50%          125                      Mean            161.803
-                        Largest       Std. Dev.      141.8493
-75%     233.3333            900
-90%     233.3333            900       Variance       20121.21
-95%          400            900       Skewness       3.043642
-99%          900            900       Kurtosis       15.19189
+  5,020
 
                         tot_medium_1
 -------------------------------------------------------------
@@ -1527,34 +1532,6 @@ tot_appts_m |
 90%           50            100       Variance       468.1176
 95%           60            100       Skewness       .9461851
 99%          100            100       Kurtosis       3.994412
-
-tot_medium |                      tot_medium_2
-        _1 |         0          1          2          3          4 |     Total
------------+-------------------------------------------------------+----------
-         0 |     6,611      8,121      4,438      1,708        370 |    21,328 
-         1 |     7,833      9,778      4,834      1,315        290 |    24,090 
-         2 |     4,464      4,376      1,895        460        110 |    11,305 
-         3 |     1,653      1,357        470        100         20 |     3,610 
-         4 |       409        280         70         10          0 |       769 
-         5 |        60         50          0          0          0 |       110 
-         6 |        20          0          0          0          0 |        20 
------------+-------------------------------------------------------+----------
-     Total |    21,050     23,962     11,707      3,593        790 |    61,232 
-
-
-           | tot_medium
-tot_medium |     _2
-        _1 |         5 |     Total
------------+-----------+----------
-         0 |        80 |    21,328 
-         1 |        40 |    24,090 
-         2 |         0 |    11,305 
-         3 |        10 |     3,610 
-         4 |         0 |       769 
-         5 |         0 |       110 
-         6 |         0 |        20 
------------+-----------+----------
-     Total |       130 |    61,232 
 (159 missing values generated)
 
 -------------------------------------------------------------------------------
@@ -1586,15 +1563,81 @@ prop_mediu~1 |      9,065    60.32025    14.74008         50        100
 prop_mediu~1 |          0
 
 
-medium_per |          tot_appts_cat
-       son | No appoin  1-2 per y  3+ per ye |     Total
------------+---------------------------------+----------
-         0 |        50      1,785     19,334 |    21,169 
-         1 |        99      2,834     27,906 |    30,839 
-         2 |        18        768      8,279 |     9,065 
-         . |         0         10        149 |       159 
------------+---------------------------------+----------
-     Total |       167      5,397     55,668 |    61,232 
+Contains data
+  obs:        61,232                          
+ vars:            13                          
+-------------------------------------------------------------------------------
+              storage   display    value
+variable name   type    format     label      variable label
+-------------------------------------------------------------------------------
+patient_id      long    %12.0g                
+male            float   %9.0g      male       
+urban_rural_bin float   %9.0g      urban_rural_bin
+                                              Rural-Urban
+age_cat         float   %13.0g     age        
+short_fu        float   %9.0g                 
+tot_appts       float   %9.0g                 
+tot_appts_cat   float   %15.0g     appt       
+tot_appts_med~m float   %9.0g                 
+tot_medium_1    float   %9.0g                 
+prop_medium_1   float   %9.0g                 
+tot_medium_2    float   %9.0g                 
+prop_medium_2   float   %9.0g                 
+medium_person   float   %9.0g                 
+-------------------------------------------------------------------------------
+Sorted by: medium_person
+     Note: Dataset has changed since last saved.
+
+Duplicates in terms of all variables
+
+(55,088 observations deleted)
+
+-------------------------------------------------------------------------------
+patient_id                                                          (unlabeled)
+-------------------------------------------------------------------------------
+
+                  type:  numeric (long)
+
+                 range:  [3,99999]                    units:  1
+         unique values:  6,144                    missing .:  0/6,144
+
+                  mean:   50042.2
+              std. dev:   28968.6
+
+           percentiles:        10%       25%       50%       75%       90%
+                              9586   24536.5   50278.5   75057.5     89658
+
+  tot_appts_cat |      Freq.     Percent        Cum.
+----------------+-----------------------------------
+No appointments |         17        0.28        0.28
+   1-2 per year |        543        8.84        9.11
+    3+ per year |      5,584       90.89      100.00
+----------------+-----------------------------------
+          Total |      6,144      100.00
+
+  tot_appts_cat |      Freq.     Percent        Cum.
+----------------+-----------------------------------
+No appointments |         13        0.28        0.28
+   1-2 per year |        413        8.79        9.06
+    3+ per year |      4,274       90.94      100.00
+----------------+-----------------------------------
+          Total |      4,700      100.00
+
+                |          medium_person
+  tot_appts_cat |         0          1          2 |     Total
+----------------+---------------------------------+----------
+No appointments |         5         10          2 |        17 
+   1-2 per year |       180        285         77 |       542 
+    3+ per year |     1,940      2,798        831 |     5,569 
+----------------+---------------------------------+----------
+          Total |     2,125      3,093        910 |     6,128 
+Number where number of appointments does not equal number where medium is known
+  5,072
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+prop_mediu~1 |      6,128    22.19162    21.47704          0        100
+prop_mediu~2 |      6,128    22.58252    21.64818          0        100
 
 .     
 . 
@@ -1665,5 +1708,5 @@ medium_per |          tot_appts_cat
       name:  <unnamed>
        log:  /workspace/logs/bsr.log
   log type:  text
- closed on:  16 Sep 2022, 09:25:36
+ closed on:  16 Sep 2022, 10:50:12
 -------------------------------------------------------------------------------
