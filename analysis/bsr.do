@@ -19,7 +19,7 @@ forvalues i=2019/2021 {
     * Drop variables not required
     /*drop first_ra_code-has_ra*/
     drop ethnicity-region
-
+    describe 
     * Check if any missing outpatient info
     egen all_miss_appts = rowmiss(op_appt_date_1 op_appt_date_2 op_appt_date_3 op_appt_date_4 op_appt_date_5 op_appt_date_6 op_appt_date_7 op_appt_date_8 op_appt_date_9 op_appt_date_10)
     tab all_miss_appts
@@ -98,8 +98,8 @@ forvalues i=2019/2021 {
     di date("`j'-03-31", "YMD")
     * determine range of dates for outpatient appointments to determine which should be dropped
     sum op_appt_dateA
-    replace op_appt_dateA=. if op_appt_dateA > end_date & op_appt_dateA!=.
-    replace op_appt_medium=. if op_appt_dateA > end_date & op_appt_dateA!=.
+    replace op_appt_dateA=. if op_appt_dateA < end_date 
+    replace op_appt_medium=. if op_appt_dateA < end_date
     sum op_appt_dateA
     * take out records where end_date prior to start of follow-up
     di "Count of people where end date prior to start of follow-up" 
@@ -118,7 +118,7 @@ forvalues i=2019/2021 {
 
     * Categorise number of outpatient appointments
     bys patient_id: egen tot_appts = total(op_appt_dateA!=.)
-    sum tot_appts if flag==1, d
+    tab tot_appts if flag==1, m
     * Categorise number of outpatient appointments
     label define appt 0 "No appointments" 1 "1-2 per year" 2 "3+ per year"
     egen tot_appts_cat = cut(tot_appts), at(0, 1, 3, 1000) icodes
@@ -131,10 +131,10 @@ forvalues i=2019/2021 {
 
     * Determine total number and proportion of in-person and telephone appointments
     * Determine number of appointments where medium is known
-    bys patient_id: egen tot_appts_medium = total(op_appt_medium!=0)
+    bys patient_id: egen tot_appts_medium = total(op_appt_medium!=.)
     tab tot_appts_medium if flag==1
     di "Count if number of appointments with medium is more than total appointments 
-    count if tot_appts > tot_appts_medium & tot_appts!=.
+    count if tot_appts < tot_appts_medium
     * Determine appointments where mode is known 
     gen all_mode_available = (tot_appts_medium==tot_appts)
     replace all_mode_available = 2 if all_mode_available==0 & tot_appts_medium!=0
