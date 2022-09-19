@@ -223,10 +223,16 @@ forvalues i=2019/2021 {
     export delimited using ./output/tables/bsr_op_medium_chars_`i'.csv
     restore
     preserve
-    keep if all_mode_available!=1
+    keep if all_mode_available==0
     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
     append using tempfile
     export delimited using ./output/tables/bsr_op_no_medium_chars_`i'.csv
+    restore
+    preserve
+    keep if all_mode_available==2
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
+    append using tempfile
+    export delimited using ./output/tables/bsr_op_uk_medium_chars_`i'.csv
     restore
     }
     
