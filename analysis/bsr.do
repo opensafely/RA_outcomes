@@ -149,20 +149,24 @@ forvalues i=2019/2021 {
     replace all_mode_available = 2 if all_mode_available==0 & tot_appts_medium!=0
     label define ava 0 "No mode info" 1 "All appts have mode" 2 "Some appts have mode"
     label values all_mode_available ava 
-    tab tot_appts all_mode_available if flag==0
+    tab tot_appts all_mode_available if flag==1, m
+    tab tot_appts_medium all_mode_available if flag==1, m
     tab all_mode_available, m
-    
+    tab tot_appts tot_appts_medium if all_mode_available==1
 
-    forvalues k=1/2 {
-        bys patient_id: egen tot_medium_`k' = total(op_appt_medium==`k')
-        sum tot_medium_`k' if flag==1, d
-        gen prop_medium_`k' = (tot_medium_`k'/tot_appts_medium)*100
-        sum prop_medium_`k' if flag==1, d
-        }
+    di "Check if mode information but not all_mode available"
+    count if op_appt_medium==1 & all_mode_available!=1
+    bys patient_id: egen tot_medium_1 = total(op_appt_medium==1)
+    tab tot_medium_1 all_mode_available, m
+    replace tot_medium_1=. if all_mode_available!=1
+    * Determine proportion where f2f
+    gen prop_medium_1 = (tot_medium_1/tot_appts_medium)*100
+    
     egen medium_person = cut(prop_medium_1), at(0, 1, 50, 101) icodes
     bys medium_person: sum prop_medium_1 
 
-    keep patient_id tot_appts_cat tot_appts tot_appts_medium medium_person tot_medium_1 prop_medium_1 tot_medium_2 prop_medium_2 age_cat male urban_rural_bin short_fu all_mode_available 
+
+    keep patient_id tot_appts_cat tot_appts tot_appts_medium medium_person tot_medium_1 prop_medium_1 age_cat male urban_rural_bin short_fu all_mode_available 
     describe
     duplicates drop 
     codebook patient_id
@@ -185,25 +189,29 @@ forvalues i=2019/2021 {
 
     sum prop_medium_*
 
-    /*preserve
-    table1_mc, vars(medium_person cate) by(tot_appts) missing clear 
-    export delimited using ./output/tables/bsr_op_appt_`i'.csv
+    * Create table of number of op appts 
+    preserve
+    table1_mc, vars(tot_appts_cat cate) missing clear 
+    export delimited using ./output/tables/bsr_op_appt_`i'.csv 
+    restore
+    * Create table of number of appointment and mode where mode info available for all appts
+    preserve
+    keep if all_mode_available==1
+    table1_mc, vars(medium_person cate) by(tot_appts_cat) missing clear 
+    export delimited using ./output/tables/bsr_op_appt_medium_`i'.csv
     restore
     tempfile tempfile
-    forvalues b=0/2 {
-        preserve 
-        keep if medium_person==`b'
-        table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
-        save tempfile
-        restore 
-
-        export delimited using ./output/tables/bsr_op_chars_`i'.csv
-    
-
-    tab tot_medium_1 tot_medium_2, m 
-    
-    tab medium_person tot_appts_cat, m
-    */
+    preserve 
+    keep if medium_person==1 & all_mode_available==1
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
+    save tempfile, replace
+    restore 
+    preserve
+    keep if medium_person==2 & all_mode_available==1
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
+    append using tempfile
+    export delimited using ./output/tables/bsr_op_medium_chars_`i'.csv
+    restore
     }
     
 
