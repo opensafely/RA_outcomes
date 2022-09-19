@@ -145,9 +145,12 @@ forvalues i=2019/2021 {
     count if tot_appts < tot_appts_medium & tot_appts_medium!=.
     * Determine appointments where mode is known 
     gen all_mode_available = (tot_appts_medium==tot_appts)
+    replace all_mode_available = . if tot_appts==0
     replace all_mode_available = 2 if all_mode_available==0 & tot_appts_medium!=0
     label define ava 0 "No mode info" 1 "All appts have mode" 2 "Some appts have mode"
     label values all_mode_available ava 
+    tab tot_appts all_mode_available if flag==0
+    tab all_mode_available, m
     
 
     forvalues k=1/2 {
@@ -163,7 +166,7 @@ forvalues i=2019/2021 {
     describe
     duplicates drop 
     codebook patient_id
-    sum tot_appts tot_appts_medium, d 
+    tab tot_appts tot_appts_medium
     tab all_mode_available, m
 
     list in 1/10
