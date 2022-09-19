@@ -73,7 +73,6 @@ forvalues i=2019/2021 {
     * set talk type (medium=4) to missing and combine telephone and telemedicine
     replace op_appt_medium = . if op_appt_medium==4
     replace op_appt_medium = 2 if op_appt_medium==3
-    replace op_appt_medium = 0 if op_appt_medium==.
     tab op_appt_medium, m 
 
      * flag first record for each patient for summarising
@@ -134,6 +133,8 @@ forvalues i=2019/2021 {
     * Determine number of appointments where medium is known
     bys patient_id: egen tot_appts_medium = total(op_appt_medium!=0)
     tab tot_appts_medium if flag==1
+    di "Count if number of appointments with medium is more than total appointments 
+    count if tot_appts > tot_appts_medium & tot_appts!=.
     * Determine appointments where mode is known 
     gen all_mode_available = (tot_appts_medium==tot_appts)
     replace all_mode_available = 2 if all_mode_available==0 & tot_appts_medium!=0
