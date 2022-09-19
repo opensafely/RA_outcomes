@@ -163,67 +163,73 @@
 .     di "Check if mode information but not all_mode available"
 104.     count if op_appt_medium==1 & all_mode_available!=1
 105.     bys patient_id: egen tot_medium_1 = total(op_appt_medium==1)
-106.     tab tot_medium_1 all_mode_available, m
-107.     replace tot_medium_1=. if all_mode_available!=1
-108.     * Determine proportion where f2f
+106.     bys patient_id: egen tot_medium_2 = total(op_appt_medium==2)
+107.     di "Count if total of 2 types of appointment does not equal total"
+108.     count if tot_medium_1 + tot_medium_2 != tot_appts_medium
+109. 
+.     tab tot_medium_1 all_mode_available, m
+110.     replace tot_medium_1=. if all_mode_available!=1
+111.     * Determine proportion where f2f
 .     gen prop_medium_1 = (tot_medium_1/tot_appts_medium)*100
-109.     
-.     egen medium_person = cut(prop_medium_1), at(0, 1, 50, 101) icodes
-110.     bys medium_person: sum prop_medium_1 
-111. 
+112.     list tot_medium_1 tot_appts_medium if prop_medium_1==0 & all_mode_avai
+> lable==1 in 1/5
+113.     
+.     egen medium_person = cut(prop_medium_1), at(0, 50, 101) icodes
+114.     bys medium_person: sum prop_medium_1 
+115. 
 . 
 .     keep patient_id tot_appts_cat tot_appts tot_appts_medium medium_person to
 > t_medium_1 prop_medium_1 age_cat male urban_rural_bin short_fu all_mode_avail
 > able 
-112.     describe
-113.     duplicates drop 
-114.     codebook patient_id
-115.     tab tot_appts tot_appts_medium
-116.     tab all_mode_available, m
-117. 
-.     list in 1/10
-118. 
-.     tab tot_appts_cat 
-119.     tab tot_appts_cat if short_fu==0
-120. 
-.     tab tot_appts_cat all_mode_available, m
+116.     describe
+117.     duplicates drop 
+118.     codebook patient_id
+119.     tab tot_appts tot_appts_medium
+120.     tab all_mode_available, m
 121. 
-.     tab tot_appts_cat medium_person, row col 
-122.     tab tot_appts_cat medium_person  if short_fu==0, row col
-123.     bys all_mode_available: tab tot_appts_cat medium_person  if short_fu==
-> 0, row col
+.     list in 1/10
+122. 
+.     tab tot_appts_cat 
+123.     tab tot_appts_cat if short_fu==0
 124. 
+.     tab tot_appts_cat all_mode_available, m
+125. 
+.     tab tot_appts_cat medium_person, row col 
+126.     tab tot_appts_cat medium_person  if short_fu==0, row col
+127.     bys all_mode_available: tab tot_appts_cat medium_person  if short_fu==
+> 0, row col
+128. 
 .     di "Number where number of appointments does not equal number where mediu
 > m is known"
-125.     count if tot_appts!=tot_appts_medium
-126. 
+129.     count if tot_appts!=tot_appts_medium
+130. 
 .     sum prop_medium_*
-127. 
+131. 
 .     * Create table of number of op appts 
 .     preserve
-128.     table1_mc, vars(tot_appts_cat cate) missing clear 
-129.     export delimited using ./output/tables/bsr_op_appt_`i'.csv 
-130.     restore
-131.     * Create table of number of appointment and mode where mode info avail
+132.     table1_mc, vars(tot_appts_cat cate) missing clear 
+133.     export delimited using ./output/tables/bsr_op_appt_`i'.csv 
+134.     restore
+135.     * Create table of number of appointment and mode where mode info avail
 > able for all appts
 .     preserve
-132.     keep if all_mode_available==1
-133.     table1_mc, vars(medium_person cate) by(tot_appts_cat) missing clear 
-134.     export delimited using ./output/tables/bsr_op_appt_medium_`i'.csv
-135.     restore
-136.     tempfile tempfile
-137.     preserve 
-138.     keep if medium_person==1 & all_mode_available==1
-139.     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
-140.     save tempfile, replace
-141.     restore 
-142.     preserve
-143.     keep if medium_person==2 & all_mode_available==1
-144.     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
-145.     append using tempfile
-146.     export delimited using ./output/tables/bsr_op_medium_chars_`i'.csv
-147.     restore
-148.     }
+136.     keep if all_mode_available==1
+137.     table1_mc, vars(medium_person cate) by(tot_appts_cat) missing clear 
+138.     export delimited using ./output/tables/bsr_op_appt_medium_`i'.csv
+139.     restore
+140.     tempfile tempfile
+141.     preserve 
+142.     keep if medium_person==0 & all_mode_available==1
+143.     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
+144.     save tempfile, replace
+145.     restore 
+146.     preserve
+147.     keep if medium_person==1 & all_mode_available==1
+148.     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
+149.     append using tempfile
+150.     export delimited using ./output/tables/bsr_op_medium_chars_`i'.csv
+151.     restore
+152.     }
 (36 vars, 10,000 obs)
 
 Contains data
@@ -1017,6 +1023,8 @@ Some appts have mode |     83,280       83.28       99.73
      Total |        80         50 |     5,760 
 Check if mode information but not all_mode available
   4,094
+Count if total of 2 types of appointment does not equal total
+  68,500
 
 tot_medium |             all_mode_available
         _1 | No mode i  All appts  Some appt          . |     Total
@@ -1037,17 +1045,10 @@ tot_medium |             all_mode_available
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-prop_mediu~1 |      3,020           0           0          0          0
+prop_mediu~1 |      4,440    9.390819    14.19835          0   42.85714
 
 -------------------------------------------------------------------------------
 -> medium_person = 1
-
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
--------------+---------------------------------------------------------
-prop_mediu~1 |      1,420    29.36284    6.617149   14.28571   42.85714
-
--------------------------------------------------------------------------------
--> medium_person = 2
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
@@ -1150,10 +1151,10 @@ Some appts have mode |      8,328       83.28       99.73
 
      +---------------------------------------------------------------------+
   1. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    97048 |   Male |    Rural | 18 - 40 years |        0 |        1  |
+     |    33299 | Female |    Rural |             . |        0 |        3  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     | 1-2 per year |        1 | All appts have mode |        0 |        0 |
+     |  3+ per year |        3 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |                              medium~n                               |
      |                                     0                               |
@@ -1161,7 +1162,7 @@ Some appts have mode |      8,328       83.28       99.73
 
      +---------------------------------------------------------------------+
   2. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    18484 | Female |    Urban | 41 - 60 years |        0 |        3  |
+     |    26205 | Female |    Rural | 41 - 60 years |        0 |        3  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
      |  3+ per year |        3 | All appts have mode |        0 |        0 |
@@ -1172,40 +1173,7 @@ Some appts have mode |      8,328       83.28       99.73
 
      +---------------------------------------------------------------------+
   3. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    31914 | Female |    Rural | 41 - 60 years |        0 |        2  |
-     |---------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     | 1-2 per year |        2 | All appts have mode |        0 |        0 |
-     |---------------------------------------------------------------------|
-     |                              medium~n                               |
-     |                                     0                               |
-     +---------------------------------------------------------------------+
-
-     +---------------------------------------------------------------------+
-  4. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    46124 | Female |    Urban |             . |        0 |        1  |
-     |---------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     | 1-2 per year |        1 | All appts have mode |        0 |        0 |
-     |---------------------------------------------------------------------|
-     |                              medium~n                               |
-     |                                     0                               |
-     +---------------------------------------------------------------------+
-
-     +---------------------------------------------------------------------+
-  5. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    77103 | Female |    Rural |             . |        0 |        2  |
-     |---------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     | 1-2 per year |        2 | All appts have mode |        0 |        0 |
-     |---------------------------------------------------------------------|
-     |                              medium~n                               |
-     |                                     0                               |
-     +---------------------------------------------------------------------+
-
-     +---------------------------------------------------------------------+
-  6. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    42804 |   Male |    Urban |             . |        0 |        4  |
+     |    71900 | Female |    Rural | 61 - 80 years |        0 |        4  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
      |  3+ per year |        4 | All appts have mode |        0 |        0 |
@@ -1215,8 +1183,41 @@ Some appts have mode |      8,328       83.28       99.73
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
+  4. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    69452 | Female |    Urban | 18 - 40 years |        0 |        2  |
+     |---------------------------------------------------------------------|
+     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
+     | 1-2 per year |        2 | All appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |                              medium~n                               |
+     |                                     0                               |
+     +---------------------------------------------------------------------+
+
+     +---------------------------------------------------------------------+
+  5. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    91628 |   Male |    Urban | 41 - 60 years |        0 |        3  |
+     |---------------------------------------------------------------------|
+     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
+     |  3+ per year |        3 | All appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |                              medium~n                               |
+     |                                     0                               |
+     +---------------------------------------------------------------------+
+
+     +---------------------------------------------------------------------+
+  6. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    77987 |   Male |    Urban | 18 - 40 years |        0 |        2  |
+     |---------------------------------------------------------------------|
+     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
+     | 1-2 per year |        2 | All appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |                              medium~n                               |
+     |                                     0                               |
+     +---------------------------------------------------------------------+
+
+     +---------------------------------------------------------------------+
   7. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    34643 | Female |    Rural | 41 - 60 years |        0 |        2  |
+     |    98145 | Female |    Rural | 18 - 40 years |        0 |        2  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
      | 1-2 per year |        2 | All appts have mode |        0 |        0 |
@@ -1227,10 +1228,10 @@ Some appts have mode |      8,328       83.28       99.73
 
      +---------------------------------------------------------------------+
   8. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    30111 | Female |    Rural | 41 - 60 years |        0 |        4  |
+     |    37278 | Female |    Urban | 18 - 40 years |        0 |        3  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        4 | All appts have mode |        0 |        0 |
+     |  3+ per year |        3 | All appts have mode |        1 | 33.33333 |
      |---------------------------------------------------------------------|
      |                              medium~n                               |
      |                                     0                               |
@@ -1238,10 +1239,10 @@ Some appts have mode |      8,328       83.28       99.73
 
      +---------------------------------------------------------------------+
   9. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    58868 | Female |    Rural |             . |        0 |        2  |
+     |     2131 |   Male |    Rural | 18 - 40 years |        0 |        3  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     | 1-2 per year |        2 | All appts have mode |        0 |        0 |
+     |  3+ per year |        3 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |                              medium~n                               |
      |                                     0                               |
@@ -1249,7 +1250,7 @@ Some appts have mode |      8,328       83.28       99.73
 
      +---------------------------------------------------------------------+
  10. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    85968 | Female |    Rural | 18 - 40 years |        0 |        2  |
+     |    17861 |   Male |    Rural | 61 - 80 years |        0 |        2  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
      | 1-2 per year |        2 | All appts have mode |        0 |        0 |
@@ -1291,20 +1292,20 @@ No appointments |         0          0          0         27 |        27
 | column percentage |
 +-------------------+
 
-                |          medium_person
-  tot_appts_cat |         0          1          2 |     Total
-----------------+---------------------------------+----------
-   1-2 per year |       174          0         92 |       266 
-                |     65.41       0.00      34.59 |    100.00 
-                |     57.62       0.00      69.70 |     46.18 
-----------------+---------------------------------+----------
-    3+ per year |       128        142         40 |       310 
-                |     41.29      45.81      12.90 |    100.00 
-                |     42.38     100.00      30.30 |     53.82 
-----------------+---------------------------------+----------
-          Total |       302        142        132 |       576 
-                |     52.43      24.65      22.92 |    100.00 
-                |    100.00     100.00     100.00 |    100.00 
+                |     medium_person
+  tot_appts_cat |         0          1 |     Total
+----------------+----------------------+----------
+   1-2 per year |       174         92 |       266 
+                |     65.41      34.59 |    100.00 
+                |     39.19      69.70 |     46.18 
+----------------+----------------------+----------
+    3+ per year |       270         40 |       310 
+                |     87.10      12.90 |    100.00 
+                |     60.81      30.30 |     53.82 
+----------------+----------------------+----------
+          Total |       444        132 |       576 
+                |     77.08      22.92 |    100.00 
+                |    100.00     100.00 |    100.00 
 
 +-------------------+
 | Key               |
@@ -1314,20 +1315,20 @@ No appointments |         0          0          0         27 |        27
 | column percentage |
 +-------------------+
 
-                |          medium_person
-  tot_appts_cat |         0          1          2 |     Total
-----------------+---------------------------------+----------
-   1-2 per year |       174          0         92 |       266 
-                |     65.41       0.00      34.59 |    100.00 
-                |     57.62       0.00      69.70 |     46.18 
-----------------+---------------------------------+----------
-    3+ per year |       128        142         40 |       310 
-                |     41.29      45.81      12.90 |    100.00 
-                |     42.38     100.00      30.30 |     53.82 
-----------------+---------------------------------+----------
-          Total |       302        142        132 |       576 
-                |     52.43      24.65      22.92 |    100.00 
-                |    100.00     100.00     100.00 |    100.00 
+                |     medium_person
+  tot_appts_cat |         0          1 |     Total
+----------------+----------------------+----------
+   1-2 per year |       174         92 |       266 
+                |     65.41      34.59 |    100.00 
+                |     39.19      69.70 |     46.18 
+----------------+----------------------+----------
+    3+ per year |       270         40 |       310 
+                |     87.10      12.90 |    100.00 
+                |     60.81      30.30 |     53.82 
+----------------+----------------------+----------
+          Total |       444        132 |       576 
+                |     77.08      22.92 |    100.00 
+                |    100.00     100.00 |    100.00 
 
 -------------------------------------------------------------------------------
 -> all_mode_available = No mode info
@@ -1344,20 +1345,20 @@ no observations
 | column percentage |
 +-------------------+
 
-                |          medium_person
-  tot_appts_cat |         0          1          2 |     Total
-----------------+---------------------------------+----------
-   1-2 per year |       174          0         92 |       266 
-                |     65.41       0.00      34.59 |    100.00 
-                |     57.62       0.00      69.70 |     46.18 
-----------------+---------------------------------+----------
-    3+ per year |       128        142         40 |       310 
-                |     41.29      45.81      12.90 |    100.00 
-                |     42.38     100.00      30.30 |     53.82 
-----------------+---------------------------------+----------
-          Total |       302        142        132 |       576 
-                |     52.43      24.65      22.92 |    100.00 
-                |    100.00     100.00     100.00 |    100.00 
+                |     medium_person
+  tot_appts_cat |         0          1 |     Total
+----------------+----------------------+----------
+   1-2 per year |       174         92 |       266 
+                |     65.41      34.59 |    100.00 
+                |     39.19      69.70 |     46.18 
+----------------+----------------------+----------
+    3+ per year |       270         40 |       310 
+                |     87.10      12.90 |    100.00 
+                |     60.81      30.30 |     53.82 
+----------------+----------------------+----------
+          Total |       444        132 |       576 
+                |     77.08      22.92 |    100.00 
+                |    100.00     100.00 |    100.00 
 
 -------------------------------------------------------------------------------
 -> all_mode_available = Some appts have mode
@@ -1407,42 +1408,41 @@ file ./output/tables/bsr_op_appt_2019.csv saved
   |--------------------------------------------------------------|
   |                         N=266          N=310                 |
   |--------------------------------------------------------------|
-  | medium_person   0       174 (65.4%)    128 (41.3%)   <0.001  |
-  |                 1       0 ( 0.0%)      142 (45.8%)           |
-  |                 2       92 (34.6%)     40 (12.9%)            |
+  | medium_person   0       174 (65.4%)    270 (87.1%)   <0.001  |
+  |                 1       92 (34.6%)     40 (12.9%)            |
   +--------------------------------------------------------------+
 Data are presented as n (%).
  
 file ./output/tables/bsr_op_appt_medium_2019.csv saved
-(9,858 observations deleted)
+(9,556 observations deleted)
 
   +-------------------------+
   | factor        N_1   m_1 |
   |-------------------------|
-  | age_cat       116    26 |
+  | age_cat       364    80 |
   |-------------------------|
-  | male          142     0 |
+  | male          444     0 |
   |-------------------------|
-  | Rural-Urban   142     0 |
+  | Rural-Urban   444     0 |
   +-------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
-  +------------------------------------------+
-  |                               Total      |
-  |------------------------------------------|
-  |                               N=142      |
-  |------------------------------------------|
-  | age_cat       18 - 40 years   48 (41.4%) |
-  |               41 - 60 years   36 (31.0%) |
-  |               61 - 80 years   23 (19.8%) |
-  |               >80 years       9 ( 7.8%)  |
-  |------------------------------------------|
-  | male          Female          82 (57.7%) |
-  |               Male            60 (42.3%) |
-  |------------------------------------------|
-  | Rural-Urban   Rural           69 (48.6%) |
-  |               Urban           73 (51.4%) |
-  +------------------------------------------+
+  +-------------------------------------------+
+  |                               Total       |
+  |-------------------------------------------|
+  |                               N=444       |
+  |-------------------------------------------|
+  | age_cat       18 - 40 years   148 (40.7%) |
+  |               41 - 60 years   111 (30.5%) |
+  |               61 - 80 years   78 (21.4%)  |
+  |               >80 years       27 ( 7.4%)  |
+  |-------------------------------------------|
+  | male          Female          237 (53.4%) |
+  |               Male            207 (46.6%) |
+  |-------------------------------------------|
+  | Rural-Urban   Rural           216 (48.6%) |
+  |               Urban           228 (51.4%) |
+  +-------------------------------------------+
 Data are presented as n (%).
  
 (note: file tempfile.dta not found)
@@ -1478,6 +1478,8 @@ file tempfile.dta saved
   +------------------------------------------+
 Data are presented as n (%).
  
+(note: variable Total was str10, now str11 to accommodate using data's
+       values)
 file ./output/tables/bsr_op_medium_chars_2019.csv saved
 (30 vars, 10,000 obs)
 
@@ -2252,6 +2254,8 @@ Some appts have mode |     81,850       84.53       99.76
      Total |       130         20 |     5,230 
 Check if mode information but not all_mode available
   4,032
+Count if total of 2 types of appointment does not equal total
+  67,220
 
 tot_medium |             all_mode_available
         _1 | No mode i  All appts  Some appt          . |     Total
@@ -2272,17 +2276,10 @@ tot_medium |             all_mode_available
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-prop_mediu~1 |      2,480           0           0          0          0
+prop_mediu~1 |      4,090     11.4961    14.73147          0         40
 
 -------------------------------------------------------------------------------
 -> medium_person = 1
-
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
--------------+---------------------------------------------------------
-prop_mediu~1 |      1,610    29.20438    5.833453   14.28571         40
-
--------------------------------------------------------------------------------
--> medium_person = 2
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
@@ -2385,10 +2382,10 @@ Some appts have mode |      8,185       84.53       99.76
 
      +---------------------------------------------------------------------+
   1. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    66236 | Female |    Rural | 18 - 40 years |        0 |        1  |
+     |    77344 | Female |    Rural | 61 - 80 years |        1 |        4  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     | 1-2 per year |        1 | All appts have mode |        0 |        0 |
+     |  3+ per year |        4 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |                              medium~n                               |
      |                                     0                               |
@@ -2396,10 +2393,10 @@ Some appts have mode |      8,185       84.53       99.76
 
      +---------------------------------------------------------------------+
   2. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |      508 |   Male |    Rural |             . |        0 |        2  |
+     |    45954 |   Male |    Urban | 61 - 80 years |        1 |        4  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     | 1-2 per year |        2 | All appts have mode |        0 |        0 |
+     |  3+ per year |        4 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |                              medium~n                               |
      |                                     0                               |
@@ -2407,10 +2404,10 @@ Some appts have mode |      8,185       84.53       99.76
 
      +---------------------------------------------------------------------+
   3. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    24376 |   Male |    Urban | 61 - 80 years |        0 |        3  |
+     |    39976 |   Male |    Urban | 18 - 40 years |        0 |        2  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        3 | All appts have mode |        0 |        0 |
+     | 1-2 per year |        2 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |                              medium~n                               |
      |                                     0                               |
@@ -2418,10 +2415,10 @@ Some appts have mode |      8,185       84.53       99.76
 
      +---------------------------------------------------------------------+
   4. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    72526 | Female |    Rural |             . |        0 |        2  |
+     |    75573 | Female |    Rural | 18 - 40 years |        0 |        6  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     | 1-2 per year |        2 | All appts have mode |        0 |        0 |
+     |  3+ per year |        6 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |                              medium~n                               |
      |                                     0                               |
@@ -2429,10 +2426,10 @@ Some appts have mode |      8,185       84.53       99.76
 
      +---------------------------------------------------------------------+
   5. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |     8725 |   Male |    Rural | 61 - 80 years |        0 |        1  |
+     |     3585 | Female |    Rural | 18 - 40 years |        0 |        3  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     | 1-2 per year |        1 | All appts have mode |        0 |        0 |
+     |  3+ per year |        3 | All appts have mode |        1 | 33.33333 |
      |---------------------------------------------------------------------|
      |                              medium~n                               |
      |                                     0                               |
@@ -2440,10 +2437,10 @@ Some appts have mode |      8,185       84.53       99.76
 
      +---------------------------------------------------------------------+
   6. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |     2837 | Female |    Rural | 18 - 40 years |        0 |        2  |
+     |    67613 |   Male |    Rural | 18 - 40 years |        0 |        4  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     | 1-2 per year |        2 | All appts have mode |        0 |        0 |
+     |  3+ per year |        4 | All appts have mode |        1 |       25 |
      |---------------------------------------------------------------------|
      |                              medium~n                               |
      |                                     0                               |
@@ -2451,10 +2448,10 @@ Some appts have mode |      8,185       84.53       99.76
 
      +---------------------------------------------------------------------+
   7. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    98306 | Female |    Rural | 18 - 40 years |        1 |        4  |
+     |    84788 |   Male |    Rural |             . |        0 |        4  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        4 | All appts have mode |        0 |        0 |
+     |  3+ per year |        4 | All appts have mode |        1 |       25 |
      |---------------------------------------------------------------------|
      |                              medium~n                               |
      |                                     0                               |
@@ -2462,10 +2459,10 @@ Some appts have mode |      8,185       84.53       99.76
 
      +---------------------------------------------------------------------+
   8. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    96139 | Female |    Urban | 61 - 80 years |        0 |        1  |
+     |     3608 | Female |    Rural |             . |        0 |        3  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     | 1-2 per year |        1 | All appts have mode |        0 |        0 |
+     |  3+ per year |        3 | All appts have mode |        1 | 33.33333 |
      |---------------------------------------------------------------------|
      |                              medium~n                               |
      |                                     0                               |
@@ -2473,10 +2470,10 @@ Some appts have mode |      8,185       84.53       99.76
 
      +---------------------------------------------------------------------+
   9. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    17304 | Female |    Urban | 41 - 60 years |        0 |        4  |
+     |    61667 | Female |    Rural |             . |        0 |        6  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        4 | All appts have mode |        0 |        0 |
+     |  3+ per year |        6 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |                              medium~n                               |
      |                                     0                               |
@@ -2484,10 +2481,10 @@ Some appts have mode |      8,185       84.53       99.76
 
      +---------------------------------------------------------------------+
  10. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    70912 |   Male |    Rural | 61 - 80 years |        0 |        4  |
+     |    86307 | Female |    Urban | 41 - 60 years |        0 |        3  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        4 | All appts have mode |        0 |        0 |
+     |  3+ per year |        3 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |                              medium~n                               |
      |                                     0                               |
@@ -2526,20 +2523,20 @@ No appointments |         0          0          0         23 |        23
 | column percentage |
 +-------------------+
 
-                |          medium_person
-  tot_appts_cat |         0          1          2 |     Total
-----------------+---------------------------------+----------
-   1-2 per year |       152          0         70 |       222 
-                |     68.47       0.00      31.53 |    100.00 
-                |     61.29       0.00      61.40 |     42.45 
-----------------+---------------------------------+----------
-    3+ per year |        96        161         44 |       301 
-                |     31.89      53.49      14.62 |    100.00 
-                |     38.71     100.00      38.60 |     57.55 
-----------------+---------------------------------+----------
-          Total |       248        161        114 |       523 
-                |     47.42      30.78      21.80 |    100.00 
-                |    100.00     100.00     100.00 |    100.00 
+                |     medium_person
+  tot_appts_cat |         0          1 |     Total
+----------------+----------------------+----------
+   1-2 per year |       152         70 |       222 
+                |     68.47      31.53 |    100.00 
+                |     37.16      61.40 |     42.45 
+----------------+----------------------+----------
+    3+ per year |       257         44 |       301 
+                |     85.38      14.62 |    100.00 
+                |     62.84      38.60 |     57.55 
+----------------+----------------------+----------
+          Total |       409        114 |       523 
+                |     78.20      21.80 |    100.00 
+                |    100.00     100.00 |    100.00 
 
 +-------------------+
 | Key               |
@@ -2549,20 +2546,20 @@ No appointments |         0          0          0         23 |        23
 | column percentage |
 +-------------------+
 
-                |          medium_person
-  tot_appts_cat |         0          1          2 |     Total
-----------------+---------------------------------+----------
-   1-2 per year |       125          0         61 |       186 
-                |     67.20       0.00      32.80 |    100.00 
-                |     61.27       0.00      62.89 |     43.06 
-----------------+---------------------------------+----------
-    3+ per year |        79        131         36 |       246 
-                |     32.11      53.25      14.63 |    100.00 
-                |     38.73     100.00      37.11 |     56.94 
-----------------+---------------------------------+----------
-          Total |       204        131         97 |       432 
-                |     47.22      30.32      22.45 |    100.00 
-                |    100.00     100.00     100.00 |    100.00 
+                |     medium_person
+  tot_appts_cat |         0          1 |     Total
+----------------+----------------------+----------
+   1-2 per year |       125         61 |       186 
+                |     67.20      32.80 |    100.00 
+                |     37.31      62.89 |     43.06 
+----------------+----------------------+----------
+    3+ per year |       210         36 |       246 
+                |     85.37      14.63 |    100.00 
+                |     62.69      37.11 |     56.94 
+----------------+----------------------+----------
+          Total |       335         97 |       432 
+                |     77.55      22.45 |    100.00 
+                |    100.00     100.00 |    100.00 
 
 -------------------------------------------------------------------------------
 -> all_mode_available = No mode info
@@ -2579,20 +2576,20 @@ no observations
 | column percentage |
 +-------------------+
 
-                |          medium_person
-  tot_appts_cat |         0          1          2 |     Total
-----------------+---------------------------------+----------
-   1-2 per year |       125          0         61 |       186 
-                |     67.20       0.00      32.80 |    100.00 
-                |     61.27       0.00      62.89 |     43.06 
-----------------+---------------------------------+----------
-    3+ per year |        79        131         36 |       246 
-                |     32.11      53.25      14.63 |    100.00 
-                |     38.73     100.00      37.11 |     56.94 
-----------------+---------------------------------+----------
-          Total |       204        131         97 |       432 
-                |     47.22      30.32      22.45 |    100.00 
-                |    100.00     100.00     100.00 |    100.00 
+                |     medium_person
+  tot_appts_cat |         0          1 |     Total
+----------------+----------------------+----------
+   1-2 per year |       125         61 |       186 
+                |     67.20      32.80 |    100.00 
+                |     37.31      62.89 |     43.06 
+----------------+----------------------+----------
+    3+ per year |       210         36 |       246 
+                |     85.37      14.63 |    100.00 
+                |     62.69      37.11 |     56.94 
+----------------+----------------------+----------
+          Total |       335         97 |       432 
+                |     77.55      22.45 |    100.00 
+                |    100.00     100.00 |    100.00 
 
 -------------------------------------------------------------------------------
 -> all_mode_available = Some appts have mode
@@ -2642,42 +2639,41 @@ file ./output/tables/bsr_op_appt_2020.csv saved
   |--------------------------------------------------------------|
   |                         N=222          N=301                 |
   |--------------------------------------------------------------|
-  | medium_person   0       152 (68.5%)    96 (31.9%)    <0.001  |
-  |                 1       0 ( 0.0%)      161 (53.5%)           |
-  |                 2       70 (31.5%)     44 (14.6%)            |
+  | medium_person   0       152 (68.5%)    257 (85.4%)   <0.001  |
+  |                 1       70 (31.5%)     44 (14.6%)            |
   +--------------------------------------------------------------+
 Data are presented as n (%).
  
 file ./output/tables/bsr_op_appt_medium_2020.csv saved
-(9,522 observations deleted)
+(9,274 observations deleted)
 
   +-------------------------+
   | factor        N_1   m_1 |
   |-------------------------|
-  | age_cat       133    28 |
+  | age_cat       329    80 |
   |-------------------------|
-  | male          161     0 |
+  | male          409     0 |
   |-------------------------|
-  | Rural-Urban   161     0 |
+  | Rural-Urban   409     0 |
   +-------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
-  +------------------------------------------+
-  |                               Total      |
-  |------------------------------------------|
-  |                               N=161      |
-  |------------------------------------------|
-  | age_cat       18 - 40 years   41 (30.8%) |
-  |               41 - 60 years   49 (36.8%) |
-  |               61 - 80 years   33 (24.8%) |
-  |               >80 years       10 ( 7.5%) |
-  |------------------------------------------|
-  | male          Female          81 (50.3%) |
-  |               Male            80 (49.7%) |
-  |------------------------------------------|
-  | Rural-Urban   Rural           78 (48.4%) |
-  |               Urban           83 (51.6%) |
-  +------------------------------------------+
+  +-------------------------------------------+
+  |                               Total       |
+  |-------------------------------------------|
+  |                               N=409       |
+  |-------------------------------------------|
+  | age_cat       18 - 40 years   107 (32.5%) |
+  |               41 - 60 years   108 (32.8%) |
+  |               61 - 80 years   97 (29.5%)  |
+  |               >80 years       17 ( 5.2%)  |
+  |-------------------------------------------|
+  | male          Female          195 (47.7%) |
+  |               Male            214 (52.3%) |
+  |-------------------------------------------|
+  | Rural-Urban   Rural           211 (51.6%) |
+  |               Urban           198 (48.4%) |
+  +-------------------------------------------+
 Data are presented as n (%).
  
 file tempfile.dta saved
@@ -2712,6 +2708,8 @@ file tempfile.dta saved
   +------------------------------------------+
 Data are presented as n (%).
  
+(note: variable Total was str10, now str11 to accommodate using data's
+       values)
 file ./output/tables/bsr_op_medium_chars_2020.csv saved
 (30 vars, 10,000 obs)
 
@@ -3485,6 +3483,8 @@ Some appts have mode |     51,630       84.03       99.72
      Total |        70         10 |     3,230 
 Check if mode information but not all_mode available
   2,584
+Count if total of 2 types of appointment does not equal total
+  42,440
 
 tot_medium |             all_mode_available
         _1 | No mode i  All appts  Some appt          . |     Total
@@ -3506,17 +3506,10 @@ tot_medium |             all_mode_available
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-prop_mediu~1 |      1,530           0           0          0          0
+prop_mediu~1 |      2,480    11.24424    14.79165          0         40
 
 -------------------------------------------------------------------------------
 -> medium_person = 1
-
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
--------------+---------------------------------------------------------
-prop_mediu~1 |        950    29.35338    6.277813   16.66667         40
-
--------------------------------------------------------------------------------
--> medium_person = 2
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
@@ -3617,29 +3610,7 @@ Some appts have mode |      5,163       84.03       99.72
 
      +---------------------------------------------------------------------+
   1. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |     3834 | Female |    Urban | 61 - 80 years |        0 |        4  |
-     |---------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        4 | All appts have mode |        0 |        0 |
-     |---------------------------------------------------------------------|
-     |                              medium~n                               |
-     |                                     0                               |
-     +---------------------------------------------------------------------+
-
-     +---------------------------------------------------------------------+
-  2. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    97883 |   Male |    Urban | 18 - 40 years |        0 |        5  |
-     |---------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        5 | All appts have mode |        0 |        0 |
-     |---------------------------------------------------------------------|
-     |                              medium~n                               |
-     |                                     0                               |
-     +---------------------------------------------------------------------+
-
-     +---------------------------------------------------------------------+
-  3. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    80064 |   Male |    Rural | 41 - 60 years |        0 |        1  |
+     |    96539 | Female |    Rural | 61 - 80 years |        1 |        1  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
      | 1-2 per year |        1 | All appts have mode |        0 |        0 |
@@ -3649,41 +3620,8 @@ Some appts have mode |      5,163       84.03       99.72
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
-  4. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    64719 | Female |    Rural | 61 - 80 years |        0 |        3  |
-     |---------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        3 | All appts have mode |        0 |        0 |
-     |---------------------------------------------------------------------|
-     |                              medium~n                               |
-     |                                     0                               |
-     +---------------------------------------------------------------------+
-
-     +---------------------------------------------------------------------+
-  5. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    97044 | Female |    Rural | 41 - 60 years |        0 |        2  |
-     |---------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     | 1-2 per year |        2 | All appts have mode |        0 |        0 |
-     |---------------------------------------------------------------------|
-     |                              medium~n                               |
-     |                                     0                               |
-     +---------------------------------------------------------------------+
-
-     +---------------------------------------------------------------------+
-  6. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    64077 |   Male |    Rural | 41 - 60 years |        0 |        2  |
-     |---------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     | 1-2 per year |        2 | All appts have mode |        0 |        0 |
-     |---------------------------------------------------------------------|
-     |                              medium~n                               |
-     |                                     0                               |
-     +---------------------------------------------------------------------+
-
-     +---------------------------------------------------------------------+
-  7. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    31082 | Female |    Urban | 41 - 60 years |        1 |        4  |
+  2. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |     8571 |   Male |    Rural | 41 - 60 years |        0 |        4  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
      |  3+ per year |        4 | All appts have mode |        0 |        0 |
@@ -3693,19 +3631,19 @@ Some appts have mode |      5,163       84.03       99.72
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
-  8. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    19435 |   Male |    Urban | 18 - 40 years |        0 |        3  |
+  3. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    87776 |   Male |    Rural |     >80 years |        0 |        4  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        3 | All appts have mode |        0 |        0 |
+     |  3+ per year |        4 | All appts have mode |        1 |       25 |
      |---------------------------------------------------------------------|
      |                              medium~n                               |
      |                                     0                               |
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
-  9. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    68416 | Female |    Urban |             . |        0 |        5  |
+  4. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    75407 |   Male |    Rural | 41 - 60 years |        0 |        5  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
      |  3+ per year |        5 | All appts have mode |        0 |        0 |
@@ -3715,11 +3653,66 @@ Some appts have mode |      5,163       84.03       99.72
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
- 10. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    97049 |   Male |    Urban |             . |        0 |        3  |
+  5. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    76898 |   Male |    Rural | 18 - 40 years |        0 |        1  |
+     |---------------------------------------------------------------------|
+     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
+     | 1-2 per year |        1 | All appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |                              medium~n                               |
+     |                                     0                               |
+     +---------------------------------------------------------------------+
+
+     +---------------------------------------------------------------------+
+  6. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    71545 | Female |    Urban |             . |        1 |        3  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
      |  3+ per year |        3 | All appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |                              medium~n                               |
+     |                                     0                               |
+     +---------------------------------------------------------------------+
+
+     +---------------------------------------------------------------------+
+  7. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    91374 |   Male |    Rural |             . |        0 |        1  |
+     |---------------------------------------------------------------------|
+     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
+     | 1-2 per year |        1 | All appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |                              medium~n                               |
+     |                                     0                               |
+     +---------------------------------------------------------------------+
+
+     +---------------------------------------------------------------------+
+  8. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |     7523 | Female |    Rural |             . |        0 |        2  |
+     |---------------------------------------------------------------------|
+     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
+     | 1-2 per year |        2 | All appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |                              medium~n                               |
+     |                                     0                               |
+     +---------------------------------------------------------------------+
+
+     +---------------------------------------------------------------------+
+  9. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    82594 |   Male |    Rural | 18 - 40 years |        0 |        2  |
+     |---------------------------------------------------------------------|
+     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
+     | 1-2 per year |        2 | All appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |                              medium~n                               |
+     |                                     0                               |
+     +---------------------------------------------------------------------+
+
+     +---------------------------------------------------------------------+
+ 10. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    44979 |   Male |    Urban | 61 - 80 years |        0 |        5  |
+     |---------------------------------------------------------------------|
+     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
+     |  3+ per year |        5 | All appts have mode |        1 |       20 |
      |---------------------------------------------------------------------|
      |                              medium~n                               |
      |                                     0                               |
@@ -3758,20 +3751,20 @@ No appointments |         0          0          0         17 |        17
 | column percentage |
 +-------------------+
 
-                |          medium_person
-  tot_appts_cat |         0          1          2 |     Total
-----------------+---------------------------------+----------
-   1-2 per year |        84          0         43 |       127 
-                |     66.14       0.00      33.86 |    100.00 
-                |     54.90       0.00      57.33 |     39.32 
-----------------+---------------------------------+----------
-    3+ per year |        69         95         32 |       196 
-                |     35.20      48.47      16.33 |    100.00 
-                |     45.10     100.00      42.67 |     60.68 
-----------------+---------------------------------+----------
-          Total |       153         95         75 |       323 
-                |     47.37      29.41      23.22 |    100.00 
-                |    100.00     100.00     100.00 |    100.00 
+                |     medium_person
+  tot_appts_cat |         0          1 |     Total
+----------------+----------------------+----------
+   1-2 per year |        84         43 |       127 
+                |     66.14      33.86 |    100.00 
+                |     33.87      57.33 |     39.32 
+----------------+----------------------+----------
+    3+ per year |       164         32 |       196 
+                |     83.67      16.33 |    100.00 
+                |     66.13      42.67 |     60.68 
+----------------+----------------------+----------
+          Total |       248         75 |       323 
+                |     76.78      23.22 |    100.00 
+                |    100.00     100.00 |    100.00 
 
 +-------------------+
 | Key               |
@@ -3781,20 +3774,20 @@ No appointments |         0          0          0         17 |        17
 | column percentage |
 +-------------------+
 
-                |          medium_person
-  tot_appts_cat |         0          1          2 |     Total
-----------------+---------------------------------+----------
-   1-2 per year |        65          0         30 |        95 
-                |     68.42       0.00      31.58 |    100.00 
-                |     54.62       0.00      55.56 |     38.93 
-----------------+---------------------------------+----------
-    3+ per year |        54         71         24 |       149 
-                |     36.24      47.65      16.11 |    100.00 
-                |     45.38     100.00      44.44 |     61.07 
-----------------+---------------------------------+----------
-          Total |       119         71         54 |       244 
-                |     48.77      29.10      22.13 |    100.00 
-                |    100.00     100.00     100.00 |    100.00 
+                |     medium_person
+  tot_appts_cat |         0          1 |     Total
+----------------+----------------------+----------
+   1-2 per year |        65         30 |        95 
+                |     68.42      31.58 |    100.00 
+                |     34.21      55.56 |     38.93 
+----------------+----------------------+----------
+    3+ per year |       125         24 |       149 
+                |     83.89      16.11 |    100.00 
+                |     65.79      44.44 |     61.07 
+----------------+----------------------+----------
+          Total |       190         54 |       244 
+                |     77.87      22.13 |    100.00 
+                |    100.00     100.00 |    100.00 
 
 -------------------------------------------------------------------------------
 -> all_mode_available = No mode info
@@ -3811,20 +3804,20 @@ no observations
 | column percentage |
 +-------------------+
 
-                |          medium_person
-  tot_appts_cat |         0          1          2 |     Total
-----------------+---------------------------------+----------
-   1-2 per year |        65          0         30 |        95 
-                |     68.42       0.00      31.58 |    100.00 
-                |     54.62       0.00      55.56 |     38.93 
-----------------+---------------------------------+----------
-    3+ per year |        54         71         24 |       149 
-                |     36.24      47.65      16.11 |    100.00 
-                |     45.38     100.00      44.44 |     61.07 
-----------------+---------------------------------+----------
-          Total |       119         71         54 |       244 
-                |     48.77      29.10      22.13 |    100.00 
-                |    100.00     100.00     100.00 |    100.00 
+                |     medium_person
+  tot_appts_cat |         0          1 |     Total
+----------------+----------------------+----------
+   1-2 per year |        65         30 |        95 
+                |     68.42      31.58 |    100.00 
+                |     34.21      55.56 |     38.93 
+----------------+----------------------+----------
+    3+ per year |       125         24 |       149 
+                |     83.89      16.11 |    100.00 
+                |     65.79      44.44 |     61.07 
+----------------+----------------------+----------
+          Total |       190         54 |       244 
+                |     77.87      22.13 |    100.00 
+                |    100.00     100.00 |    100.00 
 
 -------------------------------------------------------------------------------
 -> all_mode_available = Some appts have mode
@@ -3874,42 +3867,41 @@ file ./output/tables/bsr_op_appt_2021.csv saved
   |--------------------------------------------------------------|
   |                         N=127          N=196                 |
   |--------------------------------------------------------------|
-  | medium_person   0       84 (66.1%)     69 (35.2%)    <0.001  |
-  |                 1       0 ( 0.0%)      95 (48.5%)            |
-  |                 2       43 (33.9%)     32 (16.3%)            |
+  | medium_person   0       84 (66.1%)     164 (83.7%)   <0.001  |
+  |                 1       43 (33.9%)     32 (16.3%)            |
   +--------------------------------------------------------------+
 Data are presented as n (%).
  
 file ./output/tables/bsr_op_appt_medium_2021.csv saved
-(6,049 observations deleted)
+(5,896 observations deleted)
 
   +-------------------------+
   | factor        N_1   m_1 |
   |-------------------------|
-  | age_cat        82    13 |
+  | age_cat       200    48 |
   |-------------------------|
-  | male           95     0 |
+  | male          248     0 |
   |-------------------------|
-  | Rural-Urban    95     0 |
+  | Rural-Urban   248     0 |
   +-------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
-  +----------------------------------------+
-  |                               Total    |
-  |----------------------------------------|
-  |                               N=95     |
-  |----------------------------------------|
-  | age_cat       18 - 40 years   26 (32%) |
-  |               41 - 60 years   26 (32%) |
-  |               61 - 80 years   23 (28%) |
-  |               >80 years       7 ( 9%)  |
-  |----------------------------------------|
-  | male          Female          59 (62%) |
-  |               Male            36 (38%) |
-  |----------------------------------------|
-  | Rural-Urban   Rural           47 (49%) |
-  |               Urban           48 (51%) |
-  +----------------------------------------+
+  +-------------------------------------------+
+  |                               Total       |
+  |-------------------------------------------|
+  |                               N=248       |
+  |-------------------------------------------|
+  | age_cat       18 - 40 years   63 (31.5%)  |
+  |               41 - 60 years   74 (37.0%)  |
+  |               61 - 80 years   46 (23.0%)  |
+  |               >80 years       17 ( 8.5%)  |
+  |-------------------------------------------|
+  | male          Female          143 (57.7%) |
+  |               Male            105 (42.3%) |
+  |-------------------------------------------|
+  | Rural-Urban   Rural           118 (47.6%) |
+  |               Urban           130 (52.4%) |
+  +-------------------------------------------+
 Data are presented as n (%).
  
 file tempfile.dta saved
@@ -3944,6 +3936,7 @@ file tempfile.dta saved
   +----------------------------------------+
 Data are presented as n (%).
  
+(note: variable Total was str8, now str11 to accommodate using data's values)
 file ./output/tables/bsr_op_medium_chars_2021.csv saved
 
 .     
@@ -4015,5 +4008,5 @@ file ./output/tables/bsr_op_medium_chars_2021.csv saved
       name:  <unnamed>
        log:  /workspace/logs/bsr.log
   log type:  text
- closed on:  19 Sep 2022, 12:01:42
+ closed on:  19 Sep 2022, 12:46:41
 -------------------------------------------------------------------------------

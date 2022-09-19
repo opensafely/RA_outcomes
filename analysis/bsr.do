@@ -157,12 +157,17 @@ forvalues i=2019/2021 {
     di "Check if mode information but not all_mode available"
     count if op_appt_medium==1 & all_mode_available!=1
     bys patient_id: egen tot_medium_1 = total(op_appt_medium==1)
+    bys patient_id: egen tot_medium_2 = total(op_appt_medium==2)
+    di "Count if total of 2 types of appointment does not equal total"
+    count if tot_medium_1 + tot_medium_2 != tot_appts_medium
+
     tab tot_medium_1 all_mode_available, m
     replace tot_medium_1=. if all_mode_available!=1
     * Determine proportion where f2f
     gen prop_medium_1 = (tot_medium_1/tot_appts_medium)*100
+    list tot_medium_1 tot_appts_medium if prop_medium_1==0 & all_mode_available==1 in 1/5
     
-    egen medium_person = cut(prop_medium_1), at(0, 1, 50, 101) icodes
+    egen medium_person = cut(prop_medium_1), at(0, 50, 101) icodes
     bys medium_person: sum prop_medium_1 
 
 
@@ -202,12 +207,12 @@ forvalues i=2019/2021 {
     restore
     tempfile tempfile
     preserve 
-    keep if medium_person==1 & all_mode_available==1
+    keep if medium_person==0 & all_mode_available==1
     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
     save tempfile, replace
     restore 
     preserve
-    keep if medium_person==2 & all_mode_available==1
+    keep if medium_person==1 & all_mode_available==1
     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
     append using tempfile
     export delimited using ./output/tables/bsr_op_medium_chars_`i'.csv
