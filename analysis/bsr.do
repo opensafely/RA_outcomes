@@ -199,6 +199,11 @@ forvalues i=2019/2021 {
     table1_mc, vars(tot_appts_cat cate) missing clear 
     export delimited using ./output/tables/bsr_op_appt_`i'.csv 
     restore
+    preserve 
+    keep if all_mode_available==1
+    table1_mc, vars(medium_person cate) missing clear 
+    export delimited using ./output/tables/bsr_op_medium_`i'.csv
+    restore
     * Create table of number of appointment and mode where mode info available for all appts
     preserve
     keep if all_mode_available==1
@@ -216,6 +221,12 @@ forvalues i=2019/2021 {
     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
     append using tempfile
     export delimited using ./output/tables/bsr_op_medium_chars_`i'.csv
+    restore
+    preserve
+    keep if all_mode_available!=1
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
+    append using tempfile
+    export delimited using ./output/tables/bsr_op_no_medium_chars_`i'.csv
     restore
     }
     
