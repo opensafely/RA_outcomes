@@ -24,9 +24,14 @@ forvalues i=2019/2021 {
     egen all_miss_appts = rowmiss(op_appt_date_1 op_appt_date_2 op_appt_date_3 op_appt_date_4 op_appt_date_5 op_appt_date_6 op_appt_date_7 op_appt_date_8 op_appt_date_9 op_appt_date_10)
     tab all_miss_appts
     forvalues a=1/10 {
-        gen op_nodate_medium_`a' = (op_appt_date_`a'=="" & op_appt_medium_`a'!=.)
+        gen op_appt_dateA_`a' = date(op_appt_date_`a', "YMD")
+        gen op_appt_flag_`a' = (op_appt_dateA_`a'!=.)
+        tab op_appt_medium_`a'
+        gen op_nodate_medium_`a' = (op_appt_dateA_`a'==. & op_appt_medium_`a'!=.)
         tab op_nodate_medium_`a'
     }
+
+    list in 1/5
 
     * Format variables
 
@@ -66,11 +71,12 @@ forvalues i=2019/2021 {
     safetab age_cat, miss
 
     * Reshape to long format 
-    reshape long op_appt_date_ op_appt_medium_, i(patient_id) j(op_appt_number) 
-    rename op_appt_date_ op_appt_date 
+    reshape long op_appt_dateA_ op_appt_medium_, i(patient_id) j(op_appt_number) 
+    rename op_appt_dateA_ op_appt_dateA 
     rename op_appt_medium_ op_appt_medium
 
     * set talk type (medium=4) to missing and combine telephone and telemedicine
+    tab op_appt_medium, m
     replace op_appt_medium = . if op_appt_medium==4
     replace op_appt_medium = 2 if op_appt_medium==3
     tab op_appt_medium, m 
@@ -80,7 +86,6 @@ forvalues i=2019/2021 {
     tab flag 
 
     * Format dates
-    gen op_appt_dateA = date(op_appt_date, "YMD")
     gen died_fuA = date(died_fu, "YMD")
     gen dereg_dateA = date(dereg_date, "YMD")
     if `i'!=2021 {
@@ -89,17 +94,20 @@ forvalues i=2019/2021 {
     else {
         gen end_fu = date("`i'-12-31", "YMD")
         }
+    
+    list end_fu in 1/5
     * Follow-up time
     gen end_date = min(died_fuA, dereg_dateA, end_fu)
     drop end_fu
+    sum end_date
     di "Number where end date prior to follow-up start
-    count if end_date<date("`j'-03-31", "YMD")
+    count if end_date<date("`i'-04-01", "YMD")
     * display value of end date in period
     di date("`j'-03-31", "YMD")
     * determine range of dates for outpatient appointments to determine which should be dropped
     sum op_appt_dateA
-    replace op_appt_dateA=. if op_appt_dateA < end_date 
-    replace op_appt_medium=. if op_appt_dateA < end_date
+    replace op_appt_dateA=. if end_date < op_appt_dateA
+    replace op_appt_medium=. if end_date < op_appt_dateA 
     sum op_appt_dateA
     * take out records where end_date prior to start of follow-up
     di "Count of people where end date prior to start of follow-up" 
@@ -134,7 +142,7 @@ forvalues i=2019/2021 {
     bys patient_id: egen tot_appts_medium = total(op_appt_medium!=.)
     tab tot_appts_medium if flag==1
     di "Count if number of appointments with medium is more than total appointments 
-    count if tot_appts < tot_appts_medium
+    count if tot_appts < tot_appts_medium & tot_appts_medium!=.
     * Determine appointments where mode is known 
     gen all_mode_available = (tot_appts_medium==tot_appts)
     replace all_mode_available = 2 if all_mode_available==0 & tot_appts_medium!=0
@@ -162,6 +170,8 @@ forvalues i=2019/2021 {
 
     tab tot_appts_cat 
     tab tot_appts_cat if short_fu==0
+
+    tab tot_appts_cat all_mode_available, m
 
     tab tot_appts_cat medium_person, row col 
     tab tot_appts_cat medium_person  if short_fu==0, row col
