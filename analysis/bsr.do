@@ -184,7 +184,7 @@ forvalues i=2019/2021 {
     gen medium_remote = 0 if all_mode_available==. & tot_appts==0
     replace medium_remote = 1 if tot_medium_2==tot_appts_medium & tot_medium_2!=0
     replace medium_remote = 2 if all_mode_available==1 & medium_remote==. & tot_medium_1>=1
-    replace medium_remote = 3 if all_mode_available==0 & medium_remote==.
+    replace medium_remote = 3 if (all_mode_available==0 | all_mode_available==2) & medium_remote==.
     tab medium_remote, m
     tab medium_remote all_mode_available, m
 
