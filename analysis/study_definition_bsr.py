@@ -25,28 +25,18 @@ def op_appt_dates_and_mode_X(name, index_date, n):
         }
     variables = var_signature(f"{name}_date_1", index_date, return_expectations=None, returning="date")
     variables.update(var_signature(f"{name}_medium_1", index_date, return_expectations={"category": { "ratios":{ 
-                "1": 0.2,
-                "2": 0.1,
+                "1": 0.6,
+                "2": 0.2,
                 "3": 0.1,
-                "4": 0.1,
-                "5": 0.1,
-                "6": 0.1,
-                "7": 0.1,
-                "8": 0.1,
-                "98": 0.1, 
+                "4": 0.1, 
                 }}}, returning="consultation_medium_used"))
     for i in range(2, n+1):
         variables.update(var_signature(f"{name}_date_{i}", f"{name}_date_{i-1} + 1 day", return_expectations=None, returning="date"))
         variables.update(var_signature(f"{name}_medium_{i}", f"{name}_date_{i-1} + 1 day", return_expectations={"category": { "ratios":{ 
-                "1": 0.2,
-                "2": 0.1,
+                "1": 0.6,
+                "2": 0.2,
                 "3": 0.1,
                 "4": 0.1,
-                "5": 0.1,
-                "6": 0.1,
-                "7": 0.1,
-                "8": 0.1,
-                "98": 0.1, 
                 }}}, returning="consultation_medium_used"))
     return variables
 

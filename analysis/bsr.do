@@ -253,11 +253,13 @@ forvalues i=2019/2021 {
     keep if medium_remote==1 
     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
     append using tempfile
+    save tempfile, replace
     restore
     preserve
     keep if medium_remote==2 
     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
     append using tempfile
+    save tempfile, replace
     restore
     preserve
     keep if medium_remote==3 
