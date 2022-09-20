@@ -25,6 +25,7 @@ forvalues i=2019/2021 {
     tab all_miss_appts
     forvalues a=1/10 {
         gen op_appt_dateA_`a' = date(op_appt_date_`a', "YMD")
+        drop op_appt_date_`a'
         gen op_appt_flag_`a' = (op_appt_dateA_`a'!=.)
         tab op_appt_medium_`a'
         gen op_nodate_medium_`a' = (op_appt_dateA_`a'==. & op_appt_medium_`a'!=.)
@@ -75,6 +76,12 @@ forvalues i=2019/2021 {
     rename op_appt_dateA_ op_appt_dateA 
     rename op_appt_medium_ op_appt_medium
 
+    /* Check if multiple appointments on same day 
+    bys patient_id: gen multi = op_appt_dateA==op_appt_dateA[_n-1] & patient_id==patient_id[_n-1] & op_appt_dateA!=.
+    tab multi
+    bys patient_id: egen multi_tot = max(multi)
+    tab multi_tot*/
+
     * set talk type (medium=4) to missing and combine telephone and telemedicine
     tab op_appt_medium, m
     replace op_appt_medium = . if op_appt_medium==4
@@ -106,7 +113,7 @@ forvalues i=2019/2021 {
     di date("`j'-03-31", "YMD")
     * determine range of dates for outpatient appointments to determine which should be dropped
     sum op_appt_dateA
-    replace op_appt_dateA=. if end_date < op_appt_dateA
+    replace op_appt_dateA=. if end_date < op_appt_dateA 
     replace op_appt_medium=. if end_date < op_appt_dateA 
     sum op_appt_dateA
     * take out records where end_date prior to start of follow-up
@@ -163,6 +170,8 @@ forvalues i=2019/2021 {
 
     tab tot_medium_1 all_mode_available, m
     replace tot_medium_1=. if all_mode_available!=1
+    tab tot_medium_2 all_mode_available, m
+    replace tot_medium_2=. if all_mode_available!=1
     * Determine proportion where f2f
     gen prop_medium_1 = (tot_medium_1/tot_appts_medium)*100
     list tot_medium_1 tot_appts_medium if prop_medium_1==0 & all_mode_available==1 in 1/5
@@ -170,8 +179,12 @@ forvalues i=2019/2021 {
     egen medium_person = cut(prop_medium_1), at(0, 50, 101) icodes
     bys medium_person: sum prop_medium_1 
 
-    gen medium_remote = tot_medium_2==tot_appts_medium 
-    replace medium_remote=. if all_mode_available!=1
+
+    * Categorise as no appointments, appointments + medium known and all remote, appointments + medium known and at least one f2f, appointment + medium unknown 
+    gen medium_remote = 0 if all_mode_available==. & tot_appts==0
+    replace medium_remote = 1 if tot_medium_2==tot_appts_medium & tot_medium_2!=0
+    replace medium_remote = 2 if all_mode_available==1 & medium_remote==. & tot_medium_1>=1
+    replace medium_remote = 3 if all_mode_available==0 & medium_remote==.
     tab medium_remote, m
     tab medium_remote all_mode_available, m
 
@@ -210,7 +223,7 @@ forvalues i=2019/2021 {
     restore
     * Medium of appointment - all remote
     preserve 
-    table1_mc, vars(medium_remote cate) by(tot_appts_cat) missing clear 
+    table1_mc, vars(medium_remote cate) missing clear 
     export delimited using ./output/tables/bsr_op_remote_`i'.csv
     restore
     * Create table of number of appointment and mode where mode info available for all appts
@@ -238,6 +251,16 @@ forvalues i=2019/2021 {
     restore 
     preserve
     keep if medium_remote==1 
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
+    append using tempfile
+    restore
+    preserve
+    keep if medium_remote==2 
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
+    append using tempfile
+    restore
+    preserve
+    keep if medium_remote==3 
     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
     append using tempfile
     export delimited using ./output/tables/bsr_op_remote_chars_`i'.csv

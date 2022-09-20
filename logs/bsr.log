@@ -20,253 +20,281 @@
   7.     tab all_miss_appts
   8.     forvalues a=1/10 {
   9.         gen op_appt_dateA_`a' = date(op_appt_date_`a', "YMD")
- 10.         gen op_appt_flag_`a' = (op_appt_dateA_`a'!=.)
- 11.         tab op_appt_medium_`a'
- 12.         gen op_nodate_medium_`a' = (op_appt_dateA_`a'==. & op_appt_medium_
+ 10.         drop op_appt_date_`a'
+ 11.         gen op_appt_flag_`a' = (op_appt_dateA_`a'!=.)
+ 12.         tab op_appt_medium_`a'
+ 13.         gen op_nodate_medium_`a' = (op_appt_dateA_`a'==. & op_appt_medium_
 > `a'!=.)
- 13.         tab op_nodate_medium_`a'
- 14.     }
- 15. 
-.     list in 1/5
+ 14.         tab op_nodate_medium_`a'
+ 15.     }
  16. 
+.     list in 1/5
+ 17. 
 .     * Format variables
 . 
 .     * formatting gender
 .     gen male=(sex=="M")
- 17.     replace male = 0 if sex == "F"
- 18.     label define male 0"Female" 1"Male"
- 19.     label values male male
- 20.     safetab male, miss
- 21. 
+ 18.     replace male = 0 if sex == "F"
+ 19.     label define male 0"Female" 1"Male"
+ 20.     label values male male
+ 21.     safetab male, miss
+ 22. 
 .     *create a 4 category rural urban variable 
 .     generate urban_rural_5=.
- 22.     la var urban_rural_5 "Rural Urban in five categories"
- 23.     replace urban_rural_5=1 if urban_rural==1
- 24.     replace urban_rural_5=2 if urban_rural==2
- 25.     replace urban_rural_5=3 if urban_rural==3|urban_rural==4
- 26.     replace urban_rural_5=4 if urban_rural==5|urban_rural==6
- 27.     replace urban_rural_5=5 if urban_rural==7|urban_rural==8
- 28.     label define urban_rural_5 1 "Urban major conurbation" 2 "Urban minor 
+ 23.     la var urban_rural_5 "Rural Urban in five categories"
+ 24.     replace urban_rural_5=1 if urban_rural==1
+ 25.     replace urban_rural_5=2 if urban_rural==2
+ 26.     replace urban_rural_5=3 if urban_rural==3|urban_rural==4
+ 27.     replace urban_rural_5=4 if urban_rural==5|urban_rural==6
+ 28.     replace urban_rural_5=5 if urban_rural==7|urban_rural==8
+ 29.     label define urban_rural_5 1 "Urban major conurbation" 2 "Urban minor 
 > conurbation" 3 "Urban city and town" 4 "Rural town and fringe" 5 "Rural villa
 > ge and dispersed"
- 29.     label values urban_rural_5 urban_rural_5
- 30.     safetab urban_rural_5, miss
- 31. 
+ 30.     label values urban_rural_5 urban_rural_5
+ 31.     safetab urban_rural_5, miss
+ 32. 
 .     *generate a binary rural urban (with missing assigned to urban)
 .     generate urban_rural_bin=.
- 32.     replace urban_rural_bin=1 if urban_rural<=4|urban_rural==.
- 33.     replace urban_rural_bin=0 if urban_rural>4 & urban_rural!=.
- 34.     label define urban_rural_bin 0 "Rural" 1 "Urban"
- 35.     label values urban_rural_bin urban_rural_bin
- 36.     safetab urban_rural_bin urban_rural, miss
- 37.     label var urban_rural_bin "Rural-Urban"
- 38. 
+ 33.     replace urban_rural_bin=1 if urban_rural<=4|urban_rural==.
+ 34.     replace urban_rural_bin=0 if urban_rural>4 & urban_rural!=.
+ 35.     label define urban_rural_bin 0 "Rural" 1 "Urban"
+ 36.     label values urban_rural_bin urban_rural_bin
+ 37.     safetab urban_rural_bin urban_rural, miss
+ 38.     label var urban_rural_bin "Rural-Urban"
+ 39. 
 .     * Define age categories
 .     * Create age categories
 .     egen age_cat = cut(age), at(18, 40, 60, 80, 120) icodes
- 39.     label define age 0 "18 - 40 years" 1 "41 - 60 years" 2 "61 - 80 years"
+ 40.     label define age 0 "18 - 40 years" 1 "41 - 60 years" 2 "61 - 80 years"
 >  3 ">80 years"
- 40.     label values age_cat age
- 41.     safetab age_cat, miss
- 42. 
+ 41.     label values age_cat age
+ 42.     safetab age_cat, miss
+ 43. 
 .     * Reshape to long format 
 .     reshape long op_appt_dateA_ op_appt_medium_, i(patient_id) j(op_appt_numb
 > er) 
- 43.     rename op_appt_dateA_ op_appt_dateA 
- 44.     rename op_appt_medium_ op_appt_medium
- 45. 
+ 44.     rename op_appt_dateA_ op_appt_dateA 
+ 45.     rename op_appt_medium_ op_appt_medium
+ 46. 
+.     /* Check if multiple appointments on same day 
+>     bys patient_id: gen multi = op_appt_dateA==op_appt_dateA[_n-1] & patient_
+> id==patient_id[_n-1] & op_appt_dateA!=.
+>     tab multi
+>     bys patient_id: egen multi_tot = max(multi)
+>     tab multi_tot*/
+. 
 .     * set talk type (medium=4) to missing and combine telephone and telemedic
 > ine
 .     tab op_appt_medium, m
- 46.     replace op_appt_medium = . if op_appt_medium==4
- 47.     replace op_appt_medium = 2 if op_appt_medium==3
- 48.     tab op_appt_medium, m 
- 49. 
+ 47.     replace op_appt_medium = . if op_appt_medium==4
+ 48.     replace op_appt_medium = 2 if op_appt_medium==3
+ 49.     tab op_appt_medium, m 
+ 50. 
 .      * flag first record for each patient for summarising
 .     bys patient_id: gen flag=1 if _n==1
- 50.     tab flag 
- 51. 
+ 51.     tab flag 
+ 52. 
 .     * Format dates
 .     gen died_fuA = date(died_fu, "YMD")
- 52.     gen dereg_dateA = date(dereg_date, "YMD")
- 53.     if `i'!=2021 {
- 54.         gen end_fu = date("`j'-03-31", "YMD")
- 55.         }
- 56.     else {
- 57.         gen end_fu = date("`i'-12-31", "YMD")
- 58.         }
- 59.     
+ 53.     gen dereg_dateA = date(dereg_date, "YMD")
+ 54.     if `i'!=2021 {
+ 55.         gen end_fu = date("`j'-03-31", "YMD")
+ 56.         }
+ 57.     else {
+ 58.         gen end_fu = date("`i'-12-31", "YMD")
+ 59.         }
+ 60.     
 .     list end_fu in 1/5
- 60.     * Follow-up time
+ 61.     * Follow-up time
 .     gen end_date = min(died_fuA, dereg_dateA, end_fu)
- 61.     drop end_fu
- 62.     sum end_date
- 63.     di "Number where end date prior to follow-up start
- 64.     count if end_date<date("`i'-04-01", "YMD")
- 65.     * display value of end date in period
+ 62.     drop end_fu
+ 63.     sum end_date
+ 64.     di "Number where end date prior to follow-up start
+ 65.     count if end_date<date("`i'-04-01", "YMD")
+ 66.     * display value of end date in period
 .     di date("`j'-03-31", "YMD")
- 66.     * determine range of dates for outpatient appointments to determine wh
+ 67.     * determine range of dates for outpatient appointments to determine wh
 > ich should be dropped
 .     sum op_appt_dateA
- 67.     replace op_appt_dateA=. if end_date < op_appt_dateA
- 68.     replace op_appt_medium=. if end_date < op_appt_dateA 
- 69.     sum op_appt_dateA
- 70.     * take out records where end_date prior to start of follow-up
+ 68.     replace op_appt_dateA=. if end_date < op_appt_dateA 
+ 69.     replace op_appt_medium=. if end_date < op_appt_dateA 
+ 70.     sum op_appt_dateA
+ 71.     * take out records where end_date prior to start of follow-up
 .     di "Count of people where end date prior to start of follow-up" 
- 71.     count if end_date<=date("`i'-04-01", "YMD") & flag==1
- 72.     drop if end_date<=date("`i'-04-01", "YMD")
- 73.     di "count if <6 months follow-up"
- 74.     count if end_date<date("`i'-10-01", "YMD") & flag==1
- 75.     * People with less than 6 months follow-up 
+ 72.     count if end_date<=date("`i'-04-01", "YMD") & flag==1
+ 73.     drop if end_date<=date("`i'-04-01", "YMD")
+ 74.     di "count if <6 months follow-up"
+ 75.     count if end_date<date("`i'-10-01", "YMD") & flag==1
+ 76.     * People with less than 6 months follow-up 
 .     gen short_fu = end_date<date("`i'-10-01", "YMD")
- 76.     tab short_fu 
- 77.     * determine length of follow-up during year
+ 77.     tab short_fu 
+ 78.     * determine length of follow-up during year
 .     gen days_fu = end_date - date("`i'-04-01", "YMD")
- 78.     sum days_fu
- 79.     gen fu_yr = days_fu/365
- 80.     sum fu_yr, d 
- 81. 
+ 79.     sum days_fu
+ 80.     gen fu_yr = days_fu/365
+ 81.     sum fu_yr, d 
+ 82. 
 .     * Categorise number of outpatient appointments
 .     bys patient_id: egen tot_appts = total(op_appt_dateA!=.)
- 82.     tab tot_appts if flag==1, m
- 83.     * Categorise number of outpatient appointments
+ 83.     tab tot_appts if flag==1, m
+ 84.     * Categorise number of outpatient appointments
 .     label define appt 0 "No appointments" 1 "1-2 per year" 2 "3+ per year"
- 84.     egen tot_appts_cat = cut(tot_appts), at(0, 1, 3, 1000) icodes
- 85.     bys tot_appts_cat: sum tot_appts
- 86.     label values tot_appts_cat appt
- 87.     tab tot_appts_cat if flag==1, m
- 88. 
+ 85.     egen tot_appts_cat = cut(tot_appts), at(0, 1, 3, 1000) icodes
+ 86.     bys tot_appts_cat: sum tot_appts
+ 87.     label values tot_appts_cat appt
+ 88.     tab tot_appts_cat if flag==1, m
+ 89. 
 .     gen rate = tot_appts / fu_yr
- 89.     sum rate if flag==1, d 
- 90. 
+ 90.     sum rate if flag==1, d 
+ 91. 
 .     * Determine total number and proportion of in-person and telephone appoin
 > tments
 .     * Determine number of appointments where medium is known
 .     bys patient_id: egen tot_appts_medium = total(op_appt_medium!=.)
- 91.     tab tot_appts_medium if flag==1
- 92.     di "Count if number of appointments with medium is more than total app
+ 92.     tab tot_appts_medium if flag==1
+ 93.     di "Count if number of appointments with medium is more than total app
 > ointments 
- 93.     count if tot_appts < tot_appts_medium & tot_appts_medium!=.
- 94.     * Determine appointments where mode is known 
+ 94.     count if tot_appts < tot_appts_medium & tot_appts_medium!=.
+ 95.     * Determine appointments where mode is known 
 .     gen all_mode_available = (tot_appts_medium==tot_appts)
- 95.     replace all_mode_available = . if tot_appts==0
- 96.     replace all_mode_available = 2 if all_mode_available==0 & tot_appts_me
+ 96.     replace all_mode_available = . if tot_appts==0
+ 97.     replace all_mode_available = 2 if all_mode_available==0 & tot_appts_me
 > dium!=0
- 97.     label define ava 0 "No mode info" 1 "All appts have mode" 2 "Some appt
+ 98.     label define ava 0 "No mode info" 1 "All appts have mode" 2 "Some appt
 > s have mode"
- 98.     label values all_mode_available ava 
- 99.     tab tot_appts all_mode_available if flag==1, m
-100.     tab tot_appts_medium all_mode_available if flag==1, m
-101.     tab all_mode_available, m
-102.     tab tot_appts tot_appts_medium if all_mode_available==1
-103. 
+ 99.     label values all_mode_available ava 
+100.     tab tot_appts all_mode_available if flag==1, m
+101.     tab tot_appts_medium all_mode_available if flag==1, m
+102.     tab all_mode_available, m
+103.     tab tot_appts tot_appts_medium if all_mode_available==1
+104. 
 .     di "Check if mode information but not all_mode available"
-104.     count if op_appt_medium==1 & all_mode_available!=1
-105.     bys patient_id: egen tot_medium_1 = total(op_appt_medium==1)
-106.     bys patient_id: egen tot_medium_2 = total(op_appt_medium==2)
-107.     di "Count if total of 2 types of appointment does not equal total"
-108.     count if tot_medium_1 + tot_medium_2 != tot_appts_medium
-109. 
+105.     count if op_appt_medium==1 & all_mode_available!=1
+106.     bys patient_id: egen tot_medium_1 = total(op_appt_medium==1)
+107.     bys patient_id: egen tot_medium_2 = total(op_appt_medium==2)
+108.     di "Count if total of 2 types of appointment does not equal total"
+109.     count if tot_medium_1 + tot_medium_2 != tot_appts_medium
+110. 
 .     tab tot_medium_1 all_mode_available, m
-110.     replace tot_medium_1=. if all_mode_available!=1
-111.     * Determine proportion where f2f
+111.     replace tot_medium_1=. if all_mode_available!=1
+112.     tab tot_medium_2 all_mode_available, m
+113.     replace tot_medium_2=. if all_mode_available!=1
+114.     * Determine proportion where f2f
 .     gen prop_medium_1 = (tot_medium_1/tot_appts_medium)*100
-112.     list tot_medium_1 tot_appts_medium if prop_medium_1==0 & all_mode_avai
+115.     list tot_medium_1 tot_appts_medium if prop_medium_1==0 & all_mode_avai
 > lable==1 in 1/5
-113.     
+116.     
 .     egen medium_person = cut(prop_medium_1), at(0, 50, 101) icodes
-114.     bys medium_person: sum prop_medium_1 
-115. 
-.     gen medium_remote = tot_medium_2==tot_appts_medium 
-116.     replace medium_remote=. if all_mode_available!=1
-117.     tab medium_remote, m
-118.     tab medium_remote all_mode_available, m
-119. 
+117.     bys medium_person: sum prop_medium_1 
+118. 
+. 
+.     * Categorise as no appointments, appointments + medium known and all remo
+> te, appointments + medium known and at least one f2f, appointment + medium un
+> known 
+.     gen medium_remote = 0 if all_mode_available==. & tot_appts==0
+119.     replace medium_remote = 1 if tot_medium_2==tot_appts_medium & tot_medi
+> um_2!=0
+120.     replace medium_remote = 2 if all_mode_available==1 & medium_remote==. 
+> & tot_medium_1>=1
+121.     replace medium_remote = 3 if all_mode_available==0 & medium_remote==.
+122.     tab medium_remote, m
+123.     tab medium_remote all_mode_available, m
+124. 
 .     keep patient_id tot_appts_cat tot_appts tot_appts_medium medium_person to
 > t_medium_1 prop_medium_1 age_cat male urban_rural_bin short_fu all_mode_avail
 > able medium_remote
-120.     describe
-121.     duplicates drop 
-122.     codebook patient_id
-123.     tab tot_appts tot_appts_medium
-124.     tab all_mode_available, m
-125. 
+125.     describe
+126.     duplicates drop 
+127.     codebook patient_id
+128.     tab tot_appts tot_appts_medium
+129.     tab all_mode_available, m
+130. 
 .     list in 1/10
-126. 
+131. 
 .     tab tot_appts_cat 
-127.     tab tot_appts_cat if short_fu==0
-128. 
+132.     tab tot_appts_cat if short_fu==0
+133. 
 .     tab tot_appts_cat all_mode_available, m
-129. 
+134. 
 .     tab tot_appts_cat medium_person, row col 
-130.     tab tot_appts_cat medium_person  if short_fu==0, row col
-131.     bys all_mode_available: tab tot_appts_cat medium_person  if short_fu==
+135.     tab tot_appts_cat medium_person  if short_fu==0, row col
+136.     bys all_mode_available: tab tot_appts_cat medium_person  if short_fu==
 > 0, row col
-132. 
+137. 
 .     di "Number where number of appointments does not equal number where mediu
 > m is known"
-133.     count if tot_appts!=tot_appts_medium
-134. 
+138.     count if tot_appts!=tot_appts_medium
+139. 
 .     sum prop_medium_*
-135. 
+140. 
 .     * Create table of number of op appts 
 .     preserve
-136.     table1_mc, vars(tot_appts_cat cate) missing clear 
-137.     export delimited using ./output/tables/bsr_op_appt_`i'.csv 
-138.     restore
-139.     * Medium of appointment - first 50% at least in person
+141.     table1_mc, vars(tot_appts_cat cate) missing clear 
+142.     export delimited using ./output/tables/bsr_op_appt_`i'.csv 
+143.     restore
+144.     * Medium of appointment - first 50% at least in person
 .     preserve 
-140.     table1_mc, vars(medium_person cate) missing clear 
-141.     export delimited using ./output/tables/bsr_op_medium_`i'.csv
-142.     restore
-143.     * Medium of appointment - all remote
+145.     table1_mc, vars(medium_person cate) missing clear 
+146.     export delimited using ./output/tables/bsr_op_medium_`i'.csv
+147.     restore
+148.     * Medium of appointment - all remote
 .     preserve 
-144.     table1_mc, vars(medium_remote cate) by(tot_appts_cat) missing clear 
-145.     export delimited using ./output/tables/bsr_op_remote_`i'.csv
-146.     restore
-147.     * Create table of number of appointment and mode where mode info avail
+149.     table1_mc, vars(medium_remote cate) missing clear 
+150.     export delimited using ./output/tables/bsr_op_remote_`i'.csv
+151.     restore
+152.     * Create table of number of appointment and mode where mode info avail
 > able for all appts
 .     preserve
-148.     keep if all_mode_available==1
-149.     table1_mc, vars(medium_person cate) by(tot_appts_cat) missing clear 
-150.     export delimited using ./output/tables/bsr_op_appt_medium_`i'.csv
-151.     restore
-152.     tempfile tempfile
-153.     preserve 
-154.     keep if medium_person==0 & all_mode_available==1
-155.     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
-156.     save tempfile, replace
-157.     restore 
-158.     preserve
-159.     keep if medium_person==1 & all_mode_available==1
+153.     keep if all_mode_available==1
+154.     table1_mc, vars(medium_person cate) by(tot_appts_cat) missing clear 
+155.     export delimited using ./output/tables/bsr_op_appt_medium_`i'.csv
+156.     restore
+157.     tempfile tempfile
+158.     preserve 
+159.     keep if medium_person==0 & all_mode_available==1
 160.     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
-161.     append using tempfile
-162.     export delimited using ./output/tables/bsr_op_medium_chars_`i'.csv
-163.     restore
-164.     preserve 
-165.     keep if medium_remote==0 
-166.     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
-167.     save tempfile, replace
-168.     restore 
-169.     preserve
-170.     keep if medium_remote==1 
+161.     save tempfile, replace
+162.     restore 
+163.     preserve
+164.     keep if medium_person==1 & all_mode_available==1
+165.     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
+166.     append using tempfile
+167.     export delimited using ./output/tables/bsr_op_medium_chars_`i'.csv
+168.     restore
+169.     preserve 
+170.     keep if medium_remote==0 
 171.     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
-172.     append using tempfile
-173.     export delimited using ./output/tables/bsr_op_remote_chars_`i'.csv
-174.     restore
-175.     preserve
-176.     keep if all_mode_available==0
-177.     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
-178.     append using tempfile
-179.     export delimited using ./output/tables/bsr_op_no_medium_chars_`i'.csv
-180.     restore
-181.     preserve
-182.     keep if all_mode_available==2
-183.     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
-184.     append using tempfile
-185.     export delimited using ./output/tables/bsr_op_uk_medium_chars_`i'.csv
-186.     restore
-187.     }
+172.     save tempfile, replace
+173.     restore 
+174.     preserve
+175.     keep if medium_remote==1 
+176.     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
+177.     append using tempfile
+178.     restore
+179.     preserve
+180.     keep if medium_remote==2 
+181.     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
+182.     append using tempfile
+183.     restore
+184.     preserve
+185.     keep if medium_remote==3 
+186.     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
+187.     append using tempfile
+188.     export delimited using ./output/tables/bsr_op_remote_chars_`i'.csv
+189.     restore
+190.     preserve
+191.     keep if all_mode_available==0
+192.     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
+193.     append using tempfile
+194.     export delimited using ./output/tables/bsr_op_no_medium_chars_`i'.csv
+195.     restore
+196.     preserve
+197.     keep if all_mode_available==2
+198.     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
+199.     append using tempfile
+200.     export delimited using ./output/tables/bsr_op_uk_medium_chars_`i'.csv
+201.     restore
+202.     }
 (36 vars, 10,000 obs)
 
 Contains data
@@ -570,14 +598,8 @@ op_nodate_m |
       Total |     10,000      100.00
 
      +-----------------------------------------------------------------------+
-  1. | dereg_date  |     died_fu  |  op_a~e_1  |  op_app~e_2  |  op_app~e_3  |
-     |             |  2021-05-22  |            |              |  1994-05-09  |
-     |-------------+---------------------------+--------------+--------------|
-     | op_app~e_4  | op_app~e_5  | op_app~e_6  |  op_app~e_7  |  op_app~e_8  |
-     | 1952-10-14  |             | 1967-02-24  |  2010-10-30  |  1995-06-15  |
-     |-----------------------------------------------------------------------|
-     | op_app~e_9 | op_ap~e_10 | o~t_2019 | o~t_2020 | o~t_2021  | o~m_2019  |
-     | 1916-04-24 | 2015-10-14 |        8 |        0 |        8  |        7  |
+  1. | dereg_date |    died_fu | o~t_2019 | o~t_2020 | o~t_2021  | o~m_2019  |
+     |            | 2021-05-22 |        8 |        0 |        8  |        7  |
      |-----------------------------------------------+-----------+-----------|
      | o~m_2020  | o~m_2021  | op_a~m_1  | op_a~m_2  | op_a~m_3  | op_a~m_4  |
      |        5  |        1  |        .  |        .  |        .  |        1  |
@@ -605,14 +627,8 @@ op_nodate_m |
      +-----------------------------------------------------------------------+
 
      +-----------------------------------------------------------------------+
-  2. | dereg_date  |     died_fu  |  op_a~e_1  |  op_app~e_2  |  op_app~e_3  |
-     |             |  2021-03-14  |            |              |  1902-04-13  |
-     |-------------+---------------------------+--------------+--------------|
-     | op_app~e_4  | op_app~e_5  | op_app~e_6  |  op_app~e_7  |  op_app~e_8  |
-     |             | 1971-08-30  | 1910-10-16  |              |              |
-     |-----------------------------------------------------------------------|
-     | op_app~e_9 | op_ap~e_10 | o~t_2019 | o~t_2020 | o~t_2021  | o~m_2019  |
-     |            |            |        7 |        9 |        0  |        3  |
+  2. | dereg_date |    died_fu | o~t_2019 | o~t_2020 | o~t_2021  | o~m_2019  |
+     |            | 2021-03-14 |        7 |        9 |        0  |        3  |
      |-----------------------------------------------+-----------+-----------|
      | o~m_2020  | o~m_2021  | op_a~m_1  | op_a~m_2  | op_a~m_3  | op_a~m_4  |
      |        4  |        8  |        6  |        .  |        .  |       98  |
@@ -640,14 +656,8 @@ op_nodate_m |
      +-----------------------------------------------------------------------+
 
      +-----------------------------------------------------------------------+
-  3. | dereg_date  |     died_fu  |  op_a~e_1  |  op_app~e_2  |  op_app~e_3  |
-     |             |  2020-03-20  |            |  1959-09-18  |  1992-02-05  |
-     |-------------+---------------------------+--------------+--------------|
-     | op_app~e_4  | op_app~e_5  | op_app~e_6  |  op_app~e_7  |  op_app~e_8  |
-     | 1975-04-29  |             | 1906-02-22  |  1955-03-07  |              |
-     |-----------------------------------------------------------------------|
-     | op_app~e_9 | op_ap~e_10 | o~t_2019 | o~t_2020 | o~t_2021  | o~m_2019  |
-     |            |            |        8 |       11 |        5  |        3  |
+  3. | dereg_date |    died_fu | o~t_2019 | o~t_2020 | o~t_2021  | o~m_2019  |
+     |            | 2020-03-20 |        8 |       11 |        5  |        3  |
      |-----------------------------------------------+-----------+-----------|
      | o~m_2020  | o~m_2021  | op_a~m_1  | op_a~m_2  | op_a~m_3  | op_a~m_4  |
      |        7  |        7  |        .  |       98  |        .  |        .  |
@@ -675,14 +685,8 @@ op_nodate_m |
      +-----------------------------------------------------------------------+
 
      +-----------------------------------------------------------------------+
-  4. | dereg_date  |     died_fu  |  op_a~e_1  |  op_app~e_2  |  op_app~e_3  |
-     | 2022-04-10  |  2021-08-08  |            |              |              |
-     |-------------+---------------------------+--------------+--------------|
-     | op_app~e_4  | op_app~e_5  | op_app~e_6  |  op_app~e_7  |  op_app~e_8  |
-     |             | 1933-04-27  |             |  1912-05-15  |              |
-     |-----------------------------------------------------------------------|
-     | op_app~e_9 | op_ap~e_10 | o~t_2019 | o~t_2020 | o~t_2021  | o~m_2019  |
-     |            |            |        8 |        9 |        8  |        .  |
+  4. | dereg_date |    died_fu | o~t_2019 | o~t_2020 | o~t_2021  | o~m_2019  |
+     | 2022-04-10 | 2021-08-08 |        8 |        9 |        8  |        .  |
      |-----------------------------------------------+-----------+-----------|
      | o~m_2020  | o~m_2021  | op_a~m_1  | op_a~m_2  | op_a~m_3  | op_a~m_4  |
      |        .  |        .  |        .  |        6  |        4  |        .  |
@@ -710,14 +714,8 @@ op_nodate_m |
      +-----------------------------------------------------------------------+
 
      +-----------------------------------------------------------------------+
-  5. | dereg_date  |     died_fu  |  op_a~e_1  |  op_app~e_2  |  op_app~e_3  |
-     |             |  2021-01-19  |            |  1967-07-23  |  1919-10-22  |
-     |-------------+---------------------------+--------------+--------------|
-     | op_app~e_4  | op_app~e_5  | op_app~e_6  |  op_app~e_7  |  op_app~e_8  |
-     | 1982-05-10  | 1911-11-19  | 1952-12-17  |              |  1916-10-15  |
-     |-----------------------------------------------------------------------|
-     | op_app~e_9 | op_ap~e_10 | o~t_2019 | o~t_2020 | o~t_2021  | o~m_2019  |
-     | 1994-02-12 |            |       11 |        8 |       10  |        .  |
+  5. | dereg_date |    died_fu | o~t_2019 | o~t_2020 | o~t_2021  | o~m_2019  |
+     |            | 2021-01-19 |       11 |        8 |       10  |        .  |
      |-----------------------------------------------+-----------+-----------|
      | o~m_2020  | o~m_2021  | op_a~m_1  | op_a~m_2  | op_a~m_3  | op_a~m_4  |
      |        8  |       98  |        .  |        6  |        .  |        .  |
@@ -808,7 +806,7 @@ urban_rura |           urban_rural
 Data                               wide   ->   long
 -----------------------------------------------------------------------------
 Number of obs.                    10000   ->  100000
-Number of variables                  67   ->      50
+Number of variables                  57   ->      40
 j variable (10 values)                    ->   op_appt_number
 xij variables:
 op_appt_dateA_1 op_appt_dateA_2 ... op_appt_dateA_10->op_appt_dateA_
@@ -1074,6 +1072,18 @@ tot_medium |             all_mode_available
 -----------+--------------------------------------------+----------
      Total |    10,690      5,760     83,280        270 |   100,000 
 (94,240 real changes made, 94,240 to missing)
+
+tot_medium |             all_mode_available
+        _2 | No mode i  All appts  Some appt          . |     Total
+-----------+--------------------------------------------+----------
+         0 |    10,690      3,130     48,930        270 |    63,020 
+         1 |         0      1,980     28,520          0 |    30,500 
+         2 |         0        560      5,220          0 |     5,780 
+         3 |         0         70        580          0 |       650 
+         4 |         0         20         30          0 |        50 
+-----------+--------------------------------------------+----------
+     Total |    10,690      5,760     83,280        270 |   100,000 
+(94,240 real changes made, 94,240 to missing)
 (94,240 missing values generated)
 (94240 missing values generated)
 
@@ -1098,23 +1108,30 @@ prop_mediu~1 |      1,320    67.82828    21.82297         50        100
 -------------+---------------------------------------------------------
 prop_mediu~1 |          0
 
-(94,240 real changes made, 94,240 to missing)
+(99,730 missing values generated)
+(200 real changes made)
+(2,740 real changes made)
+(10,690 real changes made)
 
 medium_remo |
          te |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |      5,560        5.56        5.56
-          1 |        200        0.20        5.76
-          . |     94,240       94.24      100.00
+          0 |        270        0.27        0.27
+          1 |        200        0.20        0.47
+          2 |      2,740        2.74        3.21
+          3 |     10,690       10.69       13.90
+          . |     86,100       86.10      100.00
 ------------+-----------------------------------
       Total |    100,000      100.00
 
 medium_rem |             all_mode_available
        ote | No mode i  All appts  Some appt          . |     Total
 -----------+--------------------------------------------+----------
-         0 |         0      5,560          0          0 |     5,560 
+         0 |         0          0          0        270 |       270 
          1 |         0        200          0          0 |       200 
-         . |    10,690          0     83,280        270 |    94,240 
+         2 |         0      2,740          0          0 |     2,740 
+         3 |    10,690          0          0          0 |    10,690 
+         . |         0      2,820     83,280          0 |    86,100 
 -----------+--------------------------------------------+----------
      Total |    10,690      5,760     83,280        270 |   100,000 
 
@@ -1214,7 +1231,7 @@ Some appts have mode |      8,328       83.28       99.73
      |  3+ per year |        3 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
+     |                    0             |                    .             |
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
@@ -1225,7 +1242,7 @@ Some appts have mode |      8,328       83.28       99.73
      |  3+ per year |        3 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
+     |                    0             |                    .             |
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
@@ -1236,7 +1253,7 @@ Some appts have mode |      8,328       83.28       99.73
      |  3+ per year |        4 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
+     |                    0             |                    .             |
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
@@ -1247,7 +1264,7 @@ Some appts have mode |      8,328       83.28       99.73
      | 1-2 per year |        2 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
+     |                    0             |                    .             |
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
@@ -1258,7 +1275,7 @@ Some appts have mode |      8,328       83.28       99.73
      |  3+ per year |        3 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
+     |                    0             |                    .             |
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
@@ -1269,7 +1286,7 @@ Some appts have mode |      8,328       83.28       99.73
      | 1-2 per year |        2 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
+     |                    0             |                    .             |
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
@@ -1280,7 +1297,7 @@ Some appts have mode |      8,328       83.28       99.73
      | 1-2 per year |        2 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
+     |                    0             |                    .             |
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
@@ -1291,7 +1308,7 @@ Some appts have mode |      8,328       83.28       99.73
      |  3+ per year |        3 | All appts have mode |        1 | 33.33333 |
      |---------------------------------------------------------------------|
      |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
+     |                    0             |                    2             |
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
@@ -1302,7 +1319,7 @@ Some appts have mode |      8,328       83.28       99.73
      |  3+ per year |        3 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
+     |                    0             |                    .             |
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
@@ -1313,7 +1330,7 @@ Some appts have mode |      8,328       83.28       99.73
      | 1-2 per year |        2 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
+     |                    0             |                    .             |
      +---------------------------------------------------------------------+
 
   tot_appts_cat |      Freq.     Percent        Cum.
@@ -1472,31 +1489,24 @@ Data are presented as n (%).
  
 file ./output/tables/bsr_op_medium_2019.csv saved
 
-  +-----------------------------------------------------+
-  | factor          N_0   N_1     N_2   m_0   m_1   m_2 |
-  |-----------------------------------------------------|
-  | medium_remote    27   969   9,004     0     0     0 |
-  +-----------------------------------------------------+
+  +------------------------------+
+  | factor             N_1   m_1 |
+  |------------------------------|
+  | medium_remote   10,000     0 |
+  +------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
-  +----------------------------------------------------------------------------
-> --------+
-  |                           No appointments   1-2 per year   3+ per year     
-> p-value |
-  |----------------------------------------------------------------------------
-> --------|
-  |                           N=27              N=969          N=9,004         
->         |
-  |----------------------------------------------------------------------------
-> --------|
-  | medium_remote   0         0 ( 0.0%)         246 (25.4%)    310 ( 3.4%)     
-> <0.001  |
-  |                 1         0 ( 0.0%)         20 ( 2.1%)     0 ( 0.0%)       
->         |
-  |                 Missing   27 (100.0%)       703 (72.5%)    8,694 (96.6%)   
->         |
-  +----------------------------------------------------------------------------
-> --------+
+  +-----------------------------------------+
+  |                           Total         |
+  |-----------------------------------------|
+  |                           N=10,000      |
+  |-----------------------------------------|
+  | medium_remote   0         27 ( 0.3%)    |
+  |                 1         20 ( 0.2%)    |
+  |                 2         274 ( 2.7%)   |
+  |                 3         1,069 (10.7%) |
+  |                 Missing   8,610 (86.1%) |
+  +-----------------------------------------+
 Data are presented as n (%).
  
 file ./output/tables/bsr_op_remote_2019.csv saved
@@ -1587,35 +1597,34 @@ Data are presented as n (%).
 (note: variable Total was str10, now str11 to accommodate using data's
        values)
 file ./output/tables/bsr_op_medium_chars_2019.csv saved
-(9,444 observations deleted)
+(9,973 observations deleted)
 
   +-------------------------+
   | factor        N_1   m_1 |
   |-------------------------|
-  | age_cat       448   108 |
+  | age_cat        20     7 |
   |-------------------------|
-  | male          556     0 |
+  | male           27     0 |
   |-------------------------|
-  | Rural-Urban   556     0 |
+  | Rural-Urban    27     0 |
   +-------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
-  +-------------------------------------------+
-  |                               Total       |
-  |-------------------------------------------|
-  |                               N=556       |
-  |-------------------------------------------|
-  | age_cat       18 - 40 years   175 (39.1%) |
-  |               41 - 60 years   138 (30.8%) |
-  |               61 - 80 years   99 (22.1%)  |
-  |               >80 years       36 ( 8.0%)  |
-  |-------------------------------------------|
-  | male          Female          286 (51.4%) |
-  |               Male            270 (48.6%) |
-  |-------------------------------------------|
-  | Rural-Urban   Rural           278 (50.0%) |
-  |               Urban           278 (50.0%) |
-  +-------------------------------------------+
+  +----------------------------------------+
+  |                               Total    |
+  |----------------------------------------|
+  |                               N=27     |
+  |----------------------------------------|
+  | age_cat       18 - 40 years   6 (30%)  |
+  |               41 - 60 years   8 (40%)  |
+  |               61 - 80 years   6 (30%)  |
+  |----------------------------------------|
+  | male          Female          16 (59%) |
+  |               Male            11 (41%) |
+  |----------------------------------------|
+  | Rural-Urban   Rural           17 (63%) |
+  |               Urban           10 (37%) |
+  +----------------------------------------+
 Data are presented as n (%).
  
 file tempfile.dta saved
@@ -1650,7 +1659,68 @@ file tempfile.dta saved
   +----------------------------------------+
 Data are presented as n (%).
  
-(note: variable Total was str8, now str11 to accommodate using data's values)
+(9,726 observations deleted)
+
+  +-------------------------+
+  | factor        N_1   m_1 |
+  |-------------------------|
+  | age_cat       219    55 |
+  |-------------------------|
+  | male          274     0 |
+  |-------------------------|
+  | Rural-Urban   274     0 |
+  +-------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +-------------------------------------------+
+  |                               Total       |
+  |-------------------------------------------|
+  |                               N=274       |
+  |-------------------------------------------|
+  | age_cat       18 - 40 years   81 (37.0%)  |
+  |               41 - 60 years   69 (31.5%)  |
+  |               61 - 80 years   48 (21.9%)  |
+  |               >80 years       21 ( 9.6%)  |
+  |-------------------------------------------|
+  | male          Female          144 (52.6%) |
+  |               Male            130 (47.4%) |
+  |-------------------------------------------|
+  | Rural-Urban   Rural           145 (52.9%) |
+  |               Urban           129 (47.1%) |
+  +-------------------------------------------+
+Data are presented as n (%).
+ 
+(8,931 observations deleted)
+
+  +---------------------------+
+  | factor          N_1   m_1 |
+  |---------------------------|
+  | age_cat         848   221 |
+  |---------------------------|
+  | male          1,069     0 |
+  |---------------------------|
+  | Rural-Urban   1,069     0 |
+  +---------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +-------------------------------------------+
+  |                               Total       |
+  |-------------------------------------------|
+  |                               N=1,069     |
+  |-------------------------------------------|
+  | age_cat       18 - 40 years   294 (34.7%) |
+  |               41 - 60 years   297 (35.0%) |
+  |               61 - 80 years   207 (24.4%) |
+  |               >80 years       50 ( 5.9%)  |
+  |-------------------------------------------|
+  | male          Female          548 (51.3%) |
+  |               Male            521 (48.7%) |
+  |-------------------------------------------|
+  | Rural-Urban   Rural           510 (47.7%) |
+  |               Urban           559 (52.3%) |
+  +-------------------------------------------+
+Data are presented as n (%).
+ 
 file ./output/tables/bsr_op_remote_chars_2019.csv saved
 (8,931 observations deleted)
 
@@ -2013,14 +2083,8 @@ op_nodate_m |
       Total |     10,000      100.00
 
      +-----------------------------------------------------------------------+
-  1. | dereg_date  |     died_fu  |  op_a~e_1  |  op_app~e_2  |  op_app~e_3  |
-     | 2021-03-19  |              |            |  1943-01-02  |  1984-01-11  |
-     |-------------+---------------------------+--------------+--------------|
-     | op_app~e_4  | op_app~e_5  | op_app~e_6  |  op_app~e_7  |  op_app~e_8  |
-     |             | 1941-05-17  |             |              |  2013-05-07  |
-     |-----------------------------------------------------------------------|
-     | op_app~e_9 | op_ap~e_10 | op_a~m_1 | op_a~m_2 | op_a~m_3  | op_a~m_4  |
-     | 1938-06-22 | 1997-03-09 |        6 |        . |        .  |        .  |
+  1. | dereg_date |    died_fu | op_a~m_1 | op_a~m_2 | op_a~m_3  | op_a~m_4  |
+     | 2021-03-19 |            |        6 |        . |        .  |        .  |
      |-----------------------------------------------------------------------|
      | op_a~m_5 | op_a~m_6 | op_a~m_7 | op_a~m_8 | op_a~m_9 | op_app.. | age |
      |        8 |        . |        . |        . |        . |        6 |  19 |
@@ -2045,14 +2109,8 @@ op_nodate_m |
      +-----------------------------------------------------------------------+
 
      +-----------------------------------------------------------------------+
-  2. | dereg_date  |     died_fu  |  op_a~e_1  |  op_app~e_2  |  op_app~e_3  |
-     |             |              |            |              |              |
-     |-------------+---------------------------+--------------+--------------|
-     | op_app~e_4  | op_app~e_5  | op_app~e_6  |  op_app~e_7  |  op_app~e_8  |
-     | 1975-09-15  | 2016-07-07  | 1957-12-24  |  2002-01-07  |  1998-08-15  |
-     |-----------------------------------------------------------------------|
-     | op_app~e_9 | op_ap~e_10 | op_a~m_1 | op_a~m_2 | op_a~m_3  | op_a~m_4  |
-     |            | 1905-02-05 |        . |        . |        1  |        8  |
+  2. | dereg_date |    died_fu | op_a~m_1 | op_a~m_2 | op_a~m_3  | op_a~m_4  |
+     |            |            |        . |        . |        1  |        8  |
      |-----------------------------------------------------------------------|
      | op_a~m_5 | op_a~m_6 | op_a~m_7 | op_a~m_8 | op_a~m_9 | op_app.. | age |
      |        . |        8 |        1 |        . |        . |        7 |  44 |
@@ -2077,14 +2135,8 @@ op_nodate_m |
      +-----------------------------------------------------------------------+
 
      +-----------------------------------------------------------------------+
-  3. | dereg_date  |     died_fu  |  op_a~e_1  |  op_app~e_2  |  op_app~e_3  |
-     |             |              |            |              |              |
-     |-------------+---------------------------+--------------+--------------|
-     | op_app~e_4  | op_app~e_5  | op_app~e_6  |  op_app~e_7  |  op_app~e_8  |
-     |             |             | 2011-10-13  |  1901-08-24  |              |
-     |-----------------------------------------------------------------------|
-     | op_app~e_9 | op_ap~e_10 | op_a~m_1 | op_a~m_2 | op_a~m_3  | op_a~m_4  |
-     |            | 1923-09-22 |        . |        1 |        1  |        2  |
+  3. | dereg_date |    died_fu | op_a~m_1 | op_a~m_2 | op_a~m_3  | op_a~m_4  |
+     |            |            |        . |        1 |        1  |        2  |
      |-----------------------------------------------------------------------|
      | op_a~m_5 | op_a~m_6 | op_a~m_7 | op_a~m_8 | op_a~m_9 | op_app.. | age |
      |        . |        . |        8 |        6 |        . |        . |  59 |
@@ -2109,14 +2161,8 @@ op_nodate_m |
      +-----------------------------------------------------------------------+
 
      +-----------------------------------------------------------------------+
-  4. | dereg_date  |     died_fu  |  op_a~e_1  |  op_app~e_2  |  op_app~e_3  |
-     | 2021-05-02  |  2020-03-06  |            |              |  1939-01-17  |
-     |-------------+---------------------------+--------------+--------------|
-     | op_app~e_4  | op_app~e_5  | op_app~e_6  |  op_app~e_7  |  op_app~e_8  |
-     |             | 1937-07-14  |             |  1960-09-09  |  1961-10-20  |
-     |-----------------------------------------------------------------------|
-     | op_app~e_9 | op_ap~e_10 | op_a~m_1 | op_a~m_2 | op_a~m_3  | op_a~m_4  |
-     |            | 1927-02-20 |        3 |        5 |        .  |        .  |
+  4. | dereg_date |    died_fu | op_a~m_1 | op_a~m_2 | op_a~m_3  | op_a~m_4  |
+     | 2021-05-02 | 2020-03-06 |        3 |        5 |        .  |        .  |
      |-----------------------------------------------------------------------|
      | op_a~m_5 | op_a~m_6 | op_a~m_7 | op_a~m_8 | op_a~m_9 | op_app.. | age |
      |        7 |        . |        . |        . |        . |        . |  35 |
@@ -2141,14 +2187,8 @@ op_nodate_m |
      +-----------------------------------------------------------------------+
 
      +-----------------------------------------------------------------------+
-  5. | dereg_date  |     died_fu  |  op_a~e_1  |  op_app~e_2  |  op_app~e_3  |
-     | 2022-04-29  |  2020-08-24  |            |  1953-08-17  |  2022-08-30  |
-     |-------------+---------------------------+--------------+--------------|
-     | op_app~e_4  | op_app~e_5  | op_app~e_6  |  op_app~e_7  |  op_app~e_8  |
-     |             |             | 1977-12-19  |  1987-02-08  |  1920-10-25  |
-     |-----------------------------------------------------------------------|
-     | op_app~e_9 | op_ap~e_10 | op_a~m_1 | op_a~m_2 | op_a~m_3  | op_a~m_4  |
-     |            | 1962-12-26 |        8 |        . |        8  |        .  |
+  5. | dereg_date |    died_fu | op_a~m_1 | op_a~m_2 | op_a~m_3  | op_a~m_4  |
+     | 2022-04-29 | 2020-08-24 |        8 |        . |        8  |        .  |
      |-----------------------------------------------------------------------|
      | op_a~m_5 | op_a~m_6 | op_a~m_7 | op_a~m_8 | op_a~m_9 | op_app.. | age |
      |       98 |        3 |        4 |        . |        . |        . |  55 |
@@ -2236,7 +2276,7 @@ urban_rura |           urban_rural
 Data                               wide   ->   long
 -----------------------------------------------------------------------------
 Number of obs.                    10000   ->  100000
-Number of variables                  61   ->      44
+Number of variables                  51   ->      34
 j variable (10 values)                    ->   op_appt_number
 xij variables:
 op_appt_dateA_1 op_appt_dateA_2 ... op_appt_dateA_10->op_appt_dateA_
@@ -2503,6 +2543,19 @@ tot_medium |             all_mode_available
 -----------+--------------------------------------------+----------
      Total |     9,520      5,230     81,850        230 |    96,830 
 (91,600 real changes made, 91,600 to missing)
+
+tot_medium |             all_mode_available
+        _2 | No mode i  All appts  Some appt          . |     Total
+-----------+--------------------------------------------+----------
+         0 |     9,520      2,680     48,460        230 |    60,890 
+         1 |         0      1,940     27,150          0 |    29,090 
+         2 |         0        540      5,480          0 |     6,020 
+         3 |         0         50        700          0 |       750 
+         4 |         0         20         50          0 |        70 
+         5 |         0          0         10          0 |        10 
+-----------+--------------------------------------------+----------
+     Total |     9,520      5,230     81,850        230 |    96,830 
+(91,600 real changes made, 91,600 to missing)
 (91,600 missing values generated)
 (91600 missing values generated)
 
@@ -2527,23 +2580,30 @@ prop_mediu~1 |      1,140    61.28655    17.76734         50        100
 -------------+---------------------------------------------------------
 prop_mediu~1 |          0
 
-(91,600 real changes made, 91,600 to missing)
+(96,600 missing values generated)
+(230 real changes made)
+(2,750 real changes made)
+(9,520 real changes made)
 
 medium_remo |
          te |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |      5,000        5.16        5.16
-          1 |        230        0.24        5.40
-          . |     91,600       94.60      100.00
+          0 |        230        0.24        0.24
+          1 |        230        0.24        0.48
+          2 |      2,750        2.84        3.32
+          3 |      9,520        9.83       13.15
+          . |     84,100       86.85      100.00
 ------------+-----------------------------------
       Total |     96,830      100.00
 
 medium_rem |             all_mode_available
        ote | No mode i  All appts  Some appt          . |     Total
 -----------+--------------------------------------------+----------
-         0 |         0      5,000          0          0 |     5,000 
+         0 |         0          0          0        230 |       230 
          1 |         0        230          0          0 |       230 
-         . |     9,520          0     81,850        230 |    91,600 
+         2 |         0      2,750          0          0 |     2,750 
+         3 |     9,520          0          0          0 |     9,520 
+         . |         0      2,250     81,850          0 |    84,100 
 -----------+--------------------------------------------+----------
      Total |     9,520      5,230     81,850        230 |    96,830 
 
@@ -2637,112 +2697,112 @@ Some appts have mode |      8,185       84.53       99.76
 
      +---------------------------------------------------------------------+
   1. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |     6191 |   Male |    Rural | 61 - 80 years |        0 |        4  |
-     |---------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        4 | All appts have mode |        1 |       25 |
-     |---------------------------------------------------------------------|
-     |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
-     +---------------------------------------------------------------------+
-
-     +---------------------------------------------------------------------+
-  2. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    74145 | Female |    Rural | 41 - 60 years |        0 |        4  |
-     |---------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        4 | All appts have mode |        1 |       25 |
-     |---------------------------------------------------------------------|
-     |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
-     +---------------------------------------------------------------------+
-
-     +---------------------------------------------------------------------+
-  3. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    62613 |   Male |    Rural |     >80 years |        0 |        5  |
-     |---------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        5 | All appts have mode |        1 |       20 |
-     |---------------------------------------------------------------------|
-     |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
-     +---------------------------------------------------------------------+
-
-     +---------------------------------------------------------------------+
-  4. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    46807 |   Male |    Rural | 41 - 60 years |        0 |        2  |
-     |---------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     | 1-2 per year |        2 | All appts have mode |        0 |        0 |
-     |---------------------------------------------------------------------|
-     |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
-     +---------------------------------------------------------------------+
-
-     +---------------------------------------------------------------------+
-  5. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |      620 |   Male |    Urban | 61 - 80 years |        0 |        4  |
-     |---------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        4 | All appts have mode |        0 |        0 |
-     |---------------------------------------------------------------------|
-     |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
-     +---------------------------------------------------------------------+
-
-     +---------------------------------------------------------------------+
-  6. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    19692 | Female |    Urban | 18 - 40 years |        0 |        3  |
-     |---------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        3 | All appts have mode |        1 | 33.33333 |
-     |---------------------------------------------------------------------|
-     |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
-     +---------------------------------------------------------------------+
-
-     +---------------------------------------------------------------------+
-  7. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    12185 |   Male |    Urban |     >80 years |        0 |        3  |
-     |---------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        3 | All appts have mode |        1 | 33.33333 |
-     |---------------------------------------------------------------------|
-     |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
-     +---------------------------------------------------------------------+
-
-     +---------------------------------------------------------------------+
-  8. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    43659 | Female |    Urban | 41 - 60 years |        0 |        3  |
-     |---------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        3 | All appts have mode |        1 | 33.33333 |
-     |---------------------------------------------------------------------|
-     |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
-     +---------------------------------------------------------------------+
-
-     +---------------------------------------------------------------------+
-  9. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    39969 |   Male |    Urban | 18 - 40 years |        1 |        6  |
-     |---------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        6 | All appts have mode |        2 | 33.33333 |
-     |---------------------------------------------------------------------|
-     |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
-     +---------------------------------------------------------------------+
-
-     +---------------------------------------------------------------------+
- 10. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |     5208 | Female |    Urban |     >80 years |        1 |        3  |
+     |    31222 | Female |    Urban | 18 - 40 years |        0 |        3  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
      |  3+ per year |        3 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
+     |                    0             |                    .             |
+     +---------------------------------------------------------------------+
+
+     +---------------------------------------------------------------------+
+  2. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    24080 | Female |    Urban | 61 - 80 years |        0 |        2  |
+     |---------------------------------------------------------------------|
+     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
+     | 1-2 per year |        2 | All appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |             medium~n             |             medium~e             |
+     |                    0             |                    .             |
+     +---------------------------------------------------------------------+
+
+     +---------------------------------------------------------------------+
+  3. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    77344 | Female |    Rural | 61 - 80 years |        1 |        4  |
+     |---------------------------------------------------------------------|
+     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
+     |  3+ per year |        4 | All appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |             medium~n             |             medium~e             |
+     |                    0             |                    .             |
+     +---------------------------------------------------------------------+
+
+     +---------------------------------------------------------------------+
+  4. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    99212 |   Male |    Urban |             . |        0 |        4  |
+     |---------------------------------------------------------------------|
+     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
+     |  3+ per year |        4 | All appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |             medium~n             |             medium~e             |
+     |                    0             |                    .             |
+     +---------------------------------------------------------------------+
+
+     +---------------------------------------------------------------------+
+  5. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    70179 | Female |    Rural | 41 - 60 years |        0 |        3  |
+     |---------------------------------------------------------------------|
+     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
+     |  3+ per year |        3 | All appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |             medium~n             |             medium~e             |
+     |                    0             |                    .             |
+     +---------------------------------------------------------------------+
+
+     +---------------------------------------------------------------------+
+  6. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |     8725 |   Male |    Rural | 61 - 80 years |        0 |        1  |
+     |---------------------------------------------------------------------|
+     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
+     | 1-2 per year |        1 | All appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |             medium~n             |             medium~e             |
+     |                    0             |                    .             |
+     +---------------------------------------------------------------------+
+
+     +---------------------------------------------------------------------+
+  7. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    12941 | Female |    Rural |             . |        1 |        4  |
+     |---------------------------------------------------------------------|
+     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
+     |  3+ per year |        4 | All appts have mode |        1 |       25 |
+     |---------------------------------------------------------------------|
+     |             medium~n             |             medium~e             |
+     |                    0             |                    2             |
+     +---------------------------------------------------------------------+
+
+     +---------------------------------------------------------------------+
+  8. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    87447 | Female |    Rural | 41 - 60 years |        0 |        3  |
+     |---------------------------------------------------------------------|
+     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
+     |  3+ per year |        3 | All appts have mode |        1 | 33.33333 |
+     |---------------------------------------------------------------------|
+     |             medium~n             |             medium~e             |
+     |                    0             |                    2             |
+     +---------------------------------------------------------------------+
+
+     +---------------------------------------------------------------------+
+  9. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    51773 |   Male |    Urban | 18 - 40 years |        1 |        4  |
+     |---------------------------------------------------------------------|
+     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
+     |  3+ per year |        4 | All appts have mode |        0 |        0 |
+     |---------------------------------------------------------------------|
+     |             medium~n             |             medium~e             |
+     |                    0             |                    .             |
+     +---------------------------------------------------------------------+
+
+     +---------------------------------------------------------------------+
+ 10. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    21355 |   Male |    Rural |     >80 years |        1 |        5  |
+     |---------------------------------------------------------------------|
+     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
+     |  3+ per year |        5 | All appts have mode |        2 |       40 |
+     |---------------------------------------------------------------------|
+     |             medium~n             |             medium~e             |
+     |                    0             |                    2             |
      +---------------------------------------------------------------------+
 
   tot_appts_cat |      Freq.     Percent        Cum.
@@ -2901,31 +2961,24 @@ Data are presented as n (%).
  
 file ./output/tables/bsr_op_medium_2020.csv saved
 
-  +-----------------------------------------------------+
-  | factor          N_0   N_1     N_2   m_0   m_1   m_2 |
-  |-----------------------------------------------------|
-  | medium_remote    23   920   8,740     0     0     0 |
-  +-----------------------------------------------------+
+  +-----------------------------+
+  | factor            N_1   m_1 |
+  |-----------------------------|
+  | medium_remote   9,683     0 |
+  +-----------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
-  +----------------------------------------------------------------------------
-> --------+
-  |                           No appointments   1-2 per year   3+ per year     
-> p-value |
-  |----------------------------------------------------------------------------
-> --------|
-  |                           N=23              N=920          N=8,740         
->         |
-  |----------------------------------------------------------------------------
-> --------|
-  | medium_remote   0         0 ( 0.0%)         199 (21.6%)    301 ( 3.4%)     
-> <0.001  |
-  |                 1         0 ( 0.0%)         23 ( 2.5%)     0 ( 0.0%)       
->         |
-  |                 Missing   23 (100.0%)       698 (75.9%)    8,439 (96.6%)   
->         |
-  +----------------------------------------------------------------------------
-> --------+
+  +-----------------------------------------+
+  |                           Total         |
+  |-----------------------------------------|
+  |                           N=9,683       |
+  |-----------------------------------------|
+  | medium_remote   0         23 ( 0.2%)    |
+  |                 1         23 ( 0.2%)    |
+  |                 2         275 ( 2.8%)   |
+  |                 3         952 ( 9.8%)   |
+  |                 Missing   8,410 (86.9%) |
+  +-----------------------------------------+
 Data are presented as n (%).
  
 file ./output/tables/bsr_op_remote_2020.csv saved
@@ -3015,35 +3068,34 @@ Data are presented as n (%).
 (note: variable Total was str10, now str11 to accommodate using data's
        values)
 file ./output/tables/bsr_op_medium_chars_2020.csv saved
-(9,183 observations deleted)
+(9,660 observations deleted)
 
   +-------------------------+
   | factor        N_1   m_1 |
   |-------------------------|
-  | age_cat       401    99 |
+  | age_cat        22     1 |
   |-------------------------|
-  | male          500     0 |
+  | male           23     0 |
   |-------------------------|
-  | Rural-Urban   500     0 |
+  | Rural-Urban    23     0 |
   +-------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
-  +-------------------------------------------+
-  |                               Total       |
-  |-------------------------------------------|
-  |                               N=500       |
-  |-------------------------------------------|
-  | age_cat       18 - 40 years   126 (31.4%) |
-  |               41 - 60 years   134 (33.4%) |
-  |               61 - 80 years   119 (29.7%) |
-  |               >80 years       22 ( 5.5%)  |
-  |-------------------------------------------|
-  | male          Female          246 (49.2%) |
-  |               Male            254 (50.8%) |
-  |-------------------------------------------|
-  | Rural-Urban   Rural           256 (51.2%) |
-  |               Urban           244 (48.8%) |
-  +-------------------------------------------+
+  +----------------------------------------+
+  |                               Total    |
+  |----------------------------------------|
+  |                               N=23     |
+  |----------------------------------------|
+  | age_cat       18 - 40 years   5 (23%)  |
+  |               41 - 60 years   12 (55%) |
+  |               61 - 80 years   5 (23%)  |
+  |----------------------------------------|
+  | male          Female          16 (70%) |
+  |               Male            7 (30%)  |
+  |----------------------------------------|
+  | Rural-Urban   Rural           12 (52%) |
+  |               Urban           11 (48%) |
+  +----------------------------------------+
 Data are presented as n (%).
  
 file tempfile.dta saved
@@ -3077,7 +3129,68 @@ file tempfile.dta saved
   +----------------------------------------+
 Data are presented as n (%).
  
-(note: variable Total was str8, now str11 to accommodate using data's values)
+(9,408 observations deleted)
+
+  +-------------------------+
+  | factor        N_1   m_1 |
+  |-------------------------|
+  | age_cat       222    53 |
+  |-------------------------|
+  | male          275     0 |
+  |-------------------------|
+  | Rural-Urban   275     0 |
+  +-------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +-------------------------------------------+
+  |                               Total       |
+  |-------------------------------------------|
+  |                               N=275       |
+  |-------------------------------------------|
+  | age_cat       18 - 40 years   65 (29.3%)  |
+  |               41 - 60 years   82 (36.9%)  |
+  |               61 - 80 years   60 (27.0%)  |
+  |               >80 years       15 ( 6.8%)  |
+  |-------------------------------------------|
+  | male          Female          143 (52.0%) |
+  |               Male            132 (48.0%) |
+  |-------------------------------------------|
+  | Rural-Urban   Rural           138 (50.2%) |
+  |               Urban           137 (49.8%) |
+  +-------------------------------------------+
+Data are presented as n (%).
+ 
+(8,731 observations deleted)
+
+  +-------------------------+
+  | factor        N_1   m_1 |
+  |-------------------------|
+  | age_cat       762   190 |
+  |-------------------------|
+  | male          952     0 |
+  |-------------------------|
+  | Rural-Urban   952     0 |
+  +-------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +-------------------------------------------+
+  |                               Total       |
+  |-------------------------------------------|
+  |                               N=952       |
+  |-------------------------------------------|
+  | age_cat       18 - 40 years   281 (36.9%) |
+  |               41 - 60 years   250 (32.8%) |
+  |               61 - 80 years   181 (23.8%) |
+  |               >80 years       50 ( 6.6%)  |
+  |-------------------------------------------|
+  | male          Female          455 (47.8%) |
+  |               Male            497 (52.2%) |
+  |-------------------------------------------|
+  | Rural-Urban   Rural           479 (50.3%) |
+  |               Urban           473 (49.7%) |
+  +-------------------------------------------+
+Data are presented as n (%).
+ 
 file ./output/tables/bsr_op_remote_chars_2020.csv saved
 (8,731 observations deleted)
 
@@ -3439,14 +3552,8 @@ op_nodate_m |
       Total |     10,000      100.00
 
      +-----------------------------------------------------------------------+
-  1. | dereg_date  |     died_fu  |  op_a~e_1  |  op_app~e_2  |  op_app~e_3  |
-     | 2022-05-08  |              |            |  1991-09-03  |              |
-     |-------------+---------------------------+--------------+--------------|
-     | op_app~e_4  | op_app~e_5  | op_app~e_6  |  op_app~e_7  |  op_app~e_8  |
-     |             |             | 1945-03-30  |              |              |
-     |-----------------------------------------------------------------------|
-     | op_app~e_9 | op_ap~e_10 | op_a~m_1 | op_a~m_2 | op_a~m_3  | op_a~m_4  |
-     | 1929-09-03 | 1975-09-13 |        . |        . |        8  |       98  |
+  1. | dereg_date |    died_fu | op_a~m_1 | op_a~m_2 | op_a~m_3  | op_a~m_4  |
+     | 2022-05-08 |            |        . |        . |        8  |       98  |
      |-----------------------------------------------------------------------|
      | op_a~m_5 | op_a~m_6 | op_a~m_7 | op_a~m_8 | op_a~m_9 | op_app.. | age |
      |        . |        . |        . |        . |        . |        . |  42 |
@@ -3471,14 +3578,8 @@ op_nodate_m |
      +-----------------------------------------------------------------------+
 
      +-----------------------------------------------------------------------+
-  2. | dereg_date  |     died_fu  |  op_a~e_1  |  op_app~e_2  |  op_app~e_3  |
-     | 2020-10-23  |              |            |              |              |
-     |-------------+---------------------------+--------------+--------------|
-     | op_app~e_4  | op_app~e_5  | op_app~e_6  |  op_app~e_7  |  op_app~e_8  |
-     | 1957-01-04  |             |             |  2003-08-17  |              |
-     |-----------------------------------------------------------------------|
-     | op_app~e_9 | op_ap~e_10 | op_a~m_1 | op_a~m_2 | op_a~m_3  | op_a~m_4  |
-     |            |            |       98 |        3 |        1  |        .  |
+  2. | dereg_date |    died_fu | op_a~m_1 | op_a~m_2 | op_a~m_3  | op_a~m_4  |
+     | 2020-10-23 |            |       98 |        3 |        1  |        .  |
      |-----------------------------------------------------------------------|
      | op_a~m_5 | op_a~m_6 | op_a~m_7 | op_a~m_8 | op_a~m_9 | op_app.. | age |
      |        8 |        . |        . |        8 |        . |        6 |  22 |
@@ -3503,14 +3604,8 @@ op_nodate_m |
      +-----------------------------------------------------------------------+
 
      +-----------------------------------------------------------------------+
-  3. | dereg_date  |     died_fu  |  op_a~e_1  |  op_app~e_2  |  op_app~e_3  |
-     |             |              |            |  1975-11-30  |              |
-     |-------------+---------------------------+--------------+--------------|
-     | op_app~e_4  | op_app~e_5  | op_app~e_6  |  op_app~e_7  |  op_app~e_8  |
-     | 1915-11-19  | 1988-09-03  |             |  1954-07-30  |  1963-10-25  |
-     |-----------------------------------------------------------------------|
-     | op_app~e_9 | op_ap~e_10 | op_a~m_1 | op_a~m_2 | op_a~m_3  | op_a~m_4  |
-     | 1996-08-21 |            |        1 |        . |        .  |        .  |
+  3. | dereg_date |    died_fu | op_a~m_1 | op_a~m_2 | op_a~m_3  | op_a~m_4  |
+     |            |            |        1 |        . |        .  |        .  |
      |-----------------------------------------------------------------------|
      | op_a~m_5 | op_a~m_6 | op_a~m_7 | op_a~m_8 | op_a~m_9 | op_app.. | age |
      |        7 |        . |       98 |        6 |        . |       98 |  15 |
@@ -3535,14 +3630,8 @@ op_nodate_m |
      +-----------------------------------------------------------------------+
 
      +-----------------------------------------------------------------------+
-  4. | dereg_date  |     died_fu  |  op_a~e_1  |  op_app~e_2  |  op_app~e_3  |
-     | 2020-11-22  |  2022-09-08  |            |  1941-12-19  |              |
-     |-------------+---------------------------+--------------+--------------|
-     | op_app~e_4  | op_app~e_5  | op_app~e_6  |  op_app~e_7  |  op_app~e_8  |
-     |             |             |             |              |  1990-07-16  |
-     |-----------------------------------------------------------------------|
-     | op_app~e_9 | op_ap~e_10 | op_a~m_1 | op_a~m_2 | op_a~m_3  | op_a~m_4  |
-     |            | 1983-01-12 |        7 |        8 |        .  |        6  |
+  4. | dereg_date |    died_fu | op_a~m_1 | op_a~m_2 | op_a~m_3  | op_a~m_4  |
+     | 2020-11-22 | 2022-09-08 |        7 |        8 |        .  |        6  |
      |-----------------------------------------------------------------------|
      | op_a~m_5 | op_a~m_6 | op_a~m_7 | op_a~m_8 | op_a~m_9 | op_app.. | age |
      |        . |        . |        . |        7 |        3 |        6 |  20 |
@@ -3567,14 +3656,8 @@ op_nodate_m |
      +-----------------------------------------------------------------------+
 
      +-----------------------------------------------------------------------+
-  5. | dereg_date  |     died_fu  |  op_a~e_1  |  op_app~e_2  |  op_app~e_3  |
-     |             |              |            |              |  1975-10-26  |
-     |-------------+---------------------------+--------------+--------------|
-     | op_app~e_4  | op_app~e_5  | op_app~e_6  |  op_app~e_7  |  op_app~e_8  |
-     | 2019-01-09  | 2009-01-15  | 1996-02-15  |  1923-03-26  |  1948-03-16  |
-     |-----------------------------------------------------------------------|
-     | op_app~e_9 | op_ap~e_10 | op_a~m_1 | op_a~m_2 | op_a~m_3  | op_a~m_4  |
-     |            | 2022-07-16 |        2 |        5 |        6  |        .  |
+  5. | dereg_date |    died_fu | op_a~m_1 | op_a~m_2 | op_a~m_3  | op_a~m_4  |
+     |            |            |        2 |        5 |        6  |        .  |
      |-----------------------------------------------------------------------|
      | op_a~m_5 | op_a~m_6 | op_a~m_7 | op_a~m_8 | op_a~m_9 | op_app.. | age |
      |        7 |        . |        . |        5 |        . |        . |  52 |
@@ -3662,7 +3745,7 @@ urban_rura |           urban_rural
 Data                               wide   ->   long
 -----------------------------------------------------------------------------
 Number of obs.                    10000   ->  100000
-Number of variables                  61   ->      44
+Number of variables                  51   ->      34
 j variable (10 values)                    ->   op_appt_number
 xij variables:
 op_appt_dateA_1 op_appt_dateA_2 ... op_appt_dateA_10->op_appt_dateA_
@@ -3930,6 +4013,18 @@ tot_medium |             all_mode_available
 -----------+--------------------------------------------+----------
      Total |     6,410      3,230     51,630        170 |    61,440 
 (58,210 real changes made, 58,210 to missing)
+
+tot_medium |             all_mode_available
+        _2 | No mode i  All appts  Some appt          . |     Total
+-----------+--------------------------------------------+----------
+         0 |     6,410      1,610     29,890        170 |    38,080 
+         1 |         0      1,160     17,850          0 |    19,010 
+         2 |         0        400      3,500          0 |     3,900 
+         3 |         0         60        360          0 |       420 
+         4 |         0          0         30          0 |        30 
+-----------+--------------------------------------------+----------
+     Total |     6,410      3,230     51,630        170 |    61,440 
+(58,210 real changes made, 58,210 to missing)
 (58,210 missing values generated)
 (58210 missing values generated)
 
@@ -3954,23 +4049,30 @@ prop_mediu~1 |        750    60.48889    17.64753         50        100
 -------------+---------------------------------------------------------
 prop_mediu~1 |          0
 
-(58,210 real changes made, 58,210 to missing)
+(61,270 missing values generated)
+(170 real changes made)
+(1,700 real changes made)
+(6,410 real changes made)
 
 medium_remo |
          te |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |      3,060        4.98        4.98
-          1 |        170        0.28        5.26
-          . |     58,210       94.74      100.00
+          0 |        170        0.28        0.28
+          1 |        170        0.28        0.55
+          2 |      1,700        2.77        3.32
+          3 |      6,410       10.43       13.75
+          . |     52,990       86.25      100.00
 ------------+-----------------------------------
       Total |     61,440      100.00
 
 medium_rem |             all_mode_available
        ote | No mode i  All appts  Some appt          . |     Total
 -----------+--------------------------------------------+----------
-         0 |         0      3,060          0          0 |     3,060 
+         0 |         0          0          0        170 |       170 
          1 |         0        170          0          0 |       170 
-         . |     6,410          0     51,630        170 |    58,210 
+         2 |         0      1,700          0          0 |     1,700 
+         3 |     6,410          0          0          0 |     6,410 
+         . |         0      1,360     51,630          0 |    52,990 
 -----------+--------------------------------------------+----------
      Total |     6,410      3,230     51,630        170 |    61,440 
 
@@ -4062,46 +4164,46 @@ Some appts have mode |      5,163       84.03       99.72
 
      +---------------------------------------------------------------------+
   1. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    77624 | Female |    Rural |     >80 years |        0 |        3  |
+     |    68242 |   Male |    Urban |             . |        0 |        2  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        3 | All appts have mode |        0 |        0 |
+     | 1-2 per year |        2 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
+     |                    0             |                    .             |
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
   2. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+     |    41710 | Female |    Rural |             . |        0 |        4  |
+     |---------------------------------------------------------------------|
+     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
+     |  3+ per year |        4 | All appts have mode |        1 |       25 |
+     |---------------------------------------------------------------------|
+     |             medium~n             |             medium~e             |
+     |                    0             |                    2             |
+     +---------------------------------------------------------------------+
+
+     +---------------------------------------------------------------------+
+  3. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
      |    82594 |   Male |    Rural | 18 - 40 years |        0 |        2  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
      | 1-2 per year |        2 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
+     |                    0             |                    .             |
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
-  3. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
+  4. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
      |    86719 | Female |    Rural | 18 - 40 years |        1 |        1  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
      | 1-2 per year |        1 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
-     +---------------------------------------------------------------------+
-
-     +---------------------------------------------------------------------+
-  4. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    39943 | Female |    Rural | 18 - 40 years |        0 |        4  |
-     |---------------------------------------------------------------------|
-     | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        4 | All appts have mode |        0 |        0 |
-     |---------------------------------------------------------------------|
-     |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
+     |                    0             |                    .             |
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
@@ -4112,18 +4214,18 @@ Some appts have mode |      5,163       84.03       99.72
      | 1-2 per year |        2 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
+     |                    0             |                    .             |
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
   6. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    13067 |   Male |    Rural | 18 - 40 years |        1 |        3  |
+     |    97049 |   Male |    Urban |             . |        0 |        3  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        3 | All appts have mode |        1 | 33.33333 |
+     |  3+ per year |        3 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
+     |                    0             |                    .             |
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
@@ -4134,18 +4236,18 @@ Some appts have mode |      5,163       84.03       99.72
      |  3+ per year |        3 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
+     |                    0             |                    .             |
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
   8. | patien~d |   male | urban_~n |       age_cat | short_fu | tot_ap~s  |
-     |    64421 |   Male |    Urban | 18 - 40 years |        0 |        5  |
+     |    23800 | Female |    Urban |     >80 years |        1 |        3  |
      |---------------------------------------------------------------------|
      | tot_appts_~t | tot_ap~m |  all_mode_available | tot_me~1 | prop_m~1 |
-     |  3+ per year |        5 | All appts have mode |        1 |       20 |
+     |  3+ per year |        3 | All appts have mode |        1 | 33.33333 |
      |---------------------------------------------------------------------|
      |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
+     |                    0             |                    2             |
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
@@ -4156,7 +4258,7 @@ Some appts have mode |      5,163       84.03       99.72
      |  3+ per year |        4 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
+     |                    0             |                    .             |
      +---------------------------------------------------------------------+
 
      +---------------------------------------------------------------------+
@@ -4167,7 +4269,7 @@ Some appts have mode |      5,163       84.03       99.72
      |  3+ per year |        3 | All appts have mode |        0 |        0 |
      |---------------------------------------------------------------------|
      |             medium~n             |             medium~e             |
-     |                    0             |                    0             |
+     |                    0             |                    .             |
      +---------------------------------------------------------------------+
 
   tot_appts_cat |      Freq.     Percent        Cum.
@@ -4326,31 +4428,24 @@ Data are presented as n (%).
  
 file ./output/tables/bsr_op_medium_2021.csv saved
 
-  +-----------------------------------------------------+
-  | factor          N_0   N_1     N_2   m_0   m_1   m_2 |
-  |-----------------------------------------------------|
-  | medium_remote    17   543   5,584     0     0     0 |
-  +-----------------------------------------------------+
+  +-----------------------------+
+  | factor            N_1   m_1 |
+  |-----------------------------|
+  | medium_remote   6,144     0 |
+  +-----------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
-  +----------------------------------------------------------------------------
-> --------+
-  |                           No appointments   1-2 per year   3+ per year     
-> p-value |
-  |----------------------------------------------------------------------------
-> --------|
-  |                           N=17              N=543          N=5,584         
->         |
-  |----------------------------------------------------------------------------
-> --------|
-  | medium_remote   0         0 ( 0.0%)         112 (20.6%)    194 ( 3.5%)     
-> <0.001  |
-  |                 1         0 ( 0.0%)         15 ( 2.8%)     2 ( 0.0%)       
->         |
-  |                 Missing   17 (100.0%)       416 (76.6%)    5,388 (96.5%)   
->         |
-  +----------------------------------------------------------------------------
-> --------+
+  +-----------------------------------------+
+  |                           Total         |
+  |-----------------------------------------|
+  |                           N=6,144       |
+  |-----------------------------------------|
+  | medium_remote   0         17 ( 0.3%)    |
+  |                 1         17 ( 0.3%)    |
+  |                 2         170 ( 2.8%)   |
+  |                 3         641 (10.4%)   |
+  |                 Missing   5,299 (86.2%) |
+  +-----------------------------------------+
 Data are presented as n (%).
  
 file ./output/tables/bsr_op_remote_2021.csv saved
@@ -4439,35 +4534,34 @@ Data are presented as n (%).
  
 (note: variable Total was str8, now str11 to accommodate using data's values)
 file ./output/tables/bsr_op_medium_chars_2021.csv saved
-(5,838 observations deleted)
+(6,127 observations deleted)
 
   +-------------------------+
   | factor        N_1   m_1 |
   |-------------------------|
-  | age_cat       246    60 |
+  | age_cat        13     4 |
   |-------------------------|
-  | male          306     0 |
+  | male           17     0 |
   |-------------------------|
-  | Rural-Urban   306     0 |
+  | Rural-Urban    17     0 |
   +-------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
-  +-------------------------------------------+
-  |                               Total       |
-  |-------------------------------------------|
-  |                               N=306       |
-  |-------------------------------------------|
-  | age_cat       18 - 40 years   81 (32.9%)  |
-  |               41 - 60 years   86 (35.0%)  |
-  |               61 - 80 years   60 (24.4%)  |
-  |               >80 years       19 ( 7.7%)  |
-  |-------------------------------------------|
-  | male          Female          174 (56.9%) |
-  |               Male            132 (43.1%) |
-  |-------------------------------------------|
-  | Rural-Urban   Rural           142 (46.4%) |
-  |               Urban           164 (53.6%) |
-  +-------------------------------------------+
+  +----------------------------------------+
+  |                               Total    |
+  |----------------------------------------|
+  |                               N=17     |
+  |----------------------------------------|
+  | age_cat       18 - 40 years   7 (54%)  |
+  |               41 - 60 years   2 (15%)  |
+  |               61 - 80 years   4 (31%)  |
+  |----------------------------------------|
+  | male          Female          8 (47%)  |
+  |               Male            9 (53%)  |
+  |----------------------------------------|
+  | Rural-Urban   Rural           7 (41%)  |
+  |               Urban           10 (59%) |
+  +----------------------------------------+
 Data are presented as n (%).
  
 file tempfile.dta saved
@@ -4501,7 +4595,68 @@ file tempfile.dta saved
   +----------------------------------------+
 Data are presented as n (%).
  
-(note: variable Total was str8, now str11 to accommodate using data's values)
+(5,974 observations deleted)
+
+  +-------------------------+
+  | factor        N_1   m_1 |
+  |-------------------------|
+  | age_cat       141    29 |
+  |-------------------------|
+  | male          170     0 |
+  |-------------------------|
+  | Rural-Urban   170     0 |
+  +-------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +-------------------------------------------+
+  |                               Total       |
+  |-------------------------------------------|
+  |                               N=170       |
+  |-------------------------------------------|
+  | age_cat       18 - 40 years   47 (33.3%)  |
+  |               41 - 60 years   46 (32.6%)  |
+  |               61 - 80 years   39 (27.7%)  |
+  |               >80 years       9 ( 6.4%)   |
+  |-------------------------------------------|
+  | male          Female          101 (59.4%) |
+  |               Male            69 (40.6%)  |
+  |-------------------------------------------|
+  | Rural-Urban   Rural           81 (47.6%)  |
+  |               Urban           89 (52.4%)  |
+  +-------------------------------------------+
+Data are presented as n (%).
+ 
+(5,503 observations deleted)
+
+  +-------------------------+
+  | factor        N_1   m_1 |
+  |-------------------------|
+  | age_cat       510   131 |
+  |-------------------------|
+  | male          641     0 |
+  |-------------------------|
+  | Rural-Urban   641     0 |
+  +-------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +-------------------------------------------+
+  |                               Total       |
+  |-------------------------------------------|
+  |                               N=641       |
+  |-------------------------------------------|
+  | age_cat       18 - 40 years   178 (34.9%) |
+  |               41 - 60 years   172 (33.7%) |
+  |               61 - 80 years   118 (23.1%) |
+  |               >80 years       42 ( 8.2%)  |
+  |-------------------------------------------|
+  | male          Female          311 (48.5%) |
+  |               Male            330 (51.5%) |
+  |-------------------------------------------|
+  | Rural-Urban   Rural           326 (50.9%) |
+  |               Urban           315 (49.1%) |
+  +-------------------------------------------+
+Data are presented as n (%).
+ 
 file ./output/tables/bsr_op_remote_chars_2021.csv saved
 (5,503 observations deleted)
 
@@ -4637,5 +4792,5 @@ file ./output/tables/bsr_op_uk_medium_chars_2021.csv saved
       name:  <unnamed>
        log:  /workspace/logs/bsr.log
   log type:  text
- closed on:  20 Sep 2022, 07:51:42
+ closed on:  20 Sep 2022, 10:33:33
 -------------------------------------------------------------------------------
