@@ -170,8 +170,12 @@ forvalues i=2019/2021 {
     egen medium_person = cut(prop_medium_1), at(0, 50, 101) icodes
     bys medium_person: sum prop_medium_1 
 
+    gen medium_remote = tot_medium_2==tot_appts_medium 
+    replace medium_remote=. if all_mode_available!=1
+    tab medium_remote, m
+    tab medium_remote all_mode_available, m
 
-    keep patient_id tot_appts_cat tot_appts tot_appts_medium medium_person tot_medium_1 prop_medium_1 age_cat male urban_rural_bin short_fu all_mode_available 
+    keep patient_id tot_appts_cat tot_appts tot_appts_medium medium_person tot_medium_1 prop_medium_1 age_cat male urban_rural_bin short_fu all_mode_available medium_remote
     describe
     duplicates drop 
     codebook patient_id
@@ -199,10 +203,15 @@ forvalues i=2019/2021 {
     table1_mc, vars(tot_appts_cat cate) missing clear 
     export delimited using ./output/tables/bsr_op_appt_`i'.csv 
     restore
+    * Medium of appointment - first 50% at least in person
     preserve 
-    keep if all_mode_available==1
     table1_mc, vars(medium_person cate) missing clear 
     export delimited using ./output/tables/bsr_op_medium_`i'.csv
+    restore
+    * Medium of appointment - all remote
+    preserve 
+    table1_mc, vars(medium_remote cate) by(tot_appts_cat) missing clear 
+    export delimited using ./output/tables/bsr_op_remote_`i'.csv
     restore
     * Create table of number of appointment and mode where mode info available for all appts
     preserve
@@ -221,6 +230,17 @@ forvalues i=2019/2021 {
     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
     append using tempfile
     export delimited using ./output/tables/bsr_op_medium_chars_`i'.csv
+    restore
+    preserve 
+    keep if medium_remote==0 
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
+    save tempfile, replace
+    restore 
+    preserve
+    keep if medium_remote==1 
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
+    append using tempfile
+    export delimited using ./output/tables/bsr_op_remote_chars_`i'.csv
     restore
     preserve
     keep if all_mode_available==0
