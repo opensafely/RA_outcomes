@@ -227,7 +227,13 @@ study = StudyDefinition(
             date_format="YYYY-MM-DD",
             return_expectations={"date": {"earliest": "2020-03-01"}}
     ),
-    
+    age_2019=patients.age_as_of(
+            "2019-04-01",
+            return_expectations={
+                "rate": "universal",
+                "int": {"distribution": "population_ages"},
+            },
+        ),
     
    **op_appt_dates_and_mode_X(
         name="op_appt",

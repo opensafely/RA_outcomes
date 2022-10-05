@@ -95,13 +95,8 @@ forvalues i=2019/2021 {
     * Format dates
     gen died_fuA = date(died_fu, "YMD")
     gen dereg_dateA = date(dereg_date, "YMD")
-    if `i'!=2021 {
-        gen end_fu = date("`j'-03-31", "YMD")
-        }
-    else {
-        gen end_fu = date("`i'-12-31", "YMD")
-        }
-    
+    gen end_fu = date("`j'-03-31", "YMD")
+        
     list end_fu in 1/5
     * Follow-up time
     gen end_date = min(died_fuA, dereg_dateA, end_fu)
