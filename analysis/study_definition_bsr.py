@@ -64,13 +64,13 @@ study = StudyDefinition(
         """,
     
         has_follow_up=patients.registered_with_one_practice_between(
-            "2019-01-01", "2019-04-01"
+            "index_date - 3 months", "index_date"
         ),
         died=patients.died_from_any_cause(
-            on_or_before="2019-04-01"
+            on_or_before="index_date"
         ),
         stp=patients.registered_practice_as_of(
-            "2019-04-01",
+            "index_date",
             returning="stp_code",
             return_expectations={
             "category": {"ratios": {"STP1": 0.3, "STP2": 0.2, "STP3": 0.5}},
