@@ -66,7 +66,7 @@ forvalues i=2019/2021 {
 
     * Define age categories
     * Create age categories
-    egen age_cat = cut(age), at(18, 40, 60, 80, 120) icodes
+    egen age_cat = cut(age_2019), at(18, 40, 60, 80, 120) icodes
     label define age 0 "18 - 40 years" 1 "41 - 60 years" 2 "61 - 80 years" 3 ">80 years"
     label values age_cat age
     safetab age_cat, miss
