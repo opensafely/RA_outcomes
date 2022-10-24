@@ -142,14 +142,20 @@ label define bmi 0 "Missing" 1 "Underweight" 2 "Healthy range" 3 "Overweight" 4 
 label values bmi_cat bmi
 
 * Categorise number of outpatient appointments
-label define appt 0 "No appointments" 1 "1-2 per year" 2 "3-6 per year" 3 "7-12 per year" 4 "More than 12 per year"
+label define appt 0 "No appointments" 1 "1-2 per year" 2 "3 or more per year" 
 forvalues i=2019/2021 {
-    egen op_appt_`i'_cat = cut(outpatient_appt_`i'), at(0, 1, 3, 7, 13, 1000) icodes
+    egen op_appt_`i'_cat = cut(outpatient_appt_`i'), at(0, 1, 3, 1000) icodes
     label values op_appt_`i'_cat appt
     }
+
+* Calculate difference compared to 2019
+gen diff_op_2020 = outpatient_appt_2020 - outpatient_appt_2019
+gen diff_op_2021 = outpatient_appt_2021 - outpatient_appt_2019
+sum diff_op_2020 diff_op_2021, d
+
 preserve
 * Tabulate number of appointments per year
-table1_mc, vars(op_appt_2019_cat cate \ op_appt_2020_cat cate \ op_appt_2021_cat cate) clear
+table1_mc, vars(op_appt_2019_cat cate \ op_appt_2020_cat cate \ op_appt_2021_cat cate \ diff_op_2020 contn \ diff_op_2021 contn) clear
 export delimited using ./output/tables/op_appt_yrs.csv
 restore 
 * Tabulate overall characteristics 
@@ -165,18 +171,19 @@ forvalues i=2019/2021 {
     table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
     save `tempfile', replace
     restore
-    forvalues j=1/4 {
+    forvalues j=1/2 {
         preserve
         keep if op_appt_`i'_cat==`j'
         table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
         append using `tempfile'
         save `tempfile', replace
-        if `j'==4 {
+        if `j'==2 {
             export delimited using ./output/tables/characteristics_strata`i'.csv
         }
         restore
         }
-    * Tabulate characteristics by whether hospitalised with RA for each year
+    }
+    /* Tabulate characteristics by whether hospitalised with RA for each year
     preserve
     keep if ra_hosp_`i'==1
     table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
@@ -188,5 +195,6 @@ preserve
     table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
     export delimited using ./output/tables/characteristics_ra_hosp_2018.csv
     restore
+    */
 log close
 
