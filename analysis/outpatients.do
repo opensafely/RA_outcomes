@@ -158,8 +158,8 @@ egen diff_op_cat_2021 = cut(diff_op_2021), at(-100, 0, 1, 100) icodes
 label define op_cat 0 "Fewer appointments" 1 "Same number of appointments" 2 "More appointments"
 label values diff_op_cat_2020 op_cat
 label values diff_op_cat_2021 op_cat
-tab diff_op_cat_2020
-tab diff_op_cat_2021
+tab diff_op_cat_2020 op_appt_2020_cat
+tab diff_op_cat_2021 op_appt_2021_cat
 bys diff_op_cat_2020: sum diff_op_2020
 
 preserve
