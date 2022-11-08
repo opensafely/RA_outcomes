@@ -22,7 +22,7 @@ study = StudyDefinition(
         "rate": "uniform",
         "incidence": 0.5,
     },
-    index_date="2018-03-01",
+    index_date="2019-04-01",
     population=patients.satisfying(
         """
         has_follow_up AND
@@ -35,13 +35,13 @@ study = StudyDefinition(
         """,
     
         has_follow_up=patients.registered_with_one_practice_between(
-            "index_date - 3 months", "index_date"
+            "2019-04-01 - 3 months", "2019-04-01"
         ),
         died=patients.died_from_any_cause(
-                on_or_before="index_date"
+                on_or_before="2019-04-01"
         ),
         stp=patients.registered_practice_as_of(
-                "index_date",
+                "2019-04-01",
                 returning="stp_code",
                 return_expectations={
                 "category": {"ratios": {"STP1": 0.3, "STP2": 0.2, "STP3": 0.5}},
@@ -49,47 +49,15 @@ study = StudyDefinition(
         ),
     ),
     dereg_date=patients.date_deregistered_from_all_supported_practices(
-        on_or_after="index_date",
+        on_or_after="2019-04-01",
         date_format="YYYY-MM-DD",
         return_expectations={"date": {"earliest": "2020-03-01"}}
     ),
     died_fu=patients.died_from_any_cause(
-            on_or_after="index_date",
+            on_or_after="2019-04-01",
             returning="date_of_death",
             date_format="YYYY-MM-DD",
             return_expectations={"date": {"earliest": "2020-03-01"}}
-    ),
-    household=patients.household_as_of(
-        "2020-02-01",
-        returning="household_size",
-        return_expectations={
-                "int": {"distribution": "normal", "mean": 3, "stddev": 1},
-                "incidence": 1,
-            },
-    ),
-    care_home_type=patients.care_home_status_as_of(
-        "2020-02-01",
-        categorised_as={
-            "PC":
-            """
-            IsPotentialCareHome
-            AND LocationDoesNotRequireNursing='Y'
-            AND LocationRequiresNursing='N'
-            """,
-            "PN":
-            """
-            IsPotentialCareHome
-            AND LocationDoesNotRequireNursing='N'
-            AND LocationRequiresNursing='Y'
-            """,
-            "PS": "IsPotentialCareHome",
-            "PR": "NOT IsPotentialCareHome",
-            "": "DEFAULT",
-        },
-        return_expectations={
-            "rate": "universal",
-            "category": {"ratios": {"PC": 0.05, "PN": 0.05, "PS": 0.05, "PR": 0.84, "": 0.01},},
-        },
     ),
     # Flags to identify people with RA 
     # Including date range as seemed to be some implausible dates
@@ -97,20 +65,20 @@ study = StudyDefinition(
     # baseline and was diagnosed at birth would be the maximum date
     has_ra_code=patients.with_these_clinical_events(
         codelist=ra_codes,
-        between=["1909-03-01", "index_date"],
+        between=["1909-03-01", "2019-04-01"],
         returning="binary_flag",
     ),
     # Identifying date of first code with plausable date
     first_ra_code=patients.with_these_clinical_events(
         codelist=ra_codes,
-        between=["1909-03-01", "index_date"],
+        between=["1909-03-01", "2019-04-01"],
         returning="date",
         date_format="YYYY-MM-DD",
         return_first_date_in_period="True",
     ),
     number_ra_codes=patients.with_these_clinical_events(
         codelist=ra_codes,
-        between=["1909-03-01", "index_date"],
+        between=["1909-03-01", "2019-04-01"],
         return_number_of_matches_in_period="True",
         return_expectations={
                 "int": {"distribution": "normal", "mean": 3, "stddev": 1},
@@ -170,7 +138,6 @@ study = StudyDefinition(
                 "incidence": 1,
             },
     ),
-    
     # Do not want to include people with an alternative diagnosis for DMARD prescriptions
     has_alt_dmard_diag=patients.satisfying(
         """
@@ -230,6 +197,7 @@ study = StudyDefinition(
         on_or_before="2020-03-01",
         returning="binary_flag",
     ),
+    
     # Determine number of appointments during years 2019-2021
     op_appt=patients.outpatient_appointment_date(
         returning="binary_flag",
@@ -258,16 +226,61 @@ study = StudyDefinition(
             },
         },
     ),
-    op_appt_first=patients.outpatient_appointment_date(
-        returning="binary_flag",
-        with_these_treatment_function_codes="410",
-        attended="True",
-        is_first_attendance="True",
+    ra_hosp=patients.admitted_to_hospital(
+        with_these_diagnoses=ra_hospitalisation,
         between=["index_date", "last_day_of_month(index_date)"],
-        return_expectations={
-                "int": {"distribution": "normal", "mean": 3, "stddev": 1},
-                "incidence": 0.6,
+        returning="binary_flag",
+        return_expectations={"incidence": 0.1},
+    ),
+    ra_daycase=patients.admitted_to_hospital(
+        with_these_diagnoses=ra_hospitalisation,
+        between=["index_date", "last_day_of_month(index_date)"],
+        returning="patient_classification",
+        return_expectations={"category": { "ratios":{ 
+                "1": 0.6,
+                "2": 0.1,
+                "3": 0.1,
+                "4": 0.1,
+                "5": 0.1,
+                },
             },
+        },
+    ),
+    ra_emergency=attended_emergency_care(
+        with_these_diagnoses=ra_codes,
+        between=["index_date", "last_day_of_month(index_date)"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.1},
+    ),
+    gc_prescribing=patients.with_these_medications(
+        gc_codes,
+        between=["index_date", "last_day_of_month(index_date)"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.1},
+    ),
+    opioid_strong_prescribing=patients.with_these_medications(
+        opioid_strong_codes,
+        between=["index_date", "last_day_of_month(index_date)"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.1},
+    ),
+    opioid_weak_prescribing=patients.with_these_medications(
+        opioid_weak_codes,
+        between=["index_date", "last_day_of_month(index_date)"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.1},
+    ),
+    msk_pain_prescribing=patients.with_these_medications(
+        msk_pain_codes,
+        between=["index_date", "last_day_of_month(index_date)"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.1},
+    ),
+    ssri_prescribing=patients.with_these_medications(
+        ssri_codes,
+        between=["index_date", "last_day_of_month(index_date)"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.1},
     ),
 
     **common_variables
@@ -287,8 +300,44 @@ measures = [
         group_by="op_appt_medium",
     ),
     Measure(
-        id="op_appt_first_rate",
-        numerator="op_appt_first",
+        id="hosp_ra_rate",
+        numerator="ra_hosp",
+        denominator="population",
+        group_by="population",
+    ),
+    Measure(
+        id="hosp_ra_daycase_rate",
+        numerator="ra_hosp",
+        denominator="population",
+        group_by="ra_daycase",
+    ),
+    Measure(
+        id="med_gc_rate",
+        numerator="gc_prescribing",
+        denominator="population",
+        group_by="population",
+    ),
+    Measure(
+        id="med_opioid_strong_rate",
+        numerator="opioid_strong_prescribing",
+        denominator="population",
+        group_by="population",
+    ),
+    Measure(
+        id="med_opioid_weak_rate",
+        numerator="opioid_weak_prescribing",
+        denominator="population",
+        group_by="population",
+    ),
+    Measure(
+        id="med_msk_pain_rate",
+        numerator="msk_pain_prescribing",
+        denominator="population",
+        group_by="population",
+    ),
+    Measure(
+        id="med_ssri_rate",
+        numerator="ssri_prescribing",
         denominator="population",
         group_by="population",
     ),

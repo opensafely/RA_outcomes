@@ -34,7 +34,7 @@ actions:
         cohort: output/input.csv
 
   generate_study_population_op:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_op_meas --index-date-range "2019-04-01 to 2022-04-30 by month" --output-dir=output/measures --output-format=csv
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_op_meas --index-date-range "2019-04-01 to 2022-03-31 by month" --output-dir=output/measures --output-format=csv
     outputs:
       highly_sensitive:
         cohort: output/measures/input_op_meas*.csv
@@ -47,7 +47,7 @@ actions:
         measure: output/measures/measure_op_*_rate.csv
 
   generate_study_population_other:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_other --index-date-range "2018-03-01 to 2022-04-30 by month" --output-dir=output/measures --output-format=csv
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_other --index-date-range "2019-03-01 to 2022-03-31 by month" --output-dir=output/measures --output-format=csv
     outputs:
       highly_sensitive:
         cohort: output/measures/input_other*.csv

@@ -113,36 +113,15 @@ t1dm_codes=codelist_from_csv(
 t2dm_codes= codelist_from_csv(
     "codelists/opensafely-type-2-diabetes.csv",
     system="ctv3",
-    column="CTV3ID",)
-
+    column="CTV3ID",
+)
 cardiac_codes=codelist_from_csv(
     "codelists/opensafely-chronic-cardiac-disease.csv",
     system="ctv3",
     column="CTV3ID",
 )
-
 ra_hospitalisation=codelist_from_csv(
     "codelists/user-ruthcostello-ra_hospitalisation.csv",
-    system="icd10",
-    column="code",
-)
-cardiac_hospitalisation=codelist_from_csv(
-    "codelists/opensafely-cardiovascular-secondary-care.csv",
-    system="icd10",
-    column="icd",
-)
-vasculitis_hospitalisation=codelist_from_csv(
-    "codelists/user-ruthcostello-vasculitis.csv",
-    system="icd10",
-    column="code",
-)
-sepsis_hospitalisation=codelist_from_csv(
-    "codelists/user-ruthcostello-sepsis.csv",
-    system="icd10",
-    column="code",
-)
-depression_hospitalisation=codelist_from_csv(
-    "codelists/user-emilyherrett-depression_icd10.csv",
     system="icd10",
     column="code",
 )
@@ -157,52 +136,29 @@ clear_smoking_codes = codelist_from_csv(
     column="CTV3Code",
     category_column="Category",
 )
-
 unclear_smoking_codes = codelist_from_csv(
     "codelists/opensafely-smoking-unclear.csv",
     system="ctv3",
     column="CTV3Code",
     category_column="Category",
 )
-
-opioid_non_high_codes = codelist_from_csv(
-    "codelists/opensafely-non-high-dose-long-acting-opioids-openprescribing-dmd.csv",
+opioid_strong_codes = codelist_from_csv(
+    "codelists/opensafely-opioids-strong-for-msk-conditions.csv",
     system="snomed",
-    column="dmd_id",
+    column="code",
 )
-
-opioid_high_codes = codelist_from_csv(
-    "codelists/opensafely-high-dose-long-acting-opioids-openprescribing-dmd.csv",
+opioid_weak_codes = codelist_from_csv(
+    "codelists/opensafely-opioids-weak-for-msk-conditions.csv",
     system="snomed",
-    column="dmd_id",
+    column="code",
 )
-
-opioid_nasal_codes = codelist_from_csv(
-    "codelists/opensafely-opioid-containing-medicines-buccal-nasal-and-oromucosal-excluding-drugs-for-substance-misuse-dmd.csv",
+msk_pain_codes = codelist_from_csv(
+    "codelists/user-ruthcostello-msk_pain_medicines.csv",
     system="snomed",
-    column="dmd_id",
+    column="code",
 )
-
-opioid_oral_codes = codelist_from_csv(
-    "codelists/opensafely-opioid-containing-medicines-oral-excluding-drugs-for-substance-misuse-dmd.csv",
-    system="snomed",
-    column="dmd_id",
-)
-
-opioid_parental_codes = codelist_from_csv(
-    "codelists/opensafely-opioid-containing-medicines-parenteral-excluding-drugs-for-substance-misuse-dmd.csv",
-    system="snomed",
-    column="dmd_id",
-)
-
-opioid_rectal_codes = codelist_from_csv(
-    "codelists/opensafely-opioid-containing-medicines-rectal-excluding-drugs-for-substance-misuse-dmd.csv",
-    system="snomed",
-    column="dmd_id",
-)
-
-opioid_transdermal_codes = codelist_from_csv(
-    "codelists/opensafely-opioid-containing-medicines-transdermal-excluding-drugs-for-substance-misuse-dmd.csv",
+ssri_codes = codelist_from_csv(
+    "codelists/opensafely-selective-serotonin-reuptake-inhibitors-dmd.csv",
     system="snomed",
     column="dmd_id",
 )
