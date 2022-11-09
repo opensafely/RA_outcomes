@@ -9,7 +9,16 @@ Description:    Run model checks before time-series
 *Log file
 cap log using ./logs/time_series_checks.log, replace
 cap mkdir ./output/time_series
-* Outpatient appointments
+
+* Checking some files produced for measures
+import delimited "./output/measures/input_op_meas_2020-04-01.csv", clear 
+* Check whether died prior to month start
+gen died_fuA = date(died_fu, "YMD")
+gen dereg_dateA = date(dereg_date, "YMD")
+count if died_fuA > date("2020-04-01", "YMD") & died_fuA!=.
+count if dereg_dateA > date("2020-04-01", "YMD") & dereg_dateA!=.
+
+/* Outpatient appointments
 local a "appt_first appt"
 forvalues i=1/2 {
     local c: word `i' of `a' 
@@ -158,3 +167,6 @@ pac rate, name(pac_gc, replace)
 *Combine Graphs
 graph combine kd_gc ac_gc pac_gc , altshrink
 graph export ./output/time_series/checks_gc.svg, as(svg) replace
+*/
+
+log close

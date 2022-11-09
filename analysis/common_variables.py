@@ -1,5 +1,5 @@
 # Creating script for common variables: age, gender, ethnicity & IMD
-from cohortextractor import patients
+from cohortextractor import patients, filter_codes_by_category
 from codelists import *
 
 common_variables = dict(
@@ -121,7 +121,7 @@ common_variables = dict(
             ),
         ),
         bmi=patients.most_recent_bmi(
-            between=["2019-04-01 - 5 years", "2019-04-01"],
+            between=["2014-04-01", "2019-04-01"],
             minimum_age_at_measurement=18,
             return_expectations={
                 "date": {"earliest": "2010-02-01", "latest": "2020-01-31"},

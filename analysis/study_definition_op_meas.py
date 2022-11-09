@@ -1,4 +1,11 @@
-from cohortextractor import StudyDefinition, patients, codelist, codelist_from_csv, Measure  
+from cohortextractor import (
+    StudyDefinition, 
+    patients, 
+    codelist, 
+    codelist_from_csv, 
+    Measure,
+    filter_codes_by_category,
+)  
 
 from common_variables import common_variables
 from codelists import *
@@ -33,12 +40,16 @@ study = StudyDefinition(
         (imd != 0) AND
         has_ra
         """,
-    
+        # need to have 3 months registration prior to start of study - April 2019 - but for the measures 
+        # also need to still be registered and alive at index date for measures i.e. start of each month 
+        # therefore specify index date here
         has_follow_up=patients.registered_with_one_practice_between(
-            "2019-04-01 - 3 months", "2019-04-01"
+            "2019-01-01", "index_date"
         ),
+        # Need to be alive at start of study and still alive as of month of measures therefore
+        # use index date
         died=patients.died_from_any_cause(
-                on_or_before="2019-04-01"
+                on_or_before="index_date"
         ),
         stp=patients.registered_practice_as_of(
                 "2019-04-01",
@@ -246,7 +257,7 @@ study = StudyDefinition(
             },
         },
     ),
-    ra_emergency=attended_emergency_care(
+    ra_emergency=patients.attended_emergency_care(
         with_these_diagnoses=ra_codes,
         between=["index_date", "last_day_of_month(index_date)"],
         returning="binary_flag",
@@ -310,6 +321,12 @@ measures = [
         numerator="ra_hosp",
         denominator="population",
         group_by="ra_daycase",
+    ),
+    Measure(
+        id="hosp_ra_emergency_rate",
+        numerator="ra_emergency",
+        denominator="population",
+        group_by="population",
     ),
     Measure(
         id="med_gc_rate",

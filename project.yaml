@@ -4,27 +4,27 @@ expectations:
   population_size: 10000
 
 actions:
-  # Study definition for objective 3
+  # Study definition for objective 3 - on hold
   # First for baseline tables
-  generate_study_population_monitor_2018:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_monitor_bl --index-date-range "2018-03-01"
-    outputs:
-      highly_sensitive:
-        cohort: output/input_monitor_bl_2018-03-01.csv
+  # generate_study_population_monitor_2018:
+  #  run: cohortextractor:latest generate_cohort --study-definition study_definition_monitor_bl --index-date-range "2018-03-01"
+  #  outputs:
+  #    highly_sensitive:
+  #      cohort: output/input_monitor_bl_2018-03-01.csv
   
-  generate_study_population_monitor_2020:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_monitor_bl --index-date-range "2020-03-23"
-    outputs:
-      highly_sensitive:
-        cohort: output/input_monitor_bl_2020-03-23.csv
+  #generate_study_population_monitor_2020:
+  #  run: cohortextractor:latest generate_cohort --study-definition study_definition_monitor_bl --index-date-range "2020-03-23"
+  #  outputs:
+  #    highly_sensitive:
+  #      cohort: output/input_monitor_bl_2020-03-23.csv
   
   # Generate baseline tables objective 3
-  baseline_monitor:
-    run: stata-mp:latest analysis/check.do
-    needs: [generate_study_population_monitor_2018, generate_study_population_monitor_2020]
-    outputs:
-      moderately_sensitive:
-        log: logs/baseline.log
+  #baseline_monitor:
+  #  run: stata-mp:latest analysis/check.do
+  #  needs: [generate_study_population_monitor_2018, generate_study_population_monitor_2020]
+  #  outputs:
+  #    moderately_sensitive:
+  #      log: logs/baseline.log
   
   #Study definition for outpatient objectives 1 & 2
   generate_study_population:
@@ -45,25 +45,27 @@ actions:
     outputs:
       moderately_sensitive:
         measure: output/measures/measure_op_*_rate.csv
-
-  generate_study_population_other:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_other --index-date-range "2019-03-01 to 2022-03-31 by month" --output-dir=output/measures --output-format=csv
-    outputs:
-      highly_sensitive:
-        cohort: output/measures/input_other*.csv
-  
-  calculate_measures_other:
-    run: cohortextractor:latest  generate_measures --study-definition study_definition_other --output-dir=output/measures
-    needs: [generate_study_population_other]
-    outputs:
-      moderately_sensitive:
-        measure: output/measures/measure_hosp_*_rate.csv
         measure_drug: output/measures/measure_med_*_rate.csv
+        measure_hosp: output/measures/measure_hosp_*_rate.csv
+
+  #generate_study_population_other:
+  #  run: cohortextractor:latest generate_cohort --study-definition study_definition_other --index-date-range "2019-03-01 to 2022-03-31 by month" --output-dir=output/measures --output-format=csv
+  #  outputs:
+  #    highly_sensitive:
+  #      cohort: output/measures/input_other*.csv
+  
+  #calculate_measures_other:
+  #  run: cohortextractor:latest  generate_measures --study-definition study_definition_other --output-dir=output/measures
+  #  needs: [generate_study_population_other]
+  #  outputs:
+  #    moderately_sensitive:
+  #      measure: output/measures/measure_hosp_*_rate.csv
+  #      measure_drug: output/measures/measure_med_*_rate.csv
 
   # Generate baseline tables
   graphs:
     run: stata-mp:latest analysis/graphs.do
-    needs: [calculate_measures_op, calculate_measures_other]
+    needs: [calculate_measures_op]
     outputs:
       moderately_sensitive:
         log: logs/graphs.log
@@ -80,7 +82,7 @@ actions:
 
   time_series_checks:
     run: stata-mp:latest analysis/time_series_checks.do
-    needs: [calculate_measures_other, calculate_measures_op]
+    needs: [generate_study_population_op, calculate_measures_op]
     outputs: 
       moderately_sensitive: 
         log: logs/time_series_checks.log
@@ -88,7 +90,7 @@ actions:
 
   time_series:
     run: stata-mp:latest analysis/time_series.do
-    needs: [calculate_measures_other, calculate_measures_op]
+    needs: [calculate_measures_op]
     outputs: 
       moderately_sensitive: 
         log: logs/time_series.log
