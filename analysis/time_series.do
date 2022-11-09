@@ -12,40 +12,23 @@ cap log using ./logs/time_series.log, replace
 cap mkdir ./output/time_series
 
 * Outpatient appointments
-local a "appt_first appt"
-forvalues i=1/2 {
-    local c: word `i' of `a' 
-		import delimited "./output/measures/measure_op_`c'_rate.csv", clear	//get csv
-		putexcel set ./output/time_series/tsreg_tables, sheet(op_`c') modify
-        gen temp_date=date(date, "YMD")
-		format temp_date %td
-		gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
-		gen month=mofd(temp_date)
-		format month %tm
-		drop temp_date
-		*Value to rate per 100k
-		gen rate = value*100000
-		label variable rate "Rate of op `c' per 100,000"
-		*Set time series
-		tsset month 
-		newey rate i.postcovid, lag(1) force
-        *Export results
-        putexcel E1=("Number of obs") G1=(e(N))
-        putexcel E2=("F") G2=(e(F))
-        putexcel E3=("Prob > F") G3=(Ftail(e(df_m), e(df_r), e(F)))
-        matrix a = r(table)'
-        putexcel A6 = matrix(a), rownames
-        putexcel save
-        *quietly margins postcovid
-        *marginsplot
-        *graph export ./output/time_series/margins_op_`c'.svg, as(svg) replace
-        itsa rate, trperiod(2020m4) figure single lag(1)
-        graph export ./output/time_series/itsa_`c'.svg, as(svg) replace
-        import excel using ./output/time_series/tsreg_tables.xlsx, sheet (op_`c') clear
-        export delimited using ./output/time_series/tsreg_op_`c'.csv, replace
-        }
 
-* Outpatient medium
+import delimited "./output/measures/measure_op_appt_rate.csv", clear	//get csv
+gen temp_date=date(date, "YMD")
+format temp_date %td
+gen month=mofd(temp_date)
+format month %tm
+drop temp_date
+*Value to percentage of population
+gen percent = value*100
+label variable percent "Percent of population"
+*Set time series
+tsset month 
+itsa percent, trperiod(2020m4) figure single lag(1)
+graph export ./output/time_series/itsa_op_appt.svg, as(svg) replace
+actest, lags(6)
+
+/* Outpatient medium
 import delimited "./output/measures/measure_op_appt_medium_rate.csv", clear	//get csv
 putexcel set ./output/time_series/tsreg_tables, sheet(op_appt_medium) modify
 drop if op_appt_medium==. | op_appt_medium>=3
