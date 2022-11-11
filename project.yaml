@@ -60,7 +60,7 @@ actions:
   
   calculate_measures_op:
     run: cohortextractor:latest  generate_measures --study-definition study_definition_op_meas --output-dir=output/measures
-    needs: [generate_study_population_op]
+    needs: [join_cohorts]
     outputs:
       moderately_sensitive:
         measure: output/measures/measure_op_*_rate.csv
