@@ -3,9 +3,9 @@
 
 . 
 . * Generates line graphs with rate of outpatient appointments over time
-. foreach this_group in appt_rate appt_first_rate {
-  2.         import delimited using ./output/measures/measure_op_`this_group'.c
-> sv, numericcols(3) clear
+. foreach this_group in appt_rate  {
+  2.         import delimited using ./output/measures/join/measure_op_`this_gro
+> up'.csv, numericcols(3) clear
   3.         * Generate rate per 100,000
 .         gen rate = value*100000 
   4.         * Format date
@@ -22,41 +22,38 @@
   8. 
 .         graph export ./output/graphs/line_`this_group'.svg, as(svg) replace
   9.         }
-(4 vars, 37 obs)
+(4 vars, 36 obs)
 (note: file ./output/graphs/line_appt_rate.svg not found)
 (file ./output/graphs/line_appt_rate.svg written in SVG format)
-(4 vars, 37 obs)
-(note: file ./output/graphs/line_appt_first_rate.svg not found)
-(file ./output/graphs/line_appt_first_rate.svg written in SVG format)
 
 . 
 . * Graphs stratified by medium of appointment
-. import delimited using ./output/measures/measure_op_appt_medium_rate.csv, num
-> ericcols(3) clear
-(5 vars, 370 obs)
+. import delimited using ./output/measures/join/measure_op_appt_medium_rate.csv
+> , numericcols(3) clear
+(5 vars, 360 obs)
 
 . * Take out missing medium or if 4 as this is <10 for all months
 . drop if op_appt_medium==. | op_appt_medium>=4
-(259 observations deleted)
+(252 observations deleted)
 
 . * Combine telephone and telemedicine (2 & 3)
 . * Flag for rows to combine
 . gen comb = (op_appt_medium == 2 | op_appt_medium == 3)
 
 . bys date: egen tele_appts = total(op_appt) if comb==1
-(37 missing values generated)
+(36 missing values generated)
 
 . bys date: egen tele_pop = total(population) if comb==1
-(37 missing values generated)
+(36 missing values generated)
 
 . replace op_appt = tele_appts if op_appt_medium==2
-(37 real changes made)
+(36 real changes made)
 
 . replace population = tele_pop if op_appt_medium==2
-(37 real changes made)
+(36 real changes made)
 
 . drop if op_appt_medium==3
-(37 observations deleted)
+(36 observations deleted)
 
 . drop comb tele_appts tele_pop
 
@@ -81,7 +78,7 @@
 
 Data                               long   ->   wide
 -----------------------------------------------------------------------------
-Number of obs.                       74   ->      37
+Number of obs.                       72   ->      36
 Number of variables                   7   ->      10
 j variable (2 values)    op_appt_medium   ->   (dropped)
 xij variables:
@@ -94,7 +91,7 @@ xij variables:
 . describe
 
 Contains data
-  obs:            37                          
+  obs:            36                          
  vars:            10                          
 -------------------------------------------------------------------------------
               storage   display    value
@@ -155,7 +152,7 @@ Sorted by: dateA
 .         graph export ./output/graphs/line_hosp_`this_group'.svg, as(svg) repl
 > ace
   9.         }
-(4 vars, 50 obs)
+(4 vars, 36 obs)
 (note: file ./output/graphs/line_hosp_ra.svg not found)
 (file ./output/graphs/line_hosp_ra.svg written in SVG format)
 (4 vars, 50 obs)
@@ -175,11 +172,11 @@ Sorted by: dateA
 . * Graphs stratified by type of admission e.g. daycase
 . import delimited using ./output/measures/measure_hosp_ra_daycase_rate.csv, nu
 > mericcols(3) clear
-(5 vars, 300 obs)
+(5 vars, 216 obs)
 
 . * Drop if ra_daycase missing
 . drop if ra_daycase==.
-(50 observations deleted)
+(36 observations deleted)
 
 . * Generate new population as all those with type of admission
 . bys date: egen pop_new = total(population)
@@ -201,7 +198,7 @@ Sorted by: dateA
 
 Data                               long   ->   wide
 -----------------------------------------------------------------------------
-Number of obs.                      250   ->      50
+Number of obs.                      180   ->      36
 Number of variables                   7   ->      22
 j variable (5 values)        ra_daycase   ->   (dropped)
 xij variables:
@@ -216,7 +213,7 @@ xij variables:
 . describe
 
 Contains data
-  obs:            50                          
+  obs:            36                          
  vars:            22                          
 -------------------------------------------------------------------------------
               storage   display    value
@@ -291,7 +288,7 @@ Sorted by: dateA
 .         graph export ./output/graphs/line_med_`this_group'.svg, as(svg) repla
 > ce
   9.         }
-(4 vars, 50 obs)
+(4 vars, 36 obs)
 (note: file ./output/graphs/line_med_gc.svg not found)
 (file ./output/graphs/line_med_gc.svg written in SVG format)
 (4 vars, 50 obs)
@@ -301,7 +298,7 @@ Sorted by: dateA
 . 
 end of do-file
 
-. . file open output using "/tmp/tmp.ibcOk3jESn", write text replace
+. . file open output using "/tmp/tmp.FrW7SiX6ye", write text replace
 
 . . file write output "success" 
 

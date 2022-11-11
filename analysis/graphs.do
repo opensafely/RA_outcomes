@@ -26,7 +26,7 @@ foreach this_group in appt_rate  {
         }
 
 * Graphs stratified by medium of appointment
-import delimited using ./output/measures/measure_op_appt_medium_rate.csv, numericcols(3) clear
+import delimited using ./output/measures/join/measure_op_appt_medium_rate.csv, numericcols(3) clear
 * Take out missing medium or if 4 as this is <10 for all months
 drop if op_appt_medium==. | op_appt_medium>=4
 * Combine telephone and telemedicine (2 & 3)
