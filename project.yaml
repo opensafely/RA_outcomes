@@ -59,13 +59,13 @@ actions:
         cohort: output/measures/join/input_op*.csv
   
   calculate_measures_op:
-    run: cohortextractor:latest  generate_measures --study-definition study_definition_op_meas --output-dir=output/measures
+    run: cohortextractor:latest  generate_measures --study-definition study_definition_op_meas --output-dir=output/measures/join
     needs: [join_cohorts]
     outputs:
       moderately_sensitive:
-        measure: output/measures/measure_op_*_rate.csv
-        measure_drug: output/measures/measure_med_*_rate.csv
-        measure_hosp: output/measures/measure_hosp_*_rate.csv
+        measure: output/measures/join/measure_op_*_rate.csv
+        measure_drug: output/measures/join/measure_med_*_rate.csv
+        measure_hosp: output/measures/join/measure_hosp_*_rate.csv
 
   #generate_study_population_other:
   #  run: cohortextractor:latest generate_cohort --study-definition study_definition_other --index-date-range "2019-03-01 to 2022-03-31 by month" --output-dir=output/measures --output-format=csv
