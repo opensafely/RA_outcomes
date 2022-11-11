@@ -9,8 +9,8 @@ cap log using ./logs/graphs.log, replace
 cap mkdir ./output/graphs
 
 * Generates line graphs with rate of outpatient appointments over time
-foreach this_group in appt_rate appt_first_rate {
-        import delimited using ./output/measures/measure_op_`this_group'.csv, numericcols(3) clear
+foreach this_group in appt_rate  {
+        import delimited using ./output/measures/join/measure_op_`this_group'.csv, numericcols(3) clear
         * Generate rate per 100,000
         gen rate = value*100000 
         * Format date

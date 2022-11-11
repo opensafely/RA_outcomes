@@ -77,24 +77,6 @@ label define male 0"Female" 1"Male"
 label values male male
 safetab male, miss
 
-* Make region numeric
-generate region2=.
-replace region2=0 if region=="East"
-replace region2=1 if region=="East Midlands"
-replace region2=2 if region=="London"
-replace region2=3 if region=="North East"
-replace region2=4 if region=="North West"
-replace region2=5 if region=="South East"
-replace region2=6 if region=="South West"
-replace region2=7 if region=="West Midlands"
-replace region2=8 if region=="Yorkshire and The Humber"
-drop region
-rename region2 region
-label var region "region of England"
-label define region 0 "East" 1 "East Midlands"  2 "London" 3 "North East" 4 "North West" 5 "South East" 6 "South West" 7 "West Midlands" 8 "Yorkshire and The Humber"
-label values region region
-safetab region, miss
-
 *create a 4 category rural urban variable 
 generate urban_rural_5=.
 la var urban_rural_5 "Rural Urban in five categories"
@@ -169,7 +151,7 @@ export delimited using ./output/tables/op_appt_yrs.csv
 restore 
 * Tabulate overall characteristics 
 preserve
-table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \  smoking cate \ time_ra contn \ bmi_cat cate) clear
 export delimited using ./output/tables/op_chars.csv
 restore
 * Tabulate characteristics by category of outpatient appointments for each year
@@ -177,13 +159,13 @@ tempfile tempfile
 forvalues i=2020/2021 {
     preserve
     keep if diff_op_cat_`i'==0
-    table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
     save `tempfile', replace
     restore
     forvalues j=1/2 {
         preserve
         keep if diff_op_cat_`i'==`j'
-        table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+        table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
         append using `tempfile'
         save `tempfile', replace
         if `j'==2 {
@@ -195,13 +177,13 @@ forvalues i=2020/2021 {
     /* Tabulate characteristics by whether hospitalised with RA for each year
     preserve
     keep if ra_hosp_`i'==1
-    table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
     export delimited using ./output/tables/characteristics_ra_hosp_`i'.csv
     restore
     }
 preserve
     keep if ra_hosp_2018==1
-    table1_mc, vars(age_cat cate \ male cate \ region cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ care_home cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
     export delimited using ./output/tables/characteristics_ra_hosp_2018.csv
     restore
     */

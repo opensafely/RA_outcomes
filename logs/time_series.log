@@ -4,8 +4,8 @@
 . 
 . * Outpatient appointments
 . 
-. import delimited "./output/measures/measure_op_appt_rate.csv", clear    //get
->  csv
+. import delimited "./output/measures/join/measure_op_appt_rate.csv", clear    
+>    //get csv
 (4 vars, 36 obs)
 
 . gen temp_date=date(date, "YMD")
@@ -75,8 +75,8 @@ Cumby-Huizinga test for autocorrelation (Breusch-Godfrey)
 
 . 
 . /* Outpatient medium
-> import delimited "./output/measures/measure_op_appt_medium_rate.csv", clear  
->    //get csv
+> import delimited "./output/measures/join/measure_op_appt_medium_rate.csv", cl
+> ear        //get csv
 > putexcel set ./output/time_series/tsreg_tables, sheet(op_appt_medium) modify
 > drop if op_appt_medium==. | op_appt_medium>=3
 > gen temp_date=date(date, "YMD")
@@ -115,8 +115,8 @@ Cumby-Huizinga test for autocorrelation (Breusch-Godfrey)
 > local a "cardiac ild ra sepsis vasculitis"
 > forvalues i=1/5 {
 >     local c: word `i' of `a' 
->                 import delimited "./output/measures/measure_hosp_`c'_rate.csv
-> ", clear   //get csv
+>                 import delimited "./output/measures/join/measure_hosp_`c'_rat
+> e.csv", clear      //get csv
 >         putexcel set ./output/time_series/tsreg_tables, sheet(hosp_`c') modif
 > y
 >                 gen temp_date=date(date, "YMD")
@@ -152,8 +152,8 @@ Cumby-Huizinga test for autocorrelation (Breusch-Godfrey)
 >         }
 > 
 > * RA daycase
-> import delimited "./output/measures/measure_hosp_ra_daycase_rate.csv", clear 
->    //get csv
+> import delimited "./output/measures/join/measure_hosp_ra_daycase_rate.csv", c
+> lear       //get csv
 > putexcel set ./output/time_series/tsreg_tables, sheet(hosp_ra_daycase) modify
 > drop if ra_daycase==. | ra_daycase>=4
 > gen temp_date=date(date, "YMD")
@@ -189,8 +189,8 @@ Cumby-Huizinga test for autocorrelation (Breusch-Godfrey)
 > export delimited using ./output/time_series/tsreg_hosp_ra_daycase.csv, replac
 > e
 > 
-> import delimited "./output/measures/measure_med_gc_rate.csv", clear     //get
->  csv
+> import delimited "./output/measures/join/measure_med_gc_rate.csv", clear     
+>    //get csv
 > putexcel set ./output/time_series/tsreg_tables, sheet(med_gc) modify
 > gen temp_date=date(date, "YMD")
 > format temp_date %td
@@ -222,7 +222,7 @@ Cumby-Huizinga test for autocorrelation (Breusch-Godfrey)
 
 end of do-file
 
-. . file open output using "/tmp/tmp.Ih2lhfozt8", write text replace
+. . file open output using "/tmp/tmp.cZQrHXIIjf", write text replace
 
 . . file write output "success" 
 

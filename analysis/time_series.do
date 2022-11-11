@@ -13,7 +13,7 @@ cap mkdir ./output/time_series
 
 * Outpatient appointments
 
-import delimited "./output/measures/measure_op_appt_rate.csv", clear	//get csv
+import delimited "./output/measures/join/measure_op_appt_rate.csv", clear	//get csv
 gen temp_date=date(date, "YMD")
 format temp_date %td
 gen month=mofd(temp_date)
@@ -29,7 +29,7 @@ graph export ./output/time_series/itsa_op_appt.svg, as(svg) replace
 actest, lags(6)
 
 /* Outpatient medium
-import delimited "./output/measures/measure_op_appt_medium_rate.csv", clear	//get csv
+import delimited "./output/measures/join/measure_op_appt_medium_rate.csv", clear	//get csv
 putexcel set ./output/time_series/tsreg_tables, sheet(op_appt_medium) modify
 drop if op_appt_medium==. | op_appt_medium>=3
 gen temp_date=date(date, "YMD")
@@ -66,7 +66,7 @@ export delimited using ./output/time_series/tsreg_op_appt_medium.csv, replace
 local a "cardiac ild ra sepsis vasculitis"
 forvalues i=1/5 {
     local c: word `i' of `a' 
-		import delimited "./output/measures/measure_hosp_`c'_rate.csv", clear	//get csv
+		import delimited "./output/measures/join/measure_hosp_`c'_rate.csv", clear	//get csv
         putexcel set ./output/time_series/tsreg_tables, sheet(hosp_`c') modify
 		gen temp_date=date(date, "YMD")
 		format temp_date %td
@@ -97,7 +97,7 @@ forvalues i=1/5 {
 	}
 
 * RA daycase
-import delimited "./output/measures/measure_hosp_ra_daycase_rate.csv", clear	//get csv
+import delimited "./output/measures/join/measure_hosp_ra_daycase_rate.csv", clear	//get csv
 putexcel set ./output/time_series/tsreg_tables, sheet(hosp_ra_daycase) modify
 drop if ra_daycase==. | ra_daycase>=4
 gen temp_date=date(date, "YMD")
@@ -130,7 +130,7 @@ graph export ./output/time_series/itsa_ra_daycase.svg, as(svg) replace
 import excel using ./output/time_series/tsreg_tables.xlsx, sheet (hosp_ra_daycase) clear
 export delimited using ./output/time_series/tsreg_hosp_ra_daycase.csv, replace
 
-import delimited "./output/measures/measure_med_gc_rate.csv", clear	//get csv
+import delimited "./output/measures/join/measure_med_gc_rate.csv", clear	//get csv
 putexcel set ./output/time_series/tsreg_tables, sheet(med_gc) modify
 gen temp_date=date(date, "YMD")
 format temp_date %td
