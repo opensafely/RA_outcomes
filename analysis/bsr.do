@@ -18,7 +18,6 @@ forvalues i=2019/2021 {
     *keep if has_ra==1
     * Drop variables not required
     /*drop first_ra_code-has_ra*/
-    drop ethnicity-region
     describe 
     * Check if any missing outpatient info
     egen all_miss_appts = rowmiss(op_appt_date_1 op_appt_date_2 op_appt_date_3 op_appt_date_4 op_appt_date_5 op_appt_date_6 op_appt_date_7 op_appt_date_8 op_appt_date_9 op_appt_date_10)

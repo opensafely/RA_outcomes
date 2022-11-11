@@ -355,40 +355,6 @@ study = StudyDefinition(
         on_or_before="2020-03-01",
         returning="binary_flag",
     ),
-    smoking_status=patients.categorised_as(
-        {
-            "S": "most_recent_smoking_code = 'S'",
-            "E": """
-                     most_recent_smoking_code = 'E' OR (    
-                       most_recent_smoking_code = 'N' AND ever_smoked   
-                     )  
-                """,
-            "N": "most_recent_smoking_code = 'N' AND NOT ever_smoked",
-            "M": "DEFAULT",
-        },
-        return_expectations={
-            "category": {"ratios": {"S": 0.4, "E": 0.3, "N": 0.2, "M": 0.1}}
-        },
-        most_recent_smoking_code=patients.with_these_clinical_events(
-            clear_smoking_codes,
-            find_last_match_in_period=True,
-            on_or_before="index_date",
-            returning="category",
-        ),
-        ever_smoked=patients.with_these_clinical_events(
-            filter_codes_by_category(clear_smoking_codes, include=["S", "E"]),
-            on_or_before="index_date",
-        ),
-    ),
-    bmi=patients.most_recent_bmi(
-            between=["index_date - 5 years", "index_date"],
-            minimum_age_at_measurement=18,
-            return_expectations={
-                "date": {"earliest": "2010-02-01", "latest": "2020-01-31"},
-                "float": {"distribution": "normal", "mean": 28, "stddev": 8},
-                "incidence": 0.80,
-            }
-    ),
 
     **common_variables
 )
