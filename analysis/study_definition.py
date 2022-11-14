@@ -318,13 +318,6 @@ study = StudyDefinition(
             },
         },
     ),
-    ra_hosp_2018=patients.admitted_to_hospital(
-        with_these_diagnoses=ra_hospitalisation,
-        between=["2018-04-01", "2019-03-31"],
-        returning="number_of_matches_in_period",
-        return_expectations={ "int": {"distribution": "normal", "mean": 3, "stddev": 1},
-                "incidence": 1,},
-    ),
     ra_hosp_2019=patients.admitted_to_hospital(
         with_these_diagnoses=ra_hospitalisation,
         between=["2019-04-01", "2020-03-31"],

@@ -12,7 +12,7 @@ cap log using ./logs/time_series.log, replace
 cap mkdir ./output/time_series
 
 * Outpatient appointments
-
+* Autocorrelation indicates no autocorrelation
 import delimited "./output/measures/join/measure_op_appt_rate.csv", clear	//get csv
 gen temp_date=date(date, "YMD")
 format temp_date %td
@@ -24,7 +24,7 @@ gen percent = value*100
 label variable percent "Percent of population"
 *Set time series
 tsset month 
-itsa percent, trperiod(2020m4) figure single lag(1)
+itsa percent, trperiod(2020m4) figure single lag(1) posttrend
 graph export ./output/time_series/itsa_op_appt.svg, as(svg) replace
 actest, lags(6)
 
