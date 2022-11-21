@@ -48,23 +48,20 @@ gen proportion = (op_appt/pop_new)*100
 gen dateA = date(date, "YMD")
 drop date
 format dateA %dD/M/Y
-* reshape dataset so columns with rates for each ethnicity 
+* reshape dataset so columns with rates for medium 
 reshape wide value proportion population op_appt, i(dateA) j(op_appt_medium)
 describe
 * Label strata
 label var proportion1 "Face to face"
 label var proportion2 "Telephone"
 * Generate line graph
-graph twoway line proportion1 proportion2 dateA, tlabel(01Apr2019(120)01Apr2022, angle(45) ///
-format(%dM-CY) labsize(small)) ytitle("Proportion") xtitle("Date") ylabel(#5, labsize(small) ///
-angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6) legend(row(1) size(small) ///
-title("Consultation medium", size(small))) graphregion(fcolor(white))
+graph  bar proportion1 proportion2, over(dateA) stack graphregion(fcolor(white))
 
 graph export ./output/graphs/line_op_appt_medium.svg, as(svg) replace
 
 * Generates line graphs with rate of hospitalisations over time
-foreach this_group in ra cardiac vasculitis ild sepsis {
-        import delimited using ./output/measures/measure_hosp_`this_group'_rate.csv, numericcols(3) clear
+foreach this_group in ra ra_emergency {
+        import delimited using ./output/measures/join/measure_hosp_`this_group'_rate.csv, numericcols(3) clear
         * Generate rate per 100,000
         gen rate = value*100000 
         * Format date
@@ -81,8 +78,16 @@ foreach this_group in ra cardiac vasculitis ild sepsis {
 
 * Graphs stratified by type of admission e.g. daycase
 import delimited using ./output/measures/measure_hosp_ra_daycase_rate.csv, numericcols(3) clear
-* Drop if ra_daycase missing
-drop if ra_daycase==.
+* Drop if ra_daycase missing or is mother-baby record
+drop if (ra_daycase==. | ra_daycase==5 | ra_daycase==8)
+* Combine 3 & 4 as both ordinary admission
+gen comb = (ra_daycase == 3 | ra_daycase == 4)
+bys date: egen ordin_appts = total(ra_hosp) if comb==1
+bys date: egen ordin_pop = total(population) if comb==1
+replace ra_hosp = ordin_appts if ra_daycase==3
+replace population = ordin_pop if ra_daycase==3
+drop if ra_daycase==4
+drop comb ordin_appts ordin_pop
 * Generate new population as all those with type of admission
 bys date: egen pop_new = total(population)
 * Calculate rate
@@ -100,15 +105,12 @@ label var proportion1 "Ordinary admission"
 label var proportion2 "Day case"
 label var proportion3 "Regular admission"
 * Generate line graph
-graph twoway line proportion1 proportion2 proportion3 dateA, tlabel(01Mar2018(120)01Apr2022, angle(45) ///
-format(%dM-CY) labsize(small)) ytitle("Rate per 100,000") xtitle("Date") ylabel(#5, labsize(small) ///
-angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6) legend(row(1) size(small) ///
-title("Type of admission", size(small))) graphregion(fcolor(white))
+graph bar proportion1 proportion2 proportion3, over(dateA) stack graphregion(fcolor(white))
 
 graph export ./output/graphs/line_ra_daycase.svg, as(svg) replace
 
 * Generates line graphs with rate of prescriptions over time
-foreach this_group in gc opioid {
+foreach this_group in gc opioid_strong opioid_weak ssri  {
         import delimited using ./output/measures/measure_med_`this_group'_rate.csv, numericcols(3) clear
         * Generate rate per 100,000
         gen rate = value*100000 

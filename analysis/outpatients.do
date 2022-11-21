@@ -19,8 +19,6 @@ count if age>110 & age!=.
 sum age, d
 count if sex==""
 tab sex
-sum household, d
-tab care_home_type
 * Checking RA algorithm variables
 * Checking type of DMARD that meets inclusion
 foreach dmard in metho leflu sulfa hydrox {
@@ -45,8 +43,6 @@ sum leflu_count, d
 sum hydrox_count, d 
 
 sum outpatient*, d
-
-keep if has_ra
 
 * How many people are not on DMARDs and have no RA appointments?
 
@@ -104,9 +100,6 @@ egen age_cat = cut(age), at(18, 40, 60, 80, 120) icodes
 label define age 0 "18 - 40 years" 1 "41 - 60 years" 2 "61 - 80 years" 3 ">80 years"
 label values age_cat age
 safetab age_cat, miss
-
-* Flag if in a care-home
-    gen care_home=care_home_type!="PR"
 
 * Smoking status
 gen smoking = 0 if smoking_status=="N"

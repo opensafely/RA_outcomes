@@ -56,38 +56,7 @@ study = StudyDefinition(
             date_format="YYYY-MM-DD",
             return_expectations={"date": {"earliest": "2020-03-01"}}
     ),
-    household=patients.household_as_of(
-        "2020-02-01",
-        returning="household_size",
-        return_expectations={
-                "int": {"distribution": "normal", "mean": 3, "stddev": 1},
-                "incidence": 1,
-            },
-    ),
-    care_home_type=patients.care_home_status_as_of(
-        "2020-02-01",
-        categorised_as={
-            "PC":
-            """
-            IsPotentialCareHome
-            AND LocationDoesNotRequireNursing='Y'
-            AND LocationRequiresNursing='N'
-            """,
-            "PN":
-            """
-            IsPotentialCareHome
-            AND LocationDoesNotRequireNursing='N'
-            AND LocationRequiresNursing='Y'
-            """,
-            "PS": "IsPotentialCareHome",
-            "PR": "NOT IsPotentialCareHome",
-            "": "DEFAULT",
-        },
-        return_expectations={
-            "rate": "universal",
-            "category": {"ratios": {"PC": 0.05, "PN": 0.05, "PS": 0.05, "PR": 0.84, "": 0.01},},
-        },
-    ),
+    
     # Flags to identify people with RA 
     # Including date range as seemed to be some implausible dates
     # 1909 is 110 years prior to 2018 - so a person who was that old at 
