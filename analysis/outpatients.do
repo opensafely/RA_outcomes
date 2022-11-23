@@ -117,6 +117,31 @@ bys bmi_cat: sum bmi
 label define bmi 0 "Missing" 1 "Underweight" 2 "Healthy range" 3 "Overweight" 4 "Obese" 5 "Morbidly obese"
 label values bmi_cat bmi
 
+* Determine if still in follow-up for each year
+* Format dates
+gen died_fuA = date(died_fu, "YMD")
+gen dereg_dateA = date(dereg_date, "YMD")
+gen end_fu = date("`j'-03-31", "YMD")
+gen end_date = min(died_fuA, dereg_dateA, end_fu)
+drop end_fu
+sum end_date
+di "Number where end date prior to follow-up start"
+count if end_date<date("2019-04-01", "YMD")
+* determine range of dates for outpatient appointments to determine which should be dropped
+gen end_2020 = end_date<date("2020-03-31", "YMD")
+gen end_2021 = end_date<date("2021-03-31", "YMD")
+gen end_2022 = end_date<date("2022-03-31", "YMD")
+tab end_2020
+tab end_2021
+tab end_2022
+* Set outpatient appointment count to missing if end prior to the end of the year 
+forvalues i=2019/2021 {
+    local j=`i'+1
+    di `j'
+    replace outpatient_appt_`i'=. if end_`j'
+    replace outpatient_medium_`i'=. if end_`j'
+}
+
 * Categorise number of outpatient appointments
 label define appt 0 "No appointments" 1 "1-2 per year" 2 "3 or more per year" 
 forvalues i=2019/2021 {

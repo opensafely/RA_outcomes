@@ -1,0 +1,128 @@
+
+. 
+. import delimited using ./output/input_flowchart.csv, clear
+(29 vars, 10,000 obs)
+
+. * has_follow_up AND
+. * (age >=18 AND age <=110) AND
+. * (NOT died) AND
+. * (sex = 'M' OR sex = 'F') AND
+. * (stp != 'missing') AND
+. * (imd != 0) AND
+. * has_ra
+. 
+. describe
+
+Contains data
+  obs:        10,000                          
+ vars:            29                          
+-------------------------------------------------------------------------------
+              storage   display    value
+variable name   type    format     label      variable label
+-------------------------------------------------------------------------------
+dereg_date      str10   %10s                  
+died_fu         str10   %10s                  
+first_ra_code   str10   %10s                  
+has_follow_up   byte    %8.0g                 
+died            byte    %8.0g                 
+stp             str4    %9s                   
+age             int     %8.0g                 
+sex             str1    %9s                   
+has_msoa        byte    %8.0g                 
+imd             byte    %8.0g                 
+has_ra_code     byte    %8.0g                 
+number_ra_codes byte    %8.0g                 
+psoriatic_art~r byte    %8.0g                 
+spondy_after    byte    %8.0g                 
+alt_diag        byte    %8.0g                 
+metho_count     byte    %8.0g                 
+sulfa_count     byte    %8.0g                 
+hydrox_count    byte    %8.0g                 
+leflu_count     byte    %8.0g                 
+azathioprine_~t byte    %8.0g                 
+has_ibd         byte    %8.0g                 
+has_psoriasis   byte    %8.0g                 
+has_psoriatic~s byte    %8.0g                 
+has_sle         byte    %8.0g                 
+has_cancer      byte    %8.0g                 
+has_alt_dmard~g byte    %8.0g                 
+has_dmards      byte    %8.0g                 
+has_ra          byte    %8.0g                 
+patient_id      long    %12.0g                
+-------------------------------------------------------------------------------
+Sorted by: 
+     Note: Dataset has changed since last saved.
+
+. safecount
+  10,000
+
+. drop if has_ra==0
+(5,000 observations deleted)
+
+. safecount
+  5,000
+
+. drop if has_follow_up!=1
+(2,448 observations deleted)
+
+. safecount
+  2,552
+
+. drop if died==1
+(1,264 observations deleted)
+
+. safecount 
+  1,288
+
+. drop if (age<18 | age>110)
+(241 observations deleted)
+
+. safecount
+  1,047
+
+. drop if (sex=="U" | sex=="I")
+(17 observations deleted)
+
+. safecount
+  1,030
+
+. drop if stp==""
+(538 observations deleted)
+
+. safecount
+  492
+
+. tab imd 
+
+        imd |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |         29        5.89        5.89
+          1 |        106       21.54       27.44
+          2 |         83       16.87       44.31
+          3 |         84       17.07       61.38
+          4 |         92       18.70       80.08
+          5 |         98       19.92      100.00
+------------+-----------------------------------
+      Total |        492      100.00
+
+. drop if imd==0
+(29 observations deleted)
+
+. safecount
+  463
+
+. 
+. 
+. 
+end of do-file
+
+. . file open output using "/tmp/tmp.hM6rS9IlmF", write text replace
+
+. . file write output "success" 
+
+. . file close output
+
+. 
+end of do-file
+
+
