@@ -31,6 +31,7 @@ sum number_ra_codes
 di "Number where no DMARDs but does have multiple RA codes and no alt diag"
 count if has_dmards==0 & number_ra_codes>=2 & alt_diag!=1
 tab has_ra, m
+keep if has_ra
 * Time since first RA code
 gen first_ra_codeA = date(first_ra_code, "YMD")
 format first_ra_codeA %dD/N/CY

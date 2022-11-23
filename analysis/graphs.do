@@ -77,7 +77,7 @@ foreach this_group in ra ra_emergency {
         }
 
 * Graphs stratified by type of admission e.g. daycase
-import delimited using ./output/measures/measure_hosp_ra_daycase_rate.csv, numericcols(3) clear
+import delimited using ./output/measures/join/measure_hosp_ra_daycase_rate.csv, numericcols(3) clear
 * Drop if ra_daycase missing or is mother-baby record
 drop if (ra_daycase==. | ra_daycase==5 | ra_daycase==8)
 * Combine 3 & 4 as both ordinary admission
@@ -111,7 +111,7 @@ graph export ./output/graphs/line_ra_daycase.svg, as(svg) replace
 
 * Generates line graphs with rate of prescriptions over time
 foreach this_group in gc opioid_strong opioid_weak ssri  {
-        import delimited using ./output/measures/measure_med_`this_group'_rate.csv, numericcols(3) clear
+        import delimited using ./output/measures/join/measure_med_`this_group'_rate.csv, numericcols(3) clear
         * Generate rate per 100,000
         gen rate = value*100000 
         * Format date
