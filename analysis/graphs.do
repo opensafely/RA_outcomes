@@ -54,8 +54,8 @@ describe
 * Label strata
 label var proportion1 "Face to face"
 label var proportion2 "Telephone"
-* Generate line graph
-graph  bar proportion1 proportion2, over(dateA) stack graphregion(fcolor(white))
+* Generate line graph - update - doesn't work currently!!!!!!!!!!!!!!!!!!!!!!!!!
+graph  bar proportion1 proportion2, over(dateA, angle(45)) stack graphregion(fcolor(white) tlabel(01Apr2019(120)01Apr2022, angle(45))
 
 graph export ./output/graphs/line_op_appt_medium.svg, as(svg) replace
 
@@ -69,7 +69,7 @@ foreach this_group in ra ra_emergency {
         drop date
         format dateA %dD/M/Y
         * Generate line graph
-        graph twoway line rate dateA, tlabel(01Mar2018(120)01Apr2022, angle(45) ///
+        graph twoway line rate dateA, tlabel(01Apr2019(120)01Apr2022, angle(45) ///
         format(%dM-CY) labsize(small)) ytitle("Rate per 100,000") xtitle("Date") ylabel(#5, labsize(small) ///
         angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6) graphregion(fcolor(white))
 
@@ -119,7 +119,7 @@ foreach this_group in gc opioid_strong opioid_weak ssri  {
         drop date
         format dateA %dD/M/Y  
         * Generate line graph
-        graph twoway line rate dateA, tlabel(01Mar2018(120)01Apr2022, angle(45) ///
+        graph twoway line rate dateA, tlabel(01Apr2019(120)01Apr2022, angle(45) ///
         format(%dM-CY) labsize(small)) ytitle("Rate per 100,000") xtitle("Date") ylabel(#5, labsize(small) ///
         angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6) graphregion(fcolor(white))
 
