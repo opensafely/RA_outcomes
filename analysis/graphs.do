@@ -43,19 +43,20 @@ drop comb tele_appts tele_pop
 bys date: egen pop_new = total(population)
 * Calculate rate
 gen proportion = (op_appt/pop_new)*100
+drop population
 
 * Format date
 gen dateA = date(date, "YMD")
 drop date
 format dateA %dD/M/Y
 * reshape dataset so columns with rates for medium 
-reshape wide value proportion population op_appt, i(dateA) j(op_appt_medium)
+reshape wide value proportion op_appt, i(dateA) j(op_appt_medium)
 describe
 * Label strata
 label var proportion1 "Face to face"
 label var proportion2 "Telephone"
-* Generate line graph - update - doesn't work currently!!!!!!!!!!!!!!!!!!!!!!!!!
-graph  bar proportion1 proportion2, over(dateA, angle(45)) stack graphregion(fcolor(white) tlabel(01Apr2019(120)01Apr2022, angle(45))
+* Generate line graph - still not ideal - date displays as number
+graph bar proportion1 proportion2, over(dateA, relabel(1 "Apr2019" 2 "" 3 "" 4 "July2019") label( angle(45))) stack graphregion(fcolor(white)) intensity(50) legend(label(1 "Face to face") label(2 "Telephone"))
 
 graph export ./output/graphs/line_op_appt_medium.svg, as(svg) replace
 
@@ -105,7 +106,7 @@ label var proportion1 "Ordinary admission"
 label var proportion2 "Day case"
 label var proportion3 "Regular admission"
 * Generate line graph
-graph bar proportion1 proportion2 proportion3, over(dateA) stack graphregion(fcolor(white))
+graph bar proportion1 proportion2 proportion3, over(dateA, label( angle(45))) stack graphregion(fcolor(white)) intensity(50) legend(label(1 "Ordinary admission") label(2 "Day case") label(3 "Regular admission"))
 
 graph export ./output/graphs/line_ra_daycase.svg, as(svg) replace
 

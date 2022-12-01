@@ -64,6 +64,8 @@
 . * Calculate rate
 . gen proportion = (op_appt/pop_new)*100
 
+. drop population
+
 . 
 . * Format date
 . gen dateA = date(date, "YMD")
@@ -73,18 +75,17 @@
 . format dateA %dD/M/Y
 
 . * reshape dataset so columns with rates for medium 
-. reshape wide value proportion population op_appt, i(dateA) j(op_appt_medium)
+. reshape wide value proportion op_appt, i(dateA) j(op_appt_medium)
 (note: j = 1 2)
 
 Data                               long   ->   wide
 -----------------------------------------------------------------------------
 Number of obs.                       72   ->      36
-Number of variables                   7   ->      10
+Number of variables                   6   ->       8
 j variable (2 values)    op_appt_medium   ->   (dropped)
 xij variables:
                                   value   ->   value1 value2
                              proportion   ->   proportion1 proportion2
-                             population   ->   population1 population2
                                 op_appt   ->   op_appt1 op_appt2
 -----------------------------------------------------------------------------
 
@@ -92,18 +93,16 @@ xij variables:
 
 Contains data
   obs:            36                          
- vars:            10                          
+ vars:             8                          
 -------------------------------------------------------------------------------
               storage   display    value
 variable name   type    format     label      variable label
 -------------------------------------------------------------------------------
 dateA           float   %dD/M/Y               
 op_appt1        int     %8.0g                 1 op_appt
-population1     int     %8.0g                 1 population
 value1          float   %9.0g                 1 value
 proportion1     float   %9.0g                 1 proportion
 op_appt2        int     %8.0g                 2 op_appt
-population2     int     %8.0g                 2 population
 value2          float   %9.0g                 2 value
 proportion2     float   %9.0g                 2 proportion
 pop_new         float   %9.0g                 
@@ -116,9 +115,10 @@ Sorted by: dateA
 
 . label var proportion2 "Telephone"
 
-. * Generate line graph
-. graph  bar proportion1 proportion2, over(dateA) stack graphregion(fcolor(whit
-> e))
+. * Generate line graph - still not ideal - date displays as number
+. graph bar proportion1 proportion2, over(dateA, relabel(1 "Apr2019" 2 "" 3 "" 
+> 4 "July2019") label( angle(45))) stack graphregion(fcolor(white)) intensity(5
+> 0) legend(label(1 "Face to face") label(2 "Telephone"))
 
 . 
 . graph export ./output/graphs/line_op_appt_medium.svg, as(svg) replace
@@ -137,7 +137,7 @@ Sorted by: dateA
   5.         drop date
   6.         format dateA %dD/M/Y
   7.         * Generate line graph
-.         graph twoway line rate dateA, tlabel(01Mar2018(120)01Apr2022, angle(4
+.         graph twoway line rate dateA, tlabel(01Apr2019(120)01Apr2022, angle(4
 > 5) ///
 >         format(%dM-CY) labsize(small)) ytitle("Rate per 100,000") xtitle("Dat
 > e") ylabel(#5, labsize(small) ///
@@ -156,8 +156,8 @@ Sorted by: dateA
 
 . 
 . * Graphs stratified by type of admission e.g. daycase
-. import delimited using ./output/measures/measure_hosp_ra_daycase_rate.csv, nu
-> mericcols(3) clear
+. import delimited using ./output/measures/join/measure_hosp_ra_daycase_rate.cs
+> v, numericcols(3) clear
 (5 vars, 216 obs)
 
 . * Drop if ra_daycase missing or is mother-baby record
@@ -251,8 +251,9 @@ Sorted by: dateA
 . label var proportion3 "Regular admission"
 
 . * Generate line graph
-. graph bar proportion1 proportion2 proportion3, over(dateA) stack graphregion(
-> fcolor(white))
+. graph bar proportion1 proportion2 proportion3, over(dateA, label( angle(45)))
+>  stack graphregion(fcolor(white)) intensity(50) legend(label(1 "Ordinary admi
+> ssion") label(2 "Day case") label(3 "Regular admission"))
 
 . 
 . graph export ./output/graphs/line_ra_daycase.svg, as(svg) replace
@@ -262,8 +263,8 @@ Sorted by: dateA
 . 
 . * Generates line graphs with rate of prescriptions over time
 . foreach this_group in gc opioid_strong opioid_weak ssri  {
-  2.         import delimited using ./output/measures/measure_med_`this_group'_
-> rate.csv, numericcols(3) clear
+  2.         import delimited using ./output/measures/join/measure_med_`this_gr
+> oup'_rate.csv, numericcols(3) clear
   3.         * Generate rate per 100,000
 .         gen rate = value*100000 
   4.         * Format date
@@ -271,7 +272,7 @@ Sorted by: dateA
   5.         drop date
   6.         format dateA %dD/M/Y  
   7.         * Generate line graph
-.         graph twoway line rate dateA, tlabel(01Mar2018(120)01Apr2022, angle(4
+.         graph twoway line rate dateA, tlabel(01Apr2019(120)01Apr2022, angle(4
 > 5) ///
 >         format(%dM-CY) labsize(small)) ytitle("Rate per 100,000") xtitle("Dat
 > e") ylabel(#5, labsize(small) ///
@@ -297,7 +298,7 @@ Sorted by: dateA
 . 
 end of do-file
 
-. . file open output using "/tmp/tmp.pkVfhCbL8g", write text replace
+. . file open output using "/tmp/tmp.NT7ZIbkT0c", write text replace
 
 . . file write output "success" 
 
