@@ -151,7 +151,7 @@ forvalues i=2019/2021 {
 
 * Calculate difference compared to 2019
 gen diff_op_2020 = outpatient_appt_2020 - outpatient_appt_2019
-gen diff_op_2021 = outpatient_appt_2021 - outpatient_appt_2019
+gen diff_op_2021 = outpatient_appt_2021 - outpatient_appt_2020
 sum diff_op_2020 diff_op_2021, d
 
 egen diff_op_cat_2020 = cut(diff_op_2020), at(-100, 0, 1, 100) icodes

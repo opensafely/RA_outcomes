@@ -12,8 +12,26 @@ cap log using ./logs/time_series.log, replace
 cap mkdir ./output/time_series
 
 * Outpatient appointments
-* Autocorrelation indicates no autocorrelation
-import delimited "./output/measures/join/measure_op_appt_rate.csv", clear	//get csv
+* Autocorrelation indicates no autocorrelation for op_appt 
+foreach file in op_appt hosp_ra hosp_ra_emergency med_gc med_opioid_strong med_opioid_weak med_ssri {
+    import delimited "./output/measures/join/measure_`file'_rate.csv", clear	//get csv
+    gen temp_date=date(date, "YMD")
+    format temp_date %td
+    gen month=mofd(temp_date)
+    format month %tm
+    drop temp_date
+    *Value to percentage of population
+    gen percent = value*100
+    label variable percent "Percent of population"
+    *Set time series
+    tsset month 
+    itsa percent, trperiod(2020m4) figure single lag(1) posttrend
+    graph export ./output/time_series/itsa_`file'.svg, as(svg) replace
+    actest, lags(6)
+    }
+
+import delimited "./output/measures/join/measure_op_appt_medium_rate.csv", clear	//get csv
+drop if op_appt_medium ==.
 gen temp_date=date(date, "YMD")
 format temp_date %td
 gen month=mofd(temp_date)
@@ -23,10 +41,27 @@ drop temp_date
 gen percent = value*100
 label variable percent "Percent of population"
 *Set time series
-tsset month 
-itsa percent, trperiod(2020m4) figure single lag(1) posttrend
-graph export ./output/time_series/itsa_op_appt.svg, as(svg) replace
+tsset op_appt_medium month 
+itsa percent, trperiod(2020m4) treatid(1) figure lag(1) posttrend
+graph export ./output/time_series/itsa_op_appt_medium.svg, as(svg) replace
 actest, lags(6)
+
+import delimited "./output/measures/join/measure_hosp_ra_daycase_rate.csv", clear	//get csv
+drop if ra_daycase==.
+gen temp_date=date(date, "YMD")
+format temp_date %td
+gen month=mofd(temp_date)
+format month %tm
+drop temp_date
+*Value to percentage of population
+gen percent = value*100
+label variable percent "Percent of population"
+*Set time series
+tsset ra_daycase month
+itsa percent, trperiod(2020m4) treatid(1) contid(2) figure lag(1) posttrend
+graph export ./output/time_series/itsa_hosp_ra_daycase.svg, as(svg) replace
+actest, lags(6)
+
 
 /* Outpatient medium
 import delimited "./output/measures/join/measure_op_appt_medium_rate.csv", clear	//get csv

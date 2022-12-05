@@ -11,15 +11,16 @@ cap mkdir ./output/graphs
 * Generates line graphs with rate of outpatient appointments over time
 foreach this_group in appt_rate  {
         import delimited using ./output/measures/join/measure_op_`this_group'.csv, numericcols(3) clear
-        * Generate rate per 100,000
-        gen rate = value*100000 
+        *Value to percentage of population
+        gen percent = value*100
+        label variable percent "Percent of population"
         * Format date
         gen dateA = date(date, "YMD")
         drop date
         format dateA %dD/M/Y
         * Generate line graph
-        graph twoway line rate dateA, tlabel(01Apr2019(120)01Apr2022, angle(45) ///
-        format(%dM-CY) labsize(small)) ytitle("Rate per 100,000") xtitle("Date") ylabel(#5, labsize(small) ///
+        graph twoway line percent dateA, tlabel(01Apr2019(120)01Apr2022, angle(45) ///
+        format(%dM-CY) labsize(small)) ytitle("Percentage of population") xtitle("Date") ylabel(#5, labsize(small) ///
         angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6) graphregion(fcolor(white))
 
         graph export ./output/graphs/line_`this_group'.svg, as(svg) replace
@@ -56,7 +57,11 @@ describe
 label var proportion1 "Face to face"
 label var proportion2 "Telephone"
 * Generate line graph - still not ideal - date displays as number
-graph bar proportion1 proportion2, over(dateA, relabel(1 "Apr2019" 2 "" 3 "" 4 "July2019") label( angle(45))) stack graphregion(fcolor(white)) intensity(50) legend(label(1 "Face to face") label(2 "Telephone"))
+graph bar proportion1 proportion2, over(dateA, relabel(1 "Apr 2019" 2 " " 3 " " 4 "Jul 2019" 5 " " 6 " " 7 "Oct 2019" ///
+8 " " 9 " " 10 "Jan 2020" 11 " " 12 " " 12 "Apr 2020" 13 " " 14 " " 15 "Jul 2020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " " ///
+21 "Jan 2021" 22 " " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 29 " " 30 "Oct 2021" 31 " " 32 " " 33 "Jan 2022" ///
+34 " " 35 " " 36 "Apr 2022") label( angle(45))) stack graphregion(fcolor(white)) intensity(50) legend(label(1 "Face to face") ///
+label(2 "Telephone")) ytitle("Proportion of population")
 
 graph export ./output/graphs/line_op_appt_medium.svg, as(svg) replace
 
@@ -106,7 +111,11 @@ label var proportion1 "Ordinary admission"
 label var proportion2 "Day case"
 label var proportion3 "Regular admission"
 * Generate line graph
-graph bar proportion1 proportion2 proportion3, over(dateA, label( angle(45))) stack graphregion(fcolor(white)) intensity(50) legend(label(1 "Ordinary admission") label(2 "Day case") label(3 "Regular admission"))
+graph bar proportion1 proportion2 proportion3, over(dateA, relabel(1 "Apr 2019" 2 " " 3 " " 4 "Jul 2019" 5 " " 6 " " 7 "Oct 2019" ///
+8 " " 9 " " 10 "Jan 2020" 11 " " 12 " " 12 "Apr 2020" 13 " " 14 " " 15 "Jul 2020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " " ///
+21 "Jan 2021" 22 " " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 29 " " 30 "Oct 2021" 31 " " 32 " " 33 "Jan 2022" ///
+34 " " 35 " " 36 "Apr 2022") label( angle(45))) stack graphregion(fcolor(white)) intensity(50) ///
+legend(label(1 "Ordinary admission") label(2 "Day case") label(3 "Regular admission")) ytitle("Proportion of population")
 
 graph export ./output/graphs/line_ra_daycase.svg, as(svg) replace
 
