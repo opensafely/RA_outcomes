@@ -31,7 +31,7 @@ foreach file in op_appt hosp_ra hosp_ra_emergency med_gc med_opioid_strong med_o
     }
 
 import delimited "./output/measures/join/measure_op_appt_medium_rate.csv", clear	//get csv
-drop if op_appt_medium ==.
+drop if op_appt_medium==. | op_appt_medium>=3
 gen temp_date=date(date, "YMD")
 format temp_date %td
 gen month=mofd(temp_date)
@@ -47,7 +47,7 @@ graph export ./output/time_series/itsa_op_appt_medium.svg, as(svg) replace
 actest, lags(6)
 
 import delimited "./output/measures/join/measure_hosp_ra_daycase_rate.csv", clear	//get csv
-drop if ra_daycase==.
+drop if ra_daycase==. | ra_daycase>=4
 gen temp_date=date(date, "YMD")
 format temp_date %td
 gen month=mofd(temp_date)
