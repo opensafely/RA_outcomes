@@ -416,7 +416,7 @@ Cumby-Huizinga test for autocorrelation (Breusch-Godfrey)
         time variable:  month, 2019m4 to 2022m3
                 delta:  1 month
 
-. itsa percent, trperiod(2020m4) treatid(1) figure lag(1) posttrend
+. itsa percent, trperiod(2020m4) treatid(2) figure lag(1) posttrend
 
 
        panel variable:  op_appt_medium (strongly balanced)
@@ -431,14 +431,14 @@ maximum lag: 1                                  F(  7,        64) =       1.12
              |             Newey-West
     _percent |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-          _t |  -.0021333   .1656509    -0.01   0.990    -.3330591    .3287925
-          _z |   .3536673   1.274019     0.28   0.782    -2.191478    2.898813
-        _z_t |  -.1385125   .1984557    -0.70   0.488    -.5349735    .2579484
-    _x2020m4 |    .156581   1.508008     0.10   0.918    -2.856012    3.169174
-  _x_t2020m4 |  -.0212754    .168077    -0.13   0.900    -.3570477    .3144969
-  _z_x2020m4 |   2.024969   1.724499     1.17   0.245    -1.420114    5.470053
-_z_x_t2020m4 |   .0897153   .2041086     0.44   0.662    -.3180385    .4974692
-       _cons |   70.11807    .908852    77.15   0.000     68.30243    71.93371
+          _t |  -.1406458   .1092907    -1.29   0.203     -.358979    .0776874
+          _z |  -.3536673   1.274019    -0.28   0.782    -2.898813    2.191478
+        _z_t |   .1385125   .1984557     0.70   0.488    -.2579484    .5349735
+    _x2020m4 |    2.18155    .836546     2.61   0.011     .5103577    3.852743
+  _x_t2020m4 |   .0684399   .1158036     0.59   0.557    -.1629043    .2997842
+  _z_x2020m4 |  -2.024969   1.724499    -1.17   0.245    -5.470053    1.420114
+_z_x_t2020m4 |  -.0897153   .2041086    -0.44   0.662    -.4974692    .3180385
+       _cons |   70.47174   .8928114    78.93   0.000     68.68814    72.25534
 ------------------------------------------------------------------------------
 
 
@@ -451,10 +451,10 @@ Difference : _b[_z_t] +  _b[_z_x_t2020m4]
 ------------------------------------------------------------------------------
 Linear Trend |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-     Treated |  -.0722059   .0380257    -1.90   0.062    -.1481709    .0037591
-    Controls |  -.0234087   .0462565    -0.51   0.615    -.1158167    .0689993
+     Treated |  -.0234087   .0462565    -0.51   0.615    -.1158167    .0689993
+    Controls |  -.0722059   .0380257    -1.90   0.062    -.1481709    .0037591
 -------------+----------------------------------------------------------------
-  Difference |  -.0487972     .05988    -0.81   0.418    -.1684212    .0708269
+  Difference |   .0487972     .05988     0.81   0.418    -.0708269    .1684212
 ------------------------------------------------------------------------------
 
 . graph export ./output/time_series/itsa_op_appt_medium.svg, as(svg) replace
@@ -498,6 +498,8 @@ Cumby-Huizinga test for autocorrelation
 
 . format month %tm
 
+. gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
+
 . drop temp_date
 
 . *Value to percentage of population
@@ -511,72 +513,34 @@ Cumby-Huizinga test for autocorrelation
         time variable:  month, 2019m4 to 2022m3
                 delta:  1 month
 
-. itsa percent, trperiod(2020m4) treatid(1) contid(2) figure lag(1) posttrend
+. newey percent ra_daycase##postcovid, lag(1) force 
 
-
-       panel variable:  ra_daycase (strongly balanced)
-        time variable:  month, 2019m4 to 2022m3
-                delta:  1 month
-
-Regression with Newey-West standard errors      Number of obs     =         72
-maximum lag: 1                                  F(  7,        64) =       2.10
-                                                Prob > F          =     0.0560
+Regression with Newey-West standard errors      Number of obs     =        108
+maximum lag: 1                                  F(  5,       102) =       1.25
+                                                Prob > F          =     0.2896
 
 ------------------------------------------------------------------------------
              |             Newey-West
-    _percent |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+     percent |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-          _t |  -.1679339   .0859389    -1.95   0.055    -.3396165    .0037488
-          _z |  -1.111613   .6442148    -1.73   0.089     -2.39858    .1753535
-        _z_t |    .124519   .0916276     1.36   0.179    -.0585282    .3075662
-    _x2020m4 |   .7362584   .8248883     0.89   0.375    -.9116455    2.384162
-  _x_t2020m4 |   .1611322   .0946927     1.70   0.094    -.0280383    .3503027
-  _z_x2020m4 |  -.1437018   .8593472    -0.17   0.868    -1.860445    1.573042
-_z_x_t2020m4 |  -.1252072   .1002064    -1.25   0.216    -.3253925    .0749781
-       _cons |   11.27913   .5850231    19.28   0.000     10.11041    12.44785
+  ra_daycase |
+          2  |    .426759    .444937     0.96   0.340    -.4557715    1.309289
+          3  |  -.0636558   .4200138    -0.15   0.880    -.8967511    .7694395
+             |
+ 1.postcovid |   .2242264   .1473014     1.52   0.131    -.0679452    .5163981
+             |
+  ra_daycase#|
+   postcovid |
+        2 1  |  -.6577576   .5233148    -1.26   0.212     -1.69575    .3802349
+        3 1  |  -.3837315   .4756037    -0.81   0.422    -1.327089    .5596262
+             |
+       _cons |   9.928734   .1255959    79.05   0.000     9.679616    10.17785
 ------------------------------------------------------------------------------
 
-
-                   Comparison of Linear Postintervention Trends: 2020m4
-
-
-Treated    : _b[_t] + _b[_z_t] + _b[_x_t2020m4] + _b[_z_x_t2020m4]
-Controls   : _b[_t] + _b[_x_t2020m4]
-Difference : _b[_z_t] +  _b[_z_x_t2020m4]
-------------------------------------------------------------------------------
-Linear Trend |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-     Treated |  -.0074899    .010559    -0.71   0.481    -.0285838    .0136041
-    Controls |  -.0068017     .04101    -0.17   0.869    -.0887286    .0751253
--------------+----------------------------------------------------------------
-  Difference |  -.0006882   .0423475    -0.02   0.987    -.0852871    .0839107
-------------------------------------------------------------------------------
-
-. graph export ./output/time_series/itsa_hosp_ra_daycase.svg, as(svg) replace
-(note: file ./output/time_series/itsa_hosp_ra_daycase.svg not found)
-(file ./output/time_series/itsa_hosp_ra_daycase.svg written in SVG format)
-
-. actest, lags(6)
-
-Cumby-Huizinga test for autocorrelation
-  H0: variable is MA process up to order q
-  HA: serial correlation present at specified lags >q
------------------------------------------------------------------------------
-  H0: q=0 (serially uncorrelated)        |  H0: q=specified lag-1
-  HA: s.c. present at range specified    |  HA: s.c. present at lag specified
------------------------------------------+-----------------------------------
-    lags   |      chi2      df     p-val | lag |      chi2      df     p-val
------------+-----------------------------+-----+-----------------------------
-   1 -  1  |      0.333      1    0.5636 |   1 |      0.333      1    0.5636
-   1 -  2  |      2.858      2    0.2395 |   2 |      2.404      1    0.1211
-   1 -  3  |      7.176      3    0.0665 |   3 |      4.503      1    0.0338
-   1 -  4  |      7.195      4    0.1259 |   4 |      0.120      1    0.7290
-   1 -  5  |     11.919      5    0.0359 |   5 |      1.524      1    0.2170
-   1 -  6  |     11.971      6    0.0626 |   6 |      0.007      1    0.9348
------------------------------------------------------------------------------
-  Test allows predetermined regressors/instruments
-  Test requires conditional homoskedasticity
-
+. * Itsa compared treat group to all other groups
+. *itsa percent, trperiod(2020m4) treatid(2) figure lag(1) posttrend
+. *graph export ./output/time_series/itsa_hosp_ra_daycase.svg, as(svg) replace
+. *actest, lags(6)
 . 
 . 
 . /* Outpatient medium
@@ -727,7 +691,7 @@ Cumby-Huizinga test for autocorrelation
 
 end of do-file
 
-. . file open output using "/tmp/tmp.NU8WJSNV7S", write text replace
+. . file open output using "/tmp/tmp.Zjcsccprsl", write text replace
 
 . . file write output "success" 
 

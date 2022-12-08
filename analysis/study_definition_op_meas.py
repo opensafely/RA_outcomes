@@ -343,6 +343,12 @@ study = StudyDefinition(
         returning="binary_flag",
         return_expectations={"incidence": 0.1},
     ),
+    nsaid_prescribing=patients.with_these_medications(
+        nsaid_codes,
+        between=["index_date", "last_day_of_month(index_date)"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.1},
+    ),
 
 )
 
@@ -404,6 +410,12 @@ measures = [
     Measure(
         id="med_ssri_rate",
         numerator="ssri_prescribing",
+        denominator="population",
+        group_by="population",
+    ),
+    Measure(
+        id="med_nsaid_rate",
+        numerator="nsaid_prescribing",
         denominator="population",
         group_by="population",
     ),

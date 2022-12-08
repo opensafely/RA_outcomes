@@ -120,7 +120,7 @@ legend(label(1 "Ordinary admission") label(2 "Day case") label(3 "Regular admiss
 graph export ./output/graphs/line_ra_daycase.svg, as(svg) replace
 
 * Generates line graphs with rate of prescriptions over time
-foreach this_group in gc opioid_strong opioid_weak ssri  {
+foreach this_group in gc opioid_strong opioid_weak ssri nsaid {
         import delimited using ./output/measures/join/measure_med_`this_group'_rate.csv, numericcols(3) clear
         * Generate rate per 100,000
         gen rate = value*100000 

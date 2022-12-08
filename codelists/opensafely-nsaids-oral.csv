@@ -1,0 +1,970 @@
+obj_type,vpid,snomed_id,bnf_code,dmd_name,bnf_name,form_route
+amp,329914002,92511000001106,100101040AAAAAA,Tenoxicam 20mg tablets (A A H Pharmaceuticals Ltd),Tenoxicam 20mg tablets,tablet.oral
+amp,329914002,565511000001103,100101040AAAAAA,Tenoxicam 20mg tablets (Sandoz Ltd),Tenoxicam 20mg tablets,tablet.oral
+amp,329914002,602711000001108,100101040AAAAAA,Tenoxicam 20mg tablets (Alliance Healthcare (Distribution) Ltd),Tenoxicam 20mg tablets,tablet.oral
+amp,329914002,753111000001104,100101040AAAAAA,Tenoxicam 20mg tablets (Kent Pharmaceuticals Ltd),Tenoxicam 20mg tablets,tablet.oral
+amp,329914002,15229011000001105,100101040AAAAAA,Tenoxicam 20mg tablets (Sigma Pharmaceuticals Plc),Tenoxicam 20mg tablets,tablet.oral
+amp,329914002,21786211000001109,100101040AAAAAA,Tenoxicam 20mg tablets (Waymade Healthcare Plc),Tenoxicam 20mg tablets,tablet.oral
+amp,329914002,213111000001102,100101040BBAAAA,Mobiflex 20mg tablets (Mylan),Mobiflex 20mg tablets,tablet.oral
+amp,329907004,589011000001106,100101050BBAAAA,Emflex 60mg capsules (Merck Serono Ltd),Emflex 60mg capsules,capsule.oral
+amp,322299000,56411000001103,100101070BBAAAA,Synflex 275mg tablets (Roche Products Ltd),Synflex 275mg tablets,tablet.oral
+amp,329925006,10961711000001107,100101080AAAAAA,Aceclofenac 100mg tablets (Sandoz Ltd),Aceclofenac 100mg tablets,tablet.oral
+amp,329925006,10961811000001104,100101080AAAAAA,Aceclofenac 100mg tablets (A A H Pharmaceuticals Ltd),Aceclofenac 100mg tablets,tablet.oral
+amp,329925006,10985211000001100,100101080AAAAAA,Aceclofenac 100mg tablets (Alliance Healthcare (Distribution) Ltd),Aceclofenac 100mg tablets,tablet.oral
+amp,329925006,13435511000001107,100101080AAAAAA,Aceclofenac 100mg tablets (Mylan),Aceclofenac 100mg tablets,tablet.oral
+amp,329925006,15058911000001106,100101080AAAAAA,Aceclofenac 100mg tablets (Sigma Pharmaceuticals Plc),Aceclofenac 100mg tablets,tablet.oral
+amp,329925006,15166111000001109,100101080AAAAAA,Aceclofenac 100mg tablets (Actavis UK Ltd),Aceclofenac 100mg tablets,tablet.oral
+amp,329925006,17748811000001101,100101080AAAAAA,Aceclofenac 100mg tablets (Phoenix Healthcare Distribution Ltd),Aceclofenac 100mg tablets,tablet.oral
+amp,329925006,19700711000001109,100101080AAAAAA,Aceclofenac 100mg tablets (DE Pharmaceuticals),Aceclofenac 100mg tablets,tablet.oral
+amp,329925006,21748411000001104,100101080AAAAAA,Aceclofenac 100mg tablets (Waymade Healthcare Plc),Aceclofenac 100mg tablets,tablet.oral
+amp,329925006,27840711000001109,100101080AAAAAA,Aceclofenac 100mg tablets (Accord Healthcare Ltd),Aceclofenac 100mg tablets,tablet.oral
+amp,329925006,33498211000001105,100101080AAAAAA,Aceclofenac 100mg tablets (Rivopharm (UK) Ltd),Aceclofenac 100mg tablets,tablet.oral
+amp,329925006,844911000001100,100101080BBAAAA,Preservex 100mg tablets (Almirall Ltd),Preservex 100mg tablets,tablet.oral
+amp,329927003,9834411000001104,1001010AAAAAAAA,Meloxicam 7.5mg tablets (Teva UK Ltd),Meloxicam 7.5mg tablets,tablet.oral
+amp,329927003,9834811000001102,1001010AAAAAAAA,Meloxicam 7.5mg tablets (A A H Pharmaceuticals Ltd),Meloxicam 7.5mg tablets,tablet.oral
+amp,329927003,9856111000001101,1001010AAAAAAAA,Meloxicam 7.5mg tablets (Kent Pharmaceuticals Ltd),Meloxicam 7.5mg tablets,tablet.oral
+amp,329927003,9870211000001108,1001010AAAAAAAA,Meloxicam 7.5mg tablets (Zentiva),Meloxicam 7.5mg tablets,tablet.oral
+amp,329927003,9905911000001107,1001010AAAAAAAA,Meloxicam 7.5mg tablets (Alliance Healthcare (Distribution) Ltd),Meloxicam 7.5mg tablets,tablet.oral
+amp,329927003,9991411000001100,1001010AAAAAAAA,Meloxicam 7.5mg tablets (Mylan),Meloxicam 7.5mg tablets,tablet.oral
+amp,329927003,10198211000001109,1001010AAAAAAAA,Meloxicam 7.5mg tablets (IVAX Pharmaceuticals UK Ltd),Meloxicam 7.5mg tablets,tablet.oral
+amp,329927003,10302611000001102,1001010AAAAAAAA,Meloxicam 7.5mg tablets (Focus Pharmaceuticals Ltd),Meloxicam 7.5mg tablets,tablet.oral
+amp,329927003,10304311000001100,1001010AAAAAAAA,Meloxicam 7.5mg tablets (Actavis UK Ltd),Meloxicam 7.5mg tablets,tablet.oral
+amp,329927003,10440011000001105,1001010AAAAAAAA,Meloxicam 7.5mg tablets (Niche Generics Ltd),Meloxicam 7.5mg tablets,tablet.oral
+amp,329927003,10614811000001102,1001010AAAAAAAA,Meloxicam 7.5mg tablets (Genus Pharmaceuticals Ltd),Meloxicam 7.5mg tablets,tablet.oral
+amp,329927003,10702311000001108,1001010AAAAAAAA,Meloxicam 7.5mg tablets (Somex Pharma),Meloxicam 7.5mg tablets,tablet.oral
+amp,329927003,10962111000001101,1001010AAAAAAAA,Meloxicam 7.5mg tablets (Sandoz Ltd),Meloxicam 7.5mg tablets,tablet.oral
+amp,329927003,11426211000001109,1001010AAAAAAAA,Meloxicam 7.5mg tablets (Almus Pharmaceuticals Ltd),Meloxicam 7.5mg tablets,tablet.oral
+amp,329927003,13413211000001103,1001010AAAAAAAA,Meloxicam 7.5mg tablets (Arrow Generics Ltd),Meloxicam 7.5mg tablets,tablet.oral
+amp,329927003,14162311000001104,1001010AAAAAAAA,Meloxicam 7.5mg tablets (Healthcare Pharma Ltd),Meloxicam 7.5mg tablets,tablet.oral
+amp,329927003,15109611000001105,1001010AAAAAAAA,Meloxicam 7.5mg tablets (Sigma Pharmaceuticals Plc),Meloxicam 7.5mg tablets,tablet.oral
+amp,329927003,17203811000001108,1001010AAAAAAAA,Meloxicam 7.5mg tablets (Sovereign Medical Ltd),Meloxicam 7.5mg tablets,tablet.oral
+amp,329927003,17939611000001100,1001010AAAAAAAA,Meloxicam 7.5mg tablets (Phoenix Healthcare Distribution Ltd),Meloxicam 7.5mg tablets,tablet.oral
+amp,329927003,21792011000001102,1001010AAAAAAAA,Meloxicam 7.5mg tablets (Waymade Healthcare Plc),Meloxicam 7.5mg tablets,tablet.oral
+amp,329927003,24379111000001108,1001010AAAAAAAA,Meloxicam 7.5mg tablets (DE Pharmaceuticals),Meloxicam 7.5mg tablets,tablet.oral
+amp,329927003,30827011000001104,1001010AAAAAAAA,Meloxicam 7.5mg tablets (Mawdsley-Brooks & Company Ltd),Meloxicam 7.5mg tablets,tablet.oral
+amp,329928008,9834611000001101,1001010AAAAABAB,Meloxicam 15mg tablets (Teva UK Ltd),Meloxicam 15mg tablets,tablet.oral
+amp,329928008,9835011000001107,1001010AAAAABAB,Meloxicam 15mg tablets (A A H Pharmaceuticals Ltd),Meloxicam 15mg tablets,tablet.oral
+amp,329928008,9856311000001104,1001010AAAAABAB,Meloxicam 15mg tablets (Kent Pharmaceuticals Ltd),Meloxicam 15mg tablets,tablet.oral
+amp,329928008,9870511000001106,1001010AAAAABAB,Meloxicam 15mg tablets (Zentiva),Meloxicam 15mg tablets,tablet.oral
+amp,329928008,9906111000001103,1001010AAAAABAB,Meloxicam 15mg tablets (Alliance Healthcare (Distribution) Ltd),Meloxicam 15mg tablets,tablet.oral
+amp,329928008,9991611000001102,1001010AAAAABAB,Meloxicam 15mg tablets (Mylan),Meloxicam 15mg tablets,tablet.oral
+amp,329928008,10198411000001108,1001010AAAAABAB,Meloxicam 15mg tablets (IVAX Pharmaceuticals UK Ltd),Meloxicam 15mg tablets,tablet.oral
+amp,329928008,10302411000001100,1001010AAAAABAB,Meloxicam 15mg tablets (Focus Pharmaceuticals Ltd),Meloxicam 15mg tablets,tablet.oral
+amp,329928008,10304811000001109,1001010AAAAABAB,Meloxicam 15mg tablets (Actavis UK Ltd),Meloxicam 15mg tablets,tablet.oral
+amp,329928008,10440311000001108,1001010AAAAABAB,Meloxicam 15mg tablets (Niche Generics Ltd),Meloxicam 15mg tablets,tablet.oral
+amp,329928008,10615011000001107,1001010AAAAABAB,Meloxicam 15mg tablets (Genus Pharmaceuticals Ltd),Meloxicam 15mg tablets,tablet.oral
+amp,329928008,10701211000001107,1001010AAAAABAB,Meloxicam 15mg tablets (Somex Pharma),Meloxicam 15mg tablets,tablet.oral
+amp,329928008,10962511000001105,1001010AAAAABAB,Meloxicam 15mg tablets (Sandoz Ltd),Meloxicam 15mg tablets,tablet.oral
+amp,329928008,11426411000001108,1001010AAAAABAB,Meloxicam 15mg tablets (Almus Pharmaceuticals Ltd),Meloxicam 15mg tablets,tablet.oral
+amp,329928008,13413411000001104,1001010AAAAABAB,Meloxicam 15mg tablets (Arrow Generics Ltd),Meloxicam 15mg tablets,tablet.oral
+amp,329928008,14162511000001105,1001010AAAAABAB,Meloxicam 15mg tablets (Healthcare Pharma Ltd),Meloxicam 15mg tablets,tablet.oral
+amp,329928008,15109311000001100,1001010AAAAABAB,Meloxicam 15mg tablets (Sigma Pharmaceuticals Plc),Meloxicam 15mg tablets,tablet.oral
+amp,329928008,17204011000001100,1001010AAAAABAB,Meloxicam 15mg tablets (Sovereign Medical Ltd),Meloxicam 15mg tablets,tablet.oral
+amp,329928008,17939811000001101,1001010AAAAABAB,Meloxicam 15mg tablets (Phoenix Healthcare Distribution Ltd),Meloxicam 15mg tablets,tablet.oral
+amp,329928008,21792211000001107,1001010AAAAABAB,Meloxicam 15mg tablets (Waymade Healthcare Plc),Meloxicam 15mg tablets,tablet.oral
+amp,329928008,24378911000001103,1001010AAAAABAB,Meloxicam 15mg tablets (DE Pharmaceuticals),Meloxicam 15mg tablets,tablet.oral
+amp,329928008,30827211000001109,1001010AAAAABAB,Meloxicam 15mg tablets (Mawdsley-Brooks & Company Ltd),Meloxicam 15mg tablets,tablet.oral
+amp,22648611000001108,22640411000001107,1001010AAAAAJAJ,Meloxicam 15mg orodispersible tablets sugar free (Rhodes Pharma Ltd),Meloxicam 15mg orodispersible tablets sugar free,tabletdispersible.oral
+amp,22648611000001108,23679611000001108,1001010AAAAAJAJ,Meloxicam 15mg orodispersible tablets sugar free (A A H Pharmaceuticals Ltd),Meloxicam 15mg orodispersible tablets sugar free,tabletdispersible.oral
+amp,22648711000001104,22640911000001104,1001010AAAAAKAK,Meloxicam 7.5mg orodispersible tablets sugar free (Rhodes Pharma Ltd),Meloxicam 7.5mg orodispersible tablets sugar free,tabletdispersible.oral
+amp,22648711000001104,23679411000001105,1001010AAAAAKAK,Meloxicam 7.5mg orodispersible tablets sugar free (A A H Pharmaceuticals Ltd),Meloxicam 7.5mg orodispersible tablets sugar free,tabletdispersible.oral
+amp,329927003,591611000001104,1001010AABBAAAA,Mobic 7.5mg tablets (Boehringer Ingelheim Ltd),Mobic 7.5mg tablets,tablet.oral
+amp,329928008,81511000001104,1001010AABBABAB,Mobic 15mg tablets (Boehringer Ingelheim Ltd),Mobic 15mg tablets,tablet.oral
+amp,10245111000001102,10239611000001109,1001010ADBCABAC,Nurofen Maximum Strength Migraine Pain 684mg caplets (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen Maximum Strength Migraine Pain 684mg caplets,tablet.oral
+amp,4557011000001104,4603811000001101,1001010ADBCACAB,Nurofen Migraine Pain 342mg tablets (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen Migraine Pain 342mg tablets,tablet.oral
+amp,4557011000001104,9511211000001108,1001010ADBDAAAB,Nurofen Tension Headache 342mg caplets (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen Tension Headache 342mg caplets,tablet.oral
+amp,4557011000001104,11934111000001109,1001010ADBEAAAB,Nurofen Express 342mg caplets (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen Express 342mg caplets,tablet.oral
+amp,10245111000001102,11935111000001108,1001010ADBEABAC,Nurofen Express 684mg caplets (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen Express 684mg caplets,tablet.oral
+amp,21681311000001104,21679511000001103,1001010ADBEACAD,Nurofen Express Soluble 400mg oral powder sachets (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen Express Soluble 400mg oral powder sachets,solution.oral
+amp,4557011000001104,17538811000001101,1001010ADBFAAAB,Feminax Express 342mg tablets (Bayer Plc),Feminax Express 342mg tablets,tablet.oral
+amp,329963003,2892711000001101,1001010AEBBAAAA,Keral 25mg tablets (A. Menarini Farmaceutica Internazionale SRL),Keral 25mg tablets,tablet.oral
+amp,329967002,16236911000001100,1001010AGAAAAAA,Diclofenac potassium 25mg tablets (Accord Healthcare Ltd),Diclofenac potassium 25mg tablets,tablet.oral
+amp,329967002,17014711000001105,1001010AGAAAAAA,Diclofenac potassium 25mg tablets (A A H Pharmaceuticals Ltd),Diclofenac potassium 25mg tablets,tablet.oral
+amp,329968007,16237611000001108,1001010AGAAABAB,Diclofenac potassium 50mg tablets (Accord Healthcare Ltd),Diclofenac potassium 50mg tablets,tablet.oral
+amp,329968007,16650211000001108,1001010AGAAABAB,Diclofenac potassium 50mg tablets (A A H Pharmaceuticals Ltd),Diclofenac potassium 50mg tablets,tablet.oral
+amp,329968007,17664811000001107,1001010AGAAABAB,Diclofenac potassium 50mg tablets (Focus Pharmaceuticals Ltd),Diclofenac potassium 50mg tablets,tablet.oral
+amp,329968007,18341211000001104,1001010AGAAABAB,Diclofenac potassium 50mg tablets (Alliance Healthcare (Distribution) Ltd),Diclofenac potassium 50mg tablets,tablet.oral
+amp,329968007,18618611000001109,1001010AGAAABAB,Diclofenac potassium 50mg tablets (Phoenix Healthcare Distribution Ltd),Diclofenac potassium 50mg tablets,tablet.oral
+amp,329968007,30048011000001102,1001010AGAAABAB,Diclofenac potassium 50mg tablets (DE Pharmaceuticals),Diclofenac potassium 50mg tablets,tablet.oral
+amp,329967002,663411000001105,1001010AGBBAAAA,Voltarol Rapid 25mg tablets (Novartis Pharmaceuticals UK Ltd),Voltarol Rapid 25mg tablets,tablet.oral
+amp,329968007,605911000001102,1001010AGBBABAB,Voltarol Rapid 50mg tablets (Novartis Pharmaceuticals UK Ltd),Voltarol Rapid 50mg tablets,tablet.oral
+amp,14062911000001108,14033611000001100,1001010AGBCAAAC,Voltarol Pain-eze 12.5mg tablets (Novartis Consumer Health UK Ltd),Voltarol Pain-eze 12.5mg tablets,tablet.oral
+amp,329967002,19363611000001107,1001010AGBCABAA,Voltarol Pain-eze Extra Strength 25mg tablets (Novartis Consumer Health UK Ltd),Voltarol Pain-eze Extra Strength 25mg tablets,tablet.oral
+amp,14062911000001108,17526411000001101,1001010AGBDAAAC,Voltarol Joint Pain 12.5mg tablets (Novartis Consumer Health UK Ltd),Voltarol Joint Pain 12.5mg tablets,tablet.oral
+amp,14062911000001108,18637011000001107,1001010AGBEABAC,First Resort Double Action Pain Relief 12.5mg tablets (Actavis UK Ltd),First Resort Double Action Pain Relief 12.5mg tablets,tablet.oral
+amp,330170001,28001111000001101,1001010AHAAAAAA,Celecoxib 100mg capsules (Teva UK Ltd),Celecoxib 100mg capsules,capsule.oral
+amp,330170001,28011711000001103,1001010AHAAAAAA,Celecoxib 100mg capsules (Upjohn UK Ltd),Celecoxib 100mg capsules,capsule.oral
+amp,330170001,28039011000001105,1001010AHAAAAAA,Celecoxib 100mg capsules (Alliance Healthcare (Distribution) Ltd),Celecoxib 100mg capsules,capsule.oral
+amp,330170001,28292711000001100,1001010AHAAAAAA,Celecoxib 100mg capsules (Zentiva),Celecoxib 100mg capsules,capsule.oral
+amp,330170001,28378211000001108,1001010AHAAAAAA,Celecoxib 100mg capsules (Actavis UK Ltd),Celecoxib 100mg capsules,capsule.oral
+amp,330170001,28378611000001105,1001010AHAAAAAA,Celecoxib 100mg capsules (A A H Pharmaceuticals Ltd),Celecoxib 100mg capsules,capsule.oral
+amp,330170001,29784511000001108,1001010AHAAAAAA,Celecoxib 100mg capsules (Sigma Pharmaceuticals Plc),Celecoxib 100mg capsules,capsule.oral
+amp,330170001,30011211000001106,1001010AHAAAAAA,Celecoxib 100mg capsules (Mawdsley-Brooks & Company Ltd),Celecoxib 100mg capsules,capsule.oral
+amp,330170001,30136411000001104,1001010AHAAAAAA,Celecoxib 100mg capsules (DE Pharmaceuticals),Celecoxib 100mg capsules,capsule.oral
+amp,330170001,32397411000001105,1001010AHAAAAAA,Celecoxib 100mg capsules (Kent Pharmaceuticals Ltd),Celecoxib 100mg capsules,capsule.oral
+amp,330170001,32496211000001102,1001010AHAAAAAA,Celecoxib 100mg capsules (Brown & Burk UK Ltd),Celecoxib 100mg capsules,capsule.oral
+amp,330170001,33588711000001109,1001010AHAAAAAA,Celecoxib 100mg capsules (Mylan),Celecoxib 100mg capsules,capsule.oral
+amp,330170001,35140711000001104,1001010AHAAAAAA,Celecoxib 100mg capsules (Milpharm Ltd),Celecoxib 100mg capsules,capsule.oral
+amp,330170001,35906711000001107,1001010AHAAAAAA,Celecoxib 100mg capsules (Consilient Health Ltd),Celecoxib 100mg capsules,capsule.oral
+amp,330170001,36751811000001106,1001010AHAAAAAA,Celecoxib 100mg capsules (Macleods Pharma UK Ltd),Celecoxib 100mg capsules,capsule.oral
+amp,330170001,36859211000001109,1001010AHAAAAAA,Celecoxib 100mg capsules (Torrent Pharma (UK) Ltd),Celecoxib 100mg capsules,capsule.oral
+amp,330170001,37893811000001100,1001010AHAAAAAA,Celecoxib 100mg capsules (Dawa Ltd),Celecoxib 100mg capsules,capsule.oral
+amp,330169002,28000911000001105,1001010AHAAABAB,Celecoxib 200mg capsules (Teva UK Ltd),Celecoxib 200mg capsules,capsule.oral
+amp,330169002,28011911000001101,1001010AHAAABAB,Celecoxib 200mg capsules (Upjohn UK Ltd),Celecoxib 200mg capsules,capsule.oral
+amp,330169002,28039211000001100,1001010AHAAABAB,Celecoxib 200mg capsules (Alliance Healthcare (Distribution) Ltd),Celecoxib 200mg capsules,capsule.oral
+amp,330169002,28292911000001103,1001010AHAAABAB,Celecoxib 200mg capsules (Zentiva),Celecoxib 200mg capsules,capsule.oral
+amp,330169002,28378411000001107,1001010AHAAABAB,Celecoxib 200mg capsules (Actavis UK Ltd),Celecoxib 200mg capsules,capsule.oral
+amp,330169002,28378811000001109,1001010AHAAABAB,Celecoxib 200mg capsules (A A H Pharmaceuticals Ltd),Celecoxib 200mg capsules,capsule.oral
+amp,330169002,29784111000001104,1001010AHAAABAB,Celecoxib 200mg capsules (Sigma Pharmaceuticals Plc),Celecoxib 200mg capsules,capsule.oral
+amp,330169002,30011411000001105,1001010AHAAABAB,Celecoxib 200mg capsules (Mawdsley-Brooks & Company Ltd),Celecoxib 200mg capsules,capsule.oral
+amp,330169002,30136611000001101,1001010AHAAABAB,Celecoxib 200mg capsules (DE Pharmaceuticals),Celecoxib 200mg capsules,capsule.oral
+amp,330169002,32496411000001103,1001010AHAAABAB,Celecoxib 200mg capsules (Brown & Burk UK Ltd),Celecoxib 200mg capsules,capsule.oral
+amp,330169002,33588911000001106,1001010AHAAABAB,Celecoxib 200mg capsules (Mylan),Celecoxib 200mg capsules,capsule.oral
+amp,330169002,34584911000001102,1001010AHAAABAB,Celecoxib 200mg capsules (Milpharm Ltd),Celecoxib 200mg capsules,capsule.oral
+amp,330169002,35906911000001109,1001010AHAAABAB,Celecoxib 200mg capsules (Consilient Health Ltd),Celecoxib 200mg capsules,capsule.oral
+amp,330169002,36741411000001107,1001010AHAAABAB,Celecoxib 200mg capsules (Macleods Pharma UK Ltd),Celecoxib 200mg capsules,capsule.oral
+amp,330169002,36859611000001106,1001010AHAAABAB,Celecoxib 200mg capsules (Torrent Pharma (UK) Ltd),Celecoxib 200mg capsules,capsule.oral
+amp,330169002,37894011000001108,1001010AHAAABAB,Celecoxib 200mg capsules (Dawa Ltd),Celecoxib 200mg capsules,capsule.oral
+amp,330170001,18711000001102,1001010AHBBAAAA,Celebrex 100mg capsules (Upjohn UK Ltd),Celebrex 100mg capsules,capsule.oral
+amp,330169002,878111000001108,1001010AHBBABAB,Celebrex 200mg capsules (Upjohn UK Ltd),Celebrex 200mg capsules,capsule.oral
+amp,408602008,17061411000001100,1001010AIAAACAC,Lornoxicam 8mg tablets (Special Order),Lornoxicam 8mg tablets,tablet.oral
+amp,407907003,34618311000001101,1001010AJAAAAAA,Etoricoxib 60mg tablets (Teva UK Ltd),Etoricoxib 60mg tablets,tablet.oral
+amp,407907003,34620411000001101,1001010AJAAAAAA,Etoricoxib 60mg tablets (Aspire Pharma Ltd),Etoricoxib 60mg tablets,tablet.oral
+amp,407907003,34624411000001107,1001010AJAAAAAA,Etoricoxib 60mg tablets (Accord Healthcare Ltd),Etoricoxib 60mg tablets,tablet.oral
+amp,407907003,34691311000001109,1001010AJAAAAAA,Etoricoxib 60mg tablets (Mylan),Etoricoxib 60mg tablets,tablet.oral
+amp,407907003,34699011000001105,1001010AJAAAAAA,Etoricoxib 60mg tablets (A A H Pharmaceuticals Ltd),Etoricoxib 60mg tablets,tablet.oral
+amp,407907003,34710911000001108,1001010AJAAAAAA,Etoricoxib 60mg tablets (Alliance Healthcare (Distribution) Ltd),Etoricoxib 60mg tablets,tablet.oral
+amp,407907003,35160811000001102,1001010AJAAAAAA,Etoricoxib 60mg tablets (Milpharm Ltd),Etoricoxib 60mg tablets,tablet.oral
+amp,407907003,36833211000001106,1001010AJAAAAAA,Etoricoxib 60mg tablets (Torrent Pharma (UK) Ltd),Etoricoxib 60mg tablets,tablet.oral
+amp,407907003,37065011000001109,1001010AJAAAAAA,Etoricoxib 60mg tablets (Mawdsley-Brooks & Company Ltd),Etoricoxib 60mg tablets,tablet.oral
+amp,407907003,37355211000001105,1001010AJAAAAAA,Etoricoxib 60mg tablets (Zentiva),Etoricoxib 60mg tablets,tablet.oral
+amp,407907003,37377411000001100,1001010AJAAAAAA,Etoricoxib 60mg tablets (DE Pharmaceuticals),Etoricoxib 60mg tablets,tablet.oral
+amp,407908008,34618511000001107,1001010AJAAABAB,Etoricoxib 90mg tablets (Teva UK Ltd),Etoricoxib 90mg tablets,tablet.oral
+amp,407908008,34620611000001103,1001010AJAAABAB,Etoricoxib 90mg tablets (Aspire Pharma Ltd),Etoricoxib 90mg tablets,tablet.oral
+amp,407908008,34624611000001105,1001010AJAAABAB,Etoricoxib 90mg tablets (Accord Healthcare Ltd),Etoricoxib 90mg tablets,tablet.oral
+amp,407908008,34691511000001103,1001010AJAAABAB,Etoricoxib 90mg tablets (Mylan),Etoricoxib 90mg tablets,tablet.oral
+amp,407908008,34699211000001100,1001010AJAAABAB,Etoricoxib 90mg tablets (A A H Pharmaceuticals Ltd),Etoricoxib 90mg tablets,tablet.oral
+amp,407908008,34711111000001104,1001010AJAAABAB,Etoricoxib 90mg tablets (Alliance Healthcare (Distribution) Ltd),Etoricoxib 90mg tablets,tablet.oral
+amp,407908008,35161011000001104,1001010AJAAABAB,Etoricoxib 90mg tablets (Milpharm Ltd),Etoricoxib 90mg tablets,tablet.oral
+amp,407908008,36833411000001105,1001010AJAAABAB,Etoricoxib 90mg tablets (Torrent Pharma (UK) Ltd),Etoricoxib 90mg tablets,tablet.oral
+amp,407908008,37065411000001100,1001010AJAAABAB,Etoricoxib 90mg tablets (Mawdsley-Brooks & Company Ltd),Etoricoxib 90mg tablets,tablet.oral
+amp,407908008,37355811000001106,1001010AJAAABAB,Etoricoxib 90mg tablets (Zentiva),Etoricoxib 90mg tablets,tablet.oral
+amp,407908008,37377611000001102,1001010AJAAABAB,Etoricoxib 90mg tablets (DE Pharmaceuticals),Etoricoxib 90mg tablets,tablet.oral
+amp,407909000,34618711000001102,1001010AJAAACAC,Etoricoxib 120mg tablets (Teva UK Ltd),Etoricoxib 120mg tablets,tablet.oral
+amp,407909000,34620811000001104,1001010AJAAACAC,Etoricoxib 120mg tablets (Aspire Pharma Ltd),Etoricoxib 120mg tablets,tablet.oral
+amp,407909000,34624711000001101,1001010AJAAACAC,Etoricoxib 120mg tablets (Accord Healthcare Ltd),Etoricoxib 120mg tablets,tablet.oral
+amp,407909000,34691711000001108,1001010AJAAACAC,Etoricoxib 120mg tablets (Mylan),Etoricoxib 120mg tablets,tablet.oral
+amp,407909000,34699411000001101,1001010AJAAACAC,Etoricoxib 120mg tablets (A A H Pharmaceuticals Ltd),Etoricoxib 120mg tablets,tablet.oral
+amp,407909000,34711311000001102,1001010AJAAACAC,Etoricoxib 120mg tablets (Alliance Healthcare (Distribution) Ltd),Etoricoxib 120mg tablets,tablet.oral
+amp,407909000,35161211000001109,1001010AJAAACAC,Etoricoxib 120mg tablets (Milpharm Ltd),Etoricoxib 120mg tablets,tablet.oral
+amp,407909000,36833611000001108,1001010AJAAACAC,Etoricoxib 120mg tablets (Torrent Pharma (UK) Ltd),Etoricoxib 120mg tablets,tablet.oral
+amp,407909000,37065911000001108,1001010AJAAACAC,Etoricoxib 120mg tablets (Mawdsley-Brooks & Company Ltd),Etoricoxib 120mg tablets,tablet.oral
+amp,407909000,37354011000001104,1001010AJAAACAC,Etoricoxib 120mg tablets (Zentiva),Etoricoxib 120mg tablets,tablet.oral
+amp,407909000,37378011000001105,1001010AJAAACAC,Etoricoxib 120mg tablets (DE Pharmaceuticals),Etoricoxib 120mg tablets,tablet.oral
+amp,13132911000001109,34618111000001103,1001010AJAAADAD,Etoricoxib 30mg tablets (Teva UK Ltd),Etoricoxib 30mg tablets,tablet.oral
+amp,13132911000001109,34620211000001100,1001010AJAAADAD,Etoricoxib 30mg tablets (Aspire Pharma Ltd),Etoricoxib 30mg tablets,tablet.oral
+amp,13132911000001109,34624211000001108,1001010AJAAADAD,Etoricoxib 30mg tablets (Accord Healthcare Ltd),Etoricoxib 30mg tablets,tablet.oral
+amp,13132911000001109,34691111000001107,1001010AJAAADAD,Etoricoxib 30mg tablets (Mylan),Etoricoxib 30mg tablets,tablet.oral
+amp,13132911000001109,34698811000001106,1001010AJAAADAD,Etoricoxib 30mg tablets (A A H Pharmaceuticals Ltd),Etoricoxib 30mg tablets,tablet.oral
+amp,13132911000001109,34710711000001106,1001010AJAAADAD,Etoricoxib 30mg tablets (Alliance Healthcare (Distribution) Ltd),Etoricoxib 30mg tablets,tablet.oral
+amp,13132911000001109,35160611000001101,1001010AJAAADAD,Etoricoxib 30mg tablets (Milpharm Ltd),Etoricoxib 30mg tablets,tablet.oral
+amp,13132911000001109,36833011000001101,1001010AJAAADAD,Etoricoxib 30mg tablets (Torrent Pharma (UK) Ltd),Etoricoxib 30mg tablets,tablet.oral
+amp,13132911000001109,37064511000001102,1001010AJAAADAD,Etoricoxib 30mg tablets (Mawdsley-Brooks & Company Ltd),Etoricoxib 30mg tablets,tablet.oral
+amp,13132911000001109,37230511000001109,1001010AJAAADAD,Etoricoxib 30mg tablets (Brown & Burk UK Ltd),Etoricoxib 30mg tablets,tablet.oral
+amp,13132911000001109,37354711000001102,1001010AJAAADAD,Etoricoxib 30mg tablets (Zentiva),Etoricoxib 30mg tablets,tablet.oral
+amp,13132911000001109,37377011000001109,1001010AJAAADAD,Etoricoxib 30mg tablets (DE Pharmaceuticals),Etoricoxib 30mg tablets,tablet.oral
+amp,407907003,3406111000001103,1001010AJBBAAAA,Arcoxia 60mg tablets (Merck Sharp & Dohme Ltd),Arcoxia 60mg tablets,tablet.oral
+amp,407908008,3406811000001105,1001010AJBBABAB,Arcoxia 90mg tablets (Merck Sharp & Dohme Ltd),Arcoxia 90mg tablets,tablet.oral
+amp,407909000,3407911000001102,1001010AJBBACAC,Arcoxia 120mg tablets (Merck Sharp & Dohme Ltd),Arcoxia 120mg tablets,tablet.oral
+amp,13132911000001109,13122311000001105,1001010AJBBADAD,Arcoxia 30mg tablets (Merck Sharp & Dohme Ltd),Arcoxia 30mg tablets,tablet.oral
+amp,418352003,9447211000001103,1001010AMBBAAAA,Seractil 300mg tablets (Thornton & Ross Ltd),Seractil 300mg tablets (Thornton & Ross),tablet.oral
+amp,418855005,9447611000001101,1001010AMBBABAB,Seractil 400mg tablets (Thornton & Ross Ltd),Seractil 400mg tablets,tablet.oral
+amp,418352003,35096411000001107,1001010AMBBACAA,Seractil 300mg tablets (Gebro Pharma GmbH),Seractil 300mg tablets (Gebro Pharma GmbH),tablet.oral
+amp,14606211000001108,14600611000001108,1001010APBBAAAA,Nurofen Express 256mg tablets (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen Express 256mg tablets,tablet.oral
+amp,14606211000001108,14740311000001102,1001010APBBACAA,Nurofen Express 256mg caplets (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen Express 256mg caplets,tablet.oral
+amp,14606211000001108,31393111000001107,1001010APBCAAAA,Nurofen Joint & Back Pain Relief 256mg tablets (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen Joint & Back Pain Relief 256mg tablets,tablet.oral
+amp,14606311000001100,31394111000001109,1001010APBCABAB,Nurofen Max Strength Joint & Back Pain Relief 512mg tablets (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen Max Strength Joint & Back Pain Relief 512mg tablets,tablet.oral
+amp,14606211000001108,31394411000001104,1001010APBCACAA,Nurofen Joint & Back Pain Relief 256mg caplets (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen Joint & Back Pain Relief 256mg caplets,tablet.oral
+amp,36566511000001109,175011000001107,1001010C0AAADAD,Diclofenac sodium 25mg gastro-resistant tablets (Teva UK Ltd),Diclofenac sodium 25mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36566511000001109,182611000001101,1001010C0AAADAD,Diclofenac sodium 25mg gastro-resistant tablets (IVAX Pharmaceuticals UK Ltd),Diclofenac sodium 25mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36566511000001109,268911000001105,1001010C0AAADAD,Diclofenac sodium 25mg gastro-resistant tablets (Sterwin Medicines),Diclofenac sodium 25mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36566511000001109,271711000001109,1001010C0AAADAD,Diclofenac sodium 25mg gastro-resistant tablets (Alliance Healthcare (Distribution) Ltd),Diclofenac sodium 25mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36566511000001109,326211000001100,1001010C0AAADAD,Diclofenac sodium 25mg gastro-resistant tablets (Pfizer Ltd),Diclofenac sodium 25mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36566511000001109,530011000001108,1001010C0AAADAD,Diclofenac sodium 25mg gastro-resistant tablets (Sandoz Ltd),Diclofenac sodium 25mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36566511000001109,534911000001102,1001010C0AAADAD,Diclofenac sodium 25mg gastro-resistant tablets (Mylan),Diclofenac sodium 25mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36566511000001109,555811000001109,1001010C0AAADAD,Diclofenac sodium 25mg gastro-resistant tablets (A A H Pharmaceuticals Ltd),Diclofenac sodium 25mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36566511000001109,780411000001108,1001010C0AAADAD,Diclofenac sodium 25mg gastro-resistant tablets (Actavis UK Ltd),Diclofenac sodium 25mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36566511000001109,829411000001105,1001010C0AAADAD,Diclofenac sodium 25mg gastro-resistant tablets (Kent Pharmaceuticals Ltd),Diclofenac sodium 25mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36566511000001109,10401011000001106,1001010C0AAADAD,Diclofenac sodium 25mg gastro-resistant tablets (Arrow Generics Ltd),Diclofenac sodium 25mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36566511000001109,17891411000001103,1001010C0AAADAD,Diclofenac sodium 25mg gastro-resistant tablets (Phoenix Healthcare Distribution Ltd),Diclofenac sodium 25mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36566511000001109,21943011000001106,1001010C0AAADAD,Diclofenac sodium 25mg gastro-resistant tablets (Waymade Healthcare Plc),Diclofenac sodium 25mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36566511000001109,23862211000001104,1001010C0AAADAD,Diclofenac sodium 25mg gastro-resistant tablets (DE Pharmaceuticals),Diclofenac sodium 25mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36566511000001109,34604011000001106,1001010C0AAADAD,Diclofenac sodium 25mg gastro-resistant tablets (Medreich Plc),Diclofenac sodium 25mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36566511000001109,36784811000001104,1001010C0AAADAD,Diclofenac sodium 25mg gastro-resistant tablets (Crescent Pharma Ltd),Diclofenac sodium 25mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36566511000001109,37236911000001104,1001010C0AAADAD,Diclofenac sodium 25mg gastro-resistant tablets (Mawdsley-Brooks & Company Ltd),Diclofenac sodium 25mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36566511000001109,37926711000001100,1001010C0AAADAD,Diclofenac sodium 25mg gastro-resistant tablets (Dexcel-Pharma Ltd),Diclofenac sodium 25mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,13011000001106,1001010C0AAAEAE,Diclofenac sodium 50mg gastro-resistant tablets (Actavis UK Ltd),Diclofenac sodium 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,137711000001101,1001010C0AAAEAE,Diclofenac sodium 50mg gastro-resistant tablets (Sterwin Medicines),Diclofenac sodium 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,252911000001102,1001010C0AAAEAE,Diclofenac sodium 50mg gastro-resistant tablets (Teva UK Ltd),Diclofenac sodium 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,256211000001107,1001010C0AAAEAE,Diclofenac sodium 50mg gastro-resistant tablets (Mylan),Diclofenac sodium 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,302411000001106,1001010C0AAAEAE,Diclofenac sodium 50mg gastro-resistant tablets (Kent Pharmaceuticals Ltd),Diclofenac sodium 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,547611000001101,1001010C0AAAEAE,Diclofenac sodium 50mg gastro-resistant tablets (Alliance Healthcare (Distribution) Ltd),Diclofenac sodium 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,625011000001107,1001010C0AAAEAE,Diclofenac sodium 50mg gastro-resistant tablets (Sandoz Ltd),Diclofenac sodium 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,699311000001103,1001010C0AAAEAE,Diclofenac sodium 50mg gastro-resistant tablets (A A H Pharmaceuticals Ltd),Diclofenac sodium 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,700211000001105,1001010C0AAAEAE,Diclofenac sodium 50mg gastro-resistant tablets (Pfizer Ltd),Diclofenac sodium 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,741211000001109,1001010C0AAAEAE,Diclofenac sodium 50mg gastro-resistant tablets (IVAX Pharmaceuticals UK Ltd),Diclofenac sodium 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,10401211000001101,1001010C0AAAEAE,Diclofenac sodium 50mg gastro-resistant tablets (Arrow Generics Ltd),Diclofenac sodium 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,17891611000001100,1001010C0AAAEAE,Diclofenac sodium 50mg gastro-resistant tablets (Phoenix Healthcare Distribution Ltd),Diclofenac sodium 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,18722511000001107,1001010C0AAAEAE,Diclofenac sodium 50mg gastro-resistant tablets (Sigma Pharmaceuticals Plc),Diclofenac sodium 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,20323711000001105,1001010C0AAAEAE,Diclofenac sodium 50mg gastro-resistant tablets (Genesis Pharmaceuticals Ltd),Diclofenac sodium 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,21943211000001101,1001010C0AAAEAE,Diclofenac sodium 50mg gastro-resistant tablets (Waymade Healthcare Plc),Diclofenac sodium 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,30049011000001107,1001010C0AAAEAE,Diclofenac sodium 50mg gastro-resistant tablets (DE Pharmaceuticals),Diclofenac sodium 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,30825611000001104,1001010C0AAAEAE,Diclofenac sodium 50mg gastro-resistant tablets (Mawdsley-Brooks & Company Ltd),Diclofenac sodium 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,34603211000001104,1001010C0AAAEAE,Diclofenac sodium 50mg gastro-resistant tablets (Medreich Plc),Diclofenac sodium 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,36785011000001109,1001010C0AAAEAE,Diclofenac sodium 50mg gastro-resistant tablets (Crescent Pharma Ltd),Diclofenac sodium 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,37926911000001103,1001010C0AAAEAE,Diclofenac sodium 50mg gastro-resistant tablets (Dexcel-Pharma Ltd),Diclofenac sodium 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329598005,22679511000001104,1001010C0AAAMAM,Diclofenac sodium 50mg gastro-resistant / Misoprostol 200microgram tablets (A A H Pharmaceuticals Ltd),Diclofenac sodium 50mg gast res / Misoprostol 200microg tab,tabletgastro-resistant.oral
+amp,11651311000001108,11634411000001100,1001010C0AAAVAV,Diclofenac 50mg/5ml oral solution (Special Order),Diclofenac 50mg/5ml oral solution,solution.oral
+amp,8455411000001109,8439611000001109,1001010C0AAAYAY,Diclofenac 25mg/5ml oral solution (Special Order),Diclofenac 25mg/5ml oral liquid,solution.oral
+amp,8455511000001108,8440111000001105,1001010C0AAAYAY,Diclofenac 25mg/5ml oral suspension (Special Order),Diclofenac 25mg/5ml oral liquid,suspension.oral
+amp,17369211000001102,17359311000001102,1001010C0AABBBB,Diclofenac 10mg dispersible tablets (Special Order),Diclofenac 10mg dispersible tablets,suspension.oral
+amp,11651011000001105,11632711000001101,1001010C0AABCBC,Diclofenac 12.5mg/5ml oral suspension (Special Order),Diclofenac 12.5mg/5ml oral liquid,suspension.oral
+amp,11650911000001102,11633411000001103,1001010C0AABCBC,Diclofenac 12.5mg/5ml oral solution (Special Order),Diclofenac 12.5mg/5ml oral liquid,solution.oral
+amp,8455011000001100,8438311000001105,1001010C0AABDBD,Diclofenac 10mg/5ml oral solution (Special Order),Diclofenac 10mg/5ml oral liquid,solution.oral
+amp,8455111000001104,8438611000001100,1001010C0AABDBD,Diclofenac 10mg/5ml oral suspension (Special Order),Diclofenac 10mg/5ml oral liquid,suspension.oral
+amp,15242611000001108,15238211000001107,1001010C0AABJBJ,Diclofenac 100mg/5ml oral solution (Special Order),Diclofenac 100mg/5ml oral liquid,solution.oral
+amp,15242711000001104,15238511000001105,1001010C0AABJBJ,Diclofenac 100mg/5ml oral suspension (Special Order),Diclofenac 100mg/5ml oral liquid,suspension.oral
+amp,28422211000001104,28414411000001104,1001010C0AABKBK,Diclofenac 40mg/5ml oral solution (Special Order),Diclofenac 40mg/5ml oral liquid,solution.oral
+amp,28422311000001107,28414711000001105,1001010C0AABKBK,Diclofenac 40mg/5ml oral suspension (Special Order),Diclofenac 40mg/5ml oral liquid,suspension.oral
+amp,11648711000001104,11615511000001106,1001010C0AABLBL,Diclofenac 50mg/5ml oral suspension (Drug Tariff Special Order),Diclofenac 50mg/5ml oral suspension,suspension.oral
+amp,36566511000001109,2911000001100,1001010C0BBAAAD,Voltarol 25mg gastro-resistant tablets (Novartis Pharmaceuticals UK Ltd),Voltarol 25mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,745711000001100,1001010C0BBABAE,Voltarol 50mg gastro-resistant tablets (Novartis Pharmaceuticals UK Ltd),Voltarol 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36563711000001106,804711000001107,1001010C0BBAFAF,Voltarol Retard 100mg tablets (Novartis Pharmaceuticals UK Ltd),Voltarol Retard 100mg tablets,tabletmodified-release.oral
+amp,329591004,3354811000001101,1001010C0BBAGAJ,Voltarol 50mg dispersible tablets (Novartis Pharmaceuticals UK Ltd),Voltarol 50mg dispersible tablets,suspension.oral
+amp,329607001,763111000001107,1001010C0BBAHAL,Voltarol 75mg SR tablets (Novartis Pharmaceuticals UK Ltd),Voltarol 75mg SR tablets,tabletmodified-release.oral
+amp,329607001,358411000001104,1001010C0BDACAL,Rhumalgan CR 75 tablets (Sandoz Ltd),Rhumalgan CR 75 tablets,tabletmodified-release.oral
+amp,36563711000001106,324811000001106,1001010C0BDADAF,Rhumalgan CR 100 tablets (Sandoz Ltd),Rhumalgan CR 100 tablets,tabletmodified-release.oral
+amp,37084611000001101,8196311000001104,1001010C0BDAEAN,Rhumalgan XL 100mg capsules (Sandoz Ltd),Rhumalgan XL 100mg capsules (Sandoz),capsulemodified-release.oral
+amp,37084911000001107,8197611000001106,1001010C0BDAFAW,Rhumalgan SR 75mg capsules (Sandoz Ltd),Rhumalgan SR 75mg capsules (Sandoz Ltd),capsulemodified-release.oral
+amp,37084911000001107,18681011000001105,1001010C0BDAGAW,Rhumalgan SR 75mg capsules (Almus Pharmaceuticals Ltd),Rhumalgan SR 75mg capsules (Almus),capsulemodified-release.oral
+amp,37084611000001101,18680711000001104,1001010C0BDAHAN,Rhumalgan XL 100mg capsules (Almus Pharmaceuticals Ltd),Rhumalgan XL 100mg capsules (Almus),capsulemodified-release.oral
+amp,37084911000001107,22468711000001106,1001010C0BDAIAW,Rhumalgan SR 75mg capsules (Actavis UK Ltd),Rhumalgan SR 75mg capsules (Actavis),capsulemodified-release.oral
+amp,37084611000001101,22421611000001104,1001010C0BDAJAN,Rhumalgan XL 100mg capsules (Actavis UK Ltd),Rhumalgan XL 100mg capsules (Actavis),capsulemodified-release.oral
+amp,36566511000001109,341611000001107,1001010C0BFAAAD,Volraman 25mg gastro-resistant tablets (LPC Medical (UK) Ltd),Volraman 25mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,185611000001105,1001010C0BFABAE,Volraman 50mg gastro-resistant tablets (LPC Medical (UK) Ltd),Volraman 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,224911000001105,1001010C0BIABAE,Diclozip 50mg gastro-resistant tablets (Ashbourne Pharmaceuticals Ltd),Diclozip 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,107411000001100,1001010C0BKABAE,Flamrase 50 EC tablets (Teva UK Ltd),Flamrase 50 EC tablets,tabletgastro-resistant.oral
+amp,36563711000001106,761911000001109,1001010C0BKACAF,Flamrase SR 100mg tablets (Teva UK Ltd),Flamrase SR 100mg tablets,tabletmodified-release.oral
+amp,329607001,49711000001102,1001010C0BKADAL,Flamrase 75mg SR tablets (Teva UK Ltd),Flamrase 75mg SR tablets,tabletmodified-release.oral
+amp,329598005,3159911000001101,1001010C0BLAAAM,Arthrotec 50 gastro-resistant tablets (Pfizer Ltd),Arthrotec 50 gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329602007,3161411000001104,1001010C0BLABAX,Arthrotec 75 gastro-resistant tablets (Pfizer Ltd),Arthrotec 75 gastro-resistant tablets,tabletgastro-resistant.oral
+amp,37084611000001101,350511000001103,1001010C0BMAAAN,Diclomax Retard 100mg capsules (Galen Ltd),Diclomax Retard 100mg capsules,capsulemodified-release.oral
+amp,37084911000001107,172511000001105,1001010C0BMABAW,Diclomax SR 75mg capsules (Galen Ltd),Diclomax SR 75mg capsules,capsulemodified-release.oral
+amp,329574003,3953411000001109,1001010C0BPAAAR,Motifene 75mg modified-release capsules (Daiichi Sankyo UK Ltd),Motifene 75mg modified-release capsules,capsulegastro-resistantmodified-release.oral
+amp,36566511000001109,570111000001107,1001010C0BQAAAD,Dicloflex 25mg gastro-resistant tablets (Dexcel-Pharma Ltd),Dicloflex 25mg gastro-resistant tablets (Dexcel-Pharma),tabletgastro-resistant.oral
+amp,329587009,719711000001107,1001010C0BQABAE,Dicloflex 50mg gastro-resistant tablets (Dexcel-Pharma Ltd),Dicloflex 50mg gastro-resistant tablets (Dexcel-Pharma),tabletgastro-resistant.oral
+amp,36563711000001106,190611000001103,1001010C0BQACAF,Dicloflex Retard 100mg tablets (Dexcel-Pharma Ltd),Dicloflex Retard 100mg tablets (Dexcel-Pharma),tabletmodified-release.oral
+amp,329607001,225611000001103,1001010C0BQADAL,Dicloflex 75mg SR tablets (Dexcel-Pharma Ltd),Dicloflex 75mg SR tablets (Dexcel-Pharma),tabletmodified-release.oral
+amp,329607001,7852911000001109,1001010C0BQAEAL,Dicloflex 75mg SR tablets (Teva UK Ltd),Dicloflex 75mg SR tablets (Teva),tabletmodified-release.oral
+amp,329607001,7854211000001109,1001010C0BQAFAL,Dicloflex 75mg SR tablets (Kent Pharmaceuticals Ltd),Dicloflex 75mg SR tablets (Kent Pharm),tabletmodified-release.oral
+amp,36563711000001106,7853311000001103,1001010C0BQAGAF,Dicloflex Retard 100mg tablets (Teva UK Ltd),Dicloflex Retard 100mg tablets (Teva),tabletmodified-release.oral
+amp,36563711000001106,7854611000001106,1001010C0BQAHAF,Dicloflex Retard 100mg tablets (Kent Pharmaceuticals Ltd),Dicloflex Retard 100mg tablets (Kent Pharm),tabletmodified-release.oral
+amp,36566511000001109,10612711000001100,1001010C0BQAIAD,Dicloflex 25mg gastro-resistant tablets (Teva UK Ltd),Dicloflex 25mg gastro-resistant tablets Teva),tabletgastro-resistant.oral
+amp,36566511000001109,10686011000001100,1001010C0BQAJAD,Dicloflex 25mg gastro-resistant tablets (Almus Pharmaceuticals Ltd),Dicloflex 25mg gastro-resistant tablets (Almus),tabletgastro-resistant.oral
+amp,329587009,10686211000001105,1001010C0BQAKAE,Dicloflex 50mg gastro-resistant tablets (Almus Pharmaceuticals Ltd),Dicloflex 50mg gastro-resistant tablets (Almus),tabletgastro-resistant.oral
+amp,329607001,10686411000001109,1001010C0BQALAL,Dicloflex 75mg SR tablets (Almus Pharmaceuticals Ltd),Dicloflex 75mg SR tablets (Almus),tabletmodified-release.oral
+amp,36563711000001106,10686711000001103,1001010C0BQAMAF,Dicloflex Retard 100mg tablets (Almus Pharmaceuticals Ltd),Dicloflex Retard 100mg tablets (Almus),tabletmodified-release.oral
+amp,329607001,18299411000001101,1001010C0BQANAL,Dicloflex 75mg SR tablets (Actavis UK Ltd),Dicloflex 75mg SR tablets (Actavis),tabletmodified-release.oral
+amp,329607001,814411000001103,1001010C0BSAAAL,Volsaid Retard 75 tablets (Chiesi Ltd),Volsaid Retard 75 tablets,tabletmodified-release.oral
+amp,36563711000001106,632211000001109,1001010C0BSABAF,Volsaid Retard 100 tablets (Chiesi Ltd),Volsaid Retard 100 tablets,tabletmodified-release.oral
+amp,329607001,922511000001109,1001010C0BUABAL,Dexomon 75mg SR tablets (Hillcross Pharmaceuticals Ltd),Dexomon 75mg SR tablets,tabletmodified-release.oral
+amp,36563711000001106,658811000001106,1001010C0BYAAAF,Flamatak MR 100mg tablets (Actavis UK Ltd),Flamatak MR 100mg tablets,tabletmodified-release.oral
+amp,329607001,13411000001102,1001010C0BYABAL,Flamatak MR 75mg tablets (Actavis UK Ltd),Flamatak MR 75mg tablets,tabletmodified-release.oral
+amp,329607001,193511000001108,1001010C0BZAAAL,Diclotard 75mg modified-release tablets (Galen Ltd),Diclotard 75mg modified-release tablets,tabletmodified-release.oral
+amp,329607001,715111000001109,1001010C0CEAAAL,Rheumatac Retard 75 tablets (Advanz Pharma),Rheumatac Retard 75 tablets,tabletmodified-release.oral
+amp,329607001,906311000001107,1001010C0CIAAAL,Defanac 75mg SR tablets (Ranbaxy (UK) Ltd),Defanac 75mg SR tablets,tabletmodified-release.oral
+amp,36563711000001106,440911000001102,1001010C0CIABAF,Defanac Retard 100mg tablets (Ranbaxy (UK) Ltd),Defanac Retard 100mg tablets,tabletmodified-release.oral
+amp,36566511000001109,253811000001104,1001010C0CJAAAD,Fenactol 25mg gastro-resistant tablets (Discovery Pharmaceuticals),Fenactol 25mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329587009,359411000001107,1001010C0CJABAE,Fenactol 50mg gastro-resistant tablets (Dexcel-Pharma Ltd),Fenactol 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329607001,210711000001105,1001010C0CJACAL,Fenactol SR 75mg tablets (Discovery Pharmaceuticals),Fenactol SR 75mg tablets,tabletmodified-release.oral
+amp,36563711000001106,656011000001104,1001010C0CJADAF,Fenactol Retard 100mg tablets (Dexcel-Pharma Ltd),Fenactol Retard 100mg tablets,tabletmodified-release.oral
+amp,329607001,5639311000001108,1001010C0CKAAAL,Econac SR 75mg tablets (Advanz Pharma),Econac SR 75mg tablets,tabletmodified-release.oral
+amp,329598005,22591711000001107,1001010C0CNAAAM,Misofen 50mg/200microgram gastro-resistant tablets (Morningside Healthcare Ltd),Misofen 50mg/200microgram gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329602007,22592011000001102,1001010C0CNABAX,Misofen 75mg/200microgram gastro-resistant tablets (Morningside Healthcare Ltd),Misofen 75mg/200microgram gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329598005,29688611000001108,1001010C0CPAAAM,Masidemen 50mg/200microgram gastro-resistant tablets (Actavis UK Ltd),Masidemen 50mg/200microgram gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329602007,29688811000001107,1001010C0CPABAX,Masidemen 75mg/200microgram gastro-resistant tablets (Actavis UK Ltd),Masidemen 75mg/200microgram gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329612000,15870411000001104,1001010D0AAAAAA,Diflunisal 250mg tablets (Special Order),Diflunisal 250mg tablets,tablet.oral
+amp,329613005,3674611000001106,1001010D0BBABAB,Dolobid 500mg tablets (Merck Sharp & Dohme Ltd),Dolobid 500mg tablets,tablet.oral
+amp,329622006,11141111000001109,1001010E0AAADAD,Etodolac 600mg modified-release tablets (Alliance Healthcare (Distribution) Ltd),Etodolac 600mg modified-release tablets,tabletmodified-release.oral
+amp,329622006,20914211000001103,1001010E0AAADAD,Etodolac 600mg modified-release tablets (Zentiva),Etodolac 600mg modified-release tablets,tabletmodified-release.oral
+amp,329622006,21977911000001102,1001010E0AAADAD,Etodolac 600mg modified-release tablets (Waymade Healthcare Plc),Etodolac 600mg modified-release tablets,tabletmodified-release.oral
+amp,329622006,23915011000001106,1001010E0AAADAD,Etodolac 600mg modified-release tablets (Phoenix Healthcare Distribution Ltd),Etodolac 600mg modified-release tablets,tabletmodified-release.oral
+amp,329622006,30054411000001100,1001010E0AAADAD,Etodolac 600mg modified-release tablets (DE Pharmaceuticals),Etodolac 600mg modified-release tablets,tabletmodified-release.oral
+amp,329622006,30810311000001107,1001010E0AAADAD,Etodolac 600mg modified-release tablets (Mawdsley-Brooks & Company Ltd),Etodolac 600mg modified-release tablets,tabletmodified-release.oral
+amp,329622006,921411000001100,1001010E0BBADAD,Lodine SR 600mg tablets (Almirall Ltd),Lodine SR 600mg tablets,tabletmodified-release.oral
+amp,329620003,4626911000001105,1001010E0BFAAAC,Eccoxolac 300mg capsules (Meda Pharmaceuticals Ltd),Eccoxolac 300mg capsules,capsule.oral
+amp,329622006,10925311000001102,1001010E0BGAAAD,Etopan XL 600mg tablets (Sun Pharmaceutical Industries Europe B.V.),Etopan XL 600mg tablets,tabletmodified-release.oral
+amp,329622006,33548811000001105,1001010E0BHAAAD,Etolyn 600mg modified-release tablets (Mylan),Etolyn 600mg modified-release tablets,tabletmodified-release.oral
+amp,329630007,866711000001104,1001010F0AAAAAA,Fenbufen 300mg capsules (Genus Pharmaceuticals Ltd),Fenbufen 300mg capsules,capsule.oral
+amp,329630007,920011000001100,1001010F0AAAAAA,Fenbufen 300mg capsules (IVAX Pharmaceuticals UK Ltd),Fenbufen 300mg capsules,capsule.oral
+amp,329630007,931711000001108,1001010F0AAAAAA,Fenbufen 300mg capsules (Alliance Healthcare (Distribution) Ltd),Fenbufen 300mg capsules,capsule.oral
+amp,329630007,940111000001102,1001010F0AAAAAA,Fenbufen 300mg capsules (A A H Pharmaceuticals Ltd),Fenbufen 300mg capsules,capsule.oral
+amp,329636001,343711000001102,1001010F0BBADAC,Lederfen 450mg tablets (Mercury Pharma Group Ltd),Lederfen 450mg tablets,tablet.oral
+amp,329641009,3684611000001103,1001010G0BBAAAB,Fenopron 300 tablets (Typharm Ltd),Fenopron 300 tablets,tablet.oral
+amp,329642002,3685511000001101,1001010G0BBABAD,Fenopron 600 tablets (Typharm Ltd),Fenopron 600 tablets,tablet.oral
+amp,329648003,323611000001109,1001010I0AAABAB,Flurbiprofen 50mg tablets (Kent Pharmaceuticals Ltd),Flurbiprofen 50mg tablets,tablet.oral
+amp,329648003,477611000001108,1001010I0AAABAB,Flurbiprofen 50mg tablets (A A H Pharmaceuticals Ltd),Flurbiprofen 50mg tablets,tablet.oral
+amp,329648003,510811000001107,1001010I0AAABAB,Flurbiprofen 50mg tablets (Alliance Healthcare (Distribution) Ltd),Flurbiprofen 50mg tablets,tablet.oral
+amp,329648003,574511000001107,1001010I0AAABAB,Flurbiprofen 50mg tablets (Sandoz Ltd),Flurbiprofen 50mg tablets,tablet.oral
+amp,329648003,825611000001105,1001010I0AAABAB,Flurbiprofen 50mg tablets (Actavis UK Ltd),Flurbiprofen 50mg tablets,tablet.oral
+amp,329648003,4820811000001106,1001010I0AAABAB,Flurbiprofen 50mg tablets (Genus Pharmaceuticals Ltd),Flurbiprofen 50mg tablets,tablet.oral
+amp,329648003,17909911000001101,1001010I0AAABAB,Flurbiprofen 50mg tablets (Phoenix Healthcare Distribution Ltd),Flurbiprofen 50mg tablets,tablet.oral
+amp,329648003,24616411000001108,1001010I0AAABAB,Flurbiprofen 50mg tablets (Mylan),Flurbiprofen 50mg tablets,tablet.oral
+amp,329649006,91911000001105,1001010I0AAACAC,Flurbiprofen 100mg tablets (A A H Pharmaceuticals Ltd),Flurbiprofen 100mg tablets,tablet.oral
+amp,329649006,363911000001106,1001010I0AAACAC,Flurbiprofen 100mg tablets (Actavis UK Ltd),Flurbiprofen 100mg tablets,tablet.oral
+amp,329649006,410711000001109,1001010I0AAACAC,Flurbiprofen 100mg tablets (Alliance Healthcare (Distribution) Ltd),Flurbiprofen 100mg tablets,tablet.oral
+amp,329649006,686111000001107,1001010I0AAACAC,Flurbiprofen 100mg tablets (Sandoz Ltd),Flurbiprofen 100mg tablets,tablet.oral
+amp,329649006,732111000001109,1001010I0AAACAC,Flurbiprofen 100mg tablets (Kent Pharmaceuticals Ltd),Flurbiprofen 100mg tablets,tablet.oral
+amp,329649006,4821011000001109,1001010I0AAACAC,Flurbiprofen 100mg tablets (Genus Pharmaceuticals Ltd),Flurbiprofen 100mg tablets,tablet.oral
+amp,329649006,17910111000001107,1001010I0AAACAC,Flurbiprofen 100mg tablets (Phoenix Healthcare Distribution Ltd),Flurbiprofen 100mg tablets,tablet.oral
+amp,329649006,22014911000001109,1001010I0AAACAC,Flurbiprofen 100mg tablets (Waymade Healthcare Plc),Flurbiprofen 100mg tablets,tablet.oral
+amp,329649006,24616611000001106,1001010I0AAACAC,Flurbiprofen 100mg tablets (Mylan),Flurbiprofen 100mg tablets,tablet.oral
+amp,329648003,762311000001104,1001010I0BBAAAB,Froben 50mg tablets (Abbott Laboratories Ltd),Froben 50mg tablets,tablet.oral
+amp,329649006,538211000001100,1001010I0BBABAC,Froben 100mg tablets (Abbott Laboratories Ltd),Froben 100mg tablets,tablet.oral
+amp,36059011000001103,27511000001103,1001010I0BBADAD,Froben SR 200mg capsules (Abbott Laboratories Ltd),Froben SR 200mg capsules,capsulemodified-release.oral
+amp,370195008,14703311000001100,1001010J0AAAAAA,Ibuprofen 200mg capsules (Numark Ltd),Ibuprofen 200mg capsules,capsule.oral
+amp,370195008,15019211000001100,1001010J0AAAAAA,Ibuprofen 200mg capsules (Kent Pharmaceuticals Ltd),Ibuprofen 200mg capsules,capsule.oral
+amp,370195008,17307311000001104,1001010J0AAAAAA,Ibuprofen 200mg capsules (Galpharm International Ltd),Ibuprofen 200mg capsules,capsule.oral
+amp,370195008,23279311000001100,1001010J0AAAAAA,Ibuprofen 200mg capsules (AM Distributions (Yorkshire) Ltd),Ibuprofen 200mg capsules,capsule.oral
+amp,370195008,24625711000001103,1001010J0AAAAAA,Ibuprofen 200mg capsules (Colorama Pharmaceuticals Ltd),Ibuprofen 200mg capsules,capsule.oral
+amp,370195008,31993111000001104,1001010J0AAAAAA,Ibuprofen 200mg capsules (Ennogen Healthcare Ltd),Ibuprofen 200mg capsules,capsule.oral
+amp,370195008,32465611000001107,1001010J0AAAAAA,"Ibuprofen 200mg capsules (Bell,Sons & Co (Druggists) Ltd)",Ibuprofen 200mg capsules,capsule.oral
+amp,329652003,110611000001104,1001010J0AAADAD,Ibuprofen 200mg tablets (Teva UK Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,201711000001104,1001010J0AAADAD,Ibuprofen 200mg tablets (Kent Pharmaceuticals Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,327311000001106,1001010J0AAADAD,Ibuprofen 200mg tablets (Vantage),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,342211000001103,1001010J0AAADAD,Ibuprofen 200mg tablets (OBG Pharmaceuticals Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,367511000001109,1001010J0AAADAD,Ibuprofen 200mg tablets (Thornton & Ross Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,654211000001104,1001010J0AAADAD,Ibuprofen 200mg tablets film coated (Actavis UK Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,715411000001104,1001010J0AAADAD,Ibuprofen 200mg tablets (Alliance Healthcare (Distribution) Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,771311000001100,1001010J0AAADAD,Ibuprofen 200mg tablets (A A H Pharmaceuticals Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,805711000001106,1001010J0AAADAD,Ibuprofen 200mg tablets sugar coated (Actavis UK Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,859511000001108,1001010J0AAADAD,Ibuprofen 200mg tablets (Ranbaxy (UK) Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,869811000001101,1001010J0AAADAD,Ibuprofen 200mg tablets (IVAX Pharmaceuticals UK Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,892211000001107,1001010J0AAADAD,Ibuprofen 200mg tablets (Aspar Pharmaceuticals Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,3313611000001105,1001010J0AAADAD,Ibuprofen 200mg tablets (Zentiva),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,4603011000001107,1001010J0AAADAD,Ibuprofen 200mg tablets (Sussex Pharmaceutical Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,6407711000001109,1001010J0AAADAD,Ibuprofen 200mg tablets sugar coated (Kent Pharmaceuticals Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,7926811000001106,1001010J0AAADAD,Ibuprofen 200mg caplets (Lloyds Pharmacy Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,9172611000001104,1001010J0AAADAD,Ibuprofen 200mg caplets (Galpharm International Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,9501811000001106,1001010J0AAADAD,Ibuprofen 200mg tablets (Wockhardt UK Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,9746811000001108,1001010J0AAADAD,Ibuprofen 200mg caplets (The Boots Company Plc),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,9805311000001101,1001010J0AAADAD,Ibuprofen 200mg tablets (Almus Pharmaceuticals Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,10378911000001102,1001010J0AAADAD,Ibuprofen 200mg tablets (Arrow Generics Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,11579811000001108,1001010J0AAADAD,Ibuprofen 200mg tablets (Sandoz Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,13578911000001103,1001010J0AAADAD,Ibuprofen 200mg tablets (DE Pharmaceuticals),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,14772411000001106,1001010J0AAADAD,Ibuprofen 200mg tablets (Boston Healthcare Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,14784511000001105,1001010J0AAADAD,Ibuprofen 200mg tablets (Galpharm International Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,16056611000001104,1001010J0AAADAD,Ibuprofen 200mg tablets (Bristol Laboratories Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,17023611000001107,1001010J0AAADAD,"Ibuprofen 200mg tablets (Bell,Sons & Co (Druggists) Ltd)",Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,17931411000001104,1001010J0AAADAD,Ibuprofen 200mg tablets (Phoenix Healthcare Distribution Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,18074911000001106,1001010J0AAADAD,Ibuprofen 200mg tablets (Fannin UK Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,18557911000001100,1001010J0AAADAD,Ibuprofen 200mg caplets (Bristol Laboratories Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,22046511000001104,1001010J0AAADAD,Ibuprofen 200mg tablets (Waymade Healthcare Plc),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,27170011000001102,1001010J0AAADAD,Ibuprofen 200mg caplets (Wockhardt UK Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,28984611000001101,1001010J0AAADAD,Ibuprofen 200mg tablets (Crescent Pharma Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,29875911000001106,1001010J0AAADAD,Ibuprofen 200mg tablets (Sigma Pharmaceuticals Plc),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,30212411000001106,1001010J0AAADAD,Ibuprofen 200mg tablets (Mawdsley-Brooks & Company Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,35851611000001107,1001010J0AAADAD,Ibuprofen 200mg tablets (Medreich Plc),Ibuprofen 200mg tablets,tablet.oral
+amp,329652003,37862011000001100,1001010J0AAADAD,Ibuprofen 200mg tablets (Actavis UK Ltd),Ibuprofen 200mg tablets,tablet.oral
+amp,329653008,1511000001104,1001010J0AAAEAE,Ibuprofen 400mg tablets (Teva UK Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,207911000001105,1001010J0AAAEAE,Ibuprofen 400mg tablets (Thornton & Ross Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,273411000001104,1001010J0AAAEAE,Ibuprofen 400mg tablets film coated (Actavis UK Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,333311000001102,1001010J0AAAEAE,Ibuprofen 400mg tablets (Vantage),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,415811000001107,1001010J0AAAEAE,Ibuprofen 400mg tablets sugar coated (Actavis UK Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,420811000001109,1001010J0AAAEAE,Ibuprofen 400mg tablets sugar coated (Kent Pharmaceuticals Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,434811000001101,1001010J0AAAEAE,Ibuprofen 400mg tablets (Sterwin Medicines),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,491911000001103,1001010J0AAAEAE,Ibuprofen 400mg tablets (Kent Pharmaceuticals Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,497111000001108,1001010J0AAAEAE,Ibuprofen 400mg tablets (Alliance Healthcare (Distribution) Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,522911000001108,1001010J0AAAEAE,Ibuprofen 400mg tablets (Aspar Pharmaceuticals Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,644111000001107,1001010J0AAAEAE,Ibuprofen 400mg tablets (Ranbaxy (UK) Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,714611000001102,1001010J0AAAEAE,Ibuprofen 400mg tablets (OBG Pharmaceuticals Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,779411000001108,1001010J0AAAEAE,Ibuprofen 400mg tablets (Sandoz Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,878411000001103,1001010J0AAAEAE,Ibuprofen 400mg tablets (IVAX Pharmaceuticals UK Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,913811000001105,1001010J0AAAEAE,Ibuprofen 400mg tablets (A A H Pharmaceuticals Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,4604211000001104,1001010J0AAAEAE,Ibuprofen 400mg tablets (Sussex Pharmaceutical Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,7928011000001101,1001010J0AAAEAE,Ibuprofen 400mg caplets (Lloyds Pharmacy Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,9502111000001109,1001010J0AAAEAE,Ibuprofen 400mg tablets (Wockhardt UK Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,9648711000001108,1001010J0AAAEAE,Ibuprofen 400mg tablets (Galpharm International Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,9746611000001109,1001010J0AAAEAE,Ibuprofen 400mg caplets (The Boots Company Plc),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,9816611000001104,1001010J0AAAEAE,Ibuprofen 400mg tablets (Almus Pharmaceuticals Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,10379111000001107,1001010J0AAAEAE,Ibuprofen 400mg tablets (Arrow Generics Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,11177511000001107,1001010J0AAAEAE,Ibuprofen 400mg tablets (Zentiva),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,13579211000001102,1001010J0AAAEAE,Ibuprofen 400mg tablets (DE Pharmaceuticals),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,14772911000001103,1001010J0AAAEAE,Ibuprofen 400mg tablets (Boston Healthcare Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,15055611000001106,1001010J0AAAEAE,Ibuprofen 400mg tablets (Sigma Pharmaceuticals Plc),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,16057111000001105,1001010J0AAAEAE,Ibuprofen 400mg tablets (Bristol Laboratories Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,17931611000001101,1001010J0AAAEAE,Ibuprofen 400mg tablets (Phoenix Healthcare Distribution Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,18075111000001107,1001010J0AAAEAE,Ibuprofen 400mg tablets (Fannin UK Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,18558411000001107,1001010J0AAAEAE,Ibuprofen 400mg caplets (Bristol Laboratories Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,22046911000001106,1001010J0AAAEAE,Ibuprofen 400mg tablets (Waymade Healthcare Plc),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,28984811000001102,1001010J0AAAEAE,Ibuprofen 400mg tablets (Crescent Pharma Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,30213011000001106,1001010J0AAAEAE,Ibuprofen 400mg tablets (Mawdsley-Brooks & Company Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,36042811000001102,1001010J0AAAEAE,Ibuprofen 400mg tablets (Medreich Plc),Ibuprofen 400mg tablets,tablet.oral
+amp,329653008,37062811000001105,1001010J0AAAEAE,Ibuprofen 400mg tablets (Relonchem Ltd),Ibuprofen 400mg tablets,tablet.oral
+amp,329654002,15711000001109,1001010J0AAAFAF,Ibuprofen 600mg tablets (Ranbaxy (UK) Ltd),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,25311000001101,1001010J0AAAFAF,Ibuprofen 600mg tablets (IVAX Pharmaceuticals UK Ltd),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,32011000001107,1001010J0AAAFAF,Ibuprofen 600mg tablets (Kent Pharmaceuticals Ltd),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,177111000001104,1001010J0AAAFAF,Ibuprofen 600mg tablets (OBG Pharmaceuticals Ltd),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,281911000001103,1001010J0AAAFAF,Ibuprofen 600mg tablets (Sandoz Ltd),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,334411000001107,1001010J0AAAFAF,Ibuprofen 600mg tablets (Alliance Healthcare (Distribution) Ltd),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,349811000001107,1001010J0AAAFAF,Ibuprofen 600mg tablets (Teva UK Ltd),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,372911000001106,1001010J0AAAFAF,Ibuprofen 600mg tablets film coated (Alliance Healthcare (Distribution) Ltd),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,451211000001103,1001010J0AAAFAF,Ibuprofen 600mg tablets (A A H Pharmaceuticals Ltd),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,641211000001103,1001010J0AAAFAF,Ibuprofen 600mg tablets (Actavis UK Ltd),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,901511000001105,1001010J0AAAFAF,Ibuprofen 600mg tablets (Aspar Pharmaceuticals Ltd),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,928211000001108,1001010J0AAAFAF,Ibuprofen 600mg tablets (Sterwin Medicines),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,9805911000001100,1001010J0AAAFAF,Ibuprofen 600mg tablets (Almus Pharmaceuticals Ltd),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,10379411000001102,1001010J0AAAFAF,Ibuprofen 600mg tablets (Arrow Generics Ltd),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,11177711000001102,1001010J0AAAFAF,Ibuprofen 600mg tablets (Zentiva),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,14773611000001104,1001010J0AAAFAF,Ibuprofen 600mg tablets (Boston Healthcare Ltd),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,15101111000001101,1001010J0AAAFAF,Ibuprofen 600mg tablets (Sigma Pharmaceuticals Plc),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,17931811000001102,1001010J0AAAFAF,Ibuprofen 600mg tablets (Phoenix Healthcare Distribution Ltd),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,18078211000001108,1001010J0AAAFAF,Ibuprofen 600mg tablets (Fannin UK Ltd),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,21033511000001107,1001010J0AAAFAF,Ibuprofen 600mg tablets (Bristol Laboratories Ltd),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,22057111000001108,1001010J0AAAFAF,Ibuprofen 600mg tablets (Waymade Healthcare Plc),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,36043011000001104,1001010J0AAAFAF,Ibuprofen 600mg tablets (Medreich Plc),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,36080311000001102,1001010J0AAAFAF,Ibuprofen 600mg tablets (Crescent Pharma Ltd),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,36513111000001106,1001010J0AAAFAF,Ibuprofen 600mg tablets (Dalkeith Laboratories Ltd),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,36700311000001101,1001010J0AAAFAF,Ibuprofen 600mg tablets (Noumed Life Sciences Ltd),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,37079111000001100,1001010J0AAAFAF,Ibuprofen 600mg tablets (Relonchem Ltd),Ibuprofen 600mg tablets,tablet.oral
+amp,329654002,37422011000001104,1001010J0AAAFAF,Ibuprofen 600mg tablets (DE Pharmaceuticals),Ibuprofen 600mg tablets,tablet.oral
+amp,329686007,23811000001106,1001010J0AABHBH,Ibuprofen 100mg/5ml oral suspension sugar free (Alliance Healthcare (Distribution) Ltd),Ibuprofen 100mg/5ml oral suspension sugar free,suspension.oral
+amp,329686007,26311000001106,1001010J0AABHBH,Ibuprofen 100mg/5ml oral suspension sugar free (Sandoz Ltd),Ibuprofen 100mg/5ml oral suspension sugar free,suspension.oral
+amp,329686007,731611000001107,1001010J0AABHBH,Ibuprofen 100mg/5ml oral suspension sugar free (A A H Pharmaceuticals Ltd),Ibuprofen 100mg/5ml oral suspension sugar free,suspension.oral
+amp,329686007,3323411000001100,1001010J0AABHBH,Ibuprofen 100mg/5ml oral suspension sugar free (Kent Pharmaceuticals Ltd),Ibuprofen 100mg/5ml oral suspension sugar free,suspension.oral
+amp,329686007,5021111000001102,1001010J0AABHBH,Ibuprofen 100mg/5ml oral suspension sugar free (Vantage),Ibuprofen 100mg/5ml oral suspension sugar free,suspension.oral
+amp,329686007,7944111000001109,1001010J0AABHBH,Ibuprofen 100mg/5ml oral suspension sugar free (Teva UK Ltd),Ibuprofen 100mg/5ml oral suspension sugar free,suspension.oral
+amp,329686007,9209811000001100,1001010J0AABHBH,Ibuprofen 100mg/5ml oral suspension sugar free (Thornton & Ross Ltd),Ibuprofen 100mg/5ml oral suspension sugar free,suspension.oral
+amp,329686007,13623411000001108,1001010J0AABHBH,Ibuprofen 100mg/5ml oral suspension sugar free (Pinewood Healthcare),Ibuprofen 100mg/5ml oral suspension sugar free,suspension.oral
+amp,329686007,15100811000001100,1001010J0AABHBH,Ibuprofen 100mg/5ml oral suspension sugar free (Sigma Pharmaceuticals Plc),Ibuprofen 100mg/5ml oral suspension sugar free,suspension.oral
+amp,329686007,18109611000001102,1001010J0AABHBH,Ibuprofen 100mg/5ml oral suspension sugar free (Phoenix Healthcare Distribution Ltd),Ibuprofen 100mg/5ml oral suspension sugar free,suspension.oral
+amp,329686007,24174611000001106,1001010J0AABHBH,Ibuprofen 100mg/5ml oral suspension sugar free (DE Pharmaceuticals),Ibuprofen 100mg/5ml oral suspension sugar free,suspension.oral
+amp,329686007,30804111000001103,1001010J0AABHBH,Ibuprofen 100mg/5ml oral suspension sugar free (Accord Healthcare Ltd),Ibuprofen 100mg/5ml oral suspension sugar free,suspension.oral
+amp,329686007,37421811000001101,1001010J0AABHBH,Ibuprofen 100mg/5ml oral suspension sugar free (Relonchem Ltd),Ibuprofen 100mg/5ml oral suspension sugar free,suspension.oral
+amp,12637311000001104,12597711000001104,1001010J0AABIBI,Ibuprofen 200mg/5ml oral suspension (Special Order),Ibuprofen 200mg/5ml oral suspension,suspension.oral
+amp,4615511000001102,9210011000001100,1001010J0AABMBM,Ibuprofen 100mg/5ml oral suspension 5ml sachets sugar free (Thornton & Ross Ltd),Ibuprofen 100mg/5ml oral suspension 5ml sachets sugar free,suspension.oral
+amp,4615511000001102,9458211000001101,1001010J0AABMBM,Ibuprofen 100mg/5ml oral suspension 5ml sachets sugar free (A A H Pharmaceuticals Ltd),Ibuprofen 100mg/5ml oral suspension 5ml sachets sugar free,suspension.oral
+amp,4615511000001102,13623911000001100,1001010J0AABMBM,Ibuprofen 100mg/5ml oral suspension 5ml sachets sugar free (Pinewood Healthcare),Ibuprofen 100mg/5ml oral suspension 5ml sachets sugar free,suspension.oral
+amp,329652003,694411000001106,1001010J0B4ABAD,Nurofen 200mg tablets (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen 200mg tablets,tablet.oral
+amp,329652003,621911000001109,1001010J0B4AEAD,Nurofen 200mg caplets (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen 200mg caplets,tablet.oral
+amp,3875511000001104,3869111000001103,1001010J0B4AHBN,Nurofen Meltlets 200mg tablets (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen Meltlets 200mg tablets,tabletdispersible.oral
+amp,370195008,3917611000001108,1001010J0B4AIAA,Nurofen 200mg liquid capsules (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen 200mg liquid capsules,capsule.oral
+amp,329686007,664811000001105,1001010J0B4AJBH,Nurofen for Children 100mg/5ml oral suspension orange (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen for Children 100mg/5ml oral suspension orange,suspension.oral
+amp,329683004,3915411000001104,1001010J0B4AKAY,Nurofen Plus tablets (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen Plus tablets,tablet.oral
+amp,4615511000001102,4605611000001101,1001010J0B4ALBM,Nurofen for Children Singles 100mg/5ml oral suspension 5ml sachets orange (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen for Children Singles 100mg/5ml susp 5ml sach orange,suspension.oral
+amp,36045311000001100,8061211000001108,1001010J0B4ANAB,Nurofen Back Pain SR 300mg capsules (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen Back Pain SR 300mg capsules,capsulemodified-release.oral
+amp,407904005,4606211000001109,1001010J0B4APBJ,Nurofen Cold and Flu tablets (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen Cold and Flu tablets,tablet.oral
+amp,329686007,9164611000001101,1001010J0B4AQBH,Nurofen for Children 100mg/5ml oral suspension strawberry (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen for Children 100mg/5ml oral suspension strawberry,suspension.oral
+amp,4615511000001102,9164311000001106,1001010J0B4ARBM,Nurofen for Children Singles 100mg/5ml oral suspension 5ml sachets strawberry (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen for Children Singles 100mg/5ml susp 5ml strawberry,suspension.oral
+amp,10774611000001104,10768811000001101,1001010J0B4ATAU,Nurofen Extra Strength 400mg capsules (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen Extra Strength 400mg capsules,capsule.oral
+amp,370195008,11934511000001100,1001010J0B4AUAA,Nurofen Express 200mg liquid capsules (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen Express 200mg liquid capsules,capsule.oral
+amp,10774611000001104,11934911000001107,1001010J0B4AVAU,Nurofen Express 400mg liquid capsules (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen Express 400mg liquid capsules,capsule.oral
+amp,370195008,21524011000001101,1001010J0B4AWAA,Nurofen Express Period Pain 200mg capsules (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen Express Period Pain 200mg capsules,capsule.oral
+amp,329686007,23649611000001109,1001010J0B4AXBH,"Nurofen for Children Cold, Pain and Fever Strawberry Flavour 100mg/5ml oral suspension (Reckitt Benckiser Healthcare (UK) Ltd)","Nurofen for Child Cold, Pain & Fever S/berry 100mg/5ml susp",suspension.oral
+amp,329686007,23649811000001108,1001010J0B4AYBH,"Nurofen for Children Cold, Pain and Fever Orange Flavour 100mg/5ml oral suspension (Reckitt Benckiser Healthcare (UK) Ltd)","Nurofen for Child Cold, Pain & Fever Orange 100mg/5ml susp",suspension.oral
+amp,370195008,31394911000001107,1001010J0B4AZAA,Nurofen Joint & Back Pain Relief 200mg capsules (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen Joint & Back Pain Relief 200mg capsules,capsule.oral
+amp,407904005,31396411000001107,1001010J0B4BABJ,Nurofen Sinus Pressure & Headache Relief 200mg/30mg tablets (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen Sinus Pressure & Headache Relief 200mg/30mg tablets,tablet.oral
+amp,32392411000001107,32390811000001108,1001010J0B4BBBQ,Nurofen for Children 100mg chewable capsules (Reckitt Benckiser Healthcare (UK) Ltd),Nurofen for Children 100mg chewable capsules,capsulechewable.oral
+amp,36045211000001108,3420111000001109,1001010J0B8AAAR,Codafen Continus tablets (Napp Pharmaceuticals Ltd),Codafen Continus tablets,tabletmodified-release.oral
+amp,329652003,643711000001106,1001010J0BCAAAD,Brufen 200mg tablets (Abbott Laboratories Ltd),Brufen 200mg tablets,tablet.oral
+amp,329653008,263211000001109,1001010J0BCABAE,Brufen 400mg tablets (Mylan),Brufen 400mg tablets,tablet.oral
+amp,329654002,230111000001100,1001010J0BCACAF,Brufen 600mg tablets (Mylan),Brufen 600mg tablets,tablet.oral
+amp,329710002,445711000001109,1001010J0BCADAC,Brufen 100mg/5ml syrup (Mylan),Brufen 100mg/5ml syrup,suspension.oral
+amp,329677002,3239211000001107,1001010J0BCAEAN,Brufen 600mg effervescent granules sachets (Mylan),Brufen 600mg effervescent granules sachets,solution.oral
+amp,329662005,368011000001100,1001010J0BCAFAP,Brufen Retard 800mg tablets (Mylan),Brufen Retard 800mg tablets,tabletmodified-release.oral
+amp,36045311000001100,3159211000001105,1001010J0BEAAAB,Fenbid 300mg Spansules (Mercury Pharma Group Ltd),Fenbid 300mg Spansules,capsulemodified-release.oral
+amp,329652003,640911000001100,1001010J0BMAAAD,Cuprofen 200mg tablets (SSL International Plc),Cuprofen 200mg tablets,tablet.oral
+amp,329653008,621611000001103,1001010J0BMACAE,Cuprofen Maximum Strength 400mg tablets (Reckitt Benckiser Healthcare (UK) Ltd),Cuprofen Maximum Strength 400mg tablets,tablet.oral
+amp,329686007,9890311000001105,1001010J0BMADBH,Cuprofen for Children 100mg/5ml oral suspension (SSL International Plc),Cuprofen for Children 100mg/5ml oral suspension,suspension.oral
+amp,329683004,8092711000001106,1001010J0BMAEAY,Cuprofen PLUS tablets (SSL International Plc),Cuprofen PLUS tablets,tablet.oral
+amp,329653008,240311000001104,1001010J0BYABAE,Relcofen 400mg tablets (Actavis UK Ltd),Relcofen 400mg tablets,tablet.oral
+amp,36045011000001103,3996111000001104,1001010J0CCACBA,Galprofen Long Lasting 200mg capsules (Galpharm International Ltd),Galprofen Long Lasting 200mg capsules,capsulemodified-release.oral
+amp,329686007,32811000001101,1001010J0CCADBH,Galprofen 100mg/5ml oral suspension (Galpharm International Ltd),Galprofen 100mg/5ml oral suspension,suspension.oral
+amp,329686007,642011000001100,1001010J0CDABBH,Junior Ibuprofen 100mg/5ml oral suspension (Numark Ltd),Junior Ibuprofen 100mg/5ml oral suspension,suspension.oral
+amp,329653008,24584811000001108,1001010J0CDADAE,Numark Max Strength Pharmacy Ibuprofen 400mg tablets (Numark Ltd),Numark Max Strength Pharmacy Ibuprofen 400mg tablets,tablet.oral
+amp,329683004,31004511000001103,1001010J0CFADAY,Boots Ibuprofen and Codeine 200mg/12.8mg tablets (The Boots Company Plc),Boots Ibuprofen and Codeine 200mg/12.8mg tablets,tablet.oral
+amp,36045011000001103,31005011000001105,1001010J0CFAEBA,Boots Ibuprofen Long Lasting 200mg capsules (The Boots Company Plc),Boots Ibuprofen Long Lasting 200mg capsules,capsulemodified-release.oral
+amp,329652003,195311000001101,1001010J0CHAAAD,Ibufem 200mg tablets (Galpharm International Ltd),Ibufem 200mg tablets,tablet.oral
+amp,370195008,3918911000001101,1001010J0CJABAA,Anadin Ultra 200mg capsules (Pfizer Consumer Healthcare Ltd),Anadin Ultra 200mg capsules,capsule.oral
+amp,10774611000001104,10752411000001106,1001010J0CJACAU,Anadin LiquiFast 400mg capsules (Pfizer Consumer Healthcare Ltd),Anadin LiquiFast 400mg capsules,capsule.oral
+amp,329652003,13101011000001106,1001010J0CJADAD,Anadin Joint Pain 200mg tablets (Pfizer Consumer Healthcare Ltd),Anadin Joint Pain 200mg tablets,tablet.oral
+amp,19525111000001109,19510011000001106,1001010J0CJAEBP,Anadin LiquiFast 200mg effervescent tablets (Pfizer Consumer Healthcare Ltd),Anadin LiquiFast 200mg effervescent tablets,solution.oral
+amp,36045011000001103,13750411000001109,1001010J0CMACBA,Lloydspharmacy Ibuprofen Long Lasting 200mg capsules (Lloyds Pharmacy Ltd),Lloydspharmacy Ibuprofen Long Lasting 200mg capsules,capsulemodified-release.oral
+amp,370195008,13860211000001101,1001010J0CMADAA,Lloydspharmacy Ibuprofen 200mg liquid capsules (Lloyds Pharmacy Ltd),Lloydspharmacy Ibuprofen 200mg liquid capsules,capsule.oral
+amp,329686007,7929311000001109,1001010J0CMAFBH,Lloydspharmacy Ibuprofen 100mg/5ml oral suspension (Lloyds Pharmacy Ltd),Lloydspharmacy Ibuprofen 100mg/5ml oral suspension,suspension.oral
+amp,329652003,336911000001107,1001010J0CPAAAD,Hedex Ibuprofen 200mg caplets (GlaxoSmithKline Consumer Healthcare),Hedex Ibuprofen 200mg caplets,tablet.oral
+amp,329652003,17042011000001106,1001010J0CPABAD,Hedex Ibuprofen 200mg tablets (Omega Pharma Ltd),Hedex Ibuprofen 200mg tablets,tablet.oral
+amp,329686007,477011000001101,1001010J0CRAABH,Orbifen For Children 100mg/5ml oral suspension (Orbis Consumer Products Ltd),Orbifen For Children 100mg/5ml oral suspension,suspension.oral
+amp,4615511000001102,7664811000001108,1001010J0CRABBM,Orbifen For Children 100mg/5ml oral suspension 5ml sachets (Orbis Consumer Products Ltd),Orbifen For Children 100mg/5ml oral suspension 5ml sachets,suspension.oral
+amp,407904005,8008611000001103,1001010J0CSAABJ,Sudafed Sinus Pressure & Pain tablets (McNeil Products Ltd),Sudafed Sinus Pressure & Pain tablets,tablet.oral
+amp,34878411000001108,34874211000001103,1001010J0CSABBS,Sudafed Sinus Pain Relief 200mg/6.1mg tablets (McNeil Products Ltd),Sudafed Sinus Pain Relief 200mg/6.1mg tablets,tablet.oral
+amp,329686007,29666011000001102,1001010J0CUABBH,Care Ibuprofen for Children 100mg/5ml oral suspension (Thornton & Ross Ltd),Care Ibuprofen for Children 100mg/5ml oral suspension,suspension.oral
+amp,329686007,4535711000001109,1001010J0CXABBH,Fenpaed 100mg/5ml oral suspension (Pinewood Healthcare),Fenpaed 100mg/5ml oral suspension,suspension.oral
+amp,329686007,7997311000001105,1001010J0CYAABH,Mandafen for Children 100mg/5ml oral suspension sugar free (M & A Pharmachem Ltd),Mandafen for Children 100mg/5ml oral suspension sugar free,suspension.oral
+amp,329653008,7997811000001101,1001010J0CYABAE,Mandafen 400mg tablets (M & A Pharmachem Ltd),Mandafen 400mg tablets,tablet.oral
+amp,329686007,4585211000001105,1001010J0DBAABH,Calprofen 100mg/5ml oral suspension (McNeil Products Ltd),Calprofen 100mg/5ml oral suspension,suspension.oral
+amp,4615511000001102,11753011000001104,1001010J0DBACBM,Calprofen 100mg/5ml oral suspension 5ml sachets (McNeil Products Ltd),Calprofen 100mg/5ml oral suspension 5ml sachets,suspension.oral
+amp,4615511000001102,9993111000001106,1001010J0DFAABM,Galpharm Ibuprofen For Children 100mg/5ml oral suspension 5ml sachets (Galpharm International Ltd),Galpharm Ibuprofen For Children 100mg/5ml susp 5ml sachets,suspension.oral
+amp,329686007,13636911000001109,1001010J0DFACBH,Ibuprofen for Children 100mg/5ml oral suspension (Galpharm International Ltd),Ibuprofen for Children 100mg/5ml oral suspension,suspension.oral
+amp,370195008,17303111000001109,1001010J0DFADAA,Galpharm Migraine Relief 200mg capsules (Galpharm International Ltd),Galpharm Migraine Relief 200mg capsules,capsule.oral
+amp,329683004,10194911000001107,1001010J0DGAAAY,Solpadeine Migraine Ibuprofen & Codeine tablets (Omega Pharma Ltd),Solpadeine Migraine Ibuprofen & Codeine tablets,tablet.oral
+amp,329652003,16528311000001106,1001010J0DHAAAD,Ibucalm 200mg tablets (Aspar Pharmaceuticals Ltd),Ibucalm 200mg tablets,tablet.oral
+amp,329653008,16528811000001102,1001010J0DHABAE,Ibucalm 400mg tablets (Aspar Pharmaceuticals Ltd),Ibucalm 400mg tablets,tablet.oral
+amp,370195008,34790511000001100,1001010J0DIAAAA,Flarin 200mg capsules (infirst Healthcare Ltd),Flarin 200mg capsules,capsule.oral
+amp,329652003,36105911000001102,1001010J0DJAAAD,Ibular 200mg tablets (Ennogen Pharma Ltd),Ibular 200mg tablets,tablet.oral
+amp,329653008,36106111000001106,1001010J0DJABAE,Ibular 400mg tablets (Ennogen Pharma Ltd),Ibular 400mg tablets,tablet.oral
+amp,36608611000001101,36603011000001101,1001010J0DKAABR,Ibuprofen Twelve Plus Pain Relief 200mg/5ml oral suspension (Aspire Pharma Ltd),Ibuprofen Twelve Plus Pain Relief 200mg/5ml oral suspension,suspension.oral
+amp,36608611000001101,36760411000001109,1001010J0DKABBR,Ibuprofen Seven Plus Pain Relief 200mg/5ml oral suspension (Aspire Pharma Ltd),Ibuprofen Seven Plus Pain Relief 200mg/5ml oral suspension,suspension.oral
+amp,329714006,24411000001107,1001010K0AAAAAA,Indometacin 25mg capsules (Actavis UK Ltd),Indometacin 25mg capsules,capsule.oral
+amp,329714006,387211000001109,1001010K0AAAAAA,Indometacin 25mg capsules (Alliance Healthcare (Distribution) Ltd),Indometacin 25mg capsules,capsule.oral
+amp,329714006,564511000001104,1001010K0AAAAAA,Indometacin 25mg capsules (The Boots Company Plc),Indometacin 25mg capsules,capsule.oral
+amp,329714006,746311000001109,1001010K0AAAAAA,Indometacin 25mg capsules (A A H Pharmaceuticals Ltd),Indometacin 25mg capsules,capsule.oral
+amp,329714006,770811000001101,1001010K0AAAAAA,Indometacin 25mg capsules (Kent Pharmaceuticals Ltd),Indometacin 25mg capsules,capsule.oral
+amp,329714006,4331311000001106,1001010K0AAAAAA,Indometacin 25mg capsules (Sandoz Ltd),Indometacin 25mg capsules,capsule.oral
+amp,329714006,10381711000001100,1001010K0AAAAAA,Indometacin 25mg capsules (Arrow Generics Ltd),Indometacin 25mg capsules,capsule.oral
+amp,329714006,11017711000001100,1001010K0AAAAAA,Indometacin 25mg capsules (Dr Reddy's Laboratories (UK) Ltd),Indometacin 25mg capsules,capsule.oral
+amp,329714006,11405211000001107,1001010K0AAAAAA,Indometacin 25mg capsules (Almus Pharmaceuticals Ltd),Indometacin 25mg capsules,capsule.oral
+amp,329714006,14783711000001102,1001010K0AAAAAA,Indometacin 25mg capsules (Boston Healthcare Ltd),Indometacin 25mg capsules,capsule.oral
+amp,329714006,17932611000001107,1001010K0AAAAAA,Indometacin 25mg capsules (Phoenix Healthcare Distribution Ltd),Indometacin 25mg capsules,capsule.oral
+amp,329714006,18559111000001109,1001010K0AAAAAA,Indometacin 25mg capsules (Bristol Laboratories Ltd),Indometacin 25mg capsules,capsule.oral
+amp,329714006,20324411000001101,1001010K0AAAAAA,Indometacin 25mg capsules (Genesis Pharmaceuticals Ltd),Indometacin 25mg capsules,capsule.oral
+amp,329714006,22061111000001107,1001010K0AAAAAA,Indometacin 25mg capsules (Waymade Healthcare Plc),Indometacin 25mg capsules,capsule.oral
+amp,329714006,24176011000001109,1001010K0AAAAAA,Indometacin 25mg capsules (DE Pharmaceuticals),Indometacin 25mg capsules,capsule.oral
+amp,329714006,26779711000001102,1001010K0AAAAAA,Indometacin 25mg capsules (Tillomed Laboratories Ltd),Indometacin 25mg capsules,capsule.oral
+amp,329714006,29877911000001101,1001010K0AAAAAA,Indometacin 25mg capsules (Sigma Pharmaceuticals Plc),Indometacin 25mg capsules,capsule.oral
+amp,329714006,34016011000001105,1001010K0AAAAAA,Indometacin 25mg capsules (Crescent Pharma Ltd),Indometacin 25mg capsules,capsule.oral
+amp,329715007,100211000001103,1001010K0AAABAB,Indometacin 50mg capsules (Actavis UK Ltd),Indometacin 50mg capsules,capsule.oral
+amp,329715007,525611000001106,1001010K0AAABAB,Indometacin 50mg capsules (Mylan),Indometacin 50mg capsules,capsule.oral
+amp,329715007,604011000001100,1001010K0AAABAB,Indometacin 50mg capsules (Alliance Healthcare (Distribution) Ltd),Indometacin 50mg capsules,capsule.oral
+amp,329715007,749911000001101,1001010K0AAABAB,Indometacin 50mg capsules (Kent Pharmaceuticals Ltd),Indometacin 50mg capsules,capsule.oral
+amp,329715007,787911000001104,1001010K0AAABAB,Indometacin 50mg capsules (The Boots Company Plc),Indometacin 50mg capsules,capsule.oral
+amp,329715007,799011000001106,1001010K0AAABAB,Indometacin 50mg capsules (A A H Pharmaceuticals Ltd),Indometacin 50mg capsules,capsule.oral
+amp,329715007,4331511000001100,1001010K0AAABAB,Indometacin 50mg capsules (Sandoz Ltd),Indometacin 50mg capsules,capsule.oral
+amp,329715007,9807011000001106,1001010K0AAABAB,Indometacin 50mg capsules (Almus Pharmaceuticals Ltd),Indometacin 50mg capsules,capsule.oral
+amp,329715007,11017511000001105,1001010K0AAABAB,Indometacin 50mg capsules (Dr Reddy's Laboratories (UK) Ltd),Indometacin 50mg capsules,capsule.oral
+amp,329715007,17932811000001106,1001010K0AAABAB,Indometacin 50mg capsules (Phoenix Healthcare Distribution Ltd),Indometacin 50mg capsules,capsule.oral
+amp,329715007,20324611000001103,1001010K0AAABAB,Indometacin 50mg capsules (Genesis Pharmaceuticals Ltd),Indometacin 50mg capsules,capsule.oral
+amp,329715007,22061611000001104,1001010K0AAABAB,Indometacin 50mg capsules (Waymade Healthcare Plc),Indometacin 50mg capsules,capsule.oral
+amp,329715007,24176411000001100,1001010K0AAABAB,Indometacin 50mg capsules (DE Pharmaceuticals),Indometacin 50mg capsules,capsule.oral
+amp,329715007,26780111000001103,1001010K0AAABAB,Indometacin 50mg capsules (Tillomed Laboratories Ltd),Indometacin 50mg capsules,capsule.oral
+amp,329715007,28919111000001108,1001010K0AAABAB,Indometacin 50mg capsules (Crescent Pharma Ltd),Indometacin 50mg capsules,capsule.oral
+amp,329715007,29878111000001103,1001010K0AAABAB,Indometacin 50mg capsules (Sigma Pharmaceuticals Plc),Indometacin 50mg capsules,capsule.oral
+amp,36046811000001101,853011000001103,1001010K0AAADAD,Indometacin 75mg modified-release capsules (Kent Pharmaceuticals Ltd),Indometacin 75mg modified-release capsules,capsulemodified-release.oral
+amp,8561611000001108,8544911000001109,1001010K0AAAQAQ,Indometacin 25mg/5ml oral solution (Special Order),Indometacin 25mg/5ml oral solution,solution.oral
+amp,12638711000001104,12602811000001100,1001010K0AAARAR,Indometacin 20mg/5ml oral suspension (Special Order),Indometacin 20mg/5ml oral liquid,suspension.oral
+amp,12638611000001108,12603111000001101,1001010K0AAARAR,Indometacin 20mg/5ml oral solution (Special Order),Indometacin 20mg/5ml oral liquid,solution.oral
+amp,8561811000001107,8544811000001104,1001010K0AAAVAV,Indometacin 50mg/5ml oral solution (Special Order),Indometacin 50mg/5ml oral liquid,solution.oral
+amp,8561911000001102,8545311000001107,1001010K0AAAVAV,Indometacin 50mg/5ml oral suspension (Special Order),Indometacin 50mg/5ml oral liquid,suspension.oral
+amp,12638111000001100,12599811000001104,1001010K0AAAXAX,Indometacin 10mg/5ml oral suspension (Special Order),Indometacin 10mg/5ml oral liquid,suspension.oral
+amp,12638011000001101,12600111000001108,1001010K0AAAXAX,Indometacin 10mg/5ml oral solution (Special Order),Indometacin 10mg/5ml oral liquid,solution.oral
+amp,15914111000001104,15881511000001101,1001010K0AABABA,Indometacin 5mg/5ml oral suspension (Special Order),Indometacin 5mg/5ml oral liquid,suspension.oral
+amp,15914011000001100,15881811000001103,1001010K0AABABA,Indometacin 5mg/5ml oral solution (Special Order),Indometacin 5mg/5ml oral liquid,solution.oral
+amp,376878007,8545911000001108,1001010K0AABBBB,Indometacin 25mg/5ml oral suspension (Drug Tariff Special Order),Indometacin 25mg/5ml oral suspension,suspension.oral
+amp,329714006,258511000001106,1001010K0BDAAAA,Indocid 25mg capsules (Merck Sharp & Dohme Ltd),Indocid 25mg capsules,capsule.oral
+amp,329715007,581911000001106,1001010K0BDABAB,Indocid 50mg capsules (Merck Sharp & Dohme Ltd),Indocid 50mg capsules,capsule.oral
+amp,36046811000001101,172111000001101,1001010K0BDAFAD,Indocid R 75mg capsules (Merck Sharp & Dohme Ltd),Indocid R 75mg capsules,capsulemodified-release.oral
+amp,36046811000001101,3311000001106,1001010K0BGADAD,Indolar SR 75mg capsules (Sandoz Ltd),Indolar SR 75mg capsules,capsulemodified-release.oral
+amp,36046811000001101,392111000001104,1001010K0BVAAAD,Pardelprin MR 75mg capsules (Actavis UK Ltd),Pardelprin MR 75mg capsules,capsulemodified-release.oral
+amp,36046811000001101,867711000001101,1001010K0BXAAAD,Berlind 75 Retard capsules (Tillomed Laboratories Ltd),Berlind 75 Retard capsules,capsulemodified-release.oral
+amp,329758006,109311000001102,1001010L0AAAAAA,Ketoprofen 50mg capsules (Mylan),Ketoprofen 50mg capsules,capsule.oral
+amp,329758006,365911000001107,1001010L0AAAAAA,Ketoprofen 50mg capsules (Kent Pharmaceuticals Ltd),Ketoprofen 50mg capsules,capsule.oral
+amp,329758006,513511000001103,1001010L0AAAAAA,Ketoprofen 50mg capsules (A A H Pharmaceuticals Ltd),Ketoprofen 50mg capsules,capsule.oral
+amp,329758006,886811000001105,1001010L0AAAAAA,Ketoprofen 50mg capsules (Alliance Healthcare (Distribution) Ltd),Ketoprofen 50mg capsules,capsule.oral
+amp,329758006,915411000001107,1001010L0AAAAAA,Ketoprofen 50mg capsules (Sandoz Ltd),Ketoprofen 50mg capsules,capsule.oral
+amp,329758006,15103511000001109,1001010L0AAAAAA,Ketoprofen 50mg capsules (Sigma Pharmaceuticals Plc),Ketoprofen 50mg capsules,capsule.oral
+amp,3377811000001108,39411000001109,1001010L0AAABAB,Ketoprofen 100mg capsules (Mylan),Ketoprofen 100mg capsules,capsule.oral
+amp,3377811000001108,65111000001107,1001010L0AAABAB,Ketoprofen 100mg capsules (Sandoz Ltd),Ketoprofen 100mg capsules,capsule.oral
+amp,3377811000001108,823411000001108,1001010L0AAABAB,Ketoprofen 100mg capsules (The Boots Company Plc),Ketoprofen 100mg capsules,capsule.oral
+amp,3377811000001108,823911000001100,1001010L0AAABAB,Ketoprofen 100mg capsules (Alliance Healthcare (Distribution) Ltd),Ketoprofen 100mg capsules,capsule.oral
+amp,3377811000001108,881711000001108,1001010L0AAABAB,Ketoprofen 100mg capsules (A A H Pharmaceuticals Ltd),Ketoprofen 100mg capsules,capsule.oral
+amp,36037011000001106,505811000001104,1001010L0AAAIAI,Ketoprofen 100mg modified-release capsules (Alliance Healthcare (Distribution) Ltd),Ketoprofen 100mg modified-release capsules,capsulemodified-release.oral
+amp,36037011000001106,778511000001101,1001010L0AAAIAI,Ketoprofen 100mg modified-release capsules (Kent Pharmaceuticals Ltd),Ketoprofen 100mg modified-release capsules,capsulemodified-release.oral
+amp,36037011000001106,4575711000001106,1001010L0AAAIAI,Ketoprofen 100mg modified-release capsules (A A H Pharmaceuticals Ltd),Ketoprofen 100mg modified-release capsules,capsulemodified-release.oral
+amp,36037311000001109,659911000001109,1001010L0AAAJAJ,Ketoprofen 200mg modified-release capsules (Kent Pharmaceuticals Ltd),Ketoprofen 200mg modified-release capsules,capsulemodified-release.oral
+amp,329758006,429511000001103,1001010L0BCAAAA,Orudis 50mg capsules (Sanofi),Orudis 50mg capsules,capsule.oral
+amp,36037011000001106,155411000001100,1001010L0BDAAAI,Oruvail 100 modified-release capsules (Sanofi),Oruvail 100 modified-release capsules,capsulemodified-release.oral
+amp,36037311000001109,345311000001100,1001010L0BDABAJ,Oruvail 200 modified-release capsules (Sanofi),Oruvail 200 modified-release capsules,capsulemodified-release.oral
+amp,36037211000001101,657811000001107,1001010L0BDADAL,Oruvail 150 modified-release capsules (Sanofi),Oruvail 150 modified-release capsules,capsulemodified-release.oral
+amp,36037011000001106,419711000001102,1001010L0BEAAAI,Ketovail 100mg modified-release capsules (Teva UK Ltd),Ketovail 100mg modified-release capsules,capsulemodified-release.oral
+amp,36037311000001109,106011000001106,1001010L0BEABAJ,Ketovail 200mg modified-release capsules (Teva UK Ltd),Ketovail 200mg modified-release capsules,capsulemodified-release.oral
+amp,36037311000001109,482011000001109,1001010L0BHAAAJ,Larafen CR 200mg capsules (Ennogen Pharma Ltd),Larafen CR 200mg capsules,capsulemodified-release.oral
+amp,36037311000001109,294311000001102,1001010L0BIAAAJ,Ketocid 200 modified-release capsules (Chiesi Ltd),Ketocid 200 modified-release capsules,capsulemodified-release.oral
+amp,36037311000001109,98811000001106,1001010L0BJAAAJ,Fenoket 200mg modified-release capsules (Opus Pharmaceuticals Ltd),Fenoket 200mg modified-release capsules,capsulemodified-release.oral
+amp,36037311000001109,8211000001106,1001010L0BLAAAJ,Ketotard XL 200mg capsules (Galen Ltd),Ketotard XL 200mg capsules,capsulemodified-release.oral
+amp,36037311000001109,793611000001101,1001010L0BNAAAJ,Valket 200 Retard capsules (Tillomed Laboratories Ltd),Valket 200 Retard capsules,capsulemodified-release.oral
+amp,36037011000001106,804611000001103,1001010L0BNABAI,Tiloket CR 100mg capsules (Tillomed Laboratories Ltd),Tiloket CR 100mg capsules,capsulemodified-release.oral
+amp,329758006,7498011000001106,1001010L0BNACAA,Tiloket 50mg capsules (Tillomed Laboratories Ltd),Tiloket 50mg capsules,capsule.oral
+amp,36037311000001109,29742611000001106,1001010L0BNADAJ,Tiloket CR 200mg capsules (Tillomed Laboratories Ltd),Tiloket CR 200mg capsules,capsulemodified-release.oral
+amp,16174311000001107,16148311000001101,1001010L0BQAAAM,Axorid 100mg/20mg modified-release capsules (Meda Pharmaceuticals Ltd),Axorid 100mg/20mg modified-release capsules,capsulemodified-release.oral
+amp,16174411000001100,16140611000001108,1001010L0BQABAN,Axorid 200mg/20mg modified-release capsules (Meda Pharmaceuticals Ltd),Axorid 200mg/20mg modified-release capsules,capsulemodified-release.oral
+amp,329790001,164411000001109,1001010N0AAAAAA,Mefenamic acid 250mg capsules (Zentiva),Mefenamic acid 250mg capsules,capsule.oral
+amp,329790001,188111000001107,1001010N0AAAAAA,Mefenamic acid 250mg capsules (Alliance Healthcare (Distribution) Ltd),Mefenamic acid 250mg capsules,capsule.oral
+amp,329790001,269111000001100,1001010N0AAAAAA,Mefenamic acid 250mg capsules (A A H Pharmaceuticals Ltd),Mefenamic acid 250mg capsules,capsule.oral
+amp,329790001,756011000001108,1001010N0AAAAAA,Mefenamic acid 250mg capsules (Mylan),Mefenamic acid 250mg capsules,capsule.oral
+amp,329790001,767711000001103,1001010N0AAAAAA,Mefenamic acid 250mg capsules (Kent Pharmaceuticals Ltd),Mefenamic acid 250mg capsules,capsule.oral
+amp,329790001,10389911000001104,1001010N0AAAAAA,Mefenamic acid 250mg capsules (Arrow Generics Ltd),Mefenamic acid 250mg capsules,capsule.oral
+amp,329790001,14945211000001109,1001010N0AAAAAA,Mefenamic acid 250mg capsules (Essential Generics Ltd),Mefenamic acid 250mg capsules,capsule.oral
+amp,329790001,17939411000001103,1001010N0AAAAAA,Mefenamic acid 250mg capsules (Phoenix Healthcare Distribution Ltd),Mefenamic acid 250mg capsules,capsule.oral
+amp,329790001,19310911000001108,1001010N0AAAAAA,Mefenamic acid 250mg capsules (Advanz Pharma),Mefenamic acid 250mg capsules,capsule.oral
+amp,329790001,21791511000001102,1001010N0AAAAAA,Mefenamic acid 250mg capsules (Waymade Healthcare Plc),Mefenamic acid 250mg capsules,capsule.oral
+amp,329790001,24378611000001109,1001010N0AAAAAA,Mefenamic acid 250mg capsules (DE Pharmaceuticals),Mefenamic acid 250mg capsules,capsule.oral
+amp,329790001,29904711000001109,1001010N0AAAAAA,Mefenamic acid 250mg capsules (Sigma Pharmaceuticals Plc),Mefenamic acid 250mg capsules,capsule.oral
+amp,35369111000001107,186711000001109,1001010N0AAABAB,Mefenamic acid 50mg/5ml oral suspension (Alliance Healthcare (Distribution) Ltd),Mefenamic acid 50mg/5ml oral suspension,suspension.oral
+amp,35369111000001107,259811000001102,1001010N0AAABAB,Mefenamic acid 50mg/5ml oral suspension (A A H Pharmaceuticals Ltd),Mefenamic acid 50mg/5ml oral suspension,suspension.oral
+amp,35369111000001107,11484811000001108,1001010N0AAABAB,Mefenamic acid 50mg/5ml oral suspension (Special Order),Mefenamic acid 50mg/5ml oral suspension,suspension.oral
+amp,35369111000001107,11508411000001105,1001010N0AAABAB,Mefenamic acid 50mg/5ml oral suspension (Essential Generics Ltd),Mefenamic acid 50mg/5ml oral suspension,suspension.oral
+amp,35369111000001107,26853411000001107,1001010N0AAABAB,Mefenamic acid 50mg/5ml oral suspension (Ennogen Healthcare Ltd),Mefenamic acid 50mg/5ml oral suspension,suspension.oral
+amp,329803004,122811000001109,1001010N0AAADAD,Mefenamic acid 500mg tablets (Zentiva),Mefenamic acid 500mg tablets,tablet.oral
+amp,329803004,189011000001101,1001010N0AAADAD,Mefenamic acid 500mg tablets (Kent Pharmaceuticals Ltd),Mefenamic acid 500mg tablets,tablet.oral
+amp,329803004,393211000001104,1001010N0AAADAD,Mefenamic acid 500mg tablets (Alliance Healthcare (Distribution) Ltd),Mefenamic acid 500mg tablets,tablet.oral
+amp,329803004,411211000001108,1001010N0AAADAD,Mefenamic acid 500mg tablets (A A H Pharmaceuticals Ltd),Mefenamic acid 500mg tablets,tablet.oral
+amp,329803004,655611000001101,1001010N0AAADAD,Mefenamic acid 500mg tablets (Teva UK Ltd),Mefenamic acid 500mg tablets,tablet.oral
+amp,329803004,740211000001103,1001010N0AAADAD,Mefenamic acid 500mg tablets (IVAX Pharmaceuticals UK Ltd),Mefenamic acid 500mg tablets,tablet.oral
+amp,329803004,774611000001107,1001010N0AAADAD,Mefenamic acid 500mg tablets (Actavis UK Ltd),Mefenamic acid 500mg tablets,tablet.oral
+amp,329803004,13581311000001100,1001010N0AAADAD,Mefenamic acid 500mg tablets (DE Pharmaceuticals),Mefenamic acid 500mg tablets,tablet.oral
+amp,329803004,14945411000001108,1001010N0AAADAD,Mefenamic acid 500mg tablets (Essential Generics Ltd),Mefenamic acid 500mg tablets,tablet.oral
+amp,329803004,15109011000001103,1001010N0AAADAD,Mefenamic acid 500mg tablets (Sigma Pharmaceuticals Plc),Mefenamic acid 500mg tablets,tablet.oral
+amp,329803004,17970611000001108,1001010N0AAADAD,Mefenamic acid 500mg tablets (Almus Pharmaceuticals Ltd),Mefenamic acid 500mg tablets,tablet.oral
+amp,329803004,21791711000001107,1001010N0AAADAD,Mefenamic acid 500mg tablets (Waymade Healthcare Plc),Mefenamic acid 500mg tablets,tablet.oral
+amp,329803004,37119811000001109,1001010N0AAADAD,Mefenamic acid 500mg tablets (Mawdsley-Brooks & Company Ltd),Mefenamic acid 500mg tablets,tablet.oral
+amp,8662311000001102,8607611000001109,1001010N0AAAGAG,Mefenamic acid 250mg/5ml oral suspension (Special Order),Mefenamic acid 250mg/5ml oral suspension,suspension.oral
+amp,8662411000001109,8608211000001106,1001010N0AAAHAH,Mefenamic acid 500mg/5ml oral suspension (Special Order),Mefenamic acid 500mg/5ml oral suspension,suspension.oral
+amp,329790001,226811000001107,1001010N0BBAAAA,Ponstan 250mg capsules (Chemidex Pharma Ltd),Ponstan 250mg capsules,capsule.oral
+amp,329803004,586711000001103,1001010N0BBABAD,Ponstan Forte 500mg tablets (Chemidex Pharma Ltd),Ponstan Forte 500mg tablets,tablet.oral
+amp,329806007,60511000001108,1001010P0AAADAD,Naproxen 250mg tablets (Alliance Healthcare (Distribution) Ltd),Naproxen 250mg tablets,tablet.oral
+amp,329806007,86111000001104,1001010P0AAADAD,Naproxen 250mg tablets (Actavis UK Ltd),Naproxen 250mg tablets,tablet.oral
+amp,329806007,150011000001103,1001010P0AAADAD,Naproxen 250mg tablets (IVAX Pharmaceuticals UK Ltd),Naproxen 250mg tablets,tablet.oral
+amp,329806007,360911000001103,1001010P0AAADAD,Naproxen 250mg tablets (Teva UK Ltd),Naproxen 250mg tablets,tablet.oral
+amp,329806007,521711000001104,1001010P0AAADAD,Naproxen 250mg tablets (Wockhardt UK Ltd),Naproxen 250mg tablets,tablet.oral
+amp,329806007,630611000001105,1001010P0AAADAD,Naproxen 250mg tablets (Mylan),Naproxen 250mg tablets,tablet.oral
+amp,329806007,774811000001106,1001010P0AAADAD,Naproxen 250mg tablets (Kent Pharmaceuticals Ltd),Naproxen 250mg tablets,tablet.oral
+amp,329806007,889911000001109,1001010P0AAADAD,Naproxen 250mg tablets (A A H Pharmaceuticals Ltd),Naproxen 250mg tablets,tablet.oral
+amp,329806007,10396611000001103,1001010P0AAADAD,Naproxen 250mg tablets (Arrow Generics Ltd),Naproxen 250mg tablets,tablet.oral
+amp,329806007,13581711000001101,1001010P0AAADAD,Naproxen 250mg tablets (DE Pharmaceuticals),Naproxen 250mg tablets,tablet.oral
+amp,329806007,13845911000001109,1001010P0AAADAD,Naproxen 250mg tablets (Almus Pharmaceuticals Ltd),Naproxen 250mg tablets,tablet.oral
+amp,329806007,18464611000001101,1001010P0AAADAD,Naproxen 250mg tablets (Accord Healthcare Ltd),Naproxen 250mg tablets,tablet.oral
+amp,329806007,18627511000001101,1001010P0AAADAD,Naproxen 250mg tablets (Phoenix Healthcare Distribution Ltd),Naproxen 250mg tablets,tablet.oral
+amp,329806007,19195411000001104,1001010P0AAADAD,Naproxen 250mg tablets (Milpharm Ltd),Naproxen 250mg tablets,tablet.oral
+amp,329806007,21818111000001100,1001010P0AAADAD,Naproxen 250mg tablets (Waymade Healthcare Plc),Naproxen 250mg tablets,tablet.oral
+amp,329806007,28985211000001102,1001010P0AAADAD,Naproxen 250mg tablets (Crescent Pharma Ltd),Naproxen 250mg tablets,tablet.oral
+amp,329806007,29928511000001100,1001010P0AAADAD,Naproxen 250mg tablets (Sigma Pharmaceuticals Plc),Naproxen 250mg tablets,tablet.oral
+amp,329806007,30849711000001108,1001010P0AAADAD,Naproxen 250mg tablets (Mawdsley-Brooks & Company Ltd),Naproxen 250mg tablets,tablet.oral
+amp,329806007,36011911000001106,1001010P0AAADAD,Naproxen 250mg tablets (Genesis Pharmaceuticals Ltd),Naproxen 250mg tablets,tablet.oral
+amp,329806007,36597211000001105,1001010P0AAADAD,Naproxen 250mg tablets (Bristol Laboratories Ltd),Naproxen 250mg tablets,tablet.oral
+amp,329807003,80711000001101,1001010P0AAAEAE,Naproxen 500mg tablets (Sterwin Medicines),Naproxen 500mg tablets,tablet.oral
+amp,329807003,161211000001108,1001010P0AAAEAE,Naproxen 500mg tablets (Actavis UK Ltd),Naproxen 500mg tablets,tablet.oral
+amp,329807003,220511000001107,1001010P0AAAEAE,Naproxen 500mg tablets (Teva UK Ltd),Naproxen 500mg tablets,tablet.oral
+amp,329807003,377711000001106,1001010P0AAAEAE,Naproxen 500mg tablets (Kent Pharmaceuticals Ltd),Naproxen 500mg tablets,tablet.oral
+amp,329807003,396811000001107,1001010P0AAAEAE,Naproxen 500mg tablets (A A H Pharmaceuticals Ltd),Naproxen 500mg tablets,tablet.oral
+amp,329807003,408811000001100,1001010P0AAAEAE,Naproxen 500mg tablets (IVAX Pharmaceuticals UK Ltd),Naproxen 500mg tablets,tablet.oral
+amp,329807003,447511000001108,1001010P0AAAEAE,Naproxen 500mg tablets (Mylan),Naproxen 500mg tablets,tablet.oral
+amp,329807003,481611000001108,1001010P0AAAEAE,Naproxen 500mg tablets (Wockhardt UK Ltd),Naproxen 500mg tablets,tablet.oral
+amp,329807003,521011000001101,1001010P0AAAEAE,Naproxen 500mg tablets (Alliance Healthcare (Distribution) Ltd),Naproxen 500mg tablets,tablet.oral
+amp,329807003,3224611000001107,1001010P0AAAEAE,Naproxen 500mg tablets (Pfizer Ltd),Naproxen 500mg tablets,tablet.oral
+amp,329807003,10396811000001104,1001010P0AAAEAE,Naproxen 500mg tablets (Arrow Generics Ltd),Naproxen 500mg tablets,tablet.oral
+amp,329807003,13846111000001100,1001010P0AAAEAE,Naproxen 500mg tablets (Almus Pharmaceuticals Ltd),Naproxen 500mg tablets,tablet.oral
+amp,329807003,18464911000001107,1001010P0AAAEAE,Naproxen 500mg tablets (Accord Healthcare Ltd),Naproxen 500mg tablets,tablet.oral
+amp,329807003,18627211000001104,1001010P0AAAEAE,Naproxen 500mg tablets (Phoenix Healthcare Distribution Ltd),Naproxen 500mg tablets,tablet.oral
+amp,329807003,19195611000001101,1001010P0AAAEAE,Naproxen 500mg tablets (Milpharm Ltd),Naproxen 500mg tablets,tablet.oral
+amp,329807003,21818311000001103,1001010P0AAAEAE,Naproxen 500mg tablets (Waymade Healthcare Plc),Naproxen 500mg tablets,tablet.oral
+amp,329807003,28985411000001103,1001010P0AAAEAE,Naproxen 500mg tablets (Crescent Pharma Ltd),Naproxen 500mg tablets,tablet.oral
+amp,329807003,29928911000001107,1001010P0AAAEAE,Naproxen 500mg tablets (Sigma Pharmaceuticals Plc),Naproxen 500mg tablets,tablet.oral
+amp,329807003,30063011000001101,1001010P0AAAEAE,Naproxen 500mg tablets (DE Pharmaceuticals),Naproxen 500mg tablets,tablet.oral
+amp,329807003,30849911000001105,1001010P0AAAEAE,Naproxen 500mg tablets (Mawdsley-Brooks & Company Ltd),Naproxen 500mg tablets,tablet.oral
+amp,329807003,36026111000001106,1001010P0AAAEAE,Naproxen 500mg tablets (Medreich Plc),Naproxen 500mg tablets,tablet.oral
+amp,329807003,36597611000001107,1001010P0AAAEAE,Naproxen 500mg tablets (Bristol Laboratories Ltd),Naproxen 500mg tablets,tablet.oral
+amp,329807003,36926211000001106,1001010P0AAAEAE,Naproxen 500mg tablets (Noumed Life Sciences Ltd),Naproxen 500mg tablets,tablet.oral
+amp,329807003,37999811000001106,1001010P0AAAEAE,Naproxen 500mg tablets (Genesis Pharmaceuticals Ltd),Naproxen 500mg tablets,tablet.oral
+amp,329838002,129111000001106,1001010P0AAAHAH,Naproxen 250mg gastro-resistant tablets (Accord Healthcare Ltd),Naproxen 250mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329838002,367911000001102,1001010P0AAAHAH,Naproxen 250mg gastro-resistant tablets (A A H Pharmaceuticals Ltd),Naproxen 250mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329838002,547811000001102,1001010P0AAAHAH,Naproxen 250mg gastro-resistant tablets (Alliance Healthcare (Distribution) Ltd),Naproxen 250mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329838002,579011000001103,1001010P0AAAHAH,Naproxen 250mg gastro-resistant tablets (Sandoz Ltd),Naproxen 250mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329838002,603311000001104,1001010P0AAAHAH,Naproxen 250mg gastro-resistant tablets (Teva UK Ltd),Naproxen 250mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329838002,687211000001104,1001010P0AAAHAH,Naproxen 250mg gastro-resistant tablets (Mylan),Naproxen 250mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329838002,764211000001103,1001010P0AAAHAH,Naproxen 250mg gastro-resistant tablets (IVAX Pharmaceuticals UK Ltd),Naproxen 250mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329838002,5474911000001107,1001010P0AAAHAH,Naproxen 250mg gastro-resistant tablets (Kent Pharmaceuticals Ltd),Naproxen 250mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329838002,11426611000001106,1001010P0AAAHAH,Naproxen 250mg gastro-resistant tablets (Almus Pharmaceuticals Ltd),Naproxen 250mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329838002,16212811000001102,1001010P0AAAHAH,Naproxen 250mg gastro-resistant tablets (Ranbaxy (UK) Ltd),Naproxen 250mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329838002,17945511000001103,1001010P0AAAHAH,Naproxen 250mg gastro-resistant tablets (Phoenix Healthcare Distribution Ltd),Naproxen 250mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329838002,20325711000001106,1001010P0AAAHAH,Naproxen 250mg gastro-resistant tablets (Genesis Pharmaceuticals Ltd),Naproxen 250mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329838002,21817711000001100,1001010P0AAAHAH,Naproxen 250mg gastro-resistant tablets (Waymade Healthcare Plc),Naproxen 250mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329838002,29928311000001106,1001010P0AAAHAH,Naproxen 250mg gastro-resistant tablets (Sigma Pharmaceuticals Plc),Naproxen 250mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329838002,30062411000001101,1001010P0AAAHAH,Naproxen 250mg gastro-resistant tablets (DE Pharmaceuticals),Naproxen 250mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329838002,36782111000001103,1001010P0AAAHAH,Naproxen 250mg gastro-resistant tablets (Sovereign Medical Ltd),Naproxen 250mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329838002,37122511000001106,1001010P0AAAHAH,Naproxen 250mg gastro-resistant tablets (Mawdsley-Brooks & Company Ltd),Naproxen 250mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329838002,37999211000001105,1001010P0AAAHAH,Naproxen 250mg gastro-resistant tablets (Medreich Plc),Naproxen 250mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329839005,27711000001108,1001010P0AAAIAI,Naproxen 500mg gastro-resistant tablets (Actavis UK Ltd),Naproxen 500mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329839005,143611000001103,1001010P0AAAIAI,Naproxen 500mg gastro-resistant tablets (Teva UK Ltd),Naproxen 500mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329839005,279011000001106,1001010P0AAAIAI,Naproxen 500mg gastro-resistant tablets (Sandoz Ltd),Naproxen 500mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329839005,297211000001103,1001010P0AAAIAI,Naproxen 500mg gastro-resistant tablets (Kent Pharmaceuticals Ltd),Naproxen 500mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329839005,368211000001105,1001010P0AAAIAI,Naproxen 500mg gastro-resistant tablets (Mylan),Naproxen 500mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329839005,678411000001107,1001010P0AAAIAI,Naproxen 500mg gastro-resistant tablets (IVAX Pharmaceuticals UK Ltd),Naproxen 500mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329839005,692711000001105,1001010P0AAAIAI,Naproxen 500mg gastro-resistant tablets (Alliance Healthcare (Distribution) Ltd),Naproxen 500mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329839005,936011000001104,1001010P0AAAIAI,Naproxen 500mg gastro-resistant tablets (A A H Pharmaceuticals Ltd),Naproxen 500mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329839005,11426811000001105,1001010P0AAAIAI,Naproxen 500mg gastro-resistant tablets (Almus Pharmaceuticals Ltd),Naproxen 500mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329839005,16213011000001104,1001010P0AAAIAI,Naproxen 500mg gastro-resistant tablets (Ranbaxy (UK) Ltd),Naproxen 500mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329839005,17945711000001108,1001010P0AAAIAI,Naproxen 500mg gastro-resistant tablets (Phoenix Healthcare Distribution Ltd),Naproxen 500mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329839005,20325911000001108,1001010P0AAAIAI,Naproxen 500mg gastro-resistant tablets (Genesis Pharmaceuticals Ltd),Naproxen 500mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329839005,21817911000001103,1001010P0AAAIAI,Naproxen 500mg gastro-resistant tablets (Waymade Healthcare Plc),Naproxen 500mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329839005,29928711000001105,1001010P0AAAIAI,Naproxen 500mg gastro-resistant tablets (Sigma Pharmaceuticals Plc),Naproxen 500mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329839005,30062811000001104,1001010P0AAAIAI,Naproxen 500mg gastro-resistant tablets (DE Pharmaceuticals),Naproxen 500mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329839005,30850111000001100,1001010P0AAAIAI,Naproxen 500mg gastro-resistant tablets (Mawdsley-Brooks & Company Ltd),Naproxen 500mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329839005,36781911000001106,1001010P0AAAIAI,Naproxen 500mg gastro-resistant tablets (Sovereign Medical Ltd),Naproxen 500mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329839005,37999611000001107,1001010P0AAAIAI,Naproxen 500mg gastro-resistant tablets (Medreich Plc),Naproxen 500mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36564511000001103,658611000001107,1001010P0AAAJAJ,Naproxen 375mg gastro-resistant tablets (Actavis UK Ltd),Naproxen 375mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36564511000001103,817811000001105,1001010P0AAAJAJ,Naproxen 375mg gastro-resistant tablets (Alliance Healthcare (Distribution) Ltd),Naproxen 375mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36564511000001103,842611000001103,1001010P0AAAJAJ,Naproxen 375mg gastro-resistant tablets (Kent Pharmaceuticals Ltd),Naproxen 375mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36564511000001103,7898511000001105,1001010P0AAAJAJ,Naproxen 375mg gastro-resistant tablets (A A H Pharmaceuticals Ltd),Naproxen 375mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36564511000001103,15236411000001105,1001010P0AAAJAJ,Naproxen 375mg gastro-resistant tablets (Sigma Pharmaceuticals Plc),Naproxen 375mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36564511000001103,30062611000001103,1001010P0AAAJAJ,Naproxen 375mg gastro-resistant tablets (DE Pharmaceuticals),Naproxen 375mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36564511000001103,37336111000001109,1001010P0AAAJAJ,Naproxen 375mg gastro-resistant tablets (Sovereign Medical Ltd),Naproxen 375mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,36564511000001103,37999411000001109,1001010P0AAAJAJ,Naproxen 375mg gastro-resistant tablets (Medreich Plc),Naproxen 375mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329852000,8637511000001100,1001010P0AAARAR,Naproxen 125mg/5ml oral suspension (Special Order),Naproxen 125mg/5ml oral suspension,suspension.oral
+amp,8669811000001101,8639711000001102,1001010P0AAATAT,Naproxen 500mg/5ml oral suspension (Special Order),Naproxen 500mg/5ml oral suspension,suspension.oral
+amp,12301311000001108,12257211000001109,1001010P0AAAYAY,Naproxen 100mg/5ml oral suspension (Special Order),Naproxen 100mg/5ml oral suspension,suspension.oral
+amp,12301611000001103,12258411000001107,1001010P0AAAZAZ,Naproxen 75mg/5ml oral suspension (Special Order),Naproxen 75mg/5ml oral suspension,suspension.oral
+amp,12301411000001101,12257611000001106,1001010P0AABCBC,Naproxen 200mg/5ml oral suspension (Drug Tariff Special Order),Naproxen 200mg/5ml oral suspension,suspension.oral
+amp,32638811000001105,32636911000001104,1001010P0AABEBE,Naproxen 25mg/ml oral suspension sugar free (Orion Pharma (UK) Ltd),Naproxen 125mg/5ml oral suspension sugar free,suspension.oral
+amp,32638811000001105,32775911000001100,1001010P0AABEBE,Naproxen 125mg/5ml oral suspension sugar free (A A H Pharmaceuticals Ltd),Naproxen 125mg/5ml oral suspension sugar free,suspension.oral
+amp,32638811000001105,33136211000001102,1001010P0AABEBE,Naproxen 125mg/5ml oral suspension sugar free (Alliance Healthcare (Distribution) Ltd),Naproxen 125mg/5ml oral suspension sugar free,suspension.oral
+amp,8669711000001109,8638311000001107,1001010P0AABFBF,Naproxen 250mg/5ml oral suspension (Special Order),Naproxen 250mg/5ml oral suspension,suspension.oral
+amp,8669711000001109,33743911000001109,1001010P0AABFBF,Naproxen 50mg/ml oral suspension (Thornton & Ross Ltd),Naproxen 250mg/5ml oral suspension,suspension.oral
+amp,8669711000001109,34195911000001106,1001010P0AABFBF,Naproxen 50mg/ml oral suspension (Alliance Healthcare (Distribution) Ltd),Naproxen 250mg/5ml oral suspension,suspension.oral
+amp,8669711000001109,34328011000001102,1001010P0AABFBF,Naproxen 50mg/ml oral suspension (A A H Pharmaceuticals Ltd),Naproxen 250mg/5ml oral suspension,suspension.oral
+amp,8669711000001109,37609211000001109,1001010P0AABFBF,Naproxen 50mg/ml oral suspension (DE Pharmaceuticals),Naproxen 250mg/5ml oral suspension,suspension.oral
+amp,329806007,894311000001106,1001010P0BCAAAD,Naprosyn 250mg tablets (Atnahs Pharma UK Ltd),Naprosyn 250mg tablets,tablet.oral
+amp,329807003,162011000001106,1001010P0BCABAE,Naprosyn 500mg tablets (Atnahs Pharma UK Ltd),Naprosyn 500mg tablets,tablet.oral
+amp,329838002,178811000001105,1001010P0BCAGAH,Naprosyn EC 250mg tablets (Atnahs Pharma UK Ltd),Naprosyn EC 250mg tablets,tabletgastro-resistant.oral
+amp,36564511000001103,611711000001104,1001010P0BCAHAJ,Naprosyn EC 375mg tablets (Atnahs Pharma UK Ltd),Naprosyn EC 375mg tablets,tabletgastro-resistant.oral
+amp,329839005,434011000001107,1001010P0BCAIAI,Naprosyn EC 500mg tablets (Atnahs Pharma UK Ltd),Naprosyn EC 500mg tablets,tabletgastro-resistant.oral
+amp,36030111000001106,61111000001105,1001010P0BCAJAQ,Naprosyn S/R 500mg tablets (Roche Products Ltd),Naprosyn S/R 500mg tablets,tabletmodified-release.oral
+amp,329838002,15512111000001104,1001010P0BSAAAH,Feminax Ultra 250mg gastro-resistant tablets (Bayer Plc),Feminax Ultra 250mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,18245811000001107,18233711000001101,1001010P0BUAABB,Vimovo 500mg/20mg modified-release tablets (AstraZeneca UK Ltd),Vimovo 500mg/20mg modified-release tablets,tabletmodified-release.oral
+amp,31306711000001103,31279811000001102,1001010P0BXAABD,Stirlescent 250mg effervescent tablets (Stirling Anglian Pharmaceuticals Ltd),Stirlescent 250mg effervescent tablets,solution.oral
+amp,329838002,36736411000001102,1001010P0BYAAAH,Nexocin EC 250mg gastro-resistant tablets (Noumed Life Sciences Ltd),Nexocin EC 250mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329839005,36737211000001104,1001010P0BYACAI,Nexocin EC 500mg gastro-resistant tablets (Noumed Life Sciences Ltd),Nexocin EC 500mg gastro-resistant tablets,tabletgastro-resistant.oral
+amp,329854004,10360711000001106,1001010Q0AAABAB,Phenylbutazone 100mg tablets (Alliance Healthcare (Distribution) Ltd),Phenylbutazone 100mg tablets,tablet.oral
+amp,329854004,10423311000001100,1001010Q0AAABAB,Phenylbutazone 100mg tablets (Essential Generics Ltd),Phenylbutazone 100mg tablets,tablet.oral
+amp,329854004,11256211000001106,1001010Q0AAABAB,Phenylbutazone 100mg tablets (A A H Pharmaceuticals Ltd),Phenylbutazone 100mg tablets,tablet.oral
+amp,329855003,10361211000001105,1001010Q0AAACAC,Phenylbutazone 200mg tablets (Alliance Healthcare (Distribution) Ltd),Phenylbutazone 200mg tablets,tablet.oral
+amp,329855003,10423711000001101,1001010Q0AAACAC,Phenylbutazone 200mg tablets (Essential Generics Ltd),Phenylbutazone 200mg tablets,tablet.oral
+amp,329855003,11256411000001105,1001010Q0AAACAC,Phenylbutazone 200mg tablets (A A H Pharmaceuticals Ltd),Phenylbutazone 200mg tablets,tablet.oral
+amp,329862007,286411000001100,1001010R0AAAAAA,Piroxicam 10mg capsules (Mylan),Piroxicam 10mg capsules,capsule.oral
+amp,329862007,310111000001102,1001010R0AAAAAA,Piroxicam 10mg capsules (IVAX Pharmaceuticals UK Ltd),Piroxicam 10mg capsules,capsule.oral
+amp,329862007,317911000001103,1001010R0AAAAAA,Piroxicam 10mg capsules (The Boots Company Plc),Piroxicam 10mg capsules,capsule.oral
+amp,329862007,385011000001106,1001010R0AAAAAA,Piroxicam 10mg capsules (Alliance Healthcare (Distribution) Ltd),Piroxicam 10mg capsules,capsule.oral
+amp,329862007,468211000001100,1001010R0AAAAAA,Piroxicam 10mg capsules (Actavis UK Ltd),Piroxicam 10mg capsules,capsule.oral
+amp,329862007,494511000001107,1001010R0AAAAAA,Piroxicam 10mg capsules (Approved Prescription Services Ltd),Piroxicam 10mg capsules,capsule.oral
+amp,329862007,735411000001107,1001010R0AAAAAA,Piroxicam 10mg capsules (Kent Pharmaceuticals Ltd),Piroxicam 10mg capsules,capsule.oral
+amp,329862007,928911000001104,1001010R0AAAAAA,Piroxicam 10mg capsules (A A H Pharmaceuticals Ltd),Piroxicam 10mg capsules,capsule.oral
+amp,329862007,9191811000001101,1001010R0AAAAAA,Piroxicam 10mg capsules (Sandoz Ltd),Piroxicam 10mg capsules,capsule.oral
+amp,329862007,10403211000001102,1001010R0AAAAAA,Piroxicam 10mg capsules (Arrow Generics Ltd),Piroxicam 10mg capsules,capsule.oral
+amp,329862007,17878511000001101,1001010R0AAAAAA,Piroxicam 10mg capsules (Phoenix Healthcare Distribution Ltd),Piroxicam 10mg capsules,capsule.oral
+amp,329862007,18734211000001102,1001010R0AAAAAA,Piroxicam 10mg capsules (Sigma Pharmaceuticals Plc),Piroxicam 10mg capsules,capsule.oral
+amp,329862007,21848811000001100,1001010R0AAAAAA,Piroxicam 10mg capsules (Waymade Healthcare Plc),Piroxicam 10mg capsules,capsule.oral
+amp,329862007,28986111000001102,1001010R0AAAAAA,Piroxicam 10mg capsules (Crescent Pharma Ltd),Piroxicam 10mg capsules,capsule.oral
+amp,329862007,30112511000001107,1001010R0AAAAAA,Piroxicam 10mg capsules (DE Pharmaceuticals),Piroxicam 10mg capsules,capsule.oral
+amp,329862007,30857611000001107,1001010R0AAAAAA,Piroxicam 10mg capsules (Mawdsley-Brooks & Company Ltd),Piroxicam 10mg capsules,capsule.oral
+amp,329863002,63311000001108,1001010R0AAABAB,Piroxicam 20mg capsules (IVAX Pharmaceuticals UK Ltd),Piroxicam 20mg capsules,capsule.oral
+amp,329863002,92811000001109,1001010R0AAABAB,Piroxicam 20mg capsules (Mylan),Piroxicam 20mg capsules,capsule.oral
+amp,329863002,146611000001109,1001010R0AAABAB,Piroxicam 20mg capsules (Kent Pharmaceuticals Ltd),Piroxicam 20mg capsules,capsule.oral
+amp,329863002,267611000001103,1001010R0AAABAB,Piroxicam 20mg capsules (Alliance Healthcare (Distribution) Ltd),Piroxicam 20mg capsules,capsule.oral
+amp,329863002,450411000001108,1001010R0AAABAB,Piroxicam 20mg capsules (Approved Prescription Services Ltd),Piroxicam 20mg capsules,capsule.oral
+amp,329863002,627511000001108,1001010R0AAABAB,Piroxicam 20mg capsules (Actavis UK Ltd),Piroxicam 20mg capsules,capsule.oral
+amp,329863002,694111000001101,1001010R0AAABAB,Piroxicam 20mg capsules (The Boots Company Plc),Piroxicam 20mg capsules,capsule.oral
+amp,329863002,723011000001101,1001010R0AAABAB,Piroxicam 20mg capsules (A A H Pharmaceuticals Ltd),Piroxicam 20mg capsules,capsule.oral
+amp,329863002,9192011000001104,1001010R0AAABAB,Piroxicam 20mg capsules (Sandoz Ltd),Piroxicam 20mg capsules,capsule.oral
+amp,329863002,10403611000001100,1001010R0AAABAB,Piroxicam 20mg capsules (Arrow Generics Ltd),Piroxicam 20mg capsules,capsule.oral
+amp,329863002,17878711000001106,1001010R0AAABAB,Piroxicam 20mg capsules (Phoenix Healthcare Distribution Ltd),Piroxicam 20mg capsules,capsule.oral
+amp,329863002,18734411000001103,1001010R0AAABAB,Piroxicam 20mg capsules (Sigma Pharmaceuticals Plc),Piroxicam 20mg capsules,capsule.oral
+amp,329863002,21849011000001101,1001010R0AAABAB,Piroxicam 20mg capsules (Waymade Healthcare Plc),Piroxicam 20mg capsules,capsule.oral
+amp,329863002,28986311000001100,1001010R0AAABAB,Piroxicam 20mg capsules (Crescent Pharma Ltd),Piroxicam 20mg capsules,capsule.oral
+amp,329863002,30112711000001102,1001010R0AAABAB,Piroxicam 20mg capsules (DE Pharmaceuticals),Piroxicam 20mg capsules,capsule.oral
+amp,329863002,30857811000001106,1001010R0AAABAB,Piroxicam 20mg capsules (Mawdsley-Brooks & Company Ltd),Piroxicam 20mg capsules,capsule.oral
+amp,329881004,361811000001100,1001010R0AAADAD,Piroxicam 10mg dispersible tablets (Alliance Healthcare (Distribution) Ltd),Piroxicam 10mg dispersible tablets,suspension.oral
+amp,329881004,455811000001104,1001010R0AAADAD,Piroxicam 10mg dispersible tablets (Mylan),Piroxicam 10mg dispersible tablets,suspension.oral
+amp,329881004,681811000001105,1001010R0AAADAD,Piroxicam 10mg dispersible tablets (Kent Pharmaceuticals Ltd),Piroxicam 10mg dispersible tablets,suspension.oral
+amp,329881004,828011000001106,1001010R0AAADAD,Piroxicam 10mg dispersible tablets (A A H Pharmaceuticals Ltd),Piroxicam 10mg dispersible tablets,suspension.oral
+amp,329882006,276611000001107,1001010R0AAAEAE,Piroxicam 20mg dispersible tablets (Mylan),Piroxicam 20mg dispersible tablets,suspension.oral
+amp,329882006,451911000001107,1001010R0AAAEAE,Piroxicam 20mg dispersible tablets (Alliance Healthcare (Distribution) Ltd),Piroxicam 20mg dispersible tablets,suspension.oral
+amp,329882006,497711000001109,1001010R0AAAEAE,Piroxicam 20mg dispersible tablets (A A H Pharmaceuticals Ltd),Piroxicam 20mg dispersible tablets,suspension.oral
+amp,329882006,878611000001100,1001010R0AAAEAE,Piroxicam 20mg dispersible tablets (Kent Pharmaceuticals Ltd),Piroxicam 20mg dispersible tablets,suspension.oral
+amp,329862007,235611000001100,1001010R0BBAAAA,Feldene 10mg capsules (Pfizer Ltd),Feldene 10mg capsules,capsule.oral
+amp,329863002,90611000001109,1001010R0BBABAB,Feldene 20 capsules (Pfizer Ltd),Feldene 20 capsules,capsule.oral
+amp,329882006,126111000001103,1001010R0BBADAE,Feldene 20mg dispersible tablets (Pfizer Ltd),Feldene 20mg dispersible tablets,suspension.oral
+amp,36017011000001102,192711000001106,1001010R0BBAGAG,Feldene Melt 20mg tablets (Pfizer Ltd),Feldene Melt 20mg tablets,tabletdispersible.oral
+amp,3439011000001103,17811000001106,1001010R0BHAAAK,Brexidol 20mg tablets (Chiesi Ltd),Brexidol 20mg tablets,tablet.oral
+amp,329887000,3671411000001106,1001010S0AAAAAA,Sulindac 100mg tablets (A A H Pharmaceuticals Ltd),Sulindac 100mg tablets,tablet.oral
+amp,329887000,3671811000001108,1001010S0AAAAAA,Sulindac 100mg tablets (Mylan),Sulindac 100mg tablets,tablet.oral
+amp,329887000,3673711000001104,1001010S0AAAAAA,Sulindac 100mg tablets (Kent Pharmaceuticals Ltd),Sulindac 100mg tablets,tablet.oral
+amp,329887000,3674511000001107,1001010S0AAAAAA,Sulindac 100mg tablets (Alliance Healthcare (Distribution) Ltd),Sulindac 100mg tablets,tablet.oral
+amp,329887000,13583611000001109,1001010S0AAAAAA,Sulindac 100mg tablets (DE Pharmaceuticals),Sulindac 100mg tablets,tablet.oral
+amp,329887000,17412711000001105,1001010S0AAAAAA,Sulindac 100mg tablets (Essential Generics Ltd),Sulindac 100mg tablets,tablet.oral
+amp,329888005,3675211000001105,1001010S0AAABAB,Sulindac 200mg tablets (A A H Pharmaceuticals Ltd),Sulindac 200mg tablets,tablet.oral
+amp,329888005,3675511000001108,1001010S0AAABAB,Sulindac 200mg tablets (Mylan),Sulindac 200mg tablets,tablet.oral
+amp,329888005,3675811000001106,1001010S0AAABAB,Sulindac 200mg tablets (Kent Pharmaceuticals Ltd),Sulindac 200mg tablets,tablet.oral
+amp,329888005,3676211000001104,1001010S0AAABAB,Sulindac 200mg tablets (Alliance Healthcare (Distribution) Ltd),Sulindac 200mg tablets,tablet.oral
+amp,329888005,13583811000001108,1001010S0AAABAB,Sulindac 200mg tablets (DE Pharmaceuticals),Sulindac 200mg tablets,tablet.oral
+amp,329888005,17415011000001103,1001010S0AAABAB,Sulindac 200mg tablets (Essential Generics Ltd),Sulindac 200mg tablets,tablet.oral
+amp,329896000,308411000001108,1001010T0BBABAC,Surgam 300mg tablets (Sanofi),Surgam 300mg tablets,tablet.oral
+amp,35918311000001105,495411000001109,1001010T0BBADAD,Surgam SA 300mg capsules (Sanofi),Surgam SA 300mg capsules,capsulemodified-release.oral
+amp,329910006,212611000001100,1001010X0AAAAAA,Nabumetone 500mg tablets (Kent Pharmaceuticals Ltd),Nabumetone 500mg tablets,tablet.oral
+amp,329910006,282011000001105,1001010X0AAAAAA,Nabumetone 500mg tablets (A A H Pharmaceuticals Ltd),Nabumetone 500mg tablets,tablet.oral
+amp,329910006,351111000001101,1001010X0AAAAAA,Nabumetone 500mg tablets (Mylan),Nabumetone 500mg tablets,tablet.oral
+amp,329910006,436011000001102,1001010X0AAAAAA,Nabumetone 500mg tablets (Alliance Healthcare (Distribution) Ltd),Nabumetone 500mg tablets,tablet.oral
+amp,329910006,635011000001109,1001010X0AAAAAA,Nabumetone 500mg tablets (Teva UK Ltd),Nabumetone 500mg tablets,tablet.oral
+amp,329910006,802111000001103,1001010X0AAAAAA,Nabumetone 500mg tablets (Accord Healthcare Ltd),Nabumetone 500mg tablets,tablet.oral
+amp,329910006,4870111000001103,1001010X0AAAAAA,Nabumetone 500mg tablets (Sandoz Ltd),Nabumetone 500mg tablets,tablet.oral
+amp,329910006,5003211000001101,1001010X0AAAAAA,Nabumetone 500mg tablets (IVAX Pharmaceuticals UK Ltd),Nabumetone 500mg tablets,tablet.oral
+amp,329910006,10301011000001101,1001010X0AAAAAA,Nabumetone 500mg tablets (Focus Pharmaceuticals Ltd),Nabumetone 500mg tablets,tablet.oral
+amp,329910006,17308011000001101,1001010X0AAAAAA,Nabumetone 500mg tablets (Beechmere Pharmaceuticals Ltd),Nabumetone 500mg tablets,tablet.oral
+amp,329910006,17944911000001106,1001010X0AAAAAA,Nabumetone 500mg tablets (Phoenix Healthcare Distribution Ltd),Nabumetone 500mg tablets,tablet.oral
+amp,329910006,17966411000001101,1001010X0AAAAAA,Nabumetone 500mg tablets (Almus Pharmaceuticals Ltd),Nabumetone 500mg tablets,tablet.oral
+amp,329910006,18080011000001108,1001010X0AAAAAA,Nabumetone 500mg tablets (Fannin UK Ltd),Nabumetone 500mg tablets,tablet.oral
+amp,329910006,21816811000001106,1001010X0AAAAAA,Nabumetone 500mg tablets (Waymade Healthcare Plc),Nabumetone 500mg tablets,tablet.oral
+amp,329910006,30062011000001105,1001010X0AAAAAA,Nabumetone 500mg tablets (DE Pharmaceuticals),Nabumetone 500mg tablets,tablet.oral
+amp,329910006,35861211000001104,1001010X0AAAAAA,Nabumetone 500mg tablets (Tillomed Laboratories Ltd),Nabumetone 500mg tablets,tablet.oral
+amp,32778411000001103,32777811000001100,1001010X0AAADAD,Nabumetone 500mg/5ml oral suspension (Special Order),Nabumetone 500mg/5ml oral suspension,suspension.oral
+amp,329910006,3023411000001104,1001010X0BBAAAA,Relifex 500mg tablets (Mylan),Relifex 500mg tablets,tablet.oral
+vmp,329914002,329914002,100101040AAAAAA,Tenoxicam 20mg tablets,Tenoxicam 20mg tablets,tablet.oral
+vmp,329907004,329907004,100101050AAAAAA,Acemetacin 60mg capsules,Acemetacin 60mg capsules,capsule.oral
+vmp,322299000,322299000,100101070AAAAAA,Naproxen sodium 275mg tablets,Naproxen sodium 275mg tablets,tablet.oral
+vmp,329925006,329925006,100101080AAAAAA,Aceclofenac 100mg tablets,Aceclofenac 100mg tablets,tablet.oral
+vmp,329927003,329927003,1001010AAAAAAAA,Meloxicam 7.5mg tablets,Meloxicam 7.5mg tablets,tablet.oral
+vmp,329928008,329928008,1001010AAAAABAB,Meloxicam 15mg tablets,Meloxicam 15mg tablets,tablet.oral
+vmp,22648611000001108,22648611000001108,1001010AAAAAJAJ,Meloxicam 15mg orodispersible tablets sugar free,Meloxicam 15mg orodispersible tablets sugar free,tabletdispersible.oral
+vmp,22648711000001104,22648711000001104,1001010AAAAAKAK,Meloxicam 7.5mg orodispersible tablets sugar free,Meloxicam 7.5mg orodispersible tablets sugar free,tabletdispersible.oral
+vmp,4557011000001104,4557011000001104,1001010ADAAABAB,Ibuprofen lysine 200mg tablets,Ibuprofen lysine 200mg tablets,tablet.oral
+vmp,10245111000001102,10245111000001102,1001010ADAAACAC,Ibuprofen lysine 400mg tablets,Ibuprofen lysine 400mg tablets,tablet.oral
+vmp,21681311000001104,21681311000001104,1001010ADAAADAD,Ibuprofen lysine 400mg oral powder sachets,Ibuprofen lysine 400mg oral powder sachets,solution.oral
+vmp,329963003,329963003,1001010AEAAAAAA,Dexketoprofen 25mg tablets,Dexketoprofen 25mg tablets,tablet.oral
+vmp,330163001,330163001,1001010AFAAADAD,Rofecoxib 25mg tablets,Rofecoxib 25mg tablets,tablet.oral
+vmp,329967002,329967002,1001010AGAAAAAA,Diclofenac potassium 25mg tablets,Diclofenac potassium 25mg tablets,tablet.oral
+vmp,329968007,329968007,1001010AGAAABAB,Diclofenac potassium 50mg tablets,Diclofenac potassium 50mg tablets,tablet.oral
+vmp,14062911000001108,14062911000001108,1001010AGAAACAC,Diclofenac potassium 12.5mg tablets,Diclofenac potassium 12.5mg tablets,tablet.oral
+vmp,330170001,330170001,1001010AHAAAAAA,Celecoxib 100mg capsules,Celecoxib 100mg capsules,capsule.oral
+vmp,330169002,330169002,1001010AHAAABAB,Celecoxib 200mg capsules,Celecoxib 200mg capsules,capsule.oral
+vmp,408602008,408602008,1001010AIAAACAC,Lornoxicam 8mg tablets,Lornoxicam 8mg tablets,tablet.oral
+vmp,407907003,407907003,1001010AJAAAAAA,Etoricoxib 60mg tablets,Etoricoxib 60mg tablets,tablet.oral
+vmp,407908008,407908008,1001010AJAAABAB,Etoricoxib 90mg tablets,Etoricoxib 90mg tablets,tablet.oral
+vmp,407909000,407909000,1001010AJAAACAC,Etoricoxib 120mg tablets,Etoricoxib 120mg tablets,tablet.oral
+vmp,13132911000001109,13132911000001109,1001010AJAAADAD,Etoricoxib 30mg tablets,Etoricoxib 30mg tablets,tablet.oral
+vmp,418352003,418352003,1001010AMAAAAAA,Dexibuprofen 300mg tablets,Dexibuprofen 300mg tablets,tablet.oral
+vmp,418855005,418855005,1001010AMAAABAB,Dexibuprofen 400mg tablets,Dexibuprofen 400mg tablets,tablet.oral
+vmp,14606211000001108,14606211000001108,1001010APAAAAAA,Ibuprofen sodium dihydrate 200mg tablets,Ibuprofen sodium dihydrate 200mg tablets,tablet.oral
+vmp,14606311000001100,14606311000001100,1001010APAAABAB,Ibuprofen sodium dihydrate 400mg tablets,Ibuprofen sodium dihydrate 400mg tablets,tablet.oral
+vmp,36566511000001109,36566511000001109,1001010C0AAADAD,Diclofenac sodium 25mg gastro-resistant tablets,Diclofenac sodium 25mg gastro-resistant tablets,tabletgastro-resistant.oral
+vmp,329587009,329587009,1001010C0AAAEAE,Diclofenac sodium 50mg gastro-resistant tablets,Diclofenac sodium 50mg gastro-resistant tablets,tabletgastro-resistant.oral
+vmp,36563711000001106,36563711000001106,1001010C0AAAFAF,Diclofenac sodium 100mg modified-release tablets,Diclofenac sodium 100mg modified-release tablets,tabletmodified-release.oral
+vmp,329591004,329591004,1001010C0AAAJAJ,Diclofenac 50mg dispersible tablets sugar free,Diclofenac 50mg dispersible tablets sugar free,suspension.oral
+vmp,329607001,329607001,1001010C0AAALAL,Diclofenac sodium 75mg modified-release tablets,Diclofenac sodium 75mg modified-release tablets,tabletmodified-release.oral
+vmp,329598005,329598005,1001010C0AAAMAM,Diclofenac sodium 50mg gastro-resistant / Misoprostol 200microgram tablets,Diclofenac sodium 50mg gast res / Misoprostol 200microg tab,tabletgastro-resistant.oral
+vmp,37084611000001101,37084611000001101,1001010C0AAANAN,Diclofenac sodium 100mg modified-release capsules,Diclofenac sodium 100mg modified-release capsules,capsulemodified-release.oral
+vmp,329574003,329574003,1001010C0AAARAR,Diclofenac sodium 75mg gastro-resistant modified-release capsules,Diclofenac sodium 75mg gast res MR caps,capsulegastro-resistantmodified-release.oral
+vmp,11651311000001108,11651311000001108,1001010C0AAAVAV,Diclofenac 50mg/5ml oral solution,Diclofenac 50mg/5ml oral solution,solution.oral
+vmp,37084911000001107,37084911000001107,1001010C0AAAWAW,Diclofenac sodium 75mg modified-release capsules,Diclofenac sodium 75mg modified-release capsules,capsulemodified-release.oral
+vmp,329602007,329602007,1001010C0AAAXAX,Diclofenac sodium 75mg gastro-resistant / Misoprostol 200microgram tablets,Diclofenac sodium 75mg gast res / Misoprostol 200microg tab,tabletgastro-resistant.oral
+vmp,8455411000001109,8455411000001109,1001010C0AAAYAY,Diclofenac 25mg/5ml oral solution,Diclofenac 25mg/5ml oral liquid,solution.oral
+vmp,8455511000001108,8455511000001108,1001010C0AAAYAY,Diclofenac 25mg/5ml oral suspension,Diclofenac 25mg/5ml oral liquid,suspension.oral
+vmp,17369211000001102,17369211000001102,1001010C0AABBBB,Diclofenac 10mg dispersible tablets,Diclofenac 10mg dispersible tablets,suspension.oral
+vmp,11650911000001102,11650911000001102,1001010C0AABCBC,Diclofenac 12.5mg/5ml oral solution,Diclofenac 12.5mg/5ml oral liquid,solution.oral
+vmp,11651011000001105,11651011000001105,1001010C0AABCBC,Diclofenac 12.5mg/5ml oral suspension,Diclofenac 12.5mg/5ml oral liquid,suspension.oral
+vmp,8455011000001100,8455011000001100,1001010C0AABDBD,Diclofenac 10mg/5ml oral solution,Diclofenac 10mg/5ml oral liquid,solution.oral
+vmp,8455111000001104,8455111000001104,1001010C0AABDBD,Diclofenac 10mg/5ml oral suspension,Diclofenac 10mg/5ml oral liquid,suspension.oral
+vmp,15242611000001108,15242611000001108,1001010C0AABJBJ,Diclofenac 100mg/5ml oral solution,Diclofenac 100mg/5ml oral liquid,solution.oral
+vmp,15242711000001104,15242711000001104,1001010C0AABJBJ,Diclofenac 100mg/5ml oral suspension,Diclofenac 100mg/5ml oral liquid,suspension.oral
+vmp,28422211000001104,28422211000001104,1001010C0AABKBK,Diclofenac 40mg/5ml oral solution,Diclofenac 40mg/5ml oral liquid,solution.oral
+vmp,28422311000001107,28422311000001107,1001010C0AABKBK,Diclofenac 40mg/5ml oral suspension,Diclofenac 40mg/5ml oral liquid,suspension.oral
+vmp,11648711000001104,11648711000001104,1001010C0AABLBL,Diclofenac 50mg/5ml oral suspension,Diclofenac 50mg/5ml oral suspension,suspension.oral
+vmp,329612000,329612000,1001010D0AAAAAA,Diflunisal 250mg tablets,Diflunisal 250mg tablets,tablet.oral
+vmp,329620003,329620003,1001010E0AAACAC,Etodolac 300mg capsules,Etodolac 300mg capsules,capsule.oral
+vmp,329622006,329622006,1001010E0AAADAD,Etodolac 600mg modified-release tablets,Etodolac 600mg modified-release tablets,tabletmodified-release.oral
+vmp,329630007,329630007,1001010F0AAAAAA,Fenbufen 300mg capsules,Fenbufen 300mg capsules,capsule.oral
+vmp,329641009,329641009,1001010G0AAABAB,Fenoprofen 300mg tablets,Fenoprofen 300mg tablets,tablet.oral
+vmp,329648003,329648003,1001010I0AAABAB,Flurbiprofen 50mg tablets,Flurbiprofen 50mg tablets,tablet.oral
+vmp,329649006,329649006,1001010I0AAACAC,Flurbiprofen 100mg tablets,Flurbiprofen 100mg tablets,tablet.oral
+vmp,370195008,370195008,1001010J0AAAAAA,Ibuprofen 200mg capsules,Ibuprofen 200mg capsules,capsule.oral
+vmp,36045311000001100,36045311000001100,1001010J0AAABAB,Ibuprofen 300mg modified-release capsules,Ibuprofen 300mg modified-release capsules,capsulemodified-release.oral
+vmp,329710002,329710002,1001010J0AAACAC,Ibuprofen 100mg/5ml oral suspension,Ibuprofen 100mg/5ml oral suspension,suspension.oral
+vmp,329652003,329652003,1001010J0AAADAD,Ibuprofen 200mg tablets,Ibuprofen 200mg tablets,tablet.oral
+vmp,329653008,329653008,1001010J0AAAEAE,Ibuprofen 400mg tablets,Ibuprofen 400mg tablets,tablet.oral
+vmp,329654002,329654002,1001010J0AAAFAF,Ibuprofen 600mg tablets,Ibuprofen 600mg tablets,tablet.oral
+vmp,329677002,329677002,1001010J0AAANAN,Ibuprofen 600mg effervescent granules sachets,Ibuprofen 600mg effervescent granules sachets,solution.oral
+vmp,329662005,329662005,1001010J0AAAPAP,Ibuprofen 800mg modified-release tablets,Ibuprofen 800mg modified-release tablets,tabletmodified-release.oral
+vmp,36045211000001108,36045211000001108,1001010J0AAARAR,Ibuprofen 300mg modified-release / Codeine 20mg tablets,Ibuprofen 300mg modified-release / Codeine 20mg tablets,tabletmodified-release.oral
+vmp,10774611000001104,10774611000001104,1001010J0AAAUAU,Ibuprofen 400mg capsules,Ibuprofen 400mg capsules,capsule.oral
+vmp,329683004,329683004,1001010J0AAAYAY,Ibuprofen 200mg / Codeine 12.8mg tablets,Ibuprofen 200mg / Codeine 12.8mg tablets,tablet.oral
+vmp,36045011000001103,36045011000001103,1001010J0AABABA,Ibuprofen 200mg modified-release capsules,Ibuprofen 200mg modified-release capsules,capsulemodified-release.oral
+vmp,329686007,329686007,1001010J0AABHBH,Ibuprofen 100mg/5ml oral suspension sugar free,Ibuprofen 100mg/5ml oral suspension sugar free,suspension.oral
+vmp,12637311000001104,12637311000001104,1001010J0AABIBI,Ibuprofen 200mg/5ml oral suspension,Ibuprofen 200mg/5ml oral suspension,suspension.oral
+vmp,407904005,407904005,1001010J0AABJBJ,Ibuprofen 200mg / Pseudoephedrine hydrochloride 30mg tablets,Ibuprofen 200mg / Pseudoephedrine hydrochloride 30mg tablets,tablet.oral
+vmp,4615511000001102,4615511000001102,1001010J0AABMBM,Ibuprofen 100mg/5ml oral suspension 5ml sachets sugar free,Ibuprofen 100mg/5ml oral suspension 5ml sachets sugar free,suspension.oral
+vmp,3875511000001104,3875511000001104,1001010J0AABNBN,Ibuprofen 200mg orodispersible tablets sugar free,Ibuprofen 200mg orodispersible tablets sugar free,tabletdispersible.oral
+vmp,19525111000001109,19525111000001109,1001010J0AABPBP,Ibuprofen 200mg effervescent tablets,Ibuprofen 200mg effervescent tablets,solution.oral
+vmp,32392411000001107,32392411000001107,1001010J0AABQBQ,Ibuprofen 100mg chewable capsules,Ibuprofen 100mg chewable capsules,capsulechewable.oral
+vmp,36608611000001101,36608611000001101,1001010J0AABRBR,Ibuprofen 200mg/5ml oral suspension sugar free,Ibuprofen 200mg/5ml oral suspension sugar free,suspension.oral
+vmp,34878411000001108,34878411000001108,1001010J0AABSBS,Ibuprofen 200mg / Phenylephrine 6.1mg tablets,Ibuprofen 200mg / Phenylephrine 6.1mg tablets,tablet.oral
+vmp,329714006,329714006,1001010K0AAAAAA,Indometacin 25mg capsules,Indometacin 25mg capsules,capsule.oral
+vmp,329715007,329715007,1001010K0AAABAB,Indometacin 50mg capsules,Indometacin 50mg capsules,capsule.oral
+vmp,36046811000001101,36046811000001101,1001010K0AAADAD,Indometacin 75mg modified-release capsules,Indometacin 75mg modified-release capsules,capsulemodified-release.oral
+vmp,8561611000001108,8561611000001108,1001010K0AAAQAQ,Indometacin 25mg/5ml oral solution,Indometacin 25mg/5ml oral solution,solution.oral
+vmp,12638611000001108,12638611000001108,1001010K0AAARAR,Indometacin 20mg/5ml oral solution,Indometacin 20mg/5ml oral liquid,solution.oral
+vmp,12638711000001104,12638711000001104,1001010K0AAARAR,Indometacin 20mg/5ml oral suspension,Indometacin 20mg/5ml oral liquid,suspension.oral
+vmp,8561811000001107,8561811000001107,1001010K0AAAVAV,Indometacin 50mg/5ml oral solution,Indometacin 50mg/5ml oral liquid,solution.oral
+vmp,8561911000001102,8561911000001102,1001010K0AAAVAV,Indometacin 50mg/5ml oral suspension,Indometacin 50mg/5ml oral liquid,suspension.oral
+vmp,12638011000001101,12638011000001101,1001010K0AAAXAX,Indometacin 10mg/5ml oral solution,Indometacin 10mg/5ml oral liquid,solution.oral
+vmp,12638111000001100,12638111000001100,1001010K0AAAXAX,Indometacin 10mg/5ml oral suspension,Indometacin 10mg/5ml oral liquid,suspension.oral
+vmp,15914011000001100,15914011000001100,1001010K0AABABA,Indometacin 5mg/5ml oral solution,Indometacin 5mg/5ml oral liquid,solution.oral
+vmp,15914111000001104,15914111000001104,1001010K0AABABA,Indometacin 5mg/5ml oral suspension,Indometacin 5mg/5ml oral liquid,suspension.oral
+vmp,376878007,376878007,1001010K0AABBBB,Indometacin 25mg/5ml oral suspension,Indometacin 25mg/5ml oral suspension,suspension.oral
+vmp,329758006,329758006,1001010L0AAAAAA,Ketoprofen 50mg capsules,Ketoprofen 50mg capsules,capsule.oral
+vmp,3377811000001108,3377811000001108,1001010L0AAABAB,Ketoprofen 100mg capsules,Ketoprofen 100mg capsules,capsule.oral
+vmp,36037011000001106,36037011000001106,1001010L0AAAIAI,Ketoprofen 100mg modified-release capsules,Ketoprofen 100mg modified-release capsules,capsulemodified-release.oral
+vmp,36037311000001109,36037311000001109,1001010L0AAAJAJ,Ketoprofen 200mg modified-release capsules,Ketoprofen 200mg modified-release capsules,capsulemodified-release.oral
+vmp,36037211000001101,36037211000001101,1001010L0AAALAL,Ketoprofen 150mg modified-release capsules,Ketoprofen 150mg modified-release capsules,capsulemodified-release.oral
+vmp,16174311000001107,16174311000001107,1001010L0AAAMAM,Ketoprofen 100mg / Omeprazole 20mg modified-release capsules,Ketoprofen 100mg / Omeprazole 20mg modified-release capsules,capsulemodified-release.oral
+vmp,16174411000001100,16174411000001100,1001010L0AAANAN,Ketoprofen 200mg / Omeprazole 20mg modified-release capsules,Ketoprofen 200mg / Omeprazole 20mg modified-release capsules,capsulemodified-release.oral
+vmp,329790001,329790001,1001010N0AAAAAA,Mefenamic acid 250mg capsules,Mefenamic acid 250mg capsules,capsule.oral
+vmp,35369111000001107,35369111000001107,1001010N0AAABAB,Mefenamic acid 50mg/5ml oral suspension,Mefenamic acid 50mg/5ml oral suspension,suspension.oral
+vmp,329803004,329803004,1001010N0AAADAD,Mefenamic acid 500mg tablets,Mefenamic acid 500mg tablets,tablet.oral
+vmp,8662311000001102,8662311000001102,1001010N0AAAGAG,Mefenamic acid 250mg/5ml oral suspension,Mefenamic acid 250mg/5ml oral suspension,suspension.oral
+vmp,8662411000001109,8662411000001109,1001010N0AAAHAH,Mefenamic acid 500mg/5ml oral suspension,Mefenamic acid 500mg/5ml oral suspension,suspension.oral
+vmp,329806007,329806007,1001010P0AAADAD,Naproxen 250mg tablets,Naproxen 250mg tablets,tablet.oral
+vmp,329807003,329807003,1001010P0AAAEAE,Naproxen 500mg tablets,Naproxen 500mg tablets,tablet.oral
+vmp,329838002,329838002,1001010P0AAAHAH,Naproxen 250mg gastro-resistant tablets,Naproxen 250mg gastro-resistant tablets,tabletgastro-resistant.oral
+vmp,329839005,329839005,1001010P0AAAIAI,Naproxen 500mg gastro-resistant tablets,Naproxen 500mg gastro-resistant tablets,tabletgastro-resistant.oral
+vmp,36564511000001103,36564511000001103,1001010P0AAAJAJ,Naproxen 375mg gastro-resistant tablets,Naproxen 375mg gastro-resistant tablets,tabletgastro-resistant.oral
+vmp,36030111000001106,36030111000001106,1001010P0AAAQAQ,Naproxen 500mg modified-release tablets,Naproxen 500mg modified-release tablets,tabletmodified-release.oral
+vmp,329852000,329852000,1001010P0AAARAR,Naproxen 125mg/5ml oral suspension,Naproxen 125mg/5ml oral suspension,suspension.oral
+vmp,8669811000001101,8669811000001101,1001010P0AAATAT,Naproxen 500mg/5ml oral suspension,Naproxen 500mg/5ml oral suspension,suspension.oral
+vmp,12301311000001108,12301311000001108,1001010P0AAAYAY,Naproxen 100mg/5ml oral suspension,Naproxen 100mg/5ml oral suspension,suspension.oral
+vmp,12301611000001103,12301611000001103,1001010P0AAAZAZ,Naproxen 75mg/5ml oral suspension,Naproxen 75mg/5ml oral suspension,suspension.oral
+vmp,18245811000001107,18245811000001107,1001010P0AABBBB,Naproxen 500mg / Esomeprazole 20mg modified-release tablets,Naproxen 500mg / Esomeprazole 20mg modified-release tablets,tabletmodified-release.oral
+vmp,12301411000001101,12301411000001101,1001010P0AABCBC,Naproxen 200mg/5ml oral suspension,Naproxen 200mg/5ml oral suspension,suspension.oral
+vmp,31306711000001103,31306711000001103,1001010P0AABDBD,Naproxen 250mg effervescent tablets sugar free,Naproxen 250mg effervescent tablets sugar free,solution.oral
+vmp,32638811000001105,32638811000001105,1001010P0AABEBE,Naproxen 125mg/5ml oral suspension sugar free,Naproxen 125mg/5ml oral suspension sugar free,suspension.oral
+vmp,8669711000001109,8669711000001109,1001010P0AABFBF,Naproxen 250mg/5ml oral suspension,Naproxen 250mg/5ml oral suspension,suspension.oral
+vmp,329854004,329854004,1001010Q0AAABAB,Phenylbutazone 100mg tablets,Phenylbutazone 100mg tablets,tablet.oral
+vmp,347249002,347249002,1001010Q0AAABAB,Phenylbutazone 100mg gastro-resistant tablets,Phenylbutazone 100mg tablets,tabletgastro-resistant.oral
+vmp,329855003,329855003,1001010Q0AAACAC,Phenylbutazone 200mg tablets,Phenylbutazone 200mg tablets,tablet.oral
+vmp,329862007,329862007,1001010R0AAAAAA,Piroxicam 10mg capsules,Piroxicam 10mg capsules,capsule.oral
+vmp,329863002,329863002,1001010R0AAABAB,Piroxicam 20mg capsules,Piroxicam 20mg capsules,capsule.oral
+vmp,329881004,329881004,1001010R0AAADAD,Piroxicam 10mg dispersible tablets,Piroxicam 10mg dispersible tablets,suspension.oral
+vmp,329882006,329882006,1001010R0AAAEAE,Piroxicam 20mg dispersible tablets,Piroxicam 20mg dispersible tablets,suspension.oral
+vmp,36017011000001102,36017011000001102,1001010R0AAAGAG,Piroxicam 20mg orodispersible tablets sugar free,Piroxicam 20mg orodispersible tablets sugar free,tabletdispersible.oral
+vmp,3439011000001103,3439011000001103,1001010R0AAAKAK,Piroxicam betadex 20mg tablets,Piroxicam betadex 20mg tablets,tablet.oral
+vmp,329887000,329887000,1001010S0AAAAAA,Sulindac 100mg tablets,Sulindac 100mg tablets,tablet.oral
+vmp,329888005,329888005,1001010S0AAABAB,Sulindac 200mg tablets,Sulindac 200mg tablets,tablet.oral
+vmp,329896000,329896000,1001010T0AAACAC,Tiaprofenic acid 300mg tablets,Tiaprofenic acid 300mg tablets,tablet.oral
+vmp,329910006,329910006,1001010X0AAAAAA,Nabumetone 500mg tablets,Nabumetone 500mg tablets,tablet.oral
+vmp,32778411000001103,32778411000001103,1001010X0AAADAD,Nabumetone 500mg/5ml oral suspension,Nabumetone 500mg/5ml oral suspension,suspension.oral

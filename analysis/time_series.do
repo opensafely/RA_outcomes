@@ -1,9 +1,9 @@
 /* ===========================================================================
-Do file name:   time_series_checks.do
-Project:        COVID Collateral
+Do file name:   time_series.do
+Project:        RA_outcomes
 Date:     		11/08/2022
-Author:         Ruth Costello (based on code by Dominik Piehlmaier)
-Description:    Run model checks before time-series
+Author:         Ruth Costello
+Description:    Run time-series analysis
 ==============================================================================*/
 adopath + ./analysis/ado 
 
@@ -42,7 +42,7 @@ gen percent = value*100
 label variable percent "Percent of population"
 *Set time series
 tsset op_appt_medium month 
-itsa percent, trperiod(2020m4) treatid(1) figure lag(1) posttrend
+itsa percent, trperiod(2020m4) treatid(2) figure lag(1) posttrend
 graph export ./output/time_series/itsa_op_appt_medium.svg, as(svg) replace
 actest, lags(6)
 
@@ -52,15 +52,18 @@ gen temp_date=date(date, "YMD")
 format temp_date %td
 gen month=mofd(temp_date)
 format month %tm
+gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
 drop temp_date
 *Value to percentage of population
 gen percent = value*100
 label variable percent "Percent of population"
 *Set time series
 tsset ra_daycase month
-itsa percent, trperiod(2020m4) treatid(1) contid(2) figure lag(1) posttrend
-graph export ./output/time_series/itsa_hosp_ra_daycase.svg, as(svg) replace
-actest, lags(6)
+newey percent ra_daycase##postcovid, lag(1) force 
+* Itsa compared treat group to all other groups
+*itsa percent, trperiod(2020m4) treatid(2) figure lag(1) posttrend
+*graph export ./output/time_series/itsa_hosp_ra_daycase.svg, as(svg) replace
+*actest, lags(6)
 
 
 /* Outpatient medium

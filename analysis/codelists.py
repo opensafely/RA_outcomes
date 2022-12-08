@@ -162,3 +162,9 @@ ssri_codes = codelist_from_csv(
     system="snomed",
     column="dmd_id",
 )
+
+nsaid_codes = codelist_from_csv(
+    "codelists/opensafely-nsaids-oral.csv",
+    system="snomed",
+    column="snomed_id",
+)

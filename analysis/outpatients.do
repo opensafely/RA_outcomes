@@ -175,15 +175,15 @@ export delimited using ./output/tables/op_chars.csv
 restore
 * Tabulate characteristics by category of outpatient appointments for each year
 tempfile tempfile
-forvalues i=2020/2021 {
+forvalues i=2019/2021 {
     preserve
-    keep if diff_op_cat_`i'==0
+    keep if op_appt_`i'_cat==0
     table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
     save `tempfile', replace
     restore
     forvalues j=1/2 {
         preserve
-        keep if diff_op_cat_`i'==`j'
+        keep if op_appt_`i'_cat==`j'
         table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
         append using `tempfile'
         save `tempfile', replace

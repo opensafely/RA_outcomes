@@ -68,6 +68,8 @@ user/ruthcostello/msk_pain_medicines/57dd13af
 # Antidepressants
 opensafely/selective-serotonin-reuptake-inhibitors-dmd/6a572e55
 
+# NSAIDs
+opensafely/nsaids-oral/49a0f281
 
 # depression (based on HDR UK https://phenotypes.healthdatagateway.org/phenotypes/PH149/version/298/detail/#home)
  user/emilyherrett/depression_icd10/0aaf5048

@@ -186,6 +186,12 @@
       "downloaded_at": "2022-11-08 15:27:49.856490Z",
       "sha": "85e3b0949455aa282fd26b09d523905127160789"
     },
+    "opensafely-nsaids-oral.csv": {
+      "id": "opensafely/nsaids-oral/49a0f281",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/nsaids-oral/49a0f281/",
+      "downloaded_at": "2022-12-08 14:53:58.211558Z",
+      "sha": "e33fa37c8037bf34f92a5ed4afc79cc7dfd334d5"
+    },
     "user-emilyherrett-depression_icd10.csv": {
       "id": "user/emilyherrett/depression_icd10/0aaf5048",
       "url": "https://codelists.opensafely.org/codelist/user/emilyherrett/depression_icd10/0aaf5048/",
