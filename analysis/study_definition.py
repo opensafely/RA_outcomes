@@ -308,7 +308,28 @@ study = StudyDefinition(
         return_expectations={ "int": {"distribution": "normal", "mean": 3, "stddev": 1},
                 "incidence": 1,},
     ),
-    
+    # Number of bed days for hospitalisations
+    ra_hosp_beddays_2019=patients.admitted_to_hospital(
+        with_these_diagnoses=ra_hospitalisation,
+        between=["2019-04-01", "2020-03-31"],
+        returning="total_bed_days_in_period",
+        return_expectations={ "int": {"distribution": "normal", "mean": 3, "stddev": 1},
+                "incidence": 1,},
+    ),
+    ra_hosp_beddays_2020=patients.admitted_to_hospital(
+        with_these_diagnoses=ra_hospitalisation,
+        between=["2020-04-01", "2021-03-31"],
+        returning="total_bed_days_in_period",
+        return_expectations={ "int": {"distribution": "normal", "mean": 3, "stddev": 1},
+                "incidence": 1,},
+    ),
+    ra_hosp_beddays_2021=patients.admitted_to_hospital(
+        with_these_diagnoses=ra_hospitalisation,
+        between=["2021-04-01", "2022-03-31"],
+        returning="total_bed_days_in_period",
+        return_expectations={ "int": {"distribution": "normal", "mean": 3, "stddev": 1},
+                "incidence": 1,},
+    ),
     prescribed_biologics=patients.with_high_cost_drugs(
         drug_name_matches=["abatacept", "adalimumab", "baracitinib", "certolizumab", 
         "etanercept", "golimumab", "guselkumab", "infliximab", "ixekizumab", "methotrexate_hcd",
