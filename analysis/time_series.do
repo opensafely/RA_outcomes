@@ -37,8 +37,11 @@ format temp_date %td
 gen month=mofd(temp_date)
 format month %tm
 drop temp_date
-*Value to percentage of population
-gen percent = value*100
+* Generate new population as all those with medium described
+bys date: egen pop_new = total(population)
+* Calculate rate
+gen percent = (op_appt/pop_new)*100
+drop population
 label variable percent "Percent of population"
 *Set time series
 tsset op_appt_medium month 
@@ -54,8 +57,11 @@ gen month=mofd(temp_date)
 format month %tm
 gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
 drop temp_date
-*Value to percentage of population
-gen percent = value*100
+* Generate new population as all those with medium described
+bys date: egen pop_new = total(population)
+* Calculate percentage
+gen percent = (ra_hosp/pop_new)*100
+drop population
 label variable percent "Percent of population"
 *Set time series
 tsset ra_daycase month

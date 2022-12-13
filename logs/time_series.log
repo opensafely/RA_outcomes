@@ -405,8 +405,13 @@ Cumby-Huizinga test for autocorrelation (Breusch-Godfrey)
 
 . drop temp_date
 
-. *Value to percentage of population
-. gen percent = value*100
+. * Generate new population as all those with medium described
+. bys date: egen pop_new = total(population)
+
+. * Calculate rate
+. gen percent = (op_appt/pop_new)*100
+
+. drop population
 
 . label variable percent "Percent of population"
 
@@ -424,21 +429,21 @@ Cumby-Huizinga test for autocorrelation (Breusch-Godfrey)
                 delta:  1 month
 
 Regression with Newey-West standard errors      Number of obs     =         72
-maximum lag: 1                                  F(  7,        64) =       1.12
-                                                Prob > F          =     0.3613
+maximum lag: 1                                  F(  7,        64) =    1412.51
+                                                Prob > F          =     0.0000
 
 ------------------------------------------------------------------------------
              |             Newey-West
     _percent |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-          _t |  -.1406458   .1092907    -1.29   0.203     -.358979    .0776874
-          _z |  -.3536673   1.274019    -0.28   0.782    -2.898813    2.191478
-        _z_t |   .1385125   .1984557     0.70   0.488    -.2579484    .5349735
-    _x2020m4 |    2.18155    .836546     2.61   0.011     .5103577    3.852743
-  _x_t2020m4 |   .0684399   .1158036     0.59   0.557    -.1629043    .2997842
-  _z_x2020m4 |  -2.024969   1.724499    -1.17   0.245    -5.470053    1.420114
-_z_x_t2020m4 |  -.0897153   .2041086    -0.44   0.662    -.4974692    .3180385
-       _cons |   70.47174   .8928114    78.93   0.000     68.68814    72.25534
+          _t |  -.1593055    .077349    -2.06   0.044    -.3138278   -.0047832
+          _z |  -24.81571   .7957896   -31.18   0.000    -26.40548   -23.22594
+        _z_t |   .1596451   .1200352     1.33   0.188    -.0801527     .399443
+    _x2020m4 |   .4697431   .7775444     0.60   0.548     -1.08358    2.023067
+  _x_t2020m4 |   .1612393   .0828963     1.95   0.056     -.004365    .3268437
+  _z_x2020m4 |  -.9349829   1.061433    -0.88   0.382    -3.055439    1.185473
+_z_x_t2020m4 |  -.1279025   .1274811    -1.00   0.319    -.3825752    .1267701
+       _cons |   47.97333   .5167938    92.83   0.000     46.94092    49.00575
 ------------------------------------------------------------------------------
 
 
@@ -451,10 +456,10 @@ Difference : _b[_z_t] +  _b[_z_x_t2020m4]
 ------------------------------------------------------------------------------
 Linear Trend |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-     Treated |  -.0234087   .0462565    -0.51   0.615    -.1158167    .0689993
-    Controls |  -.0722059   .0380257    -1.90   0.062    -.1481709    .0037591
+     Treated |   .0336765   .0237457     1.42   0.161     -.013761    .0811139
+    Controls |   .0019339   .0274219     0.07   0.944    -.0528477    .0567154
 -------------+----------------------------------------------------------------
-  Difference |   .0487972     .05988     0.81   0.418    -.0708269    .1684212
+  Difference |   .0317426   .0362742     0.88   0.385    -.0407235    .1042086
 ------------------------------------------------------------------------------
 
 . graph export ./output/time_series/itsa_op_appt_medium.svg, as(svg) replace
@@ -472,12 +477,12 @@ Cumby-Huizinga test for autocorrelation
 -----------------------------------------+-----------------------------------
     lags   |      chi2      df     p-val | lag |      chi2      df     p-val
 -----------+-----------------------------+-----+-----------------------------
-   1 -  1  |      1.048      1    0.3061 |   1 |      1.048      1    0.3061
-   1 -  2  |      2.064      2    0.3564 |   2 |      1.245      1    0.2645
-   1 -  3  |      2.617      3    0.4545 |   3 |      0.898      1    0.3434
-   1 -  4  |      7.170      4    0.1271 |   4 |      2.928      1    0.0871
-   1 -  5  |      8.270      5    0.1420 |   5 |      0.504      1    0.4779
-   1 -  6  |     11.475      6    0.0748 |   6 |      2.992      1    0.0837
+   1 -  1  |      2.399      1    0.1214 |   1 |      2.399      1    0.1214
+   1 -  2  |      3.476      2    0.1758 |   2 |      0.463      1    0.4962
+   1 -  3  |      5.372      3    0.1465 |   3 |      0.820      1    0.3653
+   1 -  4  |      5.843      4    0.2112 |   4 |      0.001      1    0.9788
+   1 -  5  |      8.226      5    0.1442 |   5 |      0.692      1    0.4055
+   1 -  6  |     10.162      6    0.1180 |   6 |      0.023      1    0.8798
 -----------------------------------------------------------------------------
   Test allows predetermined regressors/instruments
   Test requires conditional homoskedasticity
@@ -502,8 +507,13 @@ Cumby-Huizinga test for autocorrelation
 
 . drop temp_date
 
-. *Value to percentage of population
-. gen percent = value*100
+. * Generate new population as all those with medium described
+. bys date: egen pop_new = total(population)
+
+. * Calculate percentage
+. gen percent = (ra_hosp/pop_new)*100
+
+. drop population
 
 . label variable percent "Percent of population"
 
@@ -516,25 +526,25 @@ Cumby-Huizinga test for autocorrelation
 . newey percent ra_daycase##postcovid, lag(1) force 
 
 Regression with Newey-West standard errors      Number of obs     =        108
-maximum lag: 1                                  F(  5,       102) =       1.25
-                                                Prob > F          =     0.2896
+maximum lag: 1                                  F(  5,       102) =    1993.31
+                                                Prob > F          =     0.0000
 
 ------------------------------------------------------------------------------
              |             Newey-West
      percent |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
   ra_daycase |
-          2  |    .426759    .444937     0.96   0.340    -.4557715    1.309289
-          3  |  -.0636558   .4200138    -0.15   0.880    -.8967511    .7694395
+          2  |  -6.099905   .1290829   -47.26   0.000     -6.35594   -5.843869
+          3  |  -6.070761   .1040661   -58.34   0.000    -6.277175   -5.864346
              |
- 1.postcovid |   .2242264   .1473014     1.52   0.131    -.0679452    .5163981
+ 1.postcovid |   .1288572   .1243636     1.04   0.303    -.1178175    .3755318
              |
   ra_daycase#|
    postcovid |
-        2 1  |  -.6577576   .5233148    -1.26   0.212     -1.69575    .3802349
-        3 1  |  -.3837315   .4756037    -0.81   0.422    -1.327089    .5596262
+        2 1  |  -.1356649   .1544959    -0.88   0.382    -.4421068    .1707771
+        3 1  |  -.0460182   .1311757    -0.35   0.726    -.3062045    .2141681
              |
-       _cons |   9.928734   .1255959    79.05   0.000     9.679616    10.17785
+       _cons |   7.325562   .1010381    72.50   0.000     7.125154    7.525971
 ------------------------------------------------------------------------------
 
 . * Itsa compared treat group to all other groups
@@ -691,7 +701,7 @@ maximum lag: 1                                  F(  5,       102) =       1.25
 
 end of do-file
 
-. . file open output using "/tmp/tmp.Zjcsccprsl", write text replace
+. . file open output using "/tmp/tmp.ELrFw9Oo3y", write text replace
 
 . . file write output "success" 
 
