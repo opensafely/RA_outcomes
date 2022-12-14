@@ -111,6 +111,13 @@ actions:
         output: output/tables/op_*.csv
         tables: output/tables/characteristics*.csv
 
+  sankey:
+    run: r:latest analysis/sankey.r
+    needs: [generate_study_population]
+    outputs: 
+      moderately_sensitive:
+        graphs: output/sankey.png
+
   time_series_checks:
     run: stata-mp:latest analysis/time_series_checks.do
     needs: [generate_study_population_op, calculate_measures_op]
