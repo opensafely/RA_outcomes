@@ -13,7 +13,7 @@ cap mkdir ./output/tables
 forvalues i=2019/2021 {
     local j = `i'+1
     * Import data
-    import delimited using ./output/measures/op/input_bsr_`i'-04-01.csv, clear
+    import delimited using ./output/measures/input_bsr_`i'-04-01.csv, clear
 
     *keep if has_ra==1
     * Drop variables not required
