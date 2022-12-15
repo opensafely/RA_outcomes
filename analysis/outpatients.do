@@ -9,7 +9,8 @@ adopath + ./analysis/ado
 
 cap log using ./logs/outpatients.log, replace
 
-cap mkdir ./output/tables
+cap mkdir ./output/tables/
+
 * Import data
 import delimited using ./output/input.csv
 * Check data

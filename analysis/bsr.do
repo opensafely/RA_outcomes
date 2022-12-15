@@ -9,7 +9,8 @@ adopath + ./analysis/ado
 
 cap log using ./logs/bsr.log, replace
 
-cap mkdir ./output/tables
+cap mkdir ./output/tables/op_long
+
 forvalues i=2019/2021 {
     local j = `i'+1
     * Import data
@@ -208,23 +209,23 @@ forvalues i=2019/2021 {
     * Create table of number of op appts 
     preserve
     table1_mc, vars(tot_appts_cat cate) missing clear 
-    export delimited using ./output/tables/bsr_op_appt_`i'.csv 
+    export delimited using ./output/tables/op_long/bsr_op_appt_`i'.csv 
     restore
     * Medium of appointment - first 50% at least in person
     preserve 
     table1_mc, vars(medium_person cate) missing clear 
-    export delimited using ./output/tables/bsr_op_medium_`i'.csv
+    export delimited using ./output/tables/op_long/bsr_op_medium_`i'.csv
     restore
     * Medium of appointment - all remote
     preserve 
     table1_mc, vars(medium_remote cate) missing clear 
-    export delimited using ./output/tables/bsr_op_remote_`i'.csv
+    export delimited using ./output/tables/op_long/bsr_op_remote_`i'.csv
     restore
     * Create table of number of appointment and mode where mode info available for all appts
     preserve
     keep if all_mode_available==1
     table1_mc, vars(medium_person cate) by(tot_appts_cat) missing clear 
-    export delimited using ./output/tables/bsr_op_appt_medium_`i'.csv
+    export delimited using ./output/tables/op_long/bsr_op_appt_medium_`i'.csv
     restore
     tempfile tempfile
     preserve 
@@ -236,7 +237,7 @@ forvalues i=2019/2021 {
     keep if medium_person==1 & all_mode_available==1
     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
     append using tempfile
-    export delimited using ./output/tables/bsr_op_medium_chars_`i'.csv
+    export delimited using ./output/tables/op_long/bsr_op_medium_chars_`i'.csv
     restore
     preserve 
     keep if medium_remote==0 
@@ -259,19 +260,19 @@ forvalues i=2019/2021 {
     keep if medium_remote==3 
     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
     append using tempfile
-    export delimited using ./output/tables/bsr_op_remote_chars_`i'.csv
+    export delimited using ./output/tables/op_long/bsr_op_remote_chars_`i'.csv
     restore
     preserve
     keep if all_mode_available==0
     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
     append using tempfile
-    export delimited using ./output/tables/bsr_op_no_medium_chars_`i'.csv
+    export delimited using ./output/tables/op_long/bsr_op_no_medium_chars_`i'.csv
     restore
     preserve
     keep if all_mode_available==2
     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate) clear
     append using tempfile
-    export delimited using ./output/tables/bsr_op_uk_medium_chars_`i'.csv
+    export delimited using ./output/tables/op_long/bsr_op_uk_medium_chars_`i'.csv
     restore
     }
     
