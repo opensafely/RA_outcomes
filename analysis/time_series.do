@@ -13,7 +13,7 @@ cap mkdir ./output/time_series
 
 * Outpatient appointments
 * Autocorrelation indicates no autocorrelation for op_appt 
-foreach file in op_appt hosp_ra hosp_ra_emergency med_gc med_opioid_strong med_opioid_weak med_ssri {
+foreach file in op_appt hosp_ra hosp_ra_emergency med_gc med_opioid_strong med_opioid_weak med_ssri med_nsaid {
     import delimited "./output/measures/join/measure_`file'_rate.csv", clear	//get csv
     gen temp_date=date(date, "YMD")
     format temp_date %td
