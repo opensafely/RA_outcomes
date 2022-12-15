@@ -136,22 +136,25 @@ actions:
   
   #Study definition for outpatient objectives - population for BSR abstract
   generate_study_population_bsr_2019:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_bsr --index-date-range "2019-04-01" --output-dir=output/measures/op 
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_bsr --index-date-range "2019-04-01" --output-dir=output/measures
     outputs:
       highly_sensitive:
-        cohort: output/measures/op/input_bsr_2019-04-01.csv
+        #cohort: output/measures/op/input_bsr_2019-04-01.csv - file for BSR abstract 
+        cohort: output/measures/input_bsr_2019-04-01.csv
 
   generate_study_population_bsr_2020:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_bsr --index-date-range "2020-04-01" --output-dir=output/measures/op 
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_bsr --index-date-range "2020-04-01" --output-dir=output/measures
     outputs:
       highly_sensitive:
-        cohort: output/measures/op/input_bsr_2020-04-01.csv
+        #cohort: output/measures/op/input_bsr_2020-04-01.csv - file for BSR abstract 
+        cohort: output/measures/input_bsr_2020-04-01.csv
 
   generate_study_population_bsr_2021:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_bsr --index-date-range "2021-04-01" --output-dir=output/measures/op 
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_bsr --index-date-range "2021-04-01" --output-dir=output/measures
     outputs:
       highly_sensitive:
-        cohort: output/measures/op/input_bsr_2021-04-01.csv
+        #cohort: output/measures/op/input_bsr_2021-04-01.csv - file for BSR abstract 
+        cohort: output/measures/input_bsr_2021-04-01.csv
   bsr: 
     run: stata-mp:latest analysis/bsr.do
     needs: [generate_study_population_bsr_2019, generate_study_population_bsr_2020, generate_study_population_bsr_2021]
