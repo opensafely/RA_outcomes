@@ -4,14 +4,14 @@
 
 . * Import data
 . import delimited using ./output/input.csv
-(40 vars, 10,000 obs)
+(43 vars, 10,000 obs)
 
 . * Check data
 . count if age==. 
   0
 
 . count if age<18 
-  2,249
+  2,158
 
 . count if age>110 & age!=.
   0
@@ -24,14 +24,14 @@
  1%            0              0
  5%            4              0
 10%            7              0       Obs              10,000
-25%           20              0       Sum of Wgt.      10,000
+25%           21              0       Sum of Wgt.      10,000
 
-50%           40                      Mean            40.2258
-                        Largest       Std. Dev.      24.05681
-75%           59            104
-90%           73            107       Variance       578.7303
-95%           80            108       Skewness       .1326583
-99%           90            109       Kurtosis       2.030231
+50%           40                      Mean            40.1344
+                        Largest       Std. Dev.      23.68212
+75%           58             99
+90%           72             99       Variance       560.8428
+95%           79             99       Skewness        .124259
+99%           89            103       Kurtosis       2.059968
 
 . count if sex==""
   0
@@ -40,9 +40,9 @@
 
         sex |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          F |      5,028       50.28       50.28
-          M |      4,876       48.76       99.04
-          U |         96        0.96      100.00
+          F |      5,020       50.20       50.20
+          M |      4,904       49.04       99.24
+          U |         76        0.76      100.00
 ------------+-----------------------------------
       Total |     10,000      100.00
 
@@ -55,30 +55,30 @@
 
 metho_multi |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |        742       14.84       14.84
-          1 |      4,258       85.16      100.00
+          0 |        811       16.22       16.22
+          1 |      4,189       83.78      100.00
 ------------+-----------------------------------
       Total |      5,000      100.00
 
 leflu_multi |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |        817       16.34       16.34
-          1 |      4,183       83.66      100.00
+          0 |        779       15.58       15.58
+          1 |      4,221       84.42      100.00
 ------------+-----------------------------------
       Total |      5,000      100.00
 
 sulfa_multi |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |        782       15.64       15.64
-          1 |      4,218       84.36      100.00
+          0 |        757       15.14       15.14
+          1 |      4,243       84.86      100.00
 ------------+-----------------------------------
       Total |      5,000      100.00
 
 hydrox_mult |
           i |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |        810       16.20       16.20
-          1 |      4,190       83.80      100.00
+          0 |        823       16.46       16.46
+          1 |      4,177       83.54      100.00
 ------------+-----------------------------------
       Total |      5,000      100.00
 
@@ -90,8 +90,8 @@ hydrox_mult |
 dmard_mult |  has_alt_dmard_diag
          i |         0          1 |     Total
 -----------+----------------------+----------
-         0 |         5          3 |         8 
-         1 |     4,995      4,997 |     9,992 
+         0 |         7          2 |         9 
+         1 |     4,993      4,998 |     9,991 
 -----------+----------------------+----------
      Total |     5,000      5,000 |    10,000 
 
@@ -99,13 +99,13 @@ dmard_mult |  has_alt_dmard_diag
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-number_ra_~s |     10,000      2.5127    1.030604          0          6
+number_ra_~s |     10,000      2.5127    1.033705         -1          6
 
 . di "Number where no DMARDs but does have multiple RA codes and no alt diag"
 Number where no DMARDs but does have multiple RA codes and no alt diag
 
 . count if has_dmards==0 & number_ra_codes>=2 & alt_diag!=1
-  2,159
+  2,106
 
 . tab has_ra, m
 
@@ -121,46 +121,46 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 
 . * Time since first RA code
 . gen first_ra_codeA = date(first_ra_code, "YMD")
-(2,795 missing values generated)
+(2,786 missing values generated)
 
 . format first_ra_codeA %dD/N/CY
 
 . gen time_ra = (date("01Mar2018", "DMY") - first_ra_codeA)/365.25
-(2,795 missing values generated)
+(2,786 missing values generated)
 
 . sum time_ra, d
 
                            time_ra
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%    -.0766598      -1.075975
- 5%     4.145106      -1.073238
-10%     9.806981      -1.051335       Obs               2,205
-25%     25.57426      -1.043121       Sum of Wgt.       2,205
+ 1%      .109514      -1.051335
+ 5%     4.651608      -.9226557
+10%     10.55441      -.9062286       Obs               2,214
+25%     28.00274      -.8898015       Sum of Wgt.       2,214
 
-50%     53.54141                      Mean           53.81515
-                        Largest       Std. Dev.      32.03926
-75%     81.64271       108.8241
-90%     98.95688       108.8378       Variance       1026.514
-95%     104.3066       108.8405       Skewness       .0179096
-99%      107.885       108.8679       Kurtosis       1.793651
+50%     55.95893                      Mean           55.39823
+                        Largest       Std. Dev.      31.89087
+75%     83.26078       108.8241
+90%     98.54073       108.9062       Variance       1017.028
+95%     104.0411       108.9418       Skewness      -.0560029
+99%      107.896       108.9884       Kurtosis        1.79448
 
 . sum number_ra_codes, d
 
                        number_ra_codes
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%            0              0
+ 1%            0             -1
  5%            1              0
 10%            1              0       Obs               5,000
 25%            2              0       Sum of Wgt.       5,000
 
-50%            3                      Mean             2.5078
-                        Largest       Std. Dev.      1.030607
+50%            3                      Mean              2.519
+                        Largest       Std. Dev.      1.038583
 75%            3              6
-90%            4              6       Variance       1.062152
-95%            4              6       Skewness       .0064881
-99%            5              6       Kurtosis        2.93185
+90%            4              6       Variance       1.078655
+95%            4              6       Skewness      -.0281515
+99%            5              6       Kurtosis       2.871257
 
 . sum metho_count, d
 
@@ -172,29 +172,29 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 10%            1              0       Obs               5,000
 25%            2              0       Sum of Wgt.       5,000
 
-50%            3                      Mean             2.5026
-                        Largest       Std. Dev.      1.017743
+50%            2                      Mean             2.4968
+                        Largest       Std. Dev.      1.037017
 75%            3              6
-90%            4              6       Variance         1.0358
-95%            4              6       Skewness       .0316667
-99%            5              6       Kurtosis       2.923121
+90%            4              6       Variance       1.075405
+95%            4              6       Skewness       .0596673
+99%            5              6       Kurtosis       2.906392
 
 . sum sulfa_count, d 
 
                          sulfa_count
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%            0             -1
+ 1%            0              0
  5%            1              0
 10%            1              0       Obs               5,000
 25%            2              0       Sum of Wgt.       5,000
 
-50%            3                      Mean             2.4986
-                        Largest       Std. Dev.      1.041833
+50%            3                      Mean             2.5156
+                        Largest       Std. Dev.      1.036326
 75%            3              6
-90%            4              6       Variance       1.085415
-95%            4              6       Skewness      -.0111388
-99%            5              6       Kurtosis       2.938736
+90%            4              6       Variance       1.073971
+95%            4              6       Skewness       .0219695
+99%            5              6       Kurtosis        2.88321
 
 . sum leflu_count, d 
 
@@ -206,29 +206,29 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 10%            1              0       Obs               5,000
 25%            2              0       Sum of Wgt.       5,000
 
-50%            3                      Mean              2.512
-                        Largest       Std. Dev.      1.018854
+50%            2                      Mean             2.4948
+                        Largest       Std. Dev.      1.031982
 75%            3              6
-90%            4              6       Variance       1.038064
-95%            4              6       Skewness      -.0109376
-99%            5              6       Kurtosis       2.898178
+90%            4              6       Variance       1.064986
+95%            4              6       Skewness       .0155733
+99%            5              6       Kurtosis       2.791892
 
 . sum hydrox_count, d 
 
                         hydrox_count
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%            0             -1
+ 1%            0              0
  5%            1              0
 10%            1              0       Obs               5,000
 25%            2              0       Sum of Wgt.       5,000
 
-50%            2                      Mean              2.485
-                        Largest       Std. Dev.      1.033242
-75%            3              6
-90%            4              6       Variance       1.067589
-95%            4              6       Skewness      -.0120742
-99%            5              7       Kurtosis       2.946626
+50%            2                      Mean              2.494
+                        Largest       Std. Dev.      1.043159
+75%            3              5
+90%            4              6       Variance       1.088182
+95%            4              6       Skewness       .0481876
+99%            5              6       Kurtosis       2.825272
 
 . 
 . sum outpatient*, d
@@ -241,12 +241,12 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 10%            0              0       Obs               5,000
 25%            6              0       Sum of Wgt.       5,000
 
-50%            7                      Mean             6.7318
-                        Largest       Std. Dev.      2.969989
+50%            7                      Mean             6.7798
+                        Largest       Std. Dev.      2.957002
 75%            9             14
-90%           10             14       Variance       8.820833
-95%           11             14       Skewness      -.8668636
-99%           12             15       Kurtosis       3.464388
+90%           10             14       Variance       8.743861
+95%           11             14       Skewness      -.8649105
+99%           12             15       Kurtosis       3.516359
 
                     outpatient_appt_2020
 -------------------------------------------------------------
@@ -256,93 +256,140 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 10%            0              0       Obs               5,000
 25%            6              0       Sum of Wgt.       5,000
 
-50%            7                      Mean             6.7836
-                        Largest       Std. Dev.      2.965827
+50%            7                      Mean             6.6858
+                        Largest       Std. Dev.      2.964462
 75%            9             14
-90%           10             15       Variance        8.79613
-95%           11             15       Skewness      -.8568475
-99%           12             16       Kurtosis       3.522925
+90%           10             14       Variance       8.788036
+95%           11             14       Skewness      -.8345895
+99%           12             14       Kurtosis       3.444124
 
                     outpatient_appt_2021
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            0              0
-10%            0              0       Obs               5,000
+10%            3              0       Obs               5,000
 25%            6              0       Sum of Wgt.       5,000
 
-50%            7                      Mean             6.7502
-                        Largest       Std. Dev.      2.972468
+50%            7                      Mean             6.7926
+                        Largest       Std. Dev.      2.917411
 75%            9             14
-90%           10             14       Variance       8.835567
-95%           11             15       Skewness       -.843774
-99%           12             16       Kurtosis       3.425086
+90%           10             14       Variance       8.511287
+95%           11             14       Skewness      -.8627565
+99%           12             14       Kurtosis       3.536668
 
                    outpatient_medium_2019
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            1              1
  5%            1              1
-10%            1              1       Obs               2,533
-25%            2              1       Sum of Wgt.       2,533
+10%            1              1       Obs               2,493
+25%            2              1       Sum of Wgt.       2,493
 
-50%            4                      Mean            12.0079
-                        Largest       Std. Dev.      26.16269
+50%            5                      Mean           13.66025
+                        Largest       Std. Dev.      28.44655
 75%            7             98
-90%            8             98       Variance       684.4865
-95%           98             98       Skewness       2.955572
-99%           98             98       Kurtosis       9.833616
+90%           98             98       Variance        809.206
+95%           98             98       Skewness       2.606009
+99%           98             98       Kurtosis       7.863802
 
                    outpatient_medium_2020
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            1              1
  5%            1              1
-10%            1              1       Obs               2,496
-25%            2              1       Sum of Wgt.       2,496
+10%            1              1       Obs               2,561
+25%            2              1       Sum of Wgt.       2,561
 
-50%            4                      Mean           12.76002
-                        Largest       Std. Dev.      27.32385
+50%            5                      Mean           13.06482
+                        Largest       Std. Dev.      27.60182
 75%            7             98
-90%            8             98       Variance       746.5929
-95%           98             98       Skewness       2.775579
-99%           98             98       Kurtosis       8.786019
+90%            8             98       Variance       761.8606
+95%           98             98       Skewness       2.729233
+99%           98             98       Kurtosis       8.528192
 
                    outpatient_medium_2021
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            1              1
  5%            1              1
-10%            1              1       Obs               2,492
-25%            2              1       Sum of Wgt.       2,492
+10%            1              1       Obs               2,503
+25%            2              1       Sum of Wgt.       2,503
 
-50%            5                      Mean           13.49599
-                        Largest       Std. Dev.      28.25605
+50%            5                      Mean           14.97283
+                        Largest       Std. Dev.      30.09096
 75%            7             98
-90%            8             98       Variance       798.4042
-95%           98             98       Skewness       2.634739
-99%           98             98       Kurtosis       8.014876
+90%           98             98       Variance       905.4661
+95%           98             98       Skewness       2.379306
+99%           98             98       Kurtosis       6.717022
+
+. 
+. sum ra_hosp_beddays*, d 
+
+                    ra_hosp_beddays_2019
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            1              0
+10%            1              0       Obs               5,000
+25%            2              0       Sum of Wgt.       5,000
+
+50%            3                      Mean             2.4998
+                        Largest       Std. Dev.      1.026358
+75%            3              6
+90%            4              6       Variance       1.053411
+95%            4              6       Skewness      -.0594143
+99%            5              6       Kurtosis        2.93974
+
+                    ra_hosp_beddays_2020
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            1              0
+10%            1              0       Obs               5,000
+25%            2              0       Sum of Wgt.       5,000
+
+50%            3                      Mean             2.5244
+                        Largest       Std. Dev.      1.028405
+75%            3              5
+90%            4              5       Variance       1.057616
+95%            4              6       Skewness       .0105611
+99%            5              6       Kurtosis       2.892754
+
+                    ra_hosp_beddays_2021
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0             -1
+ 5%            1              0
+10%            1              0       Obs               5,000
+25%            2              0       Sum of Wgt.       5,000
+
+50%            2                      Mean             2.5076
+                        Largest       Std. Dev.      1.041614
+75%            3              6
+90%            4              6       Variance       1.084959
+95%            4              6       Skewness       .0695429
+99%            5              6       Kurtosis       2.901364
 
 . 
 . * How many people are not on DMARDs and have no RA appointments?
 . 
-. 
 . * Format variables
 . *re-order ethnicity
 .  gen eth5=1 if ethnicity==1
-(4,011 missing values generated)
+(3,971 missing values generated)
 
 .  replace eth5=2 if ethnicity==3
-(979 real changes made)
+(1,039 real changes made)
 
 .  replace eth5=3 if ethnicity==4
-(971 real changes made)
+(967 real changes made)
 
 .  replace eth5=4 if ethnicity==2
-(1,063 real changes made)
+(1,020 real changes made)
 
 .  replace eth5=5 if ethnicity==5
-(998 real changes made)
+(945 real changes made)
 
 .  replace eth5=. if ethnicity==.
 (0 real changes made)
@@ -368,11 +415,11 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 
        eth5 |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-      White |        989       19.78       19.78
-South Asian |        979       19.58       39.36
-      Black |        971       19.42       58.78
-      Mixed |      1,063       21.26       80.04
-      Other |        998       19.96      100.00
+      White |      1,029       20.58       20.58
+South Asian |      1,039       20.78       41.36
+      Black |        967       19.34       60.70
+      Mixed |      1,020       20.40       81.10
+      Other |        945       18.90      100.00
 ------------+-----------------------------------
       Total |      5,000      100.00
 
@@ -392,8 +439,8 @@ South Asian |        979       19.58       39.36
 
        male |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-     Female |      2,606       52.12       52.12
-       Male |      2,394       47.88      100.00
+     Female |      2,581       51.62       51.62
+       Male |      2,419       48.38      100.00
 ------------+-----------------------------------
       Total |      5,000      100.00
 
@@ -405,19 +452,19 @@ South Asian |        979       19.58       39.36
 . la var urban_rural_5 "Rural Urban in five categories"
 
 . replace urban_rural_5=1 if urban_rural==1
-(588 real changes made)
+(625 real changes made)
 
 . replace urban_rural_5=2 if urban_rural==2
-(669 real changes made)
+(593 real changes made)
 
 . replace urban_rural_5=3 if urban_rural==3|urban_rural==4
-(1,283 real changes made)
+(1,254 real changes made)
 
 . replace urban_rural_5=4 if urban_rural==5|urban_rural==6
-(1,201 real changes made)
+(1,264 real changes made)
 
 . replace urban_rural_5=5 if urban_rural==7|urban_rural==8
-(1,259 real changes made)
+(1,264 real changes made)
 
 . label define urban_rural_5 1 "Urban major conurbation" 2 "Urban minor conurba
 > tion" 3 "Urban city and town" 4 "Rural town and fringe" 5 "Rural village and 
@@ -431,11 +478,11 @@ South Asian |        979       19.58       39.36
         Rural Urban in five |
                  categories |      Freq.     Percent        Cum.
 ----------------------------+-----------------------------------
-    Urban major conurbation |        588       11.76       11.76
-    Urban minor conurbation |        669       13.38       25.14
-        Urban city and town |      1,283       25.66       50.80
-      Rural town and fringe |      1,201       24.02       74.82
-Rural village and dispersed |      1,259       25.18      100.00
+    Urban major conurbation |        625       12.50       12.50
+    Urban minor conurbation |        593       11.86       24.36
+        Urban city and town |      1,254       25.08       49.44
+      Rural town and fringe |      1,264       25.28       74.72
+Rural village and dispersed |      1,264       25.28      100.00
 ----------------------------+-----------------------------------
                       Total |      5,000      100.00
 
@@ -445,10 +492,10 @@ Rural village and dispersed |      1,259       25.18      100.00
 (5,000 missing values generated)
 
 . replace urban_rural_bin=1 if urban_rural<=4|urban_rural==.
-(2,540 real changes made)
+(2,472 real changes made)
 
 . replace urban_rural_bin=0 if urban_rural>4 & urban_rural!=.
-(2,460 real changes made)
+(2,528 real changes made)
 
 . label define urban_rural_bin 0 "Rural" 1 "Urban"
 
@@ -460,19 +507,19 @@ Rural village and dispersed |      1,259       25.18      100.00
 urban_rura |                      urban_rural
      l_bin |         1          2          3          4          5 |     Total
 -----------+-------------------------------------------------------+----------
-     Rural |         0          0          0          0        597 |     2,460 
-     Urban |       588        669        633        650          0 |     2,540 
+     Rural |         0          0          0          0        627 |     2,528 
+     Urban |       625        593        619        635          0 |     2,472 
 -----------+-------------------------------------------------------+----------
-     Total |       588        669        633        650        597 |     5,000 
+     Total |       625        593        619        635        627 |     5,000 
 
 
 urban_rura |           urban_rural
      l_bin |         6          7          8 |     Total
 -----------+---------------------------------+----------
-     Rural |       604        588        671 |     2,460 
-     Urban |         0          0          0 |     2,540 
+     Rural |       637        669        595 |     2,528 
+     Urban |         0          0          0 |     2,472 
 -----------+---------------------------------+----------
-     Total |       604        588        671 |     5,000 
+     Total |       637        669        595 |     5,000 
 
 . label var urban_rural_bin "Rural-Urban"
 
@@ -480,7 +527,7 @@ urban_rura |           urban_rural
 . * Define age categories
 . * Create age categories
 . egen age_cat = cut(age), at(18, 40, 60, 80, 120) icodes
-(1110 missing values generated)
+(1068 missing values generated)
 
 . label define age 0 "18 - 40 years" 1 "41 - 60 years" 2 "61 - 80 years" 3 ">80
 >  years"
@@ -492,27 +539,27 @@ urban_rura |           urban_rural
 
       age_cat |      Freq.     Percent        Cum.
 --------------+-----------------------------------
-18 - 40 years |      1,345       26.90       26.90
-41 - 60 years |      1,339       26.78       53.68
-61 - 80 years |        943       18.86       72.54
-    >80 years |        263        5.26       77.80
-            . |      1,110       22.20      100.00
+18 - 40 years |      1,431       28.62       28.62
+41 - 60 years |      1,356       27.12       55.74
+61 - 80 years |        930       18.60       74.34
+    >80 years |        215        4.30       78.64
+            . |      1,068       21.36      100.00
 --------------+-----------------------------------
         Total |      5,000      100.00
 
 . 
 . * Smoking status
 . gen smoking = 0 if smoking_status=="N"
-(4,511 missing values generated)
+(4,466 missing values generated)
 
 . replace smoking = 1 if smoking_status=="S"
-(996 real changes made)
+(1,023 real changes made)
 
 . replace smoking = 2 if smoking_status=="E"
-(757 real changes made)
+(730 real changes made)
 
 . replace smoking = 3 if smoking==.
-(2,758 real changes made)
+(2,713 real changes made)
 
 . 
 . label define smok 1 "Current smoker" 2 "Ex-smoker" 0 "Never smoked" 3 "Unknow
@@ -523,7 +570,6 @@ urban_rura |           urban_rural
 . 
 . * BMI categories
 . egen bmi_cat = cut(bmi), at(0, 1, 18.5, 24.9, 29.9, 39.9, 100) icodes
-(1 missing value generated)
 
 . bys bmi_cat: sum bmi
 
@@ -532,49 +578,42 @@ urban_rura |           urban_rural
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-         bmi |      1,006           0           0          0          0
+         bmi |        984     .000634    .0198892          0   .6239003
 
 -------------------------------------------------------------------------------
 -> bmi_cat = 1
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-         bmi |        455    14.77948    3.291597   1.425326   18.48147
+         bmi |        462    14.57922    3.258733   3.187252   18.49557
 
 -------------------------------------------------------------------------------
 -> bmi_cat = 2
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-         bmi |        944    21.99828    1.814495   18.50451   24.88732
+         bmi |        955    22.01144    1.819396   18.50114   24.89976
 
 -------------------------------------------------------------------------------
 -> bmi_cat = 3
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-         bmi |        950     27.3291    1.424963   24.90407   29.89659
+         bmi |        978    27.40332    1.415403   24.91711   29.89513
 
 -------------------------------------------------------------------------------
 -> bmi_cat = 4
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-         bmi |      1,369    34.26963    2.797981    29.9121   39.89536
+         bmi |      1,332    34.15404    2.830018    29.9006   39.88868
 
 -------------------------------------------------------------------------------
 -> bmi_cat = 5
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-         bmi |        275    43.57137    3.108125   39.91558    56.0363
-
--------------------------------------------------------------------------------
--> bmi_cat = .
-
-    Variable |        Obs        Mean    Std. Dev.       Min        Max
--------------+---------------------------------------------------------
-         bmi |          1    -.609341           .   -.609341   -.609341
+         bmi |        289    43.36856    3.084279   39.91893   63.49039
 
 
 . label define bmi 0 "Missing" 1 "Underweight" 2 "Healthy range" 3 "Overweight"
@@ -586,16 +625,16 @@ urban_rura |           urban_rural
 . * Determine if still in follow-up for each year
 . * Format dates
 . gen died_fuA = date(died_fu, "YMD")
-(2,494 missing values generated)
+(2,485 missing values generated)
 
 . gen dereg_dateA = date(dereg_date, "YMD")
-(2,470 missing values generated)
+(2,504 missing values generated)
 
 . gen end_fu = date("`j'-03-31", "YMD")
 (5,000 missing values generated)
 
 . gen end_date = min(died_fuA, dereg_dateA, end_fu)
-(1,233 missing values generated)
+(1,255 missing values generated)
 
 . drop end_fu
 
@@ -603,7 +642,7 @@ urban_rura |           urban_rural
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-    end_date |      3,767    22425.62    286.8605      21976      22987
+    end_date |      3,745    22431.56    286.6749      21976      22994
 
 . di "Number where end date prior to follow-up start"
 Number where end date prior to follow-up start
@@ -623,8 +662,8 @@ Number where end date prior to follow-up start
 
    end_2020 |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |      4,857       97.14       97.14
-          1 |        143        2.86      100.00
+          0 |      4,858       97.16       97.16
+          1 |        142        2.84      100.00
 ------------+-----------------------------------
       Total |      5,000      100.00
 
@@ -632,8 +671,8 @@ Number where end date prior to follow-up start
 
    end_2021 |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |      3,226       64.52       64.52
-          1 |      1,774       35.48      100.00
+          0 |      3,274       65.48       65.48
+          1 |      1,726       34.52      100.00
 ------------+-----------------------------------
       Total |      5,000      100.00
 
@@ -641,8 +680,8 @@ Number where end date prior to follow-up start
 
    end_2022 |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |      1,922       38.44       38.44
-          1 |      3,078       61.56      100.00
+          0 |      1,969       39.38       39.38
+          1 |      3,031       60.62      100.00
 ------------+-----------------------------------
       Total |      5,000      100.00
 
@@ -655,14 +694,14 @@ Number where end date prior to follow-up start
   5.     replace outpatient_medium_`i'=. if end_`j'
   6. }
 2020
-(143 real changes made, 143 to missing)
-(65 real changes made, 65 to missing)
+(142 real changes made, 142 to missing)
+(71 real changes made, 71 to missing)
 2021
-(1,774 real changes made, 1,774 to missing)
+(1,726 real changes made, 1,726 to missing)
 (898 real changes made, 898 to missing)
 2022
-(3,078 real changes made, 3,078 to missing)
-(1,544 real changes made, 1,544 to missing)
+(3,031 real changes made, 3,031 to missing)
+(1,522 real changes made, 1,522 to missing)
 
 . 
 . * Categorise number of outpatient appointments
@@ -674,56 +713,56 @@ Number where end date prior to follow-up start
 > des
   3.     label values op_appt_`i'_cat appt
   4.     }
-(143 missing values generated)
-(1774 missing values generated)
-(3078 missing values generated)
+(142 missing values generated)
+(1726 missing values generated)
+(3031 missing values generated)
 
 . 
 . * Calculate difference compared to 2019
 . gen diff_op_2020 = outpatient_appt_2020 - outpatient_appt_2019
-(1,774 missing values generated)
+(1,726 missing values generated)
 
 . gen diff_op_2021 = outpatient_appt_2021 - outpatient_appt_2020
-(3,078 missing values generated)
+(3,031 missing values generated)
 
 . sum diff_op_2020 diff_op_2021, d
 
                         diff_op_2020
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%          -10            -14
+ 1%          -10            -13
  5%           -7            -13
-10%           -5            -12       Obs               3,226
-25%           -2            -12       Sum of Wgt.       3,226
+10%           -6            -12       Obs               3,274
+25%           -2            -12       Sum of Wgt.       3,274
 
-50%            0                      Mean          -.0024799
-                        Largest       Std. Dev.      4.165788
-75%            2             12
-90%            5             12       Variance       17.35379
-95%            7             12       Skewness       .0311461
-99%           10             13       Kurtosis        3.36546
+50%            0                      Mean          -.0351252
+                        Largest       Std. Dev.      4.177653
+75%            2             13
+90%            5             13       Variance       17.45278
+95%            7             13       Skewness      -.0231576
+99%           10             14       Kurtosis       3.290787
 
                         diff_op_2021
 -------------------------------------------------------------
       Percentiles      Smallest
- 1%          -10            -14
- 5%           -8            -13
-10%           -5            -12       Obs               1,922
-25%           -2            -11       Sum of Wgt.       1,922
+ 1%          -10            -13
+ 5%           -7            -12
+10%           -5            -12       Obs               1,969
+25%           -2            -12       Sum of Wgt.       1,969
 
-50%            0                      Mean           .0577523
-                        Largest       Std. Dev.      4.228297
-75%            3             11
-90%            6             12       Variance        17.8785
-95%            7             12       Skewness       -.003608
-99%           10             13       Kurtosis       3.154233
+50%            0                      Mean           .0284408
+                        Largest       Std. Dev.      4.137525
+75%            3             12
+90%            5             12       Variance       17.11911
+95%            7             13       Skewness       .0072001
+99%           10             14       Kurtosis       3.164147
 
 . 
 . egen diff_op_cat_2020 = cut(diff_op_2020), at(-100, 0, 1, 100) icodes
-(1774 missing values generated)
+(1726 missing values generated)
 
 . egen diff_op_cat_2021 = cut(diff_op_2021), at(-100, 0, 1, 100) icodes
-(3078 missing values generated)
+(3031 missing values generated)
 
 . label define op_cat 0 "Fewer appointments" 1 "Same number of appointments" 2 
 > "More appointments"
@@ -737,22 +776,22 @@ Number where end date prior to follow-up start
                       |         op_appt_2020_cat
      diff_op_cat_2020 | No appoin  1-2 per y  3 or more |     Total
 ----------------------+---------------------------------+----------
-   Fewer appointments |       286         15      1,103 |     1,404 
-Same number of appoin |        33          0        391 |       424 
-    More appointments |         0          2      1,396 |     1,398 
+   Fewer appointments |       288         20      1,104 |     1,412 
+Same number of appoin |        36          0        392 |       428 
+    More appointments |         0          3      1,431 |     1,434 
 ----------------------+---------------------------------+----------
-                Total |       319         17      2,890 |     3,226 
+                Total |       324         23      2,927 |     3,274 
 
 . tab diff_op_cat_2021 op_appt_2021_cat
 
                       |         op_appt_2021_cat
      diff_op_cat_2021 | No appoin  1-2 per y  3 or more |     Total
 ----------------------+---------------------------------+----------
-   Fewer appointments |       161          8        678 |       847 
-Same number of appoin |        18          0        228 |       246 
-    More appointments |         0          2        827 |       829 
+   Fewer appointments |       180          9        670 |       859 
+Same number of appoin |        16          1        238 |       255 
+    More appointments |         0          1        854 |       855 
 ----------------------+---------------------------------+----------
-                Total |       179         10      1,733 |     1,922 
+                Total |       196         11      1,762 |     1,969 
 
 . bys diff_op_cat_2020: sum diff_op_2020
 
@@ -761,21 +800,21 @@ Same number of appoin |        18          0        228 |       246
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-diff_op_2020 |      1,404   -3.599715    2.610227        -14         -1
+diff_op_2020 |      1,412   -3.700425    2.650472        -13         -1
 
 -------------------------------------------------------------------------------
 -> diff_op_cat_2020 = Same number of appointments
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-diff_op_2020 |        424           0           0          0          0
+diff_op_2020 |        428           0           0          0          0
 
 -------------------------------------------------------------------------------
 -> diff_op_cat_2020 = More appointments
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-diff_op_2020 |      1,398    3.609442    2.675582          1         13
+diff_op_2020 |      1,434    3.563459    2.597804          1         14
 
 -------------------------------------------------------------------------------
 -> diff_op_cat_2020 = .
@@ -784,6 +823,18 @@ diff_op_2020 |      1,398    3.609442    2.675582          1         13
 -------------+---------------------------------------------------------
 diff_op_2020 |          0
 
+
+. sum ra_hosp*
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+ra_hosp_2019 |      5,000      2.5268    1.045132          0          6
+ra_hosp_2020 |      5,000      2.4906    1.027873         -1          7
+ra_hosp_2021 |      5,000      2.4968    1.034313          0          6
+ra_hosp_be~9 |      5,000      2.4998    1.026358          0          6
+ra_hosp_be~0 |      5,000      2.5244    1.028405          0          6
+-------------+---------------------------------------------------------
+ra_hosp_be~1 |      5,000      2.5076    1.041614         -1          6
 
 . 
 . preserve
@@ -796,19 +847,19 @@ diff_op_2020 |          0
   +----------------------------------+
   | factor               N_1     m_1 |
   |----------------------------------|
-  | op_appt_2019_cat   4,857     143 |
+  | op_appt_2019_cat   4,858     142 |
   |----------------------------------|
-  | op_appt_2020_cat   3,226   1,774 |
+  | op_appt_2020_cat   3,274   1,726 |
   |----------------------------------|
-  | op_appt_2021_cat   1,922   3,078 |
+  | op_appt_2021_cat   1,969   3,031 |
   |----------------------------------|
-  | diff_op_2020       3,226   1,774 |
+  | diff_op_2020       3,274   1,726 |
   |----------------------------------|
-  | diff_op_2021       1,922   3,078 |
+  | diff_op_2021       1,969   3,031 |
   |----------------------------------|
-  | diff_op_cat_2020   3,226   1,774 |
+  | diff_op_cat_2020   3,274   1,726 |
   |----------------------------------|
-  | diff_op_cat_2021   1,922   3,078 |
+  | diff_op_cat_2021   1,969   3,031 |
   +----------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
@@ -817,29 +868,29 @@ diff_op_2020 |          0
   |----------------------------------------------------------------|
   |                                                  N=5,000       |
   |----------------------------------------------------------------|
-  | op_appt_2019_cat   No appointments               505 (10.4%)   |
-  |                    1-2 per year                  27 ( 0.6%)    |
-  |                    3 or more per year            4,325 (89.0%) |
+  | op_appt_2019_cat   No appointments               481 ( 9.9%)   |
+  |                    1-2 per year                  22 ( 0.5%)    |
+  |                    3 or more per year            4,355 (89.6%) |
   |----------------------------------------------------------------|
-  | op_appt_2020_cat   No appointments               319 ( 9.9%)   |
-  |                    1-2 per year                  17 ( 0.5%)    |
-  |                    3 or more per year            2,890 (89.6%) |
+  | op_appt_2020_cat   No appointments               324 ( 9.9%)   |
+  |                    1-2 per year                  23 ( 0.7%)    |
+  |                    3 or more per year            2,927 (89.4%) |
   |----------------------------------------------------------------|
-  | op_appt_2021_cat   No appointments               179 ( 9.3%)   |
-  |                    1-2 per year                  10 ( 0.5%)    |
-  |                    3 or more per year            1,733 (90.2%) |
+  | op_appt_2021_cat   No appointments               196 (10.0%)   |
+  |                    1-2 per year                  11 ( 0.6%)    |
+  |                    3 or more per year            1,762 (89.5%) |
   |----------------------------------------------------------------|
   | diff_op_2020                                     0 (-2-2)      |
   |----------------------------------------------------------------|
   | diff_op_2021                                     0 (-2-3)      |
   |----------------------------------------------------------------|
-  | diff_op_cat_2020   Fewer appointments            1,404 (43.5%) |
-  |                    Same number of appointments   424 (13.1%)   |
-  |                    More appointments             1,398 (43.3%) |
+  | diff_op_cat_2020   Fewer appointments            1,412 (43.1%) |
+  |                    Same number of appointments   428 (13.1%)   |
+  |                    More appointments             1,434 (43.8%) |
   |----------------------------------------------------------------|
-  | diff_op_cat_2021   Fewer appointments            847 (44.1%)   |
-  |                    Same number of appointments   246 (12.8%)   |
-  |                    More appointments             829 (43.1%)   |
+  | diff_op_cat_2021   Fewer appointments            859 (43.6%)   |
+  |                    Same number of appointments   255 (13.0%)   |
+  |                    More appointments             855 (43.4%)   |
   +----------------------------------------------------------------+
 Data are presented as median (IQR) for continuous measures, and n (%) for categ
 > orical measures.
@@ -850,6 +901,12 @@ file ./output/tables/op_appt_yrs.csv saved
 
 . restore 
 
+. /*preserve
+> *Tabulate number of appointments per year
+> table1_mc, vars(ra_hosp_2019 cate \ ra_hosp_2020 cate \ ra_hosp_2021 cate) cl
+> ear
+> export delimited using ./output/tables/ra_hosp.csv
+> restore */
 . * Tabulate overall characteristics 
 . preserve
 
@@ -859,7 +916,7 @@ file ./output/tables/op_appt_yrs.csv saved
   +------------------------------------------------+
   | factor                             N_1     m_1 |
   |------------------------------------------------|
-  | age_cat                          3,890   1,110 |
+  | age_cat                          3,932   1,068 |
   |------------------------------------------------|
   | male                             5,000       0 |
   |------------------------------------------------|
@@ -871,9 +928,9 @@ file ./output/tables/op_appt_yrs.csv saved
   |------------------------------------------------|
   | smoking                          5,000       0 |
   |------------------------------------------------|
-  | time_ra                          2,205   2,795 |
+  | time_ra                          2,214   2,786 |
   |------------------------------------------------|
-  | bmi_cat                          4,999       1 |
+  | bmi_cat                          5,000       0 |
   +------------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
@@ -887,79 +944,79 @@ file ./output/tables/op_appt_yrs.csv saved
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  | age_cat                          18 - 40 years                 1,345 (34.6%
+  | age_cat                          18 - 40 years                 1,431 (36.4%
 > )       |
-  |                                  41 - 60 years                 1,339 (34.4%
+  |                                  41 - 60 years                 1,356 (34.5%
 > )       |
-  |                                  61 - 80 years                 943 (24.2%) 
+  |                                  61 - 80 years                 930 (23.7%) 
 >         |
-  |                                  >80 years                     263 ( 6.8%) 
+  |                                  >80 years                     215 ( 5.5%) 
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  | male                             Female                        2,606 (52.1%
+  | male                             Female                        2,581 (51.6%
 > )       |
-  |                                  Male                          2,394 (47.9%
-> )       |
-  |----------------------------------------------------------------------------
-> --------|
-  | Rural Urban in five categories   Urban major conurbation       588 (11.8%) 
->         |
-  |                                  Urban minor conurbation       669 (13.4%) 
->         |
-  |                                  Urban city and town           1,283 (25.7%
-> )       |
-  |                                  Rural town and fringe         1,201 (24.0%
-> )       |
-  |                                  Rural village and dispersed   1,259 (25.2%
+  |                                  Male                          2,419 (48.4%
 > )       |
   |----------------------------------------------------------------------------
 > --------|
-  | prescribed_biologics             0                             2,485 (49.7%
+  | Rural Urban in five categories   Urban major conurbation       625 (12.5%) 
+>         |
+  |                                  Urban minor conurbation       593 (11.9%) 
+>         |
+  |                                  Urban city and town           1,254 (25.1%
 > )       |
-  |                                  1                             2,515 (50.3%
+  |                                  Rural town and fringe         1,264 (25.3%
 > )       |
-  |----------------------------------------------------------------------------
-> --------|
-  | imd                              0                             243 ( 4.9%) 
->         |
-  |                                  1                             909 (18.2%) 
->         |
-  |                                  2                             1,001 (20.0%
-> )       |
-  |                                  3                             951 (19.0%) 
->         |
-  |                                  4                             976 (19.5%) 
->         |
-  |                                  5                             920 (18.4%) 
->         |
-  |----------------------------------------------------------------------------
-> --------|
-  | smoking                          Never smoked                  489 ( 9.8%) 
->         |
-  |                                  Current smoker                996 (19.9%) 
->         |
-  |                                  Ex-smoker                     757 (15.1%) 
->         |
-  |                                  Unknown                       2,758 (55.2%
+  |                                  Rural village and dispersed   1,264 (25.3%
 > )       |
   |----------------------------------------------------------------------------
 > --------|
-  | time_ra                                                        53.81515 (32
-> .03926) |
+  | prescribed_biologics             0                             2,521 (50.4%
+> )       |
+  |                                  1                             2,479 (49.6%
+> )       |
   |----------------------------------------------------------------------------
 > --------|
-  | bmi_cat                          Missing                       1,006 (20.1%
+  | imd                              0                             232 ( 4.6%) 
+>         |
+  |                                  1                             955 (19.1%) 
+>         |
+  |                                  2                             946 (18.9%) 
+>         |
+  |                                  3                             962 (19.2%) 
+>         |
+  |                                  4                             967 (19.3%) 
+>         |
+  |                                  5                             938 (18.8%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | smoking                          Never smoked                  534 (10.7%) 
+>         |
+  |                                  Current smoker                1,023 (20.5%
 > )       |
-  |                                  Underweight                   455 ( 9.1%) 
+  |                                  Ex-smoker                     730 (14.6%) 
 >         |
-  |                                  Healthy range                 944 (18.9%) 
->         |
-  |                                  Overweight                    950 (19.0%) 
->         |
-  |                                  Obese                         1,369 (27.4%
+  |                                  Unknown                       2,713 (54.3%
 > )       |
-  |                                  Morbidly obese                275 ( 5.5%) 
+  |----------------------------------------------------------------------------
+> --------|
+  | time_ra                                                        55.39822 (31
+> .89087) |
+  |----------------------------------------------------------------------------
+> --------|
+  | bmi_cat                          Missing                       984 (19.7%) 
+>         |
+  |                                  Underweight                   462 ( 9.2%) 
+>         |
+  |                                  Healthy range                 955 (19.1%) 
+>         |
+  |                                  Overweight                    978 (19.6%) 
+>         |
+  |                                  Obese                         1,332 (26.6%
+> )       |
+  |                                  Morbidly obese                289 ( 5.8%) 
 >         |
   +----------------------------------------------------------------------------
 > --------+
@@ -997,251 +1054,269 @@ file ./output/tables/op_chars.csv saved
 > i'.csv
  15.         }
  16.         restore
- 17.         }
- 18.     }
-(4,495 observations deleted)
+ 17.     }
+ 18.     * Tabulate characteristics by whether hospitalised with RA for each ye
+> ar
+.     preserve
+ 19.     keep if ra_hosp_`i'==0
+ 20.     table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ prescr
+> ibed_biologics cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate)
+>  clear
+ 21.     save `tempfile', replace
+ 22.     restore
+ 23.     preserve
+ 24.     keep if ra_hosp_`i'==1
+ 25.     table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ prescr
+> ibed_biologics cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate)
+>  clear
+ 26.     append using `tempfile'
+ 27.     save `tempfile', replace
+ 28.     export delimited using ./output/tables/characteristics_ra_hosp_`i'.csv
+ 29.     restore
+ 30. }
+(4,519 observations deleted)
 
   +--------------------------------------------+
   | factor                           N_1   m_1 |
   |--------------------------------------------|
-  | age_cat                          404   101 |
+  | age_cat                          361   120 |
   |--------------------------------------------|
-  | male                             505     0 |
+  | male                             481     0 |
   |--------------------------------------------|
-  | Rural Urban in five categories   505     0 |
+  | Rural Urban in five categories   481     0 |
   |--------------------------------------------|
-  | prescribed_biologics             505     0 |
+  | prescribed_biologics             481     0 |
   |--------------------------------------------|
-  | imd                              505     0 |
+  | imd                              481     0 |
   |--------------------------------------------|
-  | smoking                          505     0 |
+  | smoking                          481     0 |
   |--------------------------------------------|
-  | time_ra                          209   296 |
+  | time_ra                          212   269 |
   |--------------------------------------------|
-  | bmi_cat                          505     0 |
+  | bmi_cat                          481     0 |
   +--------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
   +----------------------------------------------------------------------------
-> --------+
+> -------+
   |                                                                Total       
->         |
+>        |
   |----------------------------------------------------------------------------
-> --------|
-  |                                                                N=505       
->         |
+> -------|
+  |                                                                N=481       
+>        |
   |----------------------------------------------------------------------------
-> --------|
-  | age_cat                          18 - 40 years                 127 (31.4%) 
->         |
-  |                                  41 - 60 years                 147 (36.4%) 
->         |
-  |                                  61 - 80 years                 100 (24.8%) 
->         |
-  |                                  >80 years                     30 ( 7.4%)  
->         |
+> -------|
+  | age_cat                          18 - 40 years                 154 (42.7%) 
+>        |
+  |                                  41 - 60 years                 116 (32.1%) 
+>        |
+  |                                  61 - 80 years                 73 (20.2%)  
+>        |
+  |                                  >80 years                     18 ( 5.0%)  
+>        |
   |----------------------------------------------------------------------------
-> --------|
-  | male                             Female                        276 (54.7%) 
->         |
-  |                                  Male                          229 (45.3%) 
->         |
+> -------|
+  | male                             Female                        245 (50.9%) 
+>        |
+  |                                  Male                          236 (49.1%) 
+>        |
   |----------------------------------------------------------------------------
-> --------|
-  | Rural Urban in five categories   Urban major conurbation       50 ( 9.9%)  
->         |
-  |                                  Urban minor conurbation       72 (14.3%)  
->         |
-  |                                  Urban city and town           127 (25.1%) 
->         |
-  |                                  Rural town and fringe         136 (26.9%) 
->         |
-  |                                  Rural village and dispersed   120 (23.8%) 
->         |
+> -------|
+  | Rural Urban in five categories   Urban major conurbation       63 (13.1%)  
+>        |
+  |                                  Urban minor conurbation       62 (12.9%)  
+>        |
+  |                                  Urban city and town           117 (24.3%) 
+>        |
+  |                                  Rural town and fringe         115 (23.9%) 
+>        |
+  |                                  Rural village and dispersed   124 (25.8%) 
+>        |
   |----------------------------------------------------------------------------
-> --------|
-  | prescribed_biologics             0                             243 (48.1%) 
->         |
-  |                                  1                             262 (51.9%) 
->         |
+> -------|
+  | prescribed_biologics             0                             248 (51.6%) 
+>        |
+  |                                  1                             233 (48.4%) 
+>        |
   |----------------------------------------------------------------------------
-> --------|
-  | imd                              0                             21 ( 4.2%)  
->         |
-  |                                  1                             80 (15.8%)  
->         |
-  |                                  2                             103 (20.4%) 
->         |
-  |                                  3                             95 (18.8%)  
->         |
-  |                                  4                             101 (20.0%) 
->         |
-  |                                  5                             105 (20.8%) 
->         |
+> -------|
+  | imd                              0                             15 ( 3.1%)  
+>        |
+  |                                  1                             80 (16.6%)  
+>        |
+  |                                  2                             103 (21.4%) 
+>        |
+  |                                  3                             107 (22.2%) 
+>        |
+  |                                  4                             91 (18.9%)  
+>        |
+  |                                  5                             85 (17.7%)  
+>        |
   |----------------------------------------------------------------------------
-> --------|
-  | smoking                          Never smoked                  57 (11.3%)  
->         |
-  |                                  Current smoker                104 (20.6%) 
->         |
-  |                                  Ex-smoker                     79 (15.6%)  
->         |
-  |                                  Unknown                       265 (52.5%) 
->         |
+> -------|
+  | smoking                          Never smoked                  48 (10.0%)  
+>        |
+  |                                  Current smoker                89 (18.5%)  
+>        |
+  |                                  Ex-smoker                     79 (16.4%)  
+>        |
+  |                                  Unknown                       265 (55.1%) 
+>        |
   |----------------------------------------------------------------------------
-> --------|
-  | time_ra                                                        52.56253 (32
-> .24387) |
+> -------|
+  | time_ra                                                        54.0798 (33.
+> 73057) |
   |----------------------------------------------------------------------------
-> --------|
-  | bmi_cat                          Missing                       119 (23.6%) 
->         |
-  |                                  Underweight                   46 ( 9.1%)  
->         |
-  |                                  Healthy range                 75 (14.9%)  
->         |
-  |                                  Overweight                    101 (20.0%) 
->         |
-  |                                  Obese                         131 (25.9%) 
->         |
-  |                                  Morbidly obese                33 ( 6.5%)  
->         |
+> -------|
+  | bmi_cat                          Missing                       88 (18.3%)  
+>        |
+  |                                  Underweight                   38 ( 7.9%)  
+>        |
+  |                                  Healthy range                 92 (19.1%)  
+>        |
+  |                                  Overweight                    87 (18.1%)  
+>        |
+  |                                  Obese                         142 (29.5%) 
+>        |
+  |                                  Morbidly obese                34 ( 7.1%)  
+>        |
   +----------------------------------------------------------------------------
-> --------+
+> -------+
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
 (note: file /tmp/St00011.000003 not found)
 file /tmp/St00011.000003 saved
-(4,973 observations deleted)
+(4,978 observations deleted)
 
   +--------------------------------------------+
   | factor                           N_1   m_1 |
   |--------------------------------------------|
-  | age_cat                           25     2 |
+  | age_cat                           17     5 |
   |--------------------------------------------|
-  | male                              27     0 |
+  | male                              22     0 |
   |--------------------------------------------|
-  | Rural Urban in five categories    27     0 |
+  | Rural Urban in five categories    22     0 |
   |--------------------------------------------|
-  | prescribed_biologics              27     0 |
+  | prescribed_biologics              22     0 |
   |--------------------------------------------|
-  | imd                               27     0 |
+  | imd                               22     0 |
   |--------------------------------------------|
-  | smoking                           27     0 |
+  | smoking                           22     0 |
   |--------------------------------------------|
-  | time_ra                           12    15 |
+  | time_ra                           10    12 |
   |--------------------------------------------|
-  | bmi_cat                           27     0 |
+  | bmi_cat                           22     0 |
   +--------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
   +----------------------------------------------------------------------------
-> --------+
+> -------+
   |                                                                Total       
->         |
+>        |
   |----------------------------------------------------------------------------
-> --------|
-  |                                                                N=27        
->         |
+> -------|
+  |                                                                N=22        
+>        |
   |----------------------------------------------------------------------------
-> --------|
-  | age_cat                          18 - 40 years                 5 (20%)     
->         |
-  |                                  41 - 60 years                 14 (56%)    
->         |
-  |                                  61 - 80 years                 5 (20%)     
->         |
-  |                                  >80 years                     1 ( 4%)     
->         |
+> -------|
+  | age_cat                          18 - 40 years                 10 (59%)    
+>        |
+  |                                  41 - 60 years                 5 (29%)     
+>        |
+  |                                  61 - 80 years                 2 (12%)     
+>        |
   |----------------------------------------------------------------------------
-> --------|
-  | male                             Female                        16 (59%)    
->         |
-  |                                  Male                          11 (41%)    
->         |
+> -------|
+  | male                             Female                        15 (68%)    
+>        |
+  |                                  Male                          7 (32%)     
+>        |
   |----------------------------------------------------------------------------
-> --------|
-  | Rural Urban in five categories   Urban major conurbation       2 ( 7%)     
->         |
-  |                                  Urban minor conurbation       2 ( 7%)     
->         |
-  |                                  Urban city and town           6 (22%)     
->         |
-  |                                  Rural town and fringe         10 (37%)    
->         |
-  |                                  Rural village and dispersed   7 (26%)     
->         |
+> -------|
+  | Rural Urban in five categories   Urban major conurbation       4 (18%)     
+>        |
+  |                                  Urban minor conurbation       4 (18%)     
+>        |
+  |                                  Urban city and town           4 (18%)     
+>        |
+  |                                  Rural town and fringe         6 (27%)     
+>        |
+  |                                  Rural village and dispersed   4 (18%)     
+>        |
   |----------------------------------------------------------------------------
-> --------|
-  | prescribed_biologics             0                             14 (52%)    
->         |
-  |                                  1                             13 (48%)    
->         |
+> -------|
+  | prescribed_biologics             0                             9 (41%)     
+>        |
+  |                                  1                             13 (59%)    
+>        |
   |----------------------------------------------------------------------------
-> --------|
-  | imd                              1                             3 (11%)     
->         |
-  |                                  2                             10 (37%)    
->         |
-  |                                  3                             8 (30%)     
->         |
-  |                                  4                             5 (19%)     
->         |
-  |                                  5                             1 ( 4%)     
->         |
+> -------|
+  | imd                              1                             5 (23%)     
+>        |
+  |                                  2                             1 ( 5%)     
+>        |
+  |                                  3                             5 (23%)     
+>        |
+  |                                  4                             7 (32%)     
+>        |
+  |                                  5                             4 (18%)     
+>        |
   |----------------------------------------------------------------------------
-> --------|
-  | smoking                          Never smoked                  3 (11%)     
->         |
-  |                                  Current smoker                3 (11%)     
->         |
-  |                                  Ex-smoker                     4 (15%)     
->         |
-  |                                  Unknown                       17 (63%)    
->         |
+> -------|
+  | smoking                          Never smoked                  2 ( 9%)     
+>        |
+  |                                  Current smoker                7 (32%)     
+>        |
+  |                                  Ex-smoker                     2 ( 9%)     
+>        |
+  |                                  Unknown                       11 (50%)    
+>        |
   |----------------------------------------------------------------------------
-> --------|
-  | time_ra                                                        61.61237 (33
-> .01248) |
+> -------|
+  | time_ra                                                        69.15565 (31
+> .5721) |
   |----------------------------------------------------------------------------
-> --------|
-  | bmi_cat                          Missing                       4 (15%)     
->         |
-  |                                  Underweight                   5 (19%)     
->         |
-  |                                  Healthy range                 4 (15%)     
->         |
-  |                                  Overweight                    8 (30%)     
->         |
-  |                                  Obese                         6 (22%)     
->         |
+> -------|
+  | bmi_cat                          Missing                       4 (18%)     
+>        |
+  |                                  Underweight                   3 (14%)     
+>        |
+  |                                  Healthy range                 4 (18%)     
+>        |
+  |                                  Overweight                    3 (14%)     
+>        |
+  |                                  Obese                         7 (32%)     
+>        |
+  |                                  Morbidly obese                1 ( 5%)     
+>        |
   +----------------------------------------------------------------------------
-> --------+
+> -------+
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
 file /tmp/St00011.000003 saved
-(675 observations deleted)
+(645 observations deleted)
 
   +------------------------------------------------+
   | factor                             N_1     m_1 |
   |------------------------------------------------|
-  | age_cat                          3,348     977 |
+  | age_cat                          3,441     914 |
   |------------------------------------------------|
-  | male                             4,325       0 |
+  | male                             4,355       0 |
   |------------------------------------------------|
-  | Rural Urban in five categories   4,325       0 |
+  | Rural Urban in five categories   4,355       0 |
   |------------------------------------------------|
-  | prescribed_biologics             4,325       0 |
+  | prescribed_biologics             4,355       0 |
   |------------------------------------------------|
-  | imd                              4,325       0 |
+  | imd                              4,355       0 |
   |------------------------------------------------|
-  | smoking                          4,325       0 |
+  | smoking                          4,355       0 |
   |------------------------------------------------|
-  | time_ra                          1,919   2,406 |
+  | time_ra                          1,934   2,421 |
   |------------------------------------------------|
-  | bmi_cat                          4,324       1 |
+  | bmi_cat                          4,355       0 |
   +------------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
@@ -1251,83 +1326,83 @@ file /tmp/St00011.000003 saved
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  |                                                                N=4,325     
+  |                                                                N=4,355     
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  | age_cat                          18 - 40 years                 1,169 (34.9%
+  | age_cat                          18 - 40 years                 1,225 (35.6%
 > )       |
-  |                                  41 - 60 years                 1,144 (34.2%
+  |                                  41 - 60 years                 1,204 (35.0%
 > )       |
-  |                                  61 - 80 years                 808 (24.1%) 
+  |                                  61 - 80 years                 824 (23.9%) 
 >         |
-  |                                  >80 years                     227 ( 6.8%) 
+  |                                  >80 years                     188 ( 5.5%) 
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  | male                             Female                        2,248 (52.0%
+  | male                             Female                        2,250 (51.7%
 > )       |
-  |                                  Male                          2,077 (48.0%
-> )       |
-  |----------------------------------------------------------------------------
-> --------|
-  | Rural Urban in five categories   Urban major conurbation       521 (12.0%) 
->         |
-  |                                  Urban minor conurbation       576 (13.3%) 
->         |
-  |                                  Urban city and town           1,115 (25.8%
-> )       |
-  |                                  Rural town and fringe         1,018 (23.5%
-> )       |
-  |                                  Rural village and dispersed   1,095 (25.3%
+  |                                  Male                          2,105 (48.3%
 > )       |
   |----------------------------------------------------------------------------
 > --------|
-  | prescribed_biologics             0                             2,154 (49.8%
+  | Rural Urban in five categories   Urban major conurbation       542 (12.4%) 
+>         |
+  |                                  Urban minor conurbation       514 (11.8%) 
+>         |
+  |                                  Urban city and town           1,099 (25.2%
 > )       |
-  |                                  1                             2,171 (50.2%
+  |                                  Rural town and fringe         1,109 (25.5%
 > )       |
-  |----------------------------------------------------------------------------
-> --------|
-  | imd                              0                             214 ( 4.9%) 
->         |
-  |                                  1                             800 (18.5%) 
->         |
-  |                                  2                             865 (20.0%) 
->         |
-  |                                  3                             823 (19.0%) 
->         |
-  |                                  4                             834 (19.3%) 
->         |
-  |                                  5                             789 (18.2%) 
->         |
-  |----------------------------------------------------------------------------
-> --------|
-  | smoking                          Never smoked                  414 ( 9.6%) 
->         |
-  |                                  Current smoker                866 (20.0%) 
->         |
-  |                                  Ex-smoker                     655 (15.1%) 
->         |
-  |                                  Unknown                       2,390 (55.3%
+  |                                  Rural village and dispersed   1,091 (25.1%
 > )       |
   |----------------------------------------------------------------------------
 > --------|
-  | time_ra                                                        53.82906 (32
-> .09182) |
+  | prescribed_biologics             0                             2,201 (50.5%
+> )       |
+  |                                  1                             2,154 (49.5%
+> )       |
   |----------------------------------------------------------------------------
 > --------|
-  | bmi_cat                          Missing                       855 (19.8%) 
+  | imd                              0                             208 ( 4.8%) 
 >         |
-  |                                  Underweight                   392 ( 9.1%) 
+  |                                  1                             846 (19.4%) 
 >         |
-  |                                  Healthy range                 841 (19.4%) 
+  |                                  2                             809 (18.6%) 
 >         |
-  |                                  Overweight                    820 (19.0%) 
+  |                                  3                             822 (18.9%) 
 >         |
-  |                                  Obese                         1,186 (27.4%
+  |                                  4                             845 (19.4%) 
+>         |
+  |                                  5                             825 (18.9%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | smoking                          Never smoked                  470 (10.8%) 
+>         |
+  |                                  Current smoker                892 (20.5%) 
+>         |
+  |                                  Ex-smoker                     632 (14.5%) 
+>         |
+  |                                  Unknown                       2,361 (54.2%
 > )       |
-  |                                  Morbidly obese                230 ( 5.3%) 
+  |----------------------------------------------------------------------------
+> --------|
+  | time_ra                                                        55.52711 (31
+> .66927) |
+  |----------------------------------------------------------------------------
+> --------|
+  | bmi_cat                          Missing                       855 (19.6%) 
+>         |
+  |                                  Underweight                   409 ( 9.4%) 
+>         |
+  |                                  Healthy range                 831 (19.1%) 
+>         |
+  |                                  Overweight                    861 (19.8%) 
+>         |
+  |                                  Obese                         1,153 (26.5%
+> )       |
+  |                                  Morbidly obese                246 ( 5.6%) 
 >         |
   +----------------------------------------------------------------------------
 > --------+
@@ -1336,26 +1411,26 @@ Data are presented as mean (SD) for continuous measures, and n (%) for categori
  
 file /tmp/St00011.000003 saved
 file ./output/tables/characteristics_strata2019.csv saved
-(4,681 observations deleted)
+(4,901 observations deleted)
 
   +--------------------------------------------+
   | factor                           N_1   m_1 |
   |--------------------------------------------|
-  | age_cat                          246    73 |
+  | age_cat                           73    26 |
   |--------------------------------------------|
-  | male                             319     0 |
+  | male                              99     0 |
   |--------------------------------------------|
-  | Rural Urban in five categories   319     0 |
+  | Rural Urban in five categories    99     0 |
   |--------------------------------------------|
-  | prescribed_biologics             319     0 |
+  | prescribed_biologics              99     0 |
   |--------------------------------------------|
-  | imd                              319     0 |
+  | imd                               99     0 |
   |--------------------------------------------|
-  | smoking                          319     0 |
+  | smoking                           99     0 |
   |--------------------------------------------|
-  | time_ra                          131   188 |
+  | time_ra                           37    62 |
   |--------------------------------------------|
-  | bmi_cat                          319     0 |
+  | bmi_cat                           99     0 |
   +--------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
@@ -1365,83 +1440,83 @@ file ./output/tables/characteristics_strata2019.csv saved
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  |                                                                N=319       
+  |                                                                N=99        
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  | age_cat                          18 - 40 years                 87 (35.4%)  
+  | age_cat                          18 - 40 years                 27 (37%)    
 >         |
-  |                                  41 - 60 years                 83 (33.7%)  
+  |                                  41 - 60 years                 29 (40%)    
 >         |
-  |                                  61 - 80 years                 61 (24.8%)  
+  |                                  61 - 80 years                 14 (19%)    
 >         |
-  |                                  >80 years                     15 ( 6.1%)  
->         |
-  |----------------------------------------------------------------------------
-> --------|
-  | male                             Female                        162 (50.8%) 
->         |
-  |                                  Male                          157 (49.2%) 
+  |                                  >80 years                     3 ( 4%)     
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  | Rural Urban in five categories   Urban major conurbation       42 (13.2%)  
+  | male                             Female                        56 (57%)    
 >         |
-  |                                  Urban minor conurbation       42 (13.2%)  
->         |
-  |                                  Urban city and town           78 (24.5%)  
->         |
-  |                                  Rural town and fringe         75 (23.5%)  
->         |
-  |                                  Rural village and dispersed   82 (25.7%)  
+  |                                  Male                          43 (43%)    
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  | prescribed_biologics             0                             157 (49.2%) 
+  | Rural Urban in five categories   Urban major conurbation       15 (15%)    
 >         |
-  |                                  1                             162 (50.8%) 
+  |                                  Urban minor conurbation       5 ( 5%)     
 >         |
-  |----------------------------------------------------------------------------
-> --------|
-  | imd                              0                             16 ( 5.0%)  
+  |                                  Urban city and town           29 (29%)    
 >         |
-  |                                  1                             65 (20.4%)  
+  |                                  Rural town and fringe         25 (25%)    
 >         |
-  |                                  2                             54 (16.9%)  
->         |
-  |                                  3                             65 (20.4%)  
->         |
-  |                                  4                             56 (17.6%)  
->         |
-  |                                  5                             63 (19.7%)  
+  |                                  Rural village and dispersed   25 (25%)    
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  | smoking                          Never smoked                  26 ( 8.2%)  
+  | prescribed_biologics             0                             54 (55%)    
 >         |
-  |                                  Current smoker                74 (23.2%)  
->         |
-  |                                  Ex-smoker                     40 (12.5%)  
->         |
-  |                                  Unknown                       179 (56.1%) 
+  |                                  1                             45 (45%)    
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  | time_ra                                                        55.44154 (32
-> .58146) |
+  | imd                              0                             5 ( 5%)     
+>         |
+  |                                  1                             16 (16%)    
+>         |
+  |                                  2                             14 (14%)    
+>         |
+  |                                  3                             22 (22%)    
+>         |
+  |                                  4                             22 (22%)    
+>         |
+  |                                  5                             20 (20%)    
+>         |
   |----------------------------------------------------------------------------
 > --------|
-  | bmi_cat                          Missing                       59 (18.5%)  
+  | smoking                          Never smoked                  10 (10%)    
 >         |
-  |                                  Underweight                   30 ( 9.4%)  
+  |                                  Current smoker                17 (17%)    
 >         |
-  |                                  Healthy range                 62 (19.4%)  
+  |                                  Ex-smoker                     17 (17%)    
 >         |
-  |                                  Overweight                    59 (18.5%)  
+  |                                  Unknown                       55 (56%)    
 >         |
-  |                                  Obese                         92 (28.8%)  
+  |----------------------------------------------------------------------------
+> --------|
+  | time_ra                                                        62.09172 (26
+> .58338) |
+  |----------------------------------------------------------------------------
+> --------|
+  | bmi_cat                          Missing                       19 (19%)    
 >         |
-  |                                  Morbidly obese                17 ( 5.3%)  
+  |                                  Underweight                   7 ( 7%)     
+>         |
+  |                                  Healthy range                 21 (21%)    
+>         |
+  |                                  Overweight                    18 (18%)    
+>         |
+  |                                  Obese                         28 (28%)    
+>         |
+  |                                  Morbidly obese                6 ( 6%)     
 >         |
   +----------------------------------------------------------------------------
 > --------+
@@ -1449,26 +1524,26 @@ Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
 file /tmp/St00011.000003 saved
-(4,983 observations deleted)
+(4,303 observations deleted)
 
   +--------------------------------------------+
   | factor                           N_1   m_1 |
   |--------------------------------------------|
-  | age_cat                           16     1 |
+  | age_cat                          572   125 |
   |--------------------------------------------|
-  | male                              17     0 |
+  | male                             697     0 |
   |--------------------------------------------|
-  | Rural Urban in five categories    17     0 |
+  | Rural Urban in five categories   697     0 |
   |--------------------------------------------|
-  | prescribed_biologics              17     0 |
+  | prescribed_biologics             697     0 |
   |--------------------------------------------|
-  | imd                               17     0 |
+  | imd                              697     0 |
   |--------------------------------------------|
-  | smoking                           17     0 |
+  | smoking                          697     0 |
   |--------------------------------------------|
-  | time_ra                            6    11 |
+  | time_ra                          295   402 |
   |--------------------------------------------|
-  | bmi_cat                           17     0 |
+  | bmi_cat                          697     0 |
   +--------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
@@ -1478,79 +1553,83 @@ file /tmp/St00011.000003 saved
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  |                                                                N=17        
+  |                                                                N=697       
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  | age_cat                          18 - 40 years                 7 (44%)     
+  | age_cat                          18 - 40 years                 207 (36.2%) 
 >         |
-  |                                  41 - 60 years                 5 (31%)     
+  |                                  41 - 60 years                 206 (36.0%) 
 >         |
-  |                                  61 - 80 years                 3 (19%)     
+  |                                  61 - 80 years                 137 (24.0%) 
 >         |
-  |                                  >80 years                     1 ( 6%)     
->         |
-  |----------------------------------------------------------------------------
-> --------|
-  | male                             Female                        7 (41%)     
->         |
-  |                                  Male                          10 (59%)    
+  |                                  >80 years                     22 ( 3.8%)  
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  | Rural Urban in five categories   Urban major conurbation       1 ( 6%)     
+  | male                             Female                        360 (51.6%) 
 >         |
-  |                                  Urban minor conurbation       3 (18%)     
->         |
-  |                                  Urban city and town           3 (18%)     
->         |
-  |                                  Rural town and fringe         3 (18%)     
->         |
-  |                                  Rural village and dispersed   7 (41%)     
+  |                                  Male                          337 (48.4%) 
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  | prescribed_biologics             0                             7 (41%)     
+  | Rural Urban in five categories   Urban major conurbation       85 (12.2%)  
 >         |
-  |                                  1                             10 (59%)    
+  |                                  Urban minor conurbation       82 (11.8%)  
 >         |
-  |----------------------------------------------------------------------------
-> --------|
-  | imd                              1                             3 (18%)     
+  |                                  Urban city and town           151 (21.7%) 
 >         |
-  |                                  2                             3 (18%)     
+  |                                  Rural town and fringe         201 (28.8%) 
 >         |
-  |                                  3                             6 (35%)     
->         |
-  |                                  4                             1 ( 6%)     
->         |
-  |                                  5                             4 (24%)     
+  |                                  Rural village and dispersed   178 (25.5%) 
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  | smoking                          Current smoker                3 (18%)     
+  | prescribed_biologics             0                             351 (50.4%) 
 >         |
-  |                                  Ex-smoker                     3 (18%)     
->         |
-  |                                  Unknown                       11 (65%)    
+  |                                  1                             346 (49.6%) 
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  | time_ra                                                        56.56765 (21
-> .93948) |
+  | imd                              0                             23 ( 3.3%)  
+>         |
+  |                                  1                             137 (19.7%) 
+>         |
+  |                                  2                             141 (20.2%) 
+>         |
+  |                                  3                             134 (19.2%) 
+>         |
+  |                                  4                             128 (18.4%) 
+>         |
+  |                                  5                             134 (19.2%) 
+>         |
   |----------------------------------------------------------------------------
 > --------|
-  | bmi_cat                          Missing                       3 (18%)     
+  | smoking                          Never smoked                  79 (11.3%)  
 >         |
-  |                                  Underweight                   2 (12%)     
+  |                                  Current smoker                132 (18.9%) 
 >         |
-  |                                  Healthy range                 4 (24%)     
+  |                                  Ex-smoker                     89 (12.8%)  
 >         |
-  |                                  Overweight                    3 (18%)     
+  |                                  Unknown                       397 (57.0%) 
 >         |
-  |                                  Obese                         2 (12%)     
+  |----------------------------------------------------------------------------
+> --------|
+  | time_ra                                                        51.67876 (31
+> .79217) |
+  |----------------------------------------------------------------------------
+> --------|
+  | bmi_cat                          Missing                       154 (22.1%) 
 >         |
-  |                                  Morbidly obese                3 (18%)     
+  |                                  Underweight                   61 ( 8.8%)  
+>         |
+  |                                  Healthy range                 115 (16.5%) 
+>         |
+  |                                  Overweight                    124 (17.8%) 
+>         |
+  |                                  Obese                         201 (28.8%) 
+>         |
+  |                                  Morbidly obese                42 ( 6.0%)  
 >         |
   +----------------------------------------------------------------------------
 > --------+
@@ -1558,26 +1637,251 @@ Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
 file /tmp/St00011.000003 saved
-(2,110 observations deleted)
+file ./output/tables/characteristics_ra_hosp_2019.csv saved
+(4,676 observations deleted)
+
+  +--------------------------------------------+
+  | factor                           N_1   m_1 |
+  |--------------------------------------------|
+  | age_cat                          254    70 |
+  |--------------------------------------------|
+  | male                             324     0 |
+  |--------------------------------------------|
+  | Rural Urban in five categories   324     0 |
+  |--------------------------------------------|
+  | prescribed_biologics             324     0 |
+  |--------------------------------------------|
+  | imd                              324     0 |
+  |--------------------------------------------|
+  | smoking                          324     0 |
+  |--------------------------------------------|
+  | time_ra                          142   182 |
+  |--------------------------------------------|
+  | bmi_cat                          324     0 |
+  +--------------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------
+> --------+
+  |                                                                Total       
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  |                                                                N=324       
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | age_cat                          18 - 40 years                 83 (32.7%)  
+>         |
+  |                                  41 - 60 years                 102 (40.2%) 
+>         |
+  |                                  61 - 80 years                 49 (19.3%)  
+>         |
+  |                                  >80 years                     20 ( 7.9%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | male                             Female                        163 (50.3%) 
+>         |
+  |                                  Male                          161 (49.7%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | Rural Urban in five categories   Urban major conurbation       49 (15.1%)  
+>         |
+  |                                  Urban minor conurbation       48 (14.8%)  
+>         |
+  |                                  Urban city and town           73 (22.5%)  
+>         |
+  |                                  Rural town and fringe         70 (21.6%)  
+>         |
+  |                                  Rural village and dispersed   84 (25.9%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | prescribed_biologics             0                             172 (53.1%) 
+>         |
+  |                                  1                             152 (46.9%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | imd                              0                             16 ( 4.9%)  
+>         |
+  |                                  1                             70 (21.6%)  
+>         |
+  |                                  2                             61 (18.8%)  
+>         |
+  |                                  3                             61 (18.8%)  
+>         |
+  |                                  4                             66 (20.4%)  
+>         |
+  |                                  5                             50 (15.4%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | smoking                          Never smoked                  41 (12.7%)  
+>         |
+  |                                  Current smoker                59 (18.2%)  
+>         |
+  |                                  Ex-smoker                     45 (13.9%)  
+>         |
+  |                                  Unknown                       179 (55.2%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | time_ra                                                        57.01532 (33
+> .41471) |
+  |----------------------------------------------------------------------------
+> --------|
+  | bmi_cat                          Missing                       56 (17.3%)  
+>         |
+  |                                  Underweight                   32 ( 9.9%)  
+>         |
+  |                                  Healthy range                 58 (17.9%)  
+>         |
+  |                                  Overweight                    65 (20.1%)  
+>         |
+  |                                  Obese                         96 (29.6%)  
+>         |
+  |                                  Morbidly obese                17 ( 5.2%)  
+>         |
+  +----------------------------------------------------------------------------
+> --------+
+Data are presented as mean (SD) for continuous measures, and n (%) for categori
+> cal measures.
+ 
+file /tmp/St00011.000003 saved
+(4,977 observations deleted)
+
+  +--------------------------------------------+
+  | factor                           N_1   m_1 |
+  |--------------------------------------------|
+  | age_cat                           16     7 |
+  |--------------------------------------------|
+  | male                              23     0 |
+  |--------------------------------------------|
+  | Rural Urban in five categories    23     0 |
+  |--------------------------------------------|
+  | prescribed_biologics              23     0 |
+  |--------------------------------------------|
+  | imd                               23     0 |
+  |--------------------------------------------|
+  | smoking                           23     0 |
+  |--------------------------------------------|
+  | time_ra                           12    11 |
+  |--------------------------------------------|
+  | bmi_cat                           23     0 |
+  +--------------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------
+> --------+
+  |                                                                Total       
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  |                                                                N=23        
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | age_cat                          18 - 40 years                 5 (31%)     
+>         |
+  |                                  41 - 60 years                 10 (62%)    
+>         |
+  |                                  61 - 80 years                 1 ( 6%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | male                             Female                        11 (48%)    
+>         |
+  |                                  Male                          12 (52%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | Rural Urban in five categories   Urban major conurbation       7 (30%)     
+>         |
+  |                                  Urban minor conurbation       1 ( 4%)     
+>         |
+  |                                  Urban city and town           8 (35%)     
+>         |
+  |                                  Rural town and fringe         1 ( 4%)     
+>         |
+  |                                  Rural village and dispersed   6 (26%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | prescribed_biologics             0                             12 (52%)    
+>         |
+  |                                  1                             11 (48%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | imd                              0                             1 ( 4%)     
+>         |
+  |                                  1                             6 (26%)     
+>         |
+  |                                  2                             5 (22%)     
+>         |
+  |                                  3                             4 (17%)     
+>         |
+  |                                  4                             4 (17%)     
+>         |
+  |                                  5                             3 (13%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | smoking                          Never smoked                  2 ( 9%)     
+>         |
+  |                                  Current smoker                2 ( 9%)     
+>         |
+  |                                  Ex-smoker                     4 (17%)     
+>         |
+  |                                  Unknown                       15 (65%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | time_ra                                                        58.45608 (37
+> .27805) |
+  |----------------------------------------------------------------------------
+> --------|
+  | bmi_cat                          Missing                       3 (13%)     
+>         |
+  |                                  Underweight                   2 ( 9%)     
+>         |
+  |                                  Healthy range                 6 (26%)     
+>         |
+  |                                  Overweight                    3 (13%)     
+>         |
+  |                                  Obese                         6 (26%)     
+>         |
+  |                                  Morbidly obese                3 (13%)     
+>         |
+  +----------------------------------------------------------------------------
+> --------+
+Data are presented as mean (SD) for continuous measures, and n (%) for categori
+> cal measures.
+ 
+file /tmp/St00011.000003 saved
+(2,073 observations deleted)
 
   +------------------------------------------------+
   | factor                             N_1     m_1 |
   |------------------------------------------------|
-  | age_cat                          2,236     654 |
+  | age_cat                          2,295     632 |
   |------------------------------------------------|
-  | male                             2,890       0 |
+  | male                             2,927       0 |
   |------------------------------------------------|
-  | Rural Urban in five categories   2,890       0 |
+  | Rural Urban in five categories   2,927       0 |
   |------------------------------------------------|
-  | prescribed_biologics             2,890       0 |
+  | prescribed_biologics             2,927       0 |
   |------------------------------------------------|
-  | imd                              2,890       0 |
+  | imd                              2,927       0 |
   |------------------------------------------------|
-  | smoking                          2,890       0 |
+  | smoking                          2,927       0 |
   |------------------------------------------------|
-  | time_ra                          1,303   1,587 |
+  | time_ra                          1,303   1,624 |
   |------------------------------------------------|
-  | bmi_cat                          2,889       1 |
+  | bmi_cat                          2,927       0 |
   +------------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
@@ -1587,83 +1891,83 @@ file /tmp/St00011.000003 saved
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  |                                                                N=2,890     
+  |                                                                N=2,927     
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  | age_cat                          18 - 40 years                 745 (33.3%) 
+  | age_cat                          18 - 40 years                 853 (37.2%) 
 >         |
-  |                                  41 - 60 years                 781 (34.9%) 
+  |                                  41 - 60 years                 774 (33.7%) 
 >         |
-  |                                  61 - 80 years                 551 (24.6%) 
+  |                                  61 - 80 years                 547 (23.8%) 
 >         |
-  |                                  >80 years                     159 ( 7.1%) 
+  |                                  >80 years                     121 ( 5.3%) 
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  | male                             Female                        1,510 (52.2%
+  | male                             Female                        1,529 (52.2%
 > )       |
-  |                                  Male                          1,380 (47.8%
-> )       |
-  |----------------------------------------------------------------------------
-> --------|
-  | Rural Urban in five categories   Urban major conurbation       329 (11.4%) 
->         |
-  |                                  Urban minor conurbation       404 (14.0%) 
->         |
-  |                                  Urban city and town           737 (25.5%) 
->         |
-  |                                  Rural town and fringe         681 (23.6%) 
->         |
-  |                                  Rural village and dispersed   739 (25.6%) 
->         |
-  |----------------------------------------------------------------------------
-> --------|
-  | prescribed_biologics             0                             1,442 (49.9%
-> )       |
-  |                                  1                             1,448 (50.1%
+  |                                  Male                          1,398 (47.8%
 > )       |
   |----------------------------------------------------------------------------
 > --------|
-  | imd                              0                             128 ( 4.4%) 
+  | Rural Urban in five categories   Urban major conurbation       364 (12.4%) 
 >         |
-  |                                  1                             524 (18.1%) 
+  |                                  Urban minor conurbation       341 (11.7%) 
 >         |
-  |                                  2                             605 (20.9%) 
+  |                                  Urban city and town           739 (25.2%) 
 >         |
-  |                                  3                             555 (19.2%) 
+  |                                  Rural town and fringe         741 (25.3%) 
 >         |
-  |                                  4                             557 (19.3%) 
->         |
-  |                                  5                             521 (18.0%) 
+  |                                  Rural village and dispersed   742 (25.4%) 
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  | smoking                          Never smoked                  278 ( 9.6%) 
->         |
-  |                                  Current smoker                565 (19.6%) 
->         |
-  |                                  Ex-smoker                     431 (14.9%) 
->         |
-  |                                  Unknown                       1,616 (55.9%
+  | prescribed_biologics             0                             1,472 (50.3%
+> )       |
+  |                                  1                             1,455 (49.7%
 > )       |
   |----------------------------------------------------------------------------
 > --------|
-  | time_ra                                                        53.84351 (32
-> .38185) |
+  | imd                              0                             125 ( 4.3%) 
+>         |
+  |                                  1                             573 (19.6%) 
+>         |
+  |                                  2                             551 (18.8%) 
+>         |
+  |                                  3                             570 (19.5%) 
+>         |
+  |                                  4                             553 (18.9%) 
+>         |
+  |                                  5                             555 (19.0%) 
+>         |
   |----------------------------------------------------------------------------
 > --------|
-  | bmi_cat                          Missing                       584 (20.2%) 
+  | smoking                          Never smoked                  299 (10.2%) 
 >         |
-  |                                  Underweight                   272 ( 9.4%) 
+  |                                  Current smoker                606 (20.7%) 
 >         |
-  |                                  Healthy range                 540 (18.7%) 
+  |                                  Ex-smoker                     427 (14.6%) 
 >         |
-  |                                  Overweight                    557 (19.3%) 
+  |                                  Unknown                       1,595 (54.5%
+> )       |
+  |----------------------------------------------------------------------------
+> --------|
+  | time_ra                                                        55.27816 (31
+> .77625) |
+  |----------------------------------------------------------------------------
+> --------|
+  | bmi_cat                          Missing                       592 (20.2%) 
 >         |
-  |                                  Obese                         783 (27.1%) 
+  |                                  Underweight                   281 ( 9.6%) 
 >         |
-  |                                  Morbidly obese                153 ( 5.3%) 
+  |                                  Healthy range                 554 (18.9%) 
+>         |
+  |                                  Overweight                    573 (19.6%) 
+>         |
+  |                                  Obese                         764 (26.1%) 
+>         |
+  |                                  Morbidly obese                163 ( 5.6%) 
 >         |
   +----------------------------------------------------------------------------
 > --------+
@@ -1672,246 +1976,471 @@ Data are presented as mean (SD) for continuous measures, and n (%) for categori
  
 file /tmp/St00011.000003 saved
 file ./output/tables/characteristics_strata2020.csv saved
-(4,821 observations deleted)
+(4,903 observations deleted)
 
   +--------------------------------------------+
   | factor                           N_1   m_1 |
   |--------------------------------------------|
-  | age_cat                          131    48 |
+  | age_cat                           76    21 |
   |--------------------------------------------|
-  | male                             179     0 |
+  | male                              97     0 |
   |--------------------------------------------|
-  | Rural Urban in five categories   179     0 |
+  | Rural Urban in five categories    97     0 |
   |--------------------------------------------|
-  | prescribed_biologics             179     0 |
+  | prescribed_biologics              97     0 |
   |--------------------------------------------|
-  | imd                              179     0 |
+  | imd                               97     0 |
   |--------------------------------------------|
-  | smoking                          179     0 |
+  | smoking                           97     0 |
   |--------------------------------------------|
-  | time_ra                           77   102 |
+  | time_ra                           47    50 |
   |--------------------------------------------|
-  | bmi_cat                          179     0 |
+  | bmi_cat                           97     0 |
   +--------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
   +----------------------------------------------------------------------------
-> -------+
+> --------+
   |                                                                Total       
->        |
+>         |
   |----------------------------------------------------------------------------
-> -------|
-  |                                                                N=179       
->        |
+> --------|
+  |                                                                N=97        
+>         |
   |----------------------------------------------------------------------------
-> -------|
-  | age_cat                          18 - 40 years                 38 (29.0%)  
->        |
-  |                                  41 - 60 years                 50 (38.2%)  
->        |
-  |                                  61 - 80 years                 36 (27.5%)  
->        |
-  |                                  >80 years                     7 ( 5.3%)   
->        |
+> --------|
+  | age_cat                          18 - 40 years                 23 (30%)    
+>         |
+  |                                  41 - 60 years                 30 (39%)    
+>         |
+  |                                  61 - 80 years                 16 (21%)    
+>         |
+  |                                  >80 years                     7 ( 9%)     
+>         |
   |----------------------------------------------------------------------------
-> -------|
-  | male                             Female                        89 (49.7%)  
->        |
-  |                                  Male                          90 (50.3%)  
->        |
+> --------|
+  | male                             Female                        49 (51%)    
+>         |
+  |                                  Male                          48 (49%)    
+>         |
   |----------------------------------------------------------------------------
-> -------|
-  | Rural Urban in five categories   Urban major conurbation       20 (11.2%)  
->        |
-  |                                  Urban minor conurbation       22 (12.3%)  
->        |
-  |                                  Urban city and town           45 (25.1%)  
->        |
-  |                                  Rural town and fringe         40 (22.3%)  
->        |
-  |                                  Rural village and dispersed   52 (29.1%)  
->        |
+> --------|
+  | Rural Urban in five categories   Urban major conurbation       16 (16%)    
+>         |
+  |                                  Urban minor conurbation       13 (13%)    
+>         |
+  |                                  Urban city and town           24 (25%)    
+>         |
+  |                                  Rural town and fringe         24 (25%)    
+>         |
+  |                                  Rural village and dispersed   20 (21%)    
+>         |
   |----------------------------------------------------------------------------
-> -------|
-  | prescribed_biologics             0                             89 (49.7%)  
->        |
-  |                                  1                             90 (50.3%)  
->        |
+> --------|
+  | prescribed_biologics             0                             49 (51%)    
+>         |
+  |                                  1                             48 (49%)    
+>         |
   |----------------------------------------------------------------------------
-> -------|
-  | imd                              0                             9 ( 5.0%)   
->        |
-  |                                  1                             37 (20.7%)  
->        |
-  |                                  2                             44 (24.6%)  
->        |
-  |                                  3                             35 (19.6%)  
->        |
-  |                                  4                             22 (12.3%)  
->        |
-  |                                  5                             32 (17.9%)  
->        |
+> --------|
+  | imd                              0                             3 ( 3%)     
+>         |
+  |                                  1                             21 (22%)    
+>         |
+  |                                  2                             13 (13%)    
+>         |
+  |                                  3                             12 (12%)    
+>         |
+  |                                  4                             29 (30%)    
+>         |
+  |                                  5                             19 (20%)    
+>         |
   |----------------------------------------------------------------------------
-> -------|
-  | smoking                          Never smoked                  22 (12.3%)  
->        |
-  |                                  Current smoker                34 (19.0%)  
->        |
-  |                                  Ex-smoker                     20 (11.2%)  
->        |
-  |                                  Unknown                       103 (57.5%) 
->        |
+> --------|
+  | smoking                          Never smoked                  7 ( 7%)     
+>         |
+  |                                  Current smoker                14 (14%)    
+>         |
+  |                                  Ex-smoker                     20 (21%)    
+>         |
+  |                                  Unknown                       56 (58%)    
+>         |
   |----------------------------------------------------------------------------
-> -------|
-  | time_ra                                                        54.67118 (31
-> .2279) |
+> --------|
+  | time_ra                                                        62.53444 (31
+> .05111) |
   |----------------------------------------------------------------------------
-> -------|
-  | bmi_cat                          Missing                       33 (18.4%)  
->        |
-  |                                  Underweight                   9 ( 5.0%)   
->        |
-  |                                  Healthy range                 28 (15.6%)  
->        |
-  |                                  Overweight                    43 (24.0%)  
->        |
-  |                                  Obese                         52 (29.1%)  
->        |
-  |                                  Morbidly obese                14 ( 7.8%)  
->        |
+> --------|
+  | bmi_cat                          Missing                       20 (21%)    
+>         |
+  |                                  Underweight                   11 (11%)    
+>         |
+  |                                  Healthy range                 21 (22%)    
+>         |
+  |                                  Overweight                    14 (14%)    
+>         |
+  |                                  Obese                         27 (28%)    
+>         |
+  |                                  Morbidly obese                4 ( 4%)     
+>         |
   +----------------------------------------------------------------------------
-> -------+
+> --------+
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
 file /tmp/St00011.000003 saved
-(4,990 observations deleted)
+(4,296 observations deleted)
 
   +--------------------------------------------+
   | factor                           N_1   m_1 |
   |--------------------------------------------|
-  | age_cat                            7     3 |
+  | age_cat                          551   153 |
   |--------------------------------------------|
-  | male                              10     0 |
+  | male                             704     0 |
   |--------------------------------------------|
-  | Rural Urban in five categories    10     0 |
+  | Rural Urban in five categories   704     0 |
   |--------------------------------------------|
-  | prescribed_biologics              10     0 |
+  | prescribed_biologics             704     0 |
   |--------------------------------------------|
-  | imd                               10     0 |
+  | imd                              704     0 |
   |--------------------------------------------|
-  | smoking                           10     0 |
+  | smoking                          704     0 |
   |--------------------------------------------|
-  | time_ra                            5     5 |
+  | time_ra                          314   390 |
   |--------------------------------------------|
-  | bmi_cat                           10     0 |
+  | bmi_cat                          704     0 |
   +--------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
   +----------------------------------------------------------------------------
-> ------+
+> --------+
   |                                                                Total       
->       |
+>         |
   |----------------------------------------------------------------------------
-> ------|
-  |                                                                N=10        
->       |
+> --------|
+  |                                                                N=704       
+>         |
   |----------------------------------------------------------------------------
-> ------|
-  | age_cat                          18 - 40 years                 2 (29%)     
->       |
-  |                                  41 - 60 years                 3 (43%)     
->       |
-  |                                  61 - 80 years                 1 (14%)     
->       |
-  |                                  >80 years                     1 (14%)     
->       |
+> --------|
+  | age_cat                          18 - 40 years                 202 (36.7%) 
+>         |
+  |                                  41 - 60 years                 181 (32.8%) 
+>         |
+  |                                  61 - 80 years                 134 (24.3%) 
+>         |
+  |                                  >80 years                     34 ( 6.2%)  
+>         |
   |----------------------------------------------------------------------------
-> ------|
-  | male                             Female                        4 (40%)     
->       |
-  |                                  Male                          6 (60%)     
->       |
+> --------|
+  | male                             Female                        357 (50.7%) 
+>         |
+  |                                  Male                          347 (49.3%) 
+>         |
   |----------------------------------------------------------------------------
-> ------|
-  | Rural Urban in five categories   Urban major conurbation       2 (20%)     
->       |
-  |                                  Urban minor conurbation       1 (10%)     
->       |
-  |                                  Urban city and town           1 (10%)     
->       |
-  |                                  Rural town and fringe         1 (10%)     
->       |
-  |                                  Rural village and dispersed   5 (50%)     
->       |
+> --------|
+  | Rural Urban in five categories   Urban major conurbation       88 (12.5%)  
+>         |
+  |                                  Urban minor conurbation       83 (11.8%)  
+>         |
+  |                                  Urban city and town           175 (24.9%) 
+>         |
+  |                                  Rural town and fringe         193 (27.4%) 
+>         |
+  |                                  Rural village and dispersed   165 (23.4%) 
+>         |
   |----------------------------------------------------------------------------
-> ------|
-  | prescribed_biologics             0                             3 (30%)     
->       |
-  |                                  1                             7 (70%)     
->       |
+> --------|
+  | prescribed_biologics             0                             333 (47.3%) 
+>         |
+  |                                  1                             371 (52.7%) 
+>         |
   |----------------------------------------------------------------------------
-> ------|
-  | imd                              1                             2 (20%)     
->       |
-  |                                  2                             2 (20%)     
->       |
-  |                                  3                             2 (20%)     
->       |
-  |                                  4                             2 (20%)     
->       |
-  |                                  5                             2 (20%)     
->       |
+> --------|
+  | imd                              0                             33 ( 4.7%)  
+>         |
+  |                                  1                             129 (18.3%) 
+>         |
+  |                                  2                             140 (19.9%) 
+>         |
+  |                                  3                             134 (19.0%) 
+>         |
+  |                                  4                             140 (19.9%) 
+>         |
+  |                                  5                             128 (18.2%) 
+>         |
   |----------------------------------------------------------------------------
-> ------|
-  | smoking                          Never smoked                  1 (10%)     
->       |
-  |                                  Current smoker                2 (20%)     
->       |
-  |                                  Ex-smoker                     4 (40%)     
->       |
-  |                                  Unknown                       3 (30%)     
->       |
+> --------|
+  | smoking                          Never smoked                  76 (10.8%)  
+>         |
+  |                                  Current smoker                155 (22.0%) 
+>         |
+  |                                  Ex-smoker                     98 (13.9%)  
+>         |
+  |                                  Unknown                       375 (53.3%) 
+>         |
   |----------------------------------------------------------------------------
-> ------|
-  | time_ra                                                        49.38809 (24
-> .252) |
+> --------|
+  | time_ra                                                        55.41713 (30
+> .75805) |
   |----------------------------------------------------------------------------
-> ------|
-  | bmi_cat                          Underweight                   1 (10%)     
->       |
-  |                                  Overweight                    4 (40%)     
->       |
-  |                                  Obese                         5 (50%)     
->       |
+> --------|
+  | bmi_cat                          Missing                       147 (20.9%) 
+>         |
+  |                                  Underweight                   59 ( 8.4%)  
+>         |
+  |                                  Healthy range                 129 (18.3%) 
+>         |
+  |                                  Overweight                    140 (19.9%) 
+>         |
+  |                                  Obese                         192 (27.3%) 
+>         |
+  |                                  Morbidly obese                37 ( 5.3%)  
+>         |
   +----------------------------------------------------------------------------
-> ------+
+> --------+
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-(note: variable Total was str17, now str18 to accommodate using data's
-       values)
 file /tmp/St00011.000003 saved
-(3,267 observations deleted)
+file ./output/tables/characteristics_ra_hosp_2020.csv saved
+(4,804 observations deleted)
+
+  +--------------------------------------------+
+  | factor                           N_1   m_1 |
+  |--------------------------------------------|
+  | age_cat                          158    38 |
+  |--------------------------------------------|
+  | male                             196     0 |
+  |--------------------------------------------|
+  | Rural Urban in five categories   196     0 |
+  |--------------------------------------------|
+  | prescribed_biologics             196     0 |
+  |--------------------------------------------|
+  | imd                              196     0 |
+  |--------------------------------------------|
+  | smoking                          196     0 |
+  |--------------------------------------------|
+  | time_ra                           96   100 |
+  |--------------------------------------------|
+  | bmi_cat                          196     0 |
+  +--------------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------
+> --------+
+  |                                                                Total       
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  |                                                                N=196       
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | age_cat                          18 - 40 years                 62 (39.2%)  
+>         |
+  |                                  41 - 60 years                 60 (38.0%)  
+>         |
+  |                                  61 - 80 years                 29 (18.4%)  
+>         |
+  |                                  >80 years                     7 ( 4.4%)   
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | male                             Female                        105 (53.6%) 
+>         |
+  |                                  Male                          91 (46.4%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | Rural Urban in five categories   Urban major conurbation       21 (10.7%)  
+>         |
+  |                                  Urban minor conurbation       21 (10.7%)  
+>         |
+  |                                  Urban city and town           57 (29.1%)  
+>         |
+  |                                  Rural town and fringe         48 (24.5%)  
+>         |
+  |                                  Rural village and dispersed   49 (25.0%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | prescribed_biologics             0                             98 (50.0%)  
+>         |
+  |                                  1                             98 (50.0%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | imd                              0                             12 ( 6.1%)  
+>         |
+  |                                  1                             32 (16.3%)  
+>         |
+  |                                  2                             35 (17.9%)  
+>         |
+  |                                  3                             43 (21.9%)  
+>         |
+  |                                  4                             36 (18.4%)  
+>         |
+  |                                  5                             38 (19.4%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | smoking                          Never smoked                  21 (10.7%)  
+>         |
+  |                                  Current smoker                44 (22.4%)  
+>         |
+  |                                  Ex-smoker                     32 (16.3%)  
+>         |
+  |                                  Unknown                       99 (50.5%)  
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | time_ra                                                        55.31973 (32
+> .30601) |
+  |----------------------------------------------------------------------------
+> --------|
+  | bmi_cat                          Missing                       42 (21.4%)  
+>         |
+  |                                  Underweight                   18 ( 9.2%)  
+>         |
+  |                                  Healthy range                 40 (20.4%)  
+>         |
+  |                                  Overweight                    31 (15.8%)  
+>         |
+  |                                  Obese                         57 (29.1%)  
+>         |
+  |                                  Morbidly obese                8 ( 4.1%)   
+>         |
+  +----------------------------------------------------------------------------
+> --------+
+Data are presented as mean (SD) for continuous measures, and n (%) for categori
+> cal measures.
+ 
+file /tmp/St00011.000003 saved
+(4,989 observations deleted)
+
+  +--------------------------------------------+
+  | factor                           N_1   m_1 |
+  |--------------------------------------------|
+  | age_cat                            8     3 |
+  |--------------------------------------------|
+  | male                              11     0 |
+  |--------------------------------------------|
+  | Rural Urban in five categories    11     0 |
+  |--------------------------------------------|
+  | prescribed_biologics              11     0 |
+  |--------------------------------------------|
+  | imd                               11     0 |
+  |--------------------------------------------|
+  | smoking                           11     0 |
+  |--------------------------------------------|
+  | time_ra                            3     8 |
+  |--------------------------------------------|
+  | bmi_cat                           11     0 |
+  +--------------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------
+> --------+
+  |                                                                Total       
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  |                                                                N=11        
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | age_cat                          18 - 40 years                 2 (25%)     
+>         |
+  |                                  41 - 60 years                 3 (38%)     
+>         |
+  |                                  61 - 80 years                 3 (38%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | male                             Female                        5 (45%)     
+>         |
+  |                                  Male                          6 (55%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | Rural Urban in five categories   Urban major conurbation       1 ( 9%)     
+>         |
+  |                                  Urban minor conurbation       3 (27%)     
+>         |
+  |                                  Urban city and town           1 ( 9%)     
+>         |
+  |                                  Rural town and fringe         2 (18%)     
+>         |
+  |                                  Rural village and dispersed   4 (36%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | prescribed_biologics             0                             8 (73%)     
+>         |
+  |                                  1                             3 (27%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | imd                              0                             2 (18%)     
+>         |
+  |                                  1                             3 (27%)     
+>         |
+  |                                  2                             1 ( 9%)     
+>         |
+  |                                  3                             3 (27%)     
+>         |
+  |                                  4                             2 (18%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | smoking                          Current smoker                3 (27%)     
+>         |
+  |                                  Ex-smoker                     4 (36%)     
+>         |
+  |                                  Unknown                       4 (36%)     
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | time_ra                                                        27.33288 (14
+> .16489) |
+  |----------------------------------------------------------------------------
+> --------|
+  | bmi_cat                          Missing                       1 ( 9%)     
+>         |
+  |                                  Underweight                   1 ( 9%)     
+>         |
+  |                                  Healthy range                 5 (45%)     
+>         |
+  |                                  Overweight                    3 (27%)     
+>         |
+  |                                  Obese                         1 ( 9%)     
+>         |
+  +----------------------------------------------------------------------------
+> --------+
+Data are presented as mean (SD) for continuous measures, and n (%) for categori
+> cal measures.
+ 
+file /tmp/St00011.000003 saved
+(3,238 observations deleted)
 
   +----------------------------------------------+
   | factor                             N_1   m_1 |
   |----------------------------------------------|
-  | age_cat                          1,346   387 |
+  | age_cat                          1,358   404 |
   |----------------------------------------------|
-  | male                             1,733     0 |
+  | male                             1,762     0 |
   |----------------------------------------------|
-  | Rural Urban in five categories   1,733     0 |
+  | Rural Urban in five categories   1,762     0 |
   |----------------------------------------------|
-  | prescribed_biologics             1,733     0 |
+  | prescribed_biologics             1,762     0 |
   |----------------------------------------------|
-  | imd                              1,733     0 |
+  | imd                              1,762     0 |
   |----------------------------------------------|
-  | smoking                          1,733     0 |
+  | smoking                          1,762     0 |
   |----------------------------------------------|
-  | time_ra                            758   975 |
+  | time_ra                            786   976 |
   |----------------------------------------------|
-  | bmi_cat                          1,732     1 |
+  | bmi_cat                          1,762     0 |
   +----------------------------------------------+
    N_ ... #records used below,   m_ ... #records not used
  
@@ -1921,83 +2450,83 @@ file /tmp/St00011.000003 saved
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  |                                                                N=1,733     
+  |                                                                N=1,762     
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  | age_cat                          18 - 40 years                 429 (31.9%) 
+  | age_cat                          18 - 40 years                 480 (35.3%) 
 >         |
-  |                                  41 - 60 years                 493 (36.6%) 
+  |                                  41 - 60 years                 478 (35.2%) 
 >         |
-  |                                  61 - 80 years                 326 (24.2%) 
+  |                                  61 - 80 years                 325 (23.9%) 
 >         |
-  |                                  >80 years                     98 ( 7.3%)  
->         |
-  |----------------------------------------------------------------------------
-> --------|
-  | male                             Female                        916 (52.9%) 
->         |
-  |                                  Male                          817 (47.1%) 
+  |                                  >80 years                     75 ( 5.5%)  
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  | Rural Urban in five categories   Urban major conurbation       198 (11.4%) 
+  | male                             Female                        926 (52.6%) 
 >         |
-  |                                  Urban minor conurbation       248 (14.3%) 
->         |
-  |                                  Urban city and town           447 (25.8%) 
->         |
-  |                                  Rural town and fringe         425 (24.5%) 
->         |
-  |                                  Rural village and dispersed   415 (23.9%) 
+  |                                  Male                          836 (47.4%) 
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  | prescribed_biologics             0                             858 (49.5%) 
+  | Rural Urban in five categories   Urban major conurbation       215 (12.2%) 
 >         |
-  |                                  1                             875 (50.5%) 
+  |                                  Urban minor conurbation       214 (12.1%) 
 >         |
-  |----------------------------------------------------------------------------
-> --------|
-  | imd                              0                             81 ( 4.7%)  
+  |                                  Urban city and town           430 (24.4%) 
 >         |
-  |                                  1                             307 (17.7%) 
+  |                                  Rural town and fringe         441 (25.0%) 
 >         |
-  |                                  2                             357 (20.6%) 
->         |
-  |                                  3                             334 (19.3%) 
->         |
-  |                                  4                             341 (19.7%) 
->         |
-  |                                  5                             313 (18.1%) 
+  |                                  Rural village and dispersed   462 (26.2%) 
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  | smoking                          Never smoked                  156 ( 9.0%) 
+  | prescribed_biologics             0                             885 (50.2%) 
 >         |
-  |                                  Current smoker                350 (20.2%) 
->         |
-  |                                  Ex-smoker                     245 (14.1%) 
->         |
-  |                                  Unknown                       982 (56.7%) 
+  |                                  1                             877 (49.8%) 
 >         |
   |----------------------------------------------------------------------------
 > --------|
-  | time_ra                                                        54.41402 (32
-> .45798) |
+  | imd                              0                             65 ( 3.7%)  
+>         |
+  |                                  1                             360 (20.4%) 
+>         |
+  |                                  2                             340 (19.3%) 
+>         |
+  |                                  3                             335 (19.0%) 
+>         |
+  |                                  4                             339 (19.2%) 
+>         |
+  |                                  5                             323 (18.3%) 
+>         |
   |----------------------------------------------------------------------------
 > --------|
-  | bmi_cat                          Missing                       339 (19.6%) 
+  | smoking                          Never smoked                  175 ( 9.9%) 
 >         |
-  |                                  Underweight                   162 ( 9.4%) 
+  |                                  Current smoker                335 (19.0%) 
 >         |
-  |                                  Healthy range                 336 (19.4%) 
+  |                                  Ex-smoker                     265 (15.0%) 
 >         |
-  |                                  Overweight                    323 (18.6%) 
+  |                                  Unknown                       987 (56.0%) 
 >         |
-  |                                  Obese                         475 (27.4%) 
+  |----------------------------------------------------------------------------
+> --------|
+  | time_ra                                                        55.58903 (31
+> .12247) |
+  |----------------------------------------------------------------------------
+> --------|
+  | bmi_cat                          Missing                       351 (19.9%) 
 >         |
-  |                                  Morbidly obese                97 ( 5.6%)  
+  |                                  Underweight                   167 ( 9.5%) 
+>         |
+  |                                  Healthy range                 314 (17.8%) 
+>         |
+  |                                  Overweight                    352 (20.0%) 
+>         |
+  |                                  Obese                         476 (27.0%) 
+>         |
+  |                                  Morbidly obese                102 ( 5.8%) 
 >         |
   +----------------------------------------------------------------------------
 > --------+
@@ -2006,27 +2535,237 @@ Data are presented as mean (SD) for continuous measures, and n (%) for categori
  
 file /tmp/St00011.000003 saved
 file ./output/tables/characteristics_strata2021.csv saved
+(4,896 observations deleted)
 
-.     /* Tabulate characteristics by whether hospitalised with RA for each year
->     preserve
->     keep if ra_hosp_`i'==1
->     table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ prescribe
-> d_biologics cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) cl
-> ear
->     export delimited using ./output/tables/characteristics_ra_hosp_`i'.csv
->     restore
->     }
-> preserve
->     keep if ra_hosp_2018==1
->     table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ prescribe
-> d_biologics cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) cl
-> ear
->     export delimited using ./output/tables/characteristics_ra_hosp_2018.csv
->     restore
->     */
+  +--------------------------------------------+
+  | factor                           N_1   m_1 |
+  |--------------------------------------------|
+  | age_cat                           83    21 |
+  |--------------------------------------------|
+  | male                             104     0 |
+  |--------------------------------------------|
+  | Rural Urban in five categories   104     0 |
+  |--------------------------------------------|
+  | prescribed_biologics             104     0 |
+  |--------------------------------------------|
+  | imd                              104     0 |
+  |--------------------------------------------|
+  | smoking                          104     0 |
+  |--------------------------------------------|
+  | time_ra                           42    62 |
+  |--------------------------------------------|
+  | bmi_cat                          104     0 |
+  +--------------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------
+> -------+
+  |                                                                Total       
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  |                                                                N=104       
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | age_cat                          18 - 40 years                 35 (42%)    
+>        |
+  |                                  41 - 60 years                 22 (27%)    
+>        |
+  |                                  61 - 80 years                 23 (28%)    
+>        |
+  |                                  >80 years                     3 ( 4%)     
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | male                             Female                        59 (56.7%)  
+>        |
+  |                                  Male                          45 (43.3%)  
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | Rural Urban in five categories   Urban major conurbation       14 (13.5%)  
+>        |
+  |                                  Urban minor conurbation       14 (13.5%)  
+>        |
+  |                                  Urban city and town           27 (26.0%)  
+>        |
+  |                                  Rural town and fringe         22 (21.2%)  
+>        |
+  |                                  Rural village and dispersed   27 (26.0%)  
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | prescribed_biologics             0                             53 (51.0%)  
+>        |
+  |                                  1                             51 (49.0%)  
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | imd                              0                             4 ( 3.8%)   
+>        |
+  |                                  1                             27 (26.0%)  
+>        |
+  |                                  2                             20 (19.2%)  
+>        |
+  |                                  3                             14 (13.5%)  
+>        |
+  |                                  4                             21 (20.2%)  
+>        |
+  |                                  5                             18 (17.3%)  
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | smoking                          Never smoked                  7 ( 6.7%)   
+>        |
+  |                                  Current smoker                25 (24.0%)  
+>        |
+  |                                  Ex-smoker                     16 (15.4%)  
+>        |
+  |                                  Unknown                       56 (53.8%)  
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | time_ra                                                        61.36495 (29
+> .7199) |
+  |----------------------------------------------------------------------------
+> -------|
+  | bmi_cat                          Missing                       27 (26.0%)  
+>        |
+  |                                  Underweight                   9 ( 8.7%)   
+>        |
+  |                                  Healthy range                 18 (17.3%)  
+>        |
+  |                                  Overweight                    21 (20.2%)  
+>        |
+  |                                  Obese                         23 (22.1%)  
+>        |
+  |                                  Morbidly obese                6 ( 5.8%)   
+>        |
+  +----------------------------------------------------------------------------
+> -------+
+Data are presented as mean (SD) for continuous measures, and n (%) for categori
+> cal measures.
+ 
+file /tmp/St00011.000003 saved
+(4,304 observations deleted)
+
+  +--------------------------------------------+
+  | factor                           N_1   m_1 |
+  |--------------------------------------------|
+  | age_cat                          554   142 |
+  |--------------------------------------------|
+  | male                             696     0 |
+  |--------------------------------------------|
+  | Rural Urban in five categories   696     0 |
+  |--------------------------------------------|
+  | prescribed_biologics             696     0 |
+  |--------------------------------------------|
+  | imd                              696     0 |
+  |--------------------------------------------|
+  | smoking                          696     0 |
+  |--------------------------------------------|
+  | time_ra                          294   402 |
+  |--------------------------------------------|
+  | bmi_cat                          696     0 |
+  +--------------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------
+> -------+
+  |                                                                Total       
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  |                                                                N=696       
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | age_cat                          18 - 40 years                 213 (38.4%) 
+>        |
+  |                                  41 - 60 years                 184 (33.2%) 
+>        |
+  |                                  61 - 80 years                 131 (23.6%) 
+>        |
+  |                                  >80 years                     26 ( 4.7%)  
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | male                             Female                        379 (54.5%) 
+>        |
+  |                                  Male                          317 (45.5%) 
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | Rural Urban in five categories   Urban major conurbation       97 (13.9%)  
+>        |
+  |                                  Urban minor conurbation       78 (11.2%)  
+>        |
+  |                                  Urban city and town           172 (24.7%) 
+>        |
+  |                                  Rural town and fringe         181 (26.0%) 
+>        |
+  |                                  Rural village and dispersed   168 (24.1%) 
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | prescribed_biologics             0                             352 (50.6%) 
+>        |
+  |                                  1                             344 (49.4%) 
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | imd                              0                             38 ( 5.5%)  
+>        |
+  |                                  1                             146 (21.0%) 
+>        |
+  |                                  2                             141 (20.3%) 
+>        |
+  |                                  3                             133 (19.1%) 
+>        |
+  |                                  4                             111 (15.9%) 
+>        |
+  |                                  5                             127 (18.2%) 
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | smoking                          Never smoked                  84 (12.1%)  
+>        |
+  |                                  Current smoker                130 (18.7%) 
+>        |
+  |                                  Ex-smoker                     97 (13.9%)  
+>        |
+  |                                  Unknown                       385 (55.3%) 
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | time_ra                                                        54.90746 (33
+> .9524) |
+  |----------------------------------------------------------------------------
+> -------|
+  | bmi_cat                          Missing                       146 (21.0%) 
+>        |
+  |                                  Underweight                   58 ( 8.3%)  
+>        |
+  |                                  Healthy range                 138 (19.8%) 
+>        |
+  |                                  Overweight                    122 (17.5%) 
+>        |
+  |                                  Obese                         194 (27.9%) 
+>        |
+  |                                  Morbidly obese                38 ( 5.5%)  
+>        |
+  +----------------------------------------------------------------------------
+> -------+
+Data are presented as mean (SD) for continuous measures, and n (%) for categori
+> cal measures.
+ 
+file /tmp/St00011.000003 saved
+file ./output/tables/characteristics_ra_hosp_2021.csv saved
+
 . log close
       name:  <unnamed>
        log:  /workspace/logs/outpatients.log
   log type:  text
- closed on:   8 Dec 2022, 17:08:59
+ closed on:  15 Dec 2022, 15:04:34
 -------------------------------------------------------------------------------

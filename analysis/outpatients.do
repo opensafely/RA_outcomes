@@ -45,8 +45,9 @@ sum hydrox_count, d
 
 sum outpatient*, d
 
-* How many people are not on DMARDs and have no RA appointments?
+sum ra_hosp_beddays*, d 
 
+* How many people are not on DMARDs and have no RA appointments?
 
 * Format variables
 *re-order ethnicity
@@ -162,12 +163,18 @@ label values diff_op_cat_2021 op_cat
 tab diff_op_cat_2020 op_appt_2020_cat
 tab diff_op_cat_2021 op_appt_2021_cat
 bys diff_op_cat_2020: sum diff_op_2020
+sum ra_hosp*, d
 
 preserve
 * Tabulate number of appointments per year
 table1_mc, vars(op_appt_2019_cat cate \ op_appt_2020_cat cate \ op_appt_2021_cat cate \ diff_op_2020 conts \ diff_op_2021 conts \ diff_op_cat_2020 cate \ diff_op_cat_2021 cate) clear
 export delimited using ./output/tables/op_appt_yrs.csv
 restore 
+/*preserve
+*Tabulate number of appointments per year
+table1_mc, vars(ra_hosp_2019 cate \ ra_hosp_2020 cate \ ra_hosp_2021 cate) clear
+export delimited using ./output/tables/ra_hosp.csv
+restore */
 * Tabulate overall characteristics 
 preserve
 table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \  smoking cate \ time_ra contn \ bmi_cat cate) clear
@@ -191,20 +198,20 @@ forvalues i=2019/2021 {
             export delimited using ./output/tables/characteristics_strata`i'.csv
         }
         restore
-        }
     }
-    /* Tabulate characteristics by whether hospitalised with RA for each year
+    * Tabulate characteristics by whether hospitalised with RA for each year
+    preserve
+    keep if ra_hosp_`i'==0
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+    save `tempfile', replace
+    restore
     preserve
     keep if ra_hosp_`i'==1
     table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+    append using `tempfile'
+    save `tempfile', replace
     export delimited using ./output/tables/characteristics_ra_hosp_`i'.csv
     restore
-    }
-preserve
-    keep if ra_hosp_2018==1
-    table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
-    export delimited using ./output/tables/characteristics_ra_hosp_2018.csv
-    restore
-    */
+}
 log close
 
