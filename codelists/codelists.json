@@ -1,10 +1,16 @@
 {
   "files": {
     "user-ruthcostello-rheumatoid-arthritis.csv": {
-      "id": "user/ruthcostello/rheumatoid-arthritis/7b1fe01e",
-      "url": "https://codelists.opensafely.org/codelist/user/ruthcostello/rheumatoid-arthritis/7b1fe01e/",
-      "downloaded_at": "2022-07-12 14:34:40.297397Z",
-      "sha": "ec4d28a3ef02c4aba3a93b5e9b02bf9df99b6d7d"
+      "id": "user/ruthcostello/rheumatoid-arthritis/248f6b70",
+      "url": "https://codelists.opensafely.org/codelist/user/ruthcostello/rheumatoid-arthritis/248f6b70/",
+      "downloaded_at": "2022-12-16 11:11:19.928991Z",
+      "sha": "d15214288eacb6b825a5a72f6b5b338cd5bc13fa"
+    },
+    "user-ruthcostello-rheumatoid-arthritis-group-3-4.csv": {
+      "id": "user/ruthcostello/rheumatoid-arthritis-group-3-4/596111d0",
+      "url": "https://codelists.opensafely.org/codelist/user/ruthcostello/rheumatoid-arthritis-group-3-4/596111d0/",
+      "downloaded_at": "2022-12-16 11:11:20.156522Z",
+      "sha": "ac57df3c9c338b8de98d7972ff36f28f347d54b8"
     },
     "opensafely-methotrexate-oral.csv": {
       "id": "opensafely/methotrexate-oral/041a8320",

@@ -5,10 +5,15 @@ from cohortextractor import (
     codelist_from_csv, 
     Measure,
     filter_codes_by_category,
+    combine_codelists,
 )  
 
 from codelists import *
 
+all_ra_codes = combine_codelists(
+    ra_codes,
+    ra_codes_3_4
+)
 
 # Inclusion criteria
 # age 18+, 
@@ -125,21 +130,30 @@ study = StudyDefinition(
     # 1909 is 110 years prior to 2018 - so a person who was that old at 
     # baseline and was diagnosed at birth would be the maximum date
     has_ra_code=patients.with_these_clinical_events(
-        codelist=ra_codes,
+        codelist=all_ra_codes,
         between=["1909-03-01", "2019-04-01"],
         returning="binary_flag",
     ),
     # Identifying date of first code with plausable date
     first_ra_code=patients.with_these_clinical_events(
-        codelist=ra_codes,
+        codelist=all_ra_codes,
         between=["1909-03-01", "2019-04-01"],
         returning="date",
         date_format="YYYY-MM-DD",
         return_first_date_in_period="True",
     ),
     number_ra_codes=patients.with_these_clinical_events(
-        codelist=ra_codes,
+        codelist=all_ra_codes,
         between=["1909-03-01", "2019-04-01"],
+        return_number_of_matches_in_period="True",
+        return_expectations={
+                "int": {"distribution": "normal", "mean": 3, "stddev": 1},
+                "incidence": 1,
+            },
+    ),
+    number_strong_ra_codes=patients.with_these_clinical_events(
+        codelist=ra_codes,
+        between=["1909-03-01", "index_date"],
         return_number_of_matches_in_period="True",
         return_expectations={
                 "int": {"distribution": "normal", "mean": 3, "stddev": 1},
@@ -246,7 +260,7 @@ study = StudyDefinition(
     has_ra=patients.satisfying(
         """
         (has_ra_code AND has_dmards) OR
-        (number_ra_codes>=2 AND NOT alt_diag)
+        (number_ra_codes>=2 AND number_strong_ra_codes>=1 AND NOT alt_diag)
         """,
     ),
    

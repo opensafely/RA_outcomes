@@ -5,6 +5,11 @@ ra_codes = codelist_from_csv(
     "codelists/user-ruthcostello-rheumatoid-arthritis.csv",
     system="snomed",
     column="code",)
+    
+ra_codes_3_4 = codelist_from_csv(
+    "codelists/user-ruthcostello-rheumatoid-arthritis-group-3-4.csv",
+    system="snomed",
+    column="code",)
 
 metho_codes = codelist_from_csv(
     "codelists/opensafely-methotrexate-oral.csv",

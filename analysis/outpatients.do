@@ -36,7 +36,7 @@ keep if has_ra
 * Time since first RA code
 gen first_ra_codeA = date(first_ra_code, "YMD")
 format first_ra_codeA %dD/N/CY
-gen time_ra = (date("01Mar2018", "DMY") - first_ra_codeA)/365.25
+gen time_ra = (date("01Mar2019", "DMY") - first_ra_codeA)/365.25
 sum time_ra, d
 sum number_ra_codes, d
 sum metho_count, d

@@ -16,8 +16,6 @@ code,term
 15686281000119101,Rheumatoid arthritis of bilateral feet
 15687201000119107,Rheumatoid arthritis of bilateral knees
 15687321000119109,Rheumatoid arthritis of bilateral hands
-15691241000119101,Seronegative rheumatoid arthritis of bilateral knees
-15691321000119101,Seronegative rheumatoid arthritis of bilateral wrists
 15691881000119107,Seropositive rheumatoid arthritis of bilateral knees
 16050071000119108,Seropositive rheumatoid arthritis of bilateral feet
 161567008,History of rheumatoid arthritis
@@ -46,7 +44,6 @@ code,term
 201791009,Flare of rheumatoid arthritis
 201796004,Systemic onset juvenile chronic arthritis
 239791005,Seropositive rheumatoid arthritis
-239792003,Seronegative rheumatoid arthritis
 239795001,Rheumatoid arthritis with multisystem involvement
 239920006,Adult onset Still's disease
 287006005,Rheumatoid arthritis of multiple joints
@@ -55,7 +52,6 @@ code,term
 308143008,Seropositive erosive rheumatoid arthritis
 318861000119101,Seropositive rheumatoid arthritis of left hand
 318931000119100,Seropositive rheumatoid arthritis of right hand
-319081000119109,Seronegative rheumatoid arthritis of multiple sites
 399923009,Rheumatoid arteritis
 410794002,Still's disease with juvenile onset and/or adult onset
 427770001,Rheumatoid arthritis of temporomandibular joint

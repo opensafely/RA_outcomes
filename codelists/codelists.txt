@@ -1,5 +1,6 @@
 # RA codes
-user/ruthcostello/rheumatoid-arthritis/7b1fe01e
+user/ruthcostello/rheumatoid-arthritis/248f6b70
+user/ruthcostello/rheumatoid-arthritis-group-3-4/596111d0
 # DMARD codes
 # Methotrexate
 opensafely/methotrexate-oral/041a8320/
