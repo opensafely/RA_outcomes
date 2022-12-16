@@ -9,7 +9,7 @@ adopath + ./analysis/ado
 
 cap log using ./logs/bsr.log, replace
 
-cap mkdir ./output/tables/op_long
+cap mkdir ./output/tables/op_long/
 
 forvalues i=2019/2021 {
     local j = `i'+1

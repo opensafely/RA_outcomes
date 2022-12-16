@@ -1,6 +1,6 @@
 
 . 
-. cap mkdir ./output/tables/op_long
+. cap mkdir ./output/tables/op_long/
 
 . 
 . forvalues i=2019/2021 {
@@ -4655,5 +4655,5 @@ file ./output/tables/op_long/bsr_op_uk_medium_chars_2021.csv saved
       name:  <unnamed>
        log:  /workspace/logs/bsr.log
   log type:  text
- closed on:  16 Dec 2022, 13:53:25
+ closed on:  16 Dec 2022, 15:57:17
 -------------------------------------------------------------------------------
