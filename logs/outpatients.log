@@ -666,9 +666,9 @@ Number where end date prior to follow-up start
 > uld be dropped
 . gen end_2020 = end_date<date("2020-03-31", "YMD")
 
-. gen end_2021 = end_date<date("2021-03-31", "YMD")
+. gen end_2021 = end_date<date("2021-03-31", "YMD") 
 
-. gen end_2022 = end_date<date("2022-03-31", "YMD")
+. gen end_2022 = end_date<date("2022-03-31", "YMD") 
 
 . tab end_2020
 
@@ -697,22 +697,28 @@ Number where end date prior to follow-up start
 ------------+-----------------------------------
       Total |      5,000      100.00
 
+. 
 . * Set outpatient appointment count to missing if end prior to the end of the 
 > year 
 . forvalues i=2019/2021 {
   2.     local j=`i'+1
   3.     di `j'
-  4.     replace outpatient_appt_`i'=. if end_`j'
-  5.     replace outpatient_medium_`i'=. if end_`j'
-  6. }
+  4.     gen op_appt_`i'_orig = outpatient_appt_`i'
+  5.     replace outpatient_appt_`i'=. if end_`j'
+  6.     gen op_medium_`i'_orig = outpatient_medium_`i'
+  7.     replace outpatient_medium_`i'=. if end_`j'
+  8. }
 2020
 (154 real changes made, 154 to missing)
+(2,501 missing values generated)
 (79 real changes made, 79 to missing)
 2021
 (1,685 real changes made, 1,685 to missing)
+(2,526 missing values generated)
 (812 real changes made, 812 to missing)
 2022
 (3,004 real changes made, 3,004 to missing)
+(2,464 missing values generated)
 (1,521 real changes made, 1,521 to missing)
 
 . 
@@ -723,11 +729,172 @@ Number where end date prior to follow-up start
 . forvalues i=2019/2021 {
   2.     egen op_appt_`i'_cat = cut(outpatient_appt_`i'), at(0, 1, 3, 1000) ico
 > des
-  3.     label values op_appt_`i'_cat appt
-  4.     }
+  3.     * Check all categorised
+.     bys op_appt_`i'_cat: sum outpatient_appt_`i'
+  4.     label values op_appt_`i'_cat appt
+  5.     * Same for orginal variables
+.     egen op_appt_`i'_orig_cat = cut(op_appt_`i'_orig), at(0, 1, 3, 1000) icod
+> es
+  6.     * Check all categorised
+.     bys op_appt_`i'_orig_cat: sum op_appt_`i'_orig
+  7.     label values op_appt_`i'_orig_cat appt
+  8.     }
 (154 missing values generated)
+
+-------------------------------------------------------------------------------
+-> op_appt_2019_cat = 0
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+outpa~t_2019 |        493           0           0          0          0
+
+-------------------------------------------------------------------------------
+-> op_appt_2019_cat = 1
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+outpa~t_2019 |         24    1.958333    .2041241          1          2
+
+-------------------------------------------------------------------------------
+-> op_appt_2019_cat = 2
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+outpa~t_2019 |      4,329    7.512128    1.985019          3         14
+
+-------------------------------------------------------------------------------
+-> op_appt_2019_cat = .
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+outpa~t_2019 |          0
+
+
+-------------------------------------------------------------------------------
+-> op_appt_2019_orig_cat = 0
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+op_ap~9_orig |        512           0           0          0          0
+
+-------------------------------------------------------------------------------
+-> op_appt_2019_orig_cat = 1
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+op_ap~9_orig |         24    1.958333    .2041241          1          2
+
+-------------------------------------------------------------------------------
+-> op_appt_2019_orig_cat = 2
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+op_ap~9_orig |      4,464    7.508289    1.981637          3         14
+
 (1685 missing values generated)
+
+-------------------------------------------------------------------------------
+-> op_appt_2020_cat = 0
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+outpa~t_2020 |        319           0           0          0          0
+
+-------------------------------------------------------------------------------
+-> op_appt_2020_cat = 1
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+outpa~t_2020 |         20         1.7    .4701623          1          2
+
+-------------------------------------------------------------------------------
+-> op_appt_2020_cat = 2
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+outpa~t_2020 |      2,976    7.548051     1.99218          3         17
+
+-------------------------------------------------------------------------------
+-> op_appt_2020_cat = .
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+outpa~t_2020 |          0
+
+
+-------------------------------------------------------------------------------
+-> op_appt_2020_orig_cat = 0
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+op_ap~0_orig |        479           0           0          0          0
+
+-------------------------------------------------------------------------------
+-> op_appt_2020_orig_cat = 1
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+op_ap~0_orig |         26    1.730769    .4523443          1          2
+
+-------------------------------------------------------------------------------
+-> op_appt_2020_orig_cat = 2
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+op_ap~0_orig |      4,495    7.554171    1.971908          3         17
+
 (3004 missing values generated)
+
+-------------------------------------------------------------------------------
+-> op_appt_2021_cat = 0
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+outpa~t_2021 |        219           0           0          0          0
+
+-------------------------------------------------------------------------------
+-> op_appt_2021_cat = 1
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+outpa~t_2021 |         10         1.9    .3162278          1          2
+
+-------------------------------------------------------------------------------
+-> op_appt_2021_cat = 2
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+outpa~t_2021 |      1,767    7.569327    1.967352          3         14
+
+-------------------------------------------------------------------------------
+-> op_appt_2021_cat = .
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+outpa~t_2021 |          0
+
+
+-------------------------------------------------------------------------------
+-> op_appt_2021_orig_cat = 0
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+op_ap~1_orig |        501           0           0          0          0
+
+-------------------------------------------------------------------------------
+-> op_appt_2021_orig_cat = 1
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+op_ap~1_orig |         21    1.857143    .3585686          1          2
+
+-------------------------------------------------------------------------------
+-> op_appt_2021_orig_cat = 2
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+op_ap~1_orig |      4,478    7.556052    1.980102          3         15
+
 
 . 
 . * Calculate difference compared to 2019
@@ -769,43 +936,75 @@ Number where end date prior to follow-up start
 95%            7             13       Skewness      -.0777913
 99%           10             13       Kurtosis       3.216771
 
-. 
+. * Categorise difference
 . egen diff_op_cat_2020 = cut(diff_op_2020), at(-100, 0, 1, 100) icodes
 (1685 missing values generated)
 
 . egen diff_op_cat_2021 = cut(diff_op_2021), at(-100, 0, 1, 100) icodes
 (3004 missing values generated)
 
-. label define op_cat 0 "Fewer appointments" 1 "Same number of appointments" 2 
-> "More appointments"
+. label define op_cat 0 "No appointments both years" 1 "Fewer appointments" 2 "
+> Same number of appointments" 3 "More appointments"
 
-. label values diff_op_cat_2020 op_cat
+. forvalues i=2020/2021 {
+  2.     tab diff_op_cat_`i' op_appt_`i'_cat
+  3.     * Update categories to include category of those with no appointments 
+> in both years
+.     replace diff_op_cat_`i' = diff_op_cat_`i' + 1
+  4.     tab diff_op_cat_`i'
+  5.     replace diff_op_cat_`i' = 0 if diff_op_cat_`i'==2 & op_appt_`i'_cat==0
+  6.     label values diff_op_cat_`i' op_cat
+  7. }
 
-. label values diff_op_cat_2021 op_cat
+diff_op_ca |         op_appt_2020_cat
+    t_2020 | No appoin  1-2 per y  3 or more |     Total
+-----------+---------------------------------+----------
+         0 |       285         17      1,104 |     1,406 
+         1 |        34          0        390 |       424 
+         2 |         0          3      1,482 |     1,485 
+-----------+---------------------------------+----------
+     Total |       319         20      2,976 |     3,315 
+(3,315 real changes made)
 
-. tab diff_op_cat_2020 op_appt_2020_cat
+diff_op_cat |
+      _2020 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |      1,406       42.41       42.41
+          2 |        424       12.79       55.20
+          3 |      1,485       44.80      100.00
+------------+-----------------------------------
+      Total |      3,315      100.00
+(34 real changes made)
 
-                      |         op_appt_2020_cat
-     diff_op_cat_2020 | No appoin  1-2 per y  3 or more |     Total
-----------------------+---------------------------------+----------
-   Fewer appointments |       285         17      1,104 |     1,406 
-Same number of appoin |        34          0        390 |       424 
-    More appointments |         0          3      1,482 |     1,485 
-----------------------+---------------------------------+----------
-                Total |       319         20      2,976 |     3,315 
+diff_op_ca |         op_appt_2021_cat
+    t_2021 | No appoin  1-2 per y  3 or more |     Total
+-----------+---------------------------------+----------
+         0 |       199         10        668 |       877 
+         1 |        20          0        214 |       234 
+         2 |         0          0        885 |       885 
+-----------+---------------------------------+----------
+     Total |       219         10      1,767 |     1,996 
+(1,996 real changes made)
 
-. tab diff_op_cat_2021 op_appt_2021_cat
+diff_op_cat |
+      _2021 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |        877       43.94       43.94
+          2 |        234       11.72       55.66
+          3 |        885       44.34      100.00
+------------+-----------------------------------
+      Total |      1,996      100.00
+(20 real changes made)
 
-                      |         op_appt_2021_cat
-     diff_op_cat_2021 | No appoin  1-2 per y  3 or more |     Total
-----------------------+---------------------------------+----------
-   Fewer appointments |       199         10        668 |       877 
-Same number of appoin |        20          0        214 |       234 
-    More appointments |         0          0        885 |       885 
-----------------------+---------------------------------+----------
-                Total |       219         10      1,767 |     1,996 
-
+. 
 . bys diff_op_cat_2020: sum diff_op_2020
+
+-------------------------------------------------------------------------------
+-> diff_op_cat_2020 = No appointments both years
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+diff_op_2020 |         34           0           0          0          0
 
 -------------------------------------------------------------------------------
 -> diff_op_cat_2020 = Fewer appointments
@@ -819,7 +1018,7 @@ diff_op_2020 |      1,406   -3.633001    2.606129        -13         -1
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-diff_op_2020 |        424           0           0          0          0
+diff_op_2020 |        390           0           0          0          0
 
 -------------------------------------------------------------------------------
 -> diff_op_cat_2020 = More appointments
@@ -931,7 +1130,7 @@ diff_op_2020 |          0
 . 
 . preserve
 
-. * Tabulate number of appointments per year
+. * Tabulate number of appointments per year of those with whole year available
 . table1_mc, vars(op_appt_2019_cat cate \ op_appt_2020_cat cate \ op_appt_2021_
 > cat cate \ diff_op_2020 conts \ diff_op_2021 conts \ diff_op_cat_2020 cate \ 
 > diff_op_cat_2021 cate) clear
@@ -976,12 +1175,14 @@ diff_op_2020 |          0
   |----------------------------------------------------------------|
   | diff_op_2021                                     0 (-3-2)      |
   |----------------------------------------------------------------|
-  | diff_op_cat_2020   Fewer appointments            1,406 (42.4%) |
-  |                    Same number of appointments   424 (12.8%)   |
+  | diff_op_cat_2020   No appointments both years    34 ( 1.0%)    |
+  |                    Fewer appointments            1,406 (42.4%) |
+  |                    Same number of appointments   390 (11.8%)   |
   |                    More appointments             1,485 (44.8%) |
   |----------------------------------------------------------------|
-  | diff_op_cat_2021   Fewer appointments            877 (43.9%)   |
-  |                    Same number of appointments   234 (11.7%)   |
+  | diff_op_cat_2021   No appointments both years    20 ( 1.0%)    |
+  |                    Fewer appointments            877 (43.9%)   |
+  |                    Same number of appointments   214 (10.7%)   |
   |                    More appointments             885 (44.3%)   |
   +----------------------------------------------------------------+
 Data are presented as median (IQR) for continuous measures, and n (%) for categ
@@ -990,6 +1191,48 @@ Data are presented as median (IQR) for continuous measures, and n (%) for categ
 
 . export delimited using ./output/tables/op_appt_yrs.csv
 file ./output/tables/op_appt_yrs.csv saved
+
+. restore 
+
+. preserve
+
+. * Tabulate number of appointments per year
+. table1_mc, vars(op_appt_2019_orig_cat cate \ op_appt_2020_orig_cat cate \ op_
+> appt_2021_orig_cat cate) clear
+
+  +-------------------------------------+
+  | factor                    N_1   m_1 |
+  |-------------------------------------|
+  | op_appt_2019_orig_cat   5,000     0 |
+  |-------------------------------------|
+  | op_appt_2020_orig_cat   5,000     0 |
+  |-------------------------------------|
+  | op_appt_2021_orig_cat   5,000     0 |
+  +-------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +------------------------------------------------------------+
+  |                                              Total         |
+  |------------------------------------------------------------|
+  |                                              N=5,000       |
+  |------------------------------------------------------------|
+  | op_appt_2019_orig_cat   No appointments      512 (10.2%)   |
+  |                         1-2 per year         24 ( 0.5%)    |
+  |                         3 or more per year   4,464 (89.3%) |
+  |------------------------------------------------------------|
+  | op_appt_2020_orig_cat   No appointments      479 ( 9.6%)   |
+  |                         1-2 per year         26 ( 0.5%)    |
+  |                         3 or more per year   4,495 (89.9%) |
+  |------------------------------------------------------------|
+  | op_appt_2021_orig_cat   No appointments      501 (10.0%)   |
+  |                         1-2 per year         21 ( 0.4%)    |
+  |                         3 or more per year   4,478 (89.6%) |
+  +------------------------------------------------------------+
+Data are presented as n (%).
+ 
+
+. export delimited using ./output/tables/op_appt_orig_yrs.csv
+file ./output/tables/op_appt_orig_yrs.csv saved
 
 . restore 
 
@@ -1278,8 +1521,8 @@ file ./output/tables/op_chars.csv saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-(note: file /tmp/St00011.000003 not found)
-file /tmp/St00011.000003 saved
+(note: file /tmp/St00011.000004 not found)
+file /tmp/St00011.000004 saved
 (4,976 observations deleted)
 
   +--------------------------------------------+
@@ -1390,7 +1633,7 @@ file /tmp/St00011.000003 saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00011.000003 saved
+file /tmp/St00011.000004 saved
 (671 observations deleted)
 
   +------------------------------------------------+
@@ -1503,7 +1746,7 @@ file /tmp/St00011.000003 saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00011.000003 saved
+file /tmp/St00011.000004 saved
 file ./output/tables/characteristics_strata2019.csv saved
 (4,886 observations deleted)
 
@@ -1617,7 +1860,7 @@ file ./output/tables/characteristics_strata2019.csv saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00011.000003 saved
+file /tmp/St00011.000004 saved
 (4,324 observations deleted)
 
   +--------------------------------------------+
@@ -1730,7 +1973,7 @@ file /tmp/St00011.000003 saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00011.000003 saved
+file /tmp/St00011.000004 saved
 file ./output/tables/characteristics_ra_hosp_2019.csv saved
 (4,681 observations deleted)
 
@@ -1844,7 +2087,7 @@ file ./output/tables/characteristics_ra_hosp_2019.csv saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00011.000003 saved
+file /tmp/St00011.000004 saved
 (4,980 observations deleted)
 
   +--------------------------------------------+
@@ -1953,7 +2196,7 @@ file /tmp/St00011.000003 saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00011.000003 saved
+file /tmp/St00011.000004 saved
 (2,024 observations deleted)
 
   +------------------------------------------------+
@@ -2066,7 +2309,7 @@ file /tmp/St00011.000003 saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00011.000003 saved
+file /tmp/St00011.000004 saved
 file ./output/tables/characteristics_strata2020.csv saved
 (4,893 observations deleted)
 
@@ -2180,7 +2423,7 @@ file ./output/tables/characteristics_strata2020.csv saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00011.000003 saved
+file /tmp/St00011.000004 saved
 (4,333 observations deleted)
 
   +--------------------------------------------+
@@ -2293,7 +2536,7 @@ file /tmp/St00011.000003 saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00011.000003 saved
+file /tmp/St00011.000004 saved
 file ./output/tables/characteristics_ra_hosp_2020.csv saved
 (4,781 observations deleted)
 
@@ -2407,7 +2650,7 @@ file ./output/tables/characteristics_ra_hosp_2020.csv saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00011.000003 saved
+file /tmp/St00011.000004 saved
 (4,990 observations deleted)
 
   +--------------------------------------------+
@@ -2510,7 +2753,7 @@ file /tmp/St00011.000003 saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00011.000003 saved
+file /tmp/St00011.000004 saved
 (3,233 observations deleted)
 
   +----------------------------------------------+
@@ -2623,7 +2866,7 @@ file /tmp/St00011.000003 saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00011.000003 saved
+file /tmp/St00011.000004 saved
 file ./output/tables/characteristics_strata2021.csv saved
 (4,886 observations deleted)
 
@@ -2737,7 +2980,7 @@ file ./output/tables/characteristics_strata2021.csv saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00011.000003 saved
+file /tmp/St00011.000004 saved
 (4,335 observations deleted)
 
   +--------------------------------------------+
@@ -2850,12 +3093,12 @@ file /tmp/St00011.000003 saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00011.000003 saved
+file /tmp/St00011.000004 saved
 file ./output/tables/characteristics_ra_hosp_2021.csv saved
 
 . log close
       name:  <unnamed>
        log:  /workspace/logs/outpatients.log
   log type:  text
- closed on:   5 Jan 2023, 14:44:24
+ closed on:   5 Jan 2023, 16:57:20
 -------------------------------------------------------------------------------

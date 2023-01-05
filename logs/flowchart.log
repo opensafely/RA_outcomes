@@ -110,7 +110,7 @@ has_follow_ |
 ------------+-----------------------------------
       Total |      2,489      100.00
 
-. keep if died==0
+. keep if died!=1
 (1,254 observations deleted)
 
 . safecount 
@@ -192,7 +192,7 @@ has_follow_ |
 . 
 end of do-file
 
-. . file open output using "/tmp/tmp.N6RG42FTXg", write text replace
+. . file open output using "/tmp/tmp.ieCfQemBTg", write text replace
 
 . . file write output "success" 
 

@@ -27,7 +27,7 @@ safetab has_follow_up, m
 keep if has_follow_up
 safecount
 safetab died, m
-keep if died==0
+keep if died!=1
 safecount 
 sum age
 keep if (age>=18 & age<=110)
