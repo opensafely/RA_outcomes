@@ -161,4 +161,4 @@ actions:
     outputs:
       moderately_sensitive:
         log: logs/bsr.log
-        output: output/tables/op_long/bsr*.csv
+        output: output/op_long/bsr*.csv

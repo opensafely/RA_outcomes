@@ -16,22 +16,31 @@ import delimited using ./output/input_flowchart.csv, clear
 * (imd != 0) AND
 * has_ra
 
+
 describe
 safecount
-drop if has_ra==0
+safetab has_ra_code, m
+keep if has_ra_code
 safecount
-drop if has_follow_up!=1
+safetab has_follow_up, m
+keep if has_follow_up
 safecount
-drop if died==1
+safetab died, m
+keep if died==0
 safecount 
-drop if (age<18 | age>110)
+sum age
+keep if (age>=18 & age<=110)
 safecount
-drop if (sex=="U" | sex=="I")
+safetab sex, m
+keep if (sex=="F" | sex=="M")
 safecount
+count if stp!=""
 drop if stp==""
 safecount
-tab imd 
+safetab imd 
 drop if imd==0
 safecount
+safetab has_ra, m
+drop if has_ra==0
 
 

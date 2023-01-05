@@ -1,7 +1,7 @@
 
 . 
 . import delimited using ./output/input_flowchart.csv, clear
-(29 vars, 10,000 obs)
+(30 vars, 10,000 obs)
 
 . * has_follow_up AND
 . * (age >=18 AND age <=110) AND
@@ -11,11 +11,12 @@
 . * (imd != 0) AND
 . * has_ra
 . 
+. 
 . describe
 
 Contains data
   obs:        10,000                          
- vars:            29                          
+ vars:            30                          
 -------------------------------------------------------------------------------
               storage   display    value
 variable name   type    format     label      variable label
@@ -32,6 +33,7 @@ has_msoa        byte    %8.0g
 imd             byte    %8.0g                 
 has_ra_code     byte    %8.0g                 
 number_ra_codes byte    %8.0g                 
+number_strong~s byte    %8.0g                 
 psoriatic_art~r byte    %8.0g                 
 spondy_after    byte    %8.0g                 
 alt_diag        byte    %8.0g                 
@@ -56,67 +58,132 @@ Sorted by:
 . safecount
   10,000
 
-. drop if has_ra==0
+. safetab has_ra_code, m
+12
+
+has_ra_code |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      5,000       50.00       50.00
+          1 |      5,000       50.00      100.00
+------------+-----------------------------------
+      Total |     10,000      100.00
+
+. keep if has_ra_code
 (5,000 observations deleted)
 
 . safecount
   5,000
 
-. drop if has_follow_up!=1
-(2,448 observations deleted)
+. safetab has_follow_up, m
+14
+
+has_follow_ |
+         up |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      2,511       50.22       50.22
+          1 |      2,489       49.78      100.00
+------------+-----------------------------------
+      Total |      5,000      100.00
+
+. keep if has_follow_up
+(2,511 observations deleted)
 
 . safecount
-  2,552
+  2,489
 
-. drop if died==1
-(1,264 observations deleted)
+. safetab died, m
+5
+
+       died |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      1,235       49.62       49.62
+          1 |      1,254       50.38      100.00
+------------+-----------------------------------
+      Total |      2,489      100.00
+
+. keep if died==0
+(1,254 observations deleted)
 
 . safecount 
-  1,288
+  1,235
 
-. drop if (age<18 | age>110)
-(241 observations deleted)
+. sum age
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         age |      1,235    39.00405     22.9014          0         99
+
+. keep if (age>=18 & age<=110)
+(260 observations deleted)
 
 . safecount
-  1,047
+  975
 
-. drop if (sex=="U" | sex=="I")
-(17 observations deleted)
+. safetab sex, m
+4
+
+        sex |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          F |        492       50.46       50.46
+          M |        474       48.62       99.08
+          U |          9        0.92      100.00
+------------+-----------------------------------
+      Total |        975      100.00
+
+. keep if (sex=="F" | sex=="M")
+(9 observations deleted)
 
 . safecount
-  1,030
+  966
+
+. count if stp!=""
+  486
 
 . drop if stp==""
-(538 observations deleted)
+(480 observations deleted)
 
 . safecount
-  492
+  486
 
-. tab imd 
+. safetab imd 
+0
 
         imd |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |         29        5.89        5.89
-          1 |        106       21.54       27.44
-          2 |         83       16.87       44.31
-          3 |         84       17.07       61.38
-          4 |         92       18.70       80.08
-          5 |         98       19.92      100.00
+          0 |         24        4.94        4.94
+          1 |        108       22.22       27.16
+          2 |         92       18.93       46.09
+          3 |         97       19.96       66.05
+          4 |         93       19.14       85.19
+          5 |         72       14.81      100.00
 ------------+-----------------------------------
-      Total |        492      100.00
+      Total |        486      100.00
 
 . drop if imd==0
-(29 observations deleted)
+(24 observations deleted)
 
 . safecount
-  463
+  462
+
+. safetab has_ra, m
+7
+
+     has_ra |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        231       50.00       50.00
+          1 |        231       50.00      100.00
+------------+-----------------------------------
+      Total |        462      100.00
+
+. drop if has_ra==0
+(231 observations deleted)
 
 . 
 . 
 . 
 end of do-file
 
-. . file open output using "/tmp/tmp.hM6rS9IlmF", write text replace
+. . file open output using "/tmp/tmp.d2NwXwjgeg", write text replace
 
 . . file write output "success" 
 

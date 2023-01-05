@@ -325,53 +325,56 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 99%           98             98       Kurtosis       7.627466
 
 . 
-. sum ra_hosp_beddays*, d 
+. forvalues i=2019/2021 {
+  2.     sum ra_hosp_beddays_`i' if ra_hosp_`i'>0, d 
+  3. }
 
                     ra_hosp_beddays_2019
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            1              0
-10%            1              0       Obs               5,000
-25%            2              0       Sum of Wgt.       5,000
+10%            1              0       Obs               4,886
+25%            2              0       Sum of Wgt.       4,886
 
-50%            2                      Mean             2.4708
-                        Largest       Std. Dev.      1.022035
+50%            2                      Mean           2.472575
+                        Largest       Std. Dev.      1.020749
 75%            3              5
-90%            4              5       Variance       1.044556
-95%            4              6       Skewness       .0136891
-99%            5              6       Kurtosis       2.871343
+90%            4              5       Variance       1.041929
+95%            4              6       Skewness       .0037288
+99%            5              6       Kurtosis       2.875158
 
                     ra_hosp_beddays_2020
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            1              0
-10%            1              0       Obs               5,000
-25%            2              0       Sum of Wgt.       5,000
+10%            1              0       Obs               4,893
+25%            2              0       Sum of Wgt.       4,893
 
-50%            2                      Mean             2.4778
-                        Largest       Std. Dev.      1.032144
+50%            2                      Mean            2.47803
+                        Largest       Std. Dev.      1.031286
 75%            3              6
-90%            4              6       Variance        1.06532
-95%            4              6       Skewness       -.005461
-99%            5              6       Kurtosis       2.860424
+90%            4              6       Variance        1.06355
+95%            4              6       Skewness        .002442
+99%            5              6       Kurtosis       2.862932
 
                     ra_hosp_beddays_2021
 -------------------------------------------------------------
       Percentiles      Smallest
  1%            0              0
  5%            1              0
-10%            1              0       Obs               5,000
-25%            2              0       Sum of Wgt.       5,000
+10%            1              0       Obs               4,886
+25%            2              0       Sum of Wgt.       4,886
 
-50%            2                      Mean              2.504
-                        Largest       Std. Dev.      1.045085
+50%            2                      Mean           2.501228
+                        Largest       Std. Dev.      1.047636
 75%            3              6
-90%            4              6       Variance       1.092202
-95%            4              6       Skewness       .0603768
-99%            5              6       Kurtosis       2.959919
+90%            4              6       Variance       1.097542
+95%            4              6       Skewness        .067259
+99%            5              6       Kurtosis       2.957115
 
+. 
 . 
 . * How many people are not on DMARDs and have no RA appointments?
 . 
@@ -2854,5 +2857,5 @@ file ./output/tables/characteristics_ra_hosp_2021.csv saved
       name:  <unnamed>
        log:  /workspace/logs/outpatients.log
   log type:  text
- closed on:  16 Dec 2022, 13:39:15
+ closed on:   5 Jan 2023, 13:06:51
 -------------------------------------------------------------------------------

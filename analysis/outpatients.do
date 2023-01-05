@@ -46,7 +46,10 @@ sum hydrox_count, d
 
 sum outpatient*, d
 
-sum ra_hosp_beddays*, d 
+forvalues i=2019/2021 {
+    sum ra_hosp_beddays_`i' if ra_hosp_`i'>0, d 
+}
+
 
 * How many people are not on DMARDs and have no RA appointments?
 
