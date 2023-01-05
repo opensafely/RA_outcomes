@@ -224,6 +224,7 @@ forvalues i=2019/2021 {
         }
         restore
     }
+   
     * Tabulate characteristics by whether hospitalised with RA for each year
     preserve
     keep if ra_hosp_`i'==0
@@ -237,6 +238,28 @@ forvalues i=2019/2021 {
     save `tempfile', replace
     export delimited using ./output/tables/characteristics_ra_hosp_`i'.csv
     restore
-}
+    }
+
+* Tabulate characteristics by categories of differences in outpatient appointments for each year
+tempfile tempfile
+forvalues i=2020/2021 {
+    preserve
+    keep if diff_op_cat_`i'==0
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+    save `tempfile', replace
+    restore
+    forvalues j=1/3 {
+        preserve
+        keep if diff_op_cat_`i'==`j'
+        table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+        append using `tempfile'
+        save `tempfile', replace
+        if `j'==3 {
+            export delimited using ./output/tables/characteristics_diff_strata`i'.csv
+            }
+        restore
+        }
+    }
+
 log close
 
