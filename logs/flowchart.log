@@ -68,6 +68,15 @@ has_ra_code |      Freq.     Percent        Cum.
 ------------+-----------------------------------
       Total |     10,000      100.00
 
+. tab has_ra_code, m
+
+has_ra_code |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      5,000       50.00       50.00
+          1 |      5,000       50.00      100.00
+------------+-----------------------------------
+      Total |     10,000      100.00
+
 . keep if has_ra_code
 (5,000 observations deleted)
 
@@ -183,7 +192,7 @@ has_follow_ |
 . 
 end of do-file
 
-. . file open output using "/tmp/tmp.d2NwXwjgeg", write text replace
+. . file open output using "/tmp/tmp.N6RG42FTXg", write text replace
 
 . . file write output "success" 
 

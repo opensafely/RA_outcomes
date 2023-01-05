@@ -20,6 +20,7 @@ import delimited using ./output/input_flowchart.csv, clear
 describe
 safecount
 safetab has_ra_code, m
+tab has_ra_code, m
 keep if has_ra_code
 safecount
 safetab has_follow_up, m
