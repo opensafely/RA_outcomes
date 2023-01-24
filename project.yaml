@@ -45,6 +45,7 @@ actions:
       highly_sensitive:
         cohort: output/input.csv
   
+  
   #Static study population for measures
   
   generate_study_population_static:

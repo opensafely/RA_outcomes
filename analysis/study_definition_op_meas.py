@@ -273,7 +273,7 @@ study = StudyDefinition(
         returning="binary_flag",
     ),
     
-    # Determine number of appointments during years 2019-2021
+    # Determine number of appointments
     op_appt=patients.outpatient_appointment_date(
         returning="binary_flag",
         with_these_treatment_function_codes="410",
@@ -301,6 +301,13 @@ study = StudyDefinition(
             },
         },
     ),
+    # OP appointments overall
+    op_appt_all=patients.outpatient_appointment_date(
+        returning="binary_flag",
+        attended="True",
+        between=["index_date", "last_day_of_month(index_date)"],
+        return_expectations = {"incidence": 0.7},
+    ),
     ra_hosp=patients.admitted_to_hospital(
         with_these_diagnoses=ra_hospitalisation,
         between=["index_date", "last_day_of_month(index_date)"],
@@ -326,6 +333,28 @@ study = StudyDefinition(
         between=["index_date", "last_day_of_month(index_date)"],
         returning="binary_flag",
         return_expectations={"incidence": 0.1},
+    ),
+    ra_elective=patients.admitted_to_hospital(
+         with_these_diagnoses=ra_hospitalisation,
+        between=["index_date", "last_day_of_month(index_date)"],
+        returning="admission_method",
+        return_expectations={"category": { "ratios":{ 
+                "11": 0.35,
+                "12": 0.1,
+                "13": 0.1,
+                "21": 0.1,
+                "22": 0.1,
+                "23": 0.1,
+                "24": 0.1,
+                "25": 0.05, 
+                },
+            },
+        },
+    ),
+    all_admissions=patients.admitted_to_hospital(
+        between=["index_date", "last_day_of_month(index_date)"],
+        returning="binary_flag",
+        return_expectations={"incidence": 0.3},
     ),
     gc_prescribing=patients.with_these_medications(
         gc_codes,
@@ -394,6 +423,24 @@ measures = [
     Measure(
         id="hosp_ra_emergency_rate",
         numerator="ra_emergency",
+        denominator="population",
+        group_by="population",
+    ),
+    Measure(
+        id="hosp_ra_elective_rate",
+        numerator="ra_hosp",
+        denominator="population",
+        group_by="ra_elective",
+    ),
+    Measure(
+        id="op_appt_all_rate",
+        numerator="op_appt_all",
+        denominator="population",
+        group_by="population",
+    ),
+    Measure(
+        id="hosp_all_rate",
+        numerator="all_admissions",
         denominator="population",
         group_by="population",
     ),

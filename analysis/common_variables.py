@@ -95,6 +95,25 @@ common_variables = dict(
                 "category": {"ratios": {1: 0.125, 2: 0.125, 3: 0.125, 4: 0.125, 5: 0.125, 6: 0.125, 7: 0.125, 8: 0.125}},
             },
         ),
+        region=patients.registered_practice_as_of(
+        "index_date",
+        returning="nuts1_region_name",
+        return_expectations={
+            "rate": "universal",
+            "category": {
+                "ratios": {
+                    "North East": 0.1,
+                    "North West": 0.1,
+                    "Yorkshire and the Humber": 0.1,
+                    "East Midlands": 0.1,
+                    "West Midlands": 0.1,
+                    "East of England": 0.1,
+                    "London": 0.2,
+                    "South East": 0.2,
+                    },
+                },
+            },
+        ),
         smoking_status=patients.categorised_as(
         {
             "S": "most_recent_smoking_code = 'S'",
