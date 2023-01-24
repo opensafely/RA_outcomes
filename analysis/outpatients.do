@@ -148,6 +148,8 @@ forvalues i=2019/2021 {
     replace outpatient_appt_`i'=. if end_`j'
     gen op_medium_`i'_orig = outpatient_medium_`i'
     replace outpatient_medium_`i'=. if end_`j'
+    gen op_appt_all_`i'_orig = outpatient_appt_all_`i'
+    replace outpatient_appt_all_`i'=. if end_`j'
 }
 
 * Categorise number of outpatient appointments
@@ -182,11 +184,25 @@ forvalues i=2020/2021 {
     label values diff_op_cat_`i' op_cat
 }
 
+* Categorise number of outpatient appointments overall
+forvalues i=2019/2021 {
+    sum outpatient_appt_all_`i', d
+    egen op_appt_all_`i'_cat = cut(outpatient_appt_all_`i'), at(0, 1, 3, 1000) icodes
+    * Check all categorised
+    bys op_appt_all_`i'_cat: sum outpatient_appt_all_`i'
+    label values op_appt_all_`i'_cat appt
+    * Same for orginal variables
+    egen op_appt_all_`i'_orig_cat = cut(op_appt_all_`i'_orig), at(0, 1, 3, 1000) icodes
+    * Check all categorised
+    bys op_appt_all_`i'_orig_cat: sum op_appt_all_`i'_orig
+    label values op_appt_all_`i'_orig_cat appt
+    }
+
 bys diff_op_cat_2020: sum diff_op_2020
 sum ra_hosp*, d
 
 preserve
-* Tabulate number of appointments per year of those with whole year available
+* Tabulate number of rheumatology appointments per year of those with whole year available
 table1_mc, vars(op_appt_2019_cat cate \ op_appt_2020_cat cate \ op_appt_2021_cat cate \ diff_op_2020 conts \ diff_op_2021 conts \ diff_op_cat_2020 cate \ diff_op_cat_2021 cate) clear
 export delimited using ./output/tables/op_appt_yrs.csv
 restore 
@@ -195,14 +211,14 @@ preserve
 table1_mc, vars(op_appt_2019_orig_cat cate \ op_appt_2020_orig_cat cate \ op_appt_2021_orig_cat cate) clear
 export delimited using ./output/tables/op_appt_orig_yrs.csv
 restore 
-/*preserve
-*Tabulate number of appointments per year
-table1_mc, vars(ra_hosp_2019 cate \ ra_hosp_2020 cate \ ra_hosp_2021 cate) clear
-export delimited using ./output/tables/ra_hosp.csv
-restore */
+preserve
+* Tabulate number of all outpatient appointments per year of those with whole year available
+table1_mc, vars(op_appt_all_2019_cat cate \ op_appt_all_2020_cat cate \ op_appt_all_2021_cat cate ) clear
+export delimited using ./output/tables/op_appt_all_yrs.csv
+restore 
 * Tabulate overall characteristics 
 preserve
-table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \  smoking cate \ time_ra contn \ bmi_cat cate) clear
+table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ region cate \ imd cate \  smoking cate \ time_ra contn \ bmi_cat cate) clear
 export delimited using ./output/tables/op_chars.csv
 restore
 * Tabulate characteristics by category of outpatient appointments for each year
@@ -210,13 +226,13 @@ tempfile tempfile
 forvalues i=2019/2021 {
     preserve
     keep if op_appt_`i'_cat==0
-    table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
     save `tempfile', replace
     restore
     forvalues j=1/2 {
         preserve
         keep if op_appt_`i'_cat==`j'
-        table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+        table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
         append using `tempfile'
         save `tempfile', replace
         if `j'==2 {
