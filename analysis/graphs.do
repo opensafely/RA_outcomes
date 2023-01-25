@@ -119,6 +119,40 @@ legend(label(1 "Ordinary admission") label(2 "Day case") label(3 "Regular admiss
 
 graph export ./output/graphs/line_ra_daycase.svg, as(svg) replace
 
+* Elective vs emergency admission 
+* Graphs stratified by admission method
+import delimited using ./output/measures/join/measure_hosp_ra_elective_rate.csv, numericcols(3) clear
+* Drop if ra_elective missing or is mother-baby record
+drop if (ra_elective==. | ra_elective==31 | ra_elective==32 | ra_elective==82 | ra_elective==83)
+* generate binary variable for elective admissions 
+gen ra_elective_n = (ra_elective == 81 | ra_elective == 11 | ra_elective == 12 | ra_elective == 13)
+tab ra_elective*
+* Update number of hospitalisations and population to combine all categories combined
+bys date ra_elective_n: egen ra_hosp_n = total(ra_hosp)
+bys date ra_elective_n: egen population_n = total(population)
+drop ra_elective ra_hosp population value
+* Calculate proportion
+gen proportion = (ra_hosp_n/population_n)*100
+duplicates drop
+* Format date
+gen dateA = date(date, "YMD")
+drop date
+format dateA %dD/M/Y
+* reshape dataset so columns with rates for each ethnicity 
+reshape wide proportion population_n ra_hosp_n, i(dateA) j(ra_elective)
+describe
+* Label strata 
+label var proportion0 "Emergency admission"
+label var proportion1 "Elective admission"
+* Generate line graph
+graph bar proportion0 proportion1, over(dateA, relabel(1 "Apr 2019" 2 " " 3 " " 4 "Jul 2019" 5 " " 6 " " 7 "Oct 2019" ///
+8 " " 9 " " 10 "Jan 2020" 11 " " 12 " " 12 "Apr 2020" 13 " " 14 " " 15 "Jul 2020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " " ///
+21 "Jan 2021" 22 " " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 29 " " 30 "Oct 2021" 31 " " 32 " " 33 "Jan 2022" ///
+34 " " 35 " " 36 "Apr 2022") label( angle(45))) stack graphregion(fcolor(white)) intensity(50) ///
+legend(label(1 "Emergency admission") label(2 "Elective admission")) ytitle("Proportion of population")
+
+graph export ./output/graphs/line_ra_elective.svg, as(svg) replace
+
 * Generates line graphs with rate of prescriptions over time
 foreach this_group in gc opioid_strong opioid_weak ssri nsaid {
         import delimited using ./output/measures/join/measure_med_`this_group'_rate.csv, numericcols(3) clear

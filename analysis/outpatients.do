@@ -155,6 +155,7 @@ forvalues i=2019/2021 {
 * Categorise number of outpatient appointments
 label define appt 0 "No appointments" 1 "1-2 per year" 2 "3 or more per year" 
 forvalues i=2019/2021 {
+    * Rheumatology outpatient appointments
     egen op_appt_`i'_cat = cut(outpatient_appt_`i'), at(0, 1, 3, 1000) icodes
     * Check all categorised
     bys op_appt_`i'_cat: sum outpatient_appt_`i'
@@ -166,7 +167,7 @@ forvalues i=2019/2021 {
     label values op_appt_`i'_orig_cat appt
     }
 
-* Calculate difference compared to 2019
+* Calculate difference in rheumatology appointments compared to previous year
 gen diff_op_2020 = outpatient_appt_2020 - outpatient_appt_2019
 gen diff_op_2021 = outpatient_appt_2021 - outpatient_appt_2020
 sum diff_op_2020 diff_op_2021, d
@@ -184,36 +185,51 @@ forvalues i=2020/2021 {
     label values diff_op_cat_`i' op_cat
 }
 
-* Categorise number of outpatient appointments overall
+* Categorise number of outpatient appointments (all specialties)
+label define appt_all 0 "No appointments" 1 "1-2 per year" 2 "3-5 per year" 3 "6 or more per year"
 forvalues i=2019/2021 {
     sum outpatient_appt_all_`i', d
-    egen op_appt_all_`i'_cat = cut(outpatient_appt_all_`i'), at(0, 1, 3, 1000) icodes
+    egen op_appt_all_`i'_cat = cut(outpatient_appt_all_`i'), at(0, 1, 3, 6, 1000) icodes
     * Check all categorised
     bys op_appt_all_`i'_cat: sum outpatient_appt_all_`i'
-    label values op_appt_all_`i'_cat appt
+    label values op_appt_all_`i'_cat appt_all
     * Same for orginal variables
-    egen op_appt_all_`i'_orig_cat = cut(op_appt_all_`i'_orig), at(0, 1, 3, 1000) icodes
+    egen op_appt_all_`i'_orig_cat = cut(op_appt_all_`i'_orig), at(0, 1, 3, 6, 1000) icodes
     * Check all categorised
     bys op_appt_all_`i'_orig_cat: sum op_appt_all_`i'_orig
-    label values op_appt_all_`i'_orig_cat appt
+    label values op_appt_all_`i'_orig_cat appt_all
     }
 
-bys diff_op_cat_2020: sum diff_op_2020
-sum ra_hosp*, d
+* Calculate difference in all outpatient appointments compared to previous year
+gen diff_op_all_2020 = outpatient_appt_all_2020 - outpatient_appt_all_2019
+gen diff_op_all_2021 = outpatient_appt_all_2021 - outpatient_appt_all_2020
+sum diff_op_all_2020 diff_op_all_2021, d
+* Categorise difference
+egen diff_op_all_cat_2020 = cut(diff_op_all_2020), at(-100, 0, 1, 100) icodes
+egen diff_op_all_cat_2021 = cut(diff_op_all_2021), at(-100, 0, 1, 100) icodes
+forvalues i=2020/2021 {
+    tab diff_op_all_cat_`i' op_appt_all_`i'_cat
+    * Update categories to include category of those with no appointments in both years
+    replace diff_op_all_cat_`i' = diff_op_all_cat_`i' + 1
+    tab diff_op_all_cat_`i'
+    replace diff_op_all_cat_`i' = 0 if diff_op_all_cat_`i'==2 & op_appt_all_`i'_cat==0
+    tab diff_op_all_cat_`i'
+    label values diff_op_all_cat_`i' op_cat
+}
 
 preserve
 * Tabulate number of rheumatology appointments per year of those with whole year available
-table1_mc, vars(op_appt_2019_cat cate \ op_appt_2020_cat cate \ op_appt_2021_cat cate \ diff_op_2020 conts \ diff_op_2021 conts \ diff_op_cat_2020 cate \ diff_op_cat_2021 cate) clear
+table1_mc, vars(op_appt_2019_cat cate \ op_appt_2020_cat cate \ op_appt_2021_cat cate \ diff_op_cat_2020 cate \ diff_op_cat_2021 cate) clear
 export delimited using ./output/tables/op_appt_yrs.csv
 restore 
 preserve
-* Tabulate number of appointments per year
+* Tabulate number of rheumatology appointments per year (includes people who end follow-up during year)
 table1_mc, vars(op_appt_2019_orig_cat cate \ op_appt_2020_orig_cat cate \ op_appt_2021_orig_cat cate) clear
 export delimited using ./output/tables/op_appt_orig_yrs.csv
 restore 
 preserve
 * Tabulate number of all outpatient appointments per year of those with whole year available
-table1_mc, vars(op_appt_all_2019_cat cate \ op_appt_all_2020_cat cate \ op_appt_all_2021_cat cate ) clear
+table1_mc, vars(op_appt_all_2019_cat cate \ op_appt_all_2020_cat cate \ op_appt_all_2021_cat cate \ diff_op_all_cat_2020 cate \ diff_op_all_cat_2021 cate) clear
 export delimited using ./output/tables/op_appt_all_yrs.csv
 restore 
 * Tabulate overall characteristics 
@@ -226,13 +242,13 @@ tempfile tempfile
 forvalues i=2019/2021 {
     preserve
     keep if op_appt_`i'_cat==0
-    table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate\ diff_op_all_cat_2020 cate \ diff_op_all_cat_2021 cate) clear
     save `tempfile', replace
     restore
     forvalues j=1/2 {
         preserve
         keep if op_appt_`i'_cat==`j'
-        table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+        table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ diff_op_all_cat_2020 cate \ diff_op_all_cat_2021 cate) clear
         append using `tempfile'
         save `tempfile', replace
         if `j'==2 {
@@ -241,7 +257,7 @@ forvalues i=2019/2021 {
         restore
     }
    
-    * Tabulate characteristics by whether hospitalised with RA for each year
+    /* Tabulate characteristics by whether hospitalised with RA for each year
     preserve
     keep if ra_hosp_`i'==0
     table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
@@ -253,25 +269,46 @@ forvalues i=2019/2021 {
     append using `tempfile'
     save `tempfile', replace
     export delimited using ./output/tables/characteristics_ra_hosp_`i'.csv
-    restore
+    restore*/
     }
 
-* Tabulate characteristics by categories of differences in outpatient appointments for each year
+* Tabulate characteristics by categories of differences in rheumatology outpatient appointments for each year
 tempfile tempfile
 forvalues i=2020/2021 {
     preserve
     keep if diff_op_cat_`i'==0
-    table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate\ diff_op_all_cat_2020 cate \ diff_op_all_cat_2021 cate) clear
     save `tempfile', replace
     restore
     forvalues j=1/3 {
         preserve
         keep if diff_op_cat_`i'==`j'
-        table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ prescribed_biologics cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+        table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate\ diff_op_all_cat_2020 cate \ diff_op_all_cat_2021 cate) clear
         append using `tempfile'
         save `tempfile', replace
         if `j'==3 {
             export delimited using ./output/tables/characteristics_diff_strata`i'.csv
+            }
+        restore
+        }
+    }
+
+* Tabulate characteristics by categories of differences in all outpatient appointments for each year
+tempfile tempfile
+forvalues i=2020/2021 {
+    preserve
+    keep if diff_op_all_cat_`i'==0
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate\ diff_op_cat_2020 cate \ diff_op_cat_2021 cate) clear
+    save `tempfile', replace
+    restore
+    forvalues j=1/3 {
+        preserve
+        keep if diff_op_all_cat_`i'==`j'
+        table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate\ diff_op_cat_2020 cate \ diff_op_cat_2021 cate) clear
+        append using `tempfile'
+        save `tempfile', replace
+        if `j'==3 {
+            export delimited using ./output/tables/characteristics_diff_all_strata`i'.csv
             }
         restore
         }

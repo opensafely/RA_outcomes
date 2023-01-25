@@ -11,7 +11,7 @@ adopath + ./analysis/ado
 cap log using ./logs/time_series.log, replace
 cap mkdir ./output/time_series
 
-* Outpatient appointments
+* Outpatient appointments amd hospitalisations
 * Autocorrelation indicates no autocorrelation for op_appt 
 foreach file in op_appt op_appt_all hosp_ra hosp_ra_emergency hosp_all med_gc med_opioid_strong med_opioid_weak med_ssri med_nsaid {
     import delimited "./output/measures/join/measure_`file'_rate.csv", clear	//get csv
@@ -30,6 +30,7 @@ foreach file in op_appt op_appt_all hosp_ra hosp_ra_emergency hosp_all med_gc me
     actest, lags(6)
     }
 
+* Medium of rheumatology outpatient appointments
 import delimited "./output/measures/join/measure_op_appt_medium_rate.csv", clear	//get csv
 drop if op_appt_medium==. | op_appt_medium>=3
 gen temp_date=date(date, "YMD")
@@ -49,6 +50,7 @@ itsa percent, trperiod(2020m4) treatid(2) figure lag(1) posttrend
 graph export ./output/time_series/itsa_op_appt_medium.svg, as(svg) replace
 actest, lags(6)
 
+* Daycase admissions vs regular/ordinary 
 import delimited "./output/measures/join/measure_hosp_ra_daycase_rate.csv", clear	//get csv
 drop if ra_daycase==. | ra_daycase>=4
 gen temp_date=date(date, "YMD")
@@ -67,10 +69,43 @@ label variable percent "Percent of population"
 tsset ra_daycase month
 newey percent ra_daycase##postcovid, lag(1) force 
 * Itsa compared treat group to all other groups
-*itsa percent, trperiod(2020m4) treatid(2) figure lag(1) posttrend
-*graph export ./output/time_series/itsa_hosp_ra_daycase.svg, as(svg) replace
-*actest, lags(6)
+itsa percent, trperiod(2020m4) treatid(2) figure lag(1) posttrend
+graph export ./output/time_series/itsa_hosp_ra_daycase.svg, as(svg) replace
+actest, lags(6)
 
+
+* Method of admission - elective vs emergency - itsa not working***********
+* Graphs stratified by admission method
+import delimited using ./output/measures/join/measure_hosp_ra_elective_rate.csv, numericcols(3) clear
+* Drop if ra_elective missing or is mother-baby record
+drop if (ra_elective==. | ra_elective==31 | ra_elective==32 | ra_elective==82 | ra_elective==83)
+* generate binary variable for elective admissions 
+gen ra_elective_n = (ra_elective == 81 | ra_elective == 11 | ra_elective == 12 | ra_elective == 13)
+tab ra_elective*
+* Update number of hospitalisations and population to combine all categories combined
+bys date ra_elective_n: egen ra_hosp_n = total(ra_hosp)
+bys date ra_elective_n: egen population_n = total(population)
+drop ra_elective ra_hosp population value
+* Calculate proportion
+gen proportion = (ra_hosp_n/population_n)*100
+duplicates drop
+* Format date
+gen dateA = date(date, "YMD")
+drop date
+format dateA %dD/M/Y
+gen month=mofd(dateA)
+format month %tm
+* reshape dataset so columns with rates for each ethnicity 
+reshape wide proportion population_n ra_hosp_n, i(dateA) j(ra_elective)
+describe
+* Label strata 
+label var proportion0 "Emergency admission"
+label var proportion1 "Elective admission"
+*Set time series
+tsset month 
+itsa percent, trperiod(2020m4) figure single lag(1) posttrend
+graph export ./output/time_series/itsa_ra_elective.svg, as(svg) replace
+actest, lags(6)
 
 /* Outpatient medium
 import delimited "./output/measures/join/measure_op_appt_medium_rate.csv", clear	//get csv
