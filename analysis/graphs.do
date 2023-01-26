@@ -123,10 +123,12 @@ graph export ./output/graphs/line_ra_daycase.svg, as(svg) replace
 * Graphs stratified by admission method
 import delimited using ./output/measures/join/measure_hosp_ra_elective_rate.csv, numericcols(3) clear
 * Drop if ra_elective missing or is mother-baby record
-drop if (ra_elective==. | ra_elective==31 | ra_elective==32 | ra_elective==82 | ra_elective==83)
+drop if (ra_elective=="" | ra_elective=="31" | ra_elective=="32" | ra_elective=="82" | ra_elective=="83")
+table ra_elective
 * generate binary variable for elective admissions 
-gen ra_elective_n = (ra_elective == 81 | ra_elective == 11 | ra_elective == 12 | ra_elective == 13)
+gen ra_elective_n = (ra_elective == "81" | ra_elective == "11" | ra_elective == "12" | ra_elective == "13")
 tab ra_elective*
+bys ra_elective_n: table ra_elective
 * Update number of hospitalisations and population to combine all categories combined
 bys date ra_elective_n: egen ra_hosp_n = total(ra_hosp)
 bys date ra_elective_n: egen population_n = total(population)
