@@ -427,7 +427,7 @@ Sorted by: dateA
 . 
 end of do-file
 
-. . file open output using "/tmp/graphs.do.aDGm.out", write text replace
+. . file open output using "/tmp/graphs.do.IKhy.out", write text replace
 
 . . file write output "success" 
 

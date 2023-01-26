@@ -87,23 +87,17 @@ bys date ra_elective_n: egen ra_hosp_n = total(ra_hosp)
 bys date ra_elective_n: egen population_n = total(population)
 drop ra_elective ra_hosp population value
 * Calculate proportion
-gen proportion = (ra_hosp_n/population_n)*100
+gen percent = (ra_hosp_n/population_n)*100
 duplicates drop
 * Format date
 gen dateA = date(date, "YMD")
 drop date
-format dateA %dD/M/Y
+format dateA %td
 gen month=mofd(dateA)
 format month %tm
-* reshape dataset so columns with rates for each ethnicity 
-reshape wide proportion population_n ra_hosp_n, i(dateA) j(ra_elective)
-describe
-* Label strata 
-label var proportion0 "Emergency admission"
-label var proportion1 "Elective admission"
 *Set time series
-tsset month 
-itsa percent, trperiod(2020m4) figure single lag(1) posttrend
+tsset ra_elective_n month 
+itsa percent, trperiod(2020m4) treatid(1) figure single lag(1) posttrend
 graph export ./output/time_series/itsa_ra_elective.svg, as(svg) replace
 actest, lags(6)
 

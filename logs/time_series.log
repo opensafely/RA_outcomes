@@ -586,21 +586,21 @@ Cumby-Huizinga test for autocorrelation (Breusch-Godfrey)
                 delta:  1 month
 
 Regression with Newey-West standard errors      Number of obs     =         72
-maximum lag: 1                                  F(  7,        64) =    1021.95
+maximum lag: 1                                  F(  7,        64) =    1318.14
                                                 Prob > F          =     0.0000
 
 ------------------------------------------------------------------------------
              |             Newey-West
     _percent |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-          _t |    .066693   .1304118     0.51   0.611    -.1938346    .3272205
-          _z |  -23.15332   .7905725   -29.29   0.000    -24.73267   -21.57397
-        _z_t |  -.0036539   .1486775    -0.02   0.980    -.3006714    .2933636
-    _x2020m4 |  -.0814456   1.273868    -0.06   0.949    -2.626289    2.463398
-  _x_t2020m4 |   -.101109   .1310796    -0.77   0.443    -.3629707    .1607526
-  _z_x2020m4 |  -.2867158   1.466176    -0.20   0.846    -3.215738    2.642307
-_z_x_t2020m4 |   .0337964   .1514537     0.22   0.824    -.2687672      .33636
-       _cons |   46.15901    .687973    67.09   0.000     44.78462    47.53339
+          _t |   .1280033   .0885018     1.45   0.153    -.0487995     .304806
+          _z |  -20.93792   .8557572   -24.47   0.000    -22.64749   -19.22834
+        _z_t |  -.1823757   .1268554    -1.44   0.155    -.4357986    .0710471
+    _x2020m4 |  -.2382338   .6892606    -0.35   0.731     -1.61519    1.138723
+  _x_t2020m4 |  -.1363211   .0959097    -1.42   0.160    -.3279226    .0552805
+  _z_x2020m4 |  -.2978525   .9464942    -0.31   0.754    -2.188692    1.592987
+_z_x_t2020m4 |   .1897383    .135316     1.40   0.166    -.0805866    .4600632
+       _cons |   45.40074   .5532156    82.07   0.000     44.29557    46.50592
 ------------------------------------------------------------------------------
 
 
@@ -613,10 +613,10 @@ Difference : _b[_z_t] +  _b[_z_x_t2020m4]
 ------------------------------------------------------------------------------
 Linear Trend |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-     Treated |  -.0042735   .0265536    -0.16   0.873    -.0573204    .0487734
-    Controls |  -.0344161   .0331641    -1.04   0.303     -.100669    .0318369
+     Treated |  -.0009552   .0299367    -0.03   0.975    -.0607606    .0588502
+    Controls |  -.0083178   .0269222    -0.31   0.758    -.0621011    .0454656
 -------------+----------------------------------------------------------------
-  Difference |   .0301425   .0424847     0.71   0.481    -.0547305    .1150156
+  Difference |   .0073626   .0402618     0.18   0.855    -.0730696    .0877947
 ------------------------------------------------------------------------------
 
 . graph export ./output/time_series/itsa_op_appt_medium.svg, as(svg) replace
@@ -634,12 +634,12 @@ Cumby-Huizinga test for autocorrelation
 -----------------------------------------+-----------------------------------
     lags   |      chi2      df     p-val | lag |      chi2      df     p-val
 -----------+-----------------------------+-----+-----------------------------
-   1 -  1  |      0.002      1    0.9621 |   1 |      0.002      1    0.9621
-   1 -  2  |      6.637      2    0.0362 |   2 |      6.637      1    0.0100
-   1 -  3  |      8.347      3    0.0394 |   3 |      1.209      1    0.2715
-   1 -  4  |      8.784      4    0.0667 |   4 |      1.743      1    0.1868
-   1 -  5  |     10.826      5    0.0549 |   5 |      0.398      1    0.5280
-   1 -  6  |     11.547      6    0.0729 |   6 |      1.244      1    0.2648
+   1 -  1  |      0.205      1    0.6504 |   1 |      0.205      1    0.6504
+   1 -  2  |      5.432      2    0.0662 |   2 |      5.124      1    0.0236
+   1 -  3  |      6.417      3    0.0930 |   3 |      0.463      1    0.4963
+   1 -  4  |      6.477      4    0.1662 |   4 |      0.247      1    0.6190
+   1 -  5  |      7.024      5    0.2188 |   5 |      0.068      1    0.7937
+   1 -  6  |      8.185      6    0.2249 |   6 |      0.824      1    0.3639
 -----------------------------------------------------------------------------
   Test allows predetermined regressors/instruments
   Test requires conditional homoskedasticity
@@ -684,7 +684,7 @@ Cumby-Huizinga test for autocorrelation
 . newey percent ra_daycase##postcovid, lag(1) force 
 
 Regression with Newey-West standard errors      Number of obs     =        108
-maximum lag: 1                                  F(  5,       102) =    2822.89
+maximum lag: 1                                  F(  5,       102) =    2193.49
                                                 Prob > F          =     0.0000
 
 ------------------------------------------------------------------------------
@@ -692,17 +692,17 @@ maximum lag: 1                                  F(  5,       102) =    2822.89
      percent |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
   ra_daycase |
-          2  |  -6.166407     .14613   -42.20   0.000    -6.456255   -5.876559
-          3  |   -6.15404   .1538638   -40.00   0.000    -6.459228   -5.848852
+          2  |   -6.12201    .106117   -57.69   0.000    -6.332493   -5.911528
+          3  |  -6.207259   .1113618   -55.74   0.000    -6.428145   -5.986373
              |
- 1.postcovid |   .1037383   .1525777     0.68   0.498    -.1988988    .4063755
+ 1.postcovid |   .0724939   .1087487     0.67   0.507    -.1432087    .2881964
              |
   ra_daycase#|
    postcovid |
-        2 1  |   -.086652   .1587378    -0.55   0.586    -.4015076    .2282036
-        3 1  |  -.0687745   .1661641    -0.41   0.680    -.3983602    .2608112
+        2 1  |  -.1661688   .1272077    -1.31   0.194    -.4184847     .086147
+        3 1  |   .0086557    .131194     0.07   0.948     -.251567    .2688784
              |
-       _cons |   7.389751   .1438143    51.38   0.000     7.104496    7.675006
+       _cons |   7.396845   .0909618    81.32   0.000     7.216422    7.577267
 ------------------------------------------------------------------------------
 
 . * Itsa compared treat group to all other groups
@@ -714,21 +714,21 @@ maximum lag: 1                                  F(  5,       102) =    2822.89
                 delta:  1 month
 
 Regression with Newey-West standard errors      Number of obs     =        108
-maximum lag: 1                                  F(  7,       100) =       5.46
+maximum lag: 1                                  F(  7,       100) =       5.85
                                                 Prob > F          =     0.0000
 
 ------------------------------------------------------------------------------
              |             Newey-West
     _percent |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-          _t |  -.0050525   .2389006    -0.02   0.983    -.4790244    .4689194
-          _z |  -3.074602    1.60983    -1.91   0.059    -6.268458    .1192549
-        _z_t |  -.0026883   .2389335    -0.01   0.991    -.4767256     .471349
-    _x2020m4 |   .1420711   2.117502     0.07   0.947    -4.058994    4.343136
-  _x_t2020m4 |   .0015847   .2600556     0.01   0.995    -.5143582    .5175277
-  _z_x2020m4 |  -.1078957   2.118799    -0.05   0.959    -4.311533    4.095742
-_z_x_t2020m4 |   .0090452   .2601312     0.03   0.972    -.5070476     .525138
-       _cons |    4.34052   1.609594     2.70   0.008     1.147131     7.53391
+          _t |  -.0053888    .250404    -0.02   0.983    -.5021833    .4914056
+          _z |  -3.156358   1.720396    -1.83   0.070    -6.569575    .2568595
+        _z_t |   .0250867   .2506344     0.10   0.920    -.4721648    .5223382
+    _x2020m4 |   .0963066   2.125363     0.05   0.964    -4.120353    4.312966
+  _x_t2020m4 |   .0067403   .2700207     0.02   0.980     -.528973    .5424537
+  _z_x2020m4 |  -.3059331   2.128783    -0.14   0.886    -4.529378    3.917511
+_z_x_t2020m4 |  -.0274891   .2703362    -0.10   0.919    -.5638284    .5088502
+       _cons |   4.322853   1.718448     2.52   0.013     .9135013    7.732206
 ------------------------------------------------------------------------------
 
 
@@ -741,10 +741,10 @@ Difference : _b[_z_t] +  _b[_z_x_t2020m4]
 ------------------------------------------------------------------------------
 Linear Trend |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-     Treated |   .0028892   .0048708     0.59   0.554    -.0067743    .0125527
-    Controls |  -.0034677   .0929208    -0.04   0.970    -.1878199    .1808844
+     Treated |  -.0010509   .0062814    -0.17   0.867    -.0135131    .0114114
+    Controls |   .0013515   .0933075     0.01   0.988    -.1837679    .1864709
 -------------+----------------------------------------------------------------
-  Difference |   .0063569   .0930483     0.07   0.946    -.1782483    .1909622
+  Difference |  -.0024024   .0935187    -0.03   0.980    -.1879408     .183136
 ------------------------------------------------------------------------------
 
 . graph export ./output/time_series/itsa_hosp_ra_daycase.svg, as(svg) replace
@@ -762,19 +762,19 @@ Cumby-Huizinga test for autocorrelation
 -----------------------------------------+-----------------------------------
     lags   |      chi2      df     p-val | lag |      chi2      df     p-val
 -----------+-----------------------------+-----+-----------------------------
-   1 -  1  |    103.481      1    0.0000 |   1 |    103.481      1    0.0000
-   1 -  2  |    103.656      2    0.0000 |   2 |     35.265      1    0.0000
-   1 -  3  |    103.665      3    0.0000 |   3 |     21.308      1    0.0000
-   1 -  4  |    103.676      4    0.0000 |   4 |     15.183      1    0.0001
-   1 -  5  |    103.698      5    0.0000 |   5 |     11.761      1    0.0006
-   1 -  6  |    103.700      6    0.0000 |   6 |      9.655      1    0.0019
+   1 -  1  |    102.764      1    0.0000 |   1 |    102.764      1    0.0000
+   1 -  2  |    102.946      2    0.0000 |   2 |     35.049      1    0.0000
+   1 -  3  |    102.950      3    0.0000 |   3 |     21.147      1    0.0000
+   1 -  4  |    102.954      4    0.0000 |   4 |     15.209      1    0.0001
+   1 -  5  |    102.963      5    0.0000 |   5 |     11.892      1    0.0006
+   1 -  6  |    103.021      6    0.0000 |   6 |      9.611      1    0.0019
 -----------------------------------------------------------------------------
   Test allows predetermined regressors/instruments
   Test requires conditional homoskedasticity
 
 . 
 . 
-. * Method of admission - elective vs emergency 
+. * Method of admission - elective vs emergency - itsa not working***********
 . * Graphs stratified by admission method
 . import delimited using ./output/measures/join/measure_hosp_ra_elective_rate.c
 > sv, numericcols(3) clear
@@ -814,7 +814,7 @@ ra_electiv |     ra_elective_n
 . drop ra_elective ra_hosp population value
 
 . * Calculate proportion
-. gen proportion = (ra_hosp_n/population_n)*100
+. gen percent = (ra_hosp_n/population_n)*100
 
 . duplicates drop
 
@@ -827,67 +827,230 @@ Duplicates in terms of all variables
 
 . drop date
 
-. format dateA %dD/M/Y
+. format dateA %td
 
 . gen month=mofd(dateA)
 
 . format month %tm
 
-. * reshape dataset so columns with rates for each ethnicity 
-. reshape wide proportion population_n ra_hosp_n, i(dateA) j(ra_elective)
-(note: j = 0 1)
-
-Data                               long   ->   wide
------------------------------------------------------------------------------
-Number of obs.                       72   ->      36
-Number of variables                   6   ->       8
-j variable (2 values)     ra_elective_n   ->   (dropped)
-xij variables:
-                             proportion   ->   proportion0 proportion1
-                           population_n   ->   population_n0 population_n1
-                              ra_hosp_n   ->   ra_hosp_n0 ra_hosp_n1
------------------------------------------------------------------------------
-
-. describe
-
-Contains data
-  obs:            36                          
- vars:             8                          
--------------------------------------------------------------------------------
-              storage   display    value
-variable name   type    format     label      variable label
--------------------------------------------------------------------------------
-dateA           float   %dD/M/Y               
-ra_hosp_n0      float   %9.0g                 0 ra_hosp_n
-population_n0   float   %9.0g                 0 population_n
-proportion0     float   %9.0g                 0 proportion
-ra_hosp_n1      float   %9.0g                 1 ra_hosp_n
-population_n1   float   %9.0g                 1 population_n
-proportion1     float   %9.0g                 1 proportion
-month           float   %tm                   
--------------------------------------------------------------------------------
-Sorted by: dateA
-     Note: Dataset has changed since last saved.
-
-. * Label strata 
-. label var proportion0 "Emergency admission"
-
-. label var proportion1 "Elective admission"
-
 . *Set time series
-. tsset month 
+. tsset ra_elective_n month 
+       panel variable:  ra_elective_n (strongly balanced)
         time variable:  month, 2019m4 to 2022m3
                 delta:  1 month
 
-. itsa percent, trperiod(2020m4) figure single lag(1) posttrend
-variable percent not found
-r(111);
+. itsa percent, trperiod(2020m4) treatid(1) figure single lag(1) posttrend
+
+
+       panel variable:  ra_elective_n (strongly balanced)
+        time variable:  month, 2019m4 to 2022m3
+                delta:  1 month
+
+Regression with Newey-West standard errors      Number of obs     =         36
+maximum lag: 1                                  F(  3,        32) =       0.43
+                                                Prob > F          =     0.7303
+
+------------------------------------------------------------------------------
+             |             Newey-West
+    _percent |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+          _t |   .0081652   .0524604     0.16   0.877    -.0986933    .1150236
+    _x2020m4 |   .1812993    .470126     0.39   0.702    -.7763159    1.138915
+  _x_t2020m4 |  -.0189908   .0515721    -0.37   0.715    -.1240398    .0860581
+       _cons |   9.920392   .2981087    33.28   0.000     9.313165    10.52762
+------------------------------------------------------------------------------
+
+
+                    Postintervention Linear Trend: 2020m4
+
+Treated: _b[_t]+_b[_x_t2020m4]
+------------------------------------------------------------------------------
+Linear Trend |      Coef.   Std. Err.      t              [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+     Treated |  -.0108257   .0115202    -0.94   0.354    -.0342915    .0126402
+------------------------------------------------------------------------------
+
+. graph export ./output/time_series/itsa_ra_elective.svg, as(svg) replace
+(note: file ./output/time_series/itsa_ra_elective.svg not found)
+(file ./output/time_series/itsa_ra_elective.svg written in SVG format)
+
+. actest, lags(6)
+
+Cumby-Huizinga test for autocorrelation
+  H0: variable is MA process up to order q
+  HA: serial correlation present at specified lags >q
+-----------------------------------------------------------------------------
+  H0: q=0 (serially uncorrelated)        |  H0: q=specified lag-1
+  HA: s.c. present at range specified    |  HA: s.c. present at lag specified
+-----------------------------------------+-----------------------------------
+    lags   |      chi2      df     p-val | lag |      chi2      df     p-val
+-----------+-----------------------------+-----+-----------------------------
+   1 -  1  |      0.479      1    0.4888 |   1 |      0.479      1    0.4888
+   1 -  2  |      0.538      2    0.7642 |   2 |      0.004      1    0.9513
+   1 -  3  |      0.629      3    0.8897 |   3 |      0.231      1    0.6307
+   1 -  4  |      6.905      4    0.1410 |   4 |      5.088      1    0.0241
+   1 -  5  |      7.433      5    0.1904 |   5 |      1.610      1    0.2045
+   1 -  6  |      8.223      6    0.2222 |   6 |      0.342      1    0.5589
+-----------------------------------------------------------------------------
+  Test allows predetermined regressors/instruments
+  Test requires conditional homoskedasticity
+
+. 
+. /* Outpatient medium
+> import delimited "./output/measures/join/measure_op_appt_medium_rate.csv", cl
+> ear        //get csv
+> putexcel set ./output/time_series/tsreg_tables, sheet(op_appt_medium) modify
+> drop if op_appt_medium==. | op_appt_medium>=3
+> gen temp_date=date(date, "YMD")
+> format temp_date %td
+> gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
+> gen month=mofd(temp_date)
+> format month %tm
+> drop temp_date
+> * Generate new population as all those with medium described
+> bys date: egen pop_new = total(population)
+> * Calculate rate
+> gen rate = (op_appt/pop_new)*100000
+> label variable rate "Rate of op appts per 100,000"
+> *Set time series
+> tsset op_appt_medium month
+> newey rate i.op_appt_medium##i.postcovid, lag(1) force
+> *Export results
+> putexcel E1=("Number of obs") G1=(e(N))
+> putexcel E2=("F") G2=(e(F))
+> putexcel E3=("Prob > F") G3=(Ftail(e(df_m), e(df_r), e(F)))
+> matrix a = r(table)'
+> putexcel A6 = matrix(a), rownames
+> putexcel save
+> *quietly margins postcovid
+> *marginsplot
+> *graph export ./output/time_series/margins_op_appt_medium.svg, as(svg) replac
+> e
+> * Itsa model
+> itsa rate, trperiod(2020m4) figure treatid(1) lag(1)
+> graph export ./output/time_series/itsa_appt_medium.svg, as(svg) replace
+> import excel using ./output/time_series/tsreg_tables.xlsx, sheet (op_appt_med
+> ium) clear
+> export delimited using ./output/time_series/tsreg_op_appt_medium.csv, replace
+> 
+> * Hospitalisations
+> local a "cardiac ild ra sepsis vasculitis"
+> forvalues i=1/5 {
+>     local c: word `i' of `a' 
+>                 import delimited "./output/measures/join/measure_hosp_`c'_rat
+> e.csv", clear      //get csv
+>         putexcel set ./output/time_series/tsreg_tables, sheet(hosp_`c') modif
+> y
+>                 gen temp_date=date(date, "YMD")
+>                 format temp_date %td
+>                 gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
+>                 gen month=mofd(temp_date)
+>                 format month %tm
+>                 drop temp_date
+>                 *Value to rate per 100k
+>                 gen rate = value*100000
+>                 label variable rate "Rate of hospitalisations `c' per 100,000
+> "
+>                 *Set time series
+>                 tsset month 
+>                 newey rate i.postcovid, lag(1) force
+>         *Export results
+>         putexcel E1=("Number of obs") G1=(e(N))
+>         putexcel E2=("F") G2=(e(F))
+>         putexcel E3=("Prob > F") G3=(Ftail(e(df_m), e(df_r), e(F)))
+>         matrix a = r(table)'
+>         putexcel A6 = matrix(a), rownames
+>         putexcel save
+>         *quietly margins postcovid
+>         *marginsplot
+>         *graph export ./output/time_series/margins_hosp_`c'.svg, as(svg) repl
+> ace
+>         itsa rate, trperiod(2020m4) figure single lag(1)
+>         graph export ./output/time_series/itsa_`c'.svg, as(svg) replace
+>         import excel using ./output/time_series/tsreg_tables.xlsx, sheet (hos
+> p_`c') clear
+>         export delimited using ./output/time_series/tsreg_hosp_`c'.csv, repla
+> ce
+>         }
+> 
+> * RA daycase
+> import delimited "./output/measures/join/measure_hosp_ra_daycase_rate.csv", c
+> lear       //get csv
+> putexcel set ./output/time_series/tsreg_tables, sheet(hosp_ra_daycase) modify
+> drop if ra_daycase==. | ra_daycase>=4
+> gen temp_date=date(date, "YMD")
+> format temp_date %td
+> gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
+> gen month=mofd(temp_date)
+> format month %tm
+> drop temp_date
+> * Generate new population as all those with type of admission
+> bys date: egen pop_new = total(population)
+> * Calculate rate
+> gen rate = (ra_hosp/pop_new)*100000
+> label variable rate "Rate of op appts per 100,000"
+> *Set time series
+> tsset ra_daycase month
+> newey rate i.ra_daycase##i.postcovid, lag(1) force
+> *Export results
+> putexcel E1=("Number of obs") G1=(e(N))
+> putexcel E2=("F") G2=(e(F))
+> putexcel E3=("Prob > F") G3=(Ftail(e(df_m), e(df_r), e(F)))
+> matrix a = r(table)'
+> putexcel A6 = matrix(a), rownames
+> putexcel save
+> *quietly margins postcovid
+> *marginsplot
+> *graph export ./output/time_series/margins_hosp_ra_daycase.svg, as(svg) repla
+> ce
+> * Itsa model
+> itsa rate, trperiod(2020m4) figure treatid(2) lag(1)
+> graph export ./output/time_series/itsa_ra_daycase.svg, as(svg) replace
+> import excel using ./output/time_series/tsreg_tables.xlsx, sheet (hosp_ra_day
+> case) clear
+> export delimited using ./output/time_series/tsreg_hosp_ra_daycase.csv, replac
+> e
+> 
+> import delimited "./output/measures/join/measure_med_gc_rate.csv", clear     
+>    //get csv
+> putexcel set ./output/time_series/tsreg_tables, sheet(med_gc) modify
+> gen temp_date=date(date, "YMD")
+> format temp_date %td
+> gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
+> gen month=mofd(temp_date)
+> format month %tm
+> drop temp_date
+> *Value to rate per 100k
+> gen rate = value*100000
+> label variable rate "Rate of GC prescribing per 100,000"
+> *Set time series
+> tsset month 
+> newey rate i.postcovid, lag(1) force
+> *Export results
+> putexcel E1=("Number of obs") G1=(e(N))
+> putexcel E2=("F") G2=(e(F))
+> putexcel E3=("Prob > F") G3=(Ftail(e(df_m), e(df_r), e(F)))
+> matrix a = r(table)'
+> putexcel A6 = matrix(a), rownames
+> putexcel save
+> *quietly margins postcovid
+> *marginsplot
+> *graph export ./output/time_series/margins_med_gc.svg, as(svg) replace
+> itsa rate, trperiod(2020m4) figure single lag(1)
+> graph export ./output/time_series/itsa_med_gc.svg, as(svg) replace
+> import excel using ./output/time_series/tsreg_tables.xlsx, sheet (med_gc) cle
+> ar
+> export delimited using ./output/time_series/tsreg_med_gc.csv, replace
 
 end of do-file
-r(111);
 
+. . file open output using "/tmp/time_series.do.Mdrm.out", write text replace
+
+. . file write output "success" 
+
+. . file close output
+
+. 
 end of do-file
-
-r(111);
 
 
