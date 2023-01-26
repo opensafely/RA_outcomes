@@ -339,14 +339,15 @@ study = StudyDefinition(
         between=["index_date", "last_day_of_month(index_date)"],
         returning="admission_method",
         return_expectations={"category": { "ratios":{ 
-                "11": 0.35,
+                "11": 0.3,
                 "12": 0.1,
                 "13": 0.1,
                 "21": 0.1,
                 "22": 0.1,
                 "23": 0.1,
                 "24": 0.1,
-                "25": 0.05, 
+                "25": 0.05,
+                "2A": 0.05 
                 },
             },
         },
