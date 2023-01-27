@@ -10,6 +10,7 @@ adopath + ./analysis/ado
 *Log file
 cap log using ./logs/time_series.log, replace
 cap mkdir ./output/time_series
+cap mkdir ./output/tempdata
 
 * Outpatient appointments amd hospitalisations
 * Autocorrelation indicates no autocorrelation for op_appt 
@@ -26,6 +27,7 @@ foreach file in op_appt op_appt_all hosp_ra hosp_ra_emergency hosp_all med_gc me
     *Set time series
     tsset month 
     itsa percent, trperiod(2020m4) figure single lag(1) posttrend
+    parmest, label saving("./output/tempdata/`file'_itsa_output", replace)
     graph export ./output/time_series/itsa_`file'.svg, as(svg) replace
     actest, lags(6)
     }
@@ -47,6 +49,7 @@ label variable percent "Percent of population"
 *Set time series
 tsset op_appt_medium month 
 itsa percent, trperiod(2020m4) treatid(2) figure lag(1) posttrend
+parmest, label saving("./output/tempdata/op_appt_medium_itsa_output", replace)
 graph export ./output/time_series/itsa_op_appt_medium.svg, as(svg) replace
 actest, lags(6)
 
@@ -70,6 +73,7 @@ tsset ra_daycase month
 newey percent ra_daycase##postcovid, lag(1) force 
 * Itsa compared treat group to all other groups
 itsa percent, trperiod(2020m4) treatid(2) figure lag(1) posttrend
+parmest, label saving("./output/tempdata/ra_daycase_itsa_output", replace)
 graph export ./output/time_series/itsa_hosp_ra_daycase.svg, as(svg) replace
 actest, lags(6)
 
@@ -90,7 +94,7 @@ bys date: egen population_n = total(population)
 drop ra_elective ra_hosp population value
 * Elective variable is now proportion of all hospitalisations that are elective
 * Keep only elective as elective==0 is opposite i.e. same information 
-drop if ra_elective == 0
+drop if ra_elective_n == 0
 * Calculate proportion
 gen percent = (ra_hosp_n/population_n)*100
 duplicates drop
@@ -103,8 +107,23 @@ format month %tm
 *Set time series
 tsset month 
 itsa percent, trperiod(2020m4) figure single lag(1) posttrend
+parmest, label saving("./output/tempdata/ra_elective_itsa_output", replace)
 graph export ./output/time_series/itsa_ra_elective.svg, as(svg) replace
 actest, lags(6)
+
+* Append results together
+tempfile tempfile
+use "./output/tempdata/ra_elective_itsa_output", clear
+gen outcome = "ra_elective"
+save `tempfile', replace
+
+foreach var in op_appt op_appt_all hosp_ra hosp_ra_emergency hosp_all med_gc med_opioid_strong med_opioid_weak med_ssri med_nsaid op_appt_medium ra_daycase ra_elective {
+    use "./output/tempdata/`var'_itsa_output", clear
+    gen outcome = `var'
+    append `tempfile'
+    save `tempfile', replace
+}
+export delimited using "./output/times_series/all_itsa_output.csv, replace
 
 /* Outpatient medium
 import delimited "./output/measures/join/measure_op_appt_medium_rate.csv", clear	//get csv

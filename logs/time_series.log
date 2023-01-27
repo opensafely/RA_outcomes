@@ -1,6 +1,8 @@
 
 . cap mkdir ./output/time_series
 
+. cap mkdir ./output/tempdata
+
 . 
 . * Outpatient appointments amd hospitalisations
 . * Autocorrelation indicates no autocorrelation for op_appt 
@@ -19,9 +21,10 @@
  10.     *Set time series
 .     tsset month 
  11.     itsa percent, trperiod(2020m4) figure single lag(1) posttrend
- 12.     graph export ./output/time_series/itsa_`file'.svg, as(svg) replace
- 13.     actest, lags(6)
- 14.     }
+ 12.     parmest, label saving("./output/tempdata/`file'_itsa_output", replace)
+ 13.     graph export ./output/time_series/itsa_`file'.svg, as(svg) replace
+ 14.     actest, lags(6)
+ 15.     }
 (4 vars, 36 obs)
         time variable:  month, 2019m4 to 2022m3
                 delta:  1 month
@@ -53,6 +56,7 @@ Linear Trend |      Coef.   Std. Err.      t              [95% Conf. Interval]
 -------------+----------------------------------------------------------------
      Treated |          0          0        .       .            .           .
 ------------------------------------------------------------------------------
+file ./output/tempdata/op_appt_itsa_output.dta saved
 (note: file ./output/time_series/itsa_op_appt.svg not found)
 (file ./output/time_series/itsa_op_appt.svg written in SVG format)
 
@@ -105,6 +109,7 @@ Linear Trend |      Coef.   Std. Err.      t              [95% Conf. Interval]
 -------------+----------------------------------------------------------------
      Treated |          0          0        .       .            .           .
 ------------------------------------------------------------------------------
+file ./output/tempdata/op_appt_all_itsa_output.dta saved
 (note: file ./output/time_series/itsa_op_appt_all.svg not found)
 (file ./output/time_series/itsa_op_appt_all.svg written in SVG format)
 
@@ -157,6 +162,7 @@ Linear Trend |      Coef.   Std. Err.      t              [95% Conf. Interval]
 -------------+----------------------------------------------------------------
      Treated |          0          0        .       .            .           .
 ------------------------------------------------------------------------------
+file ./output/tempdata/hosp_ra_itsa_output.dta saved
 (note: file ./output/time_series/itsa_hosp_ra.svg not found)
 (file ./output/time_series/itsa_hosp_ra.svg written in SVG format)
 
@@ -209,6 +215,7 @@ Linear Trend |      Coef.   Std. Err.      t              [95% Conf. Interval]
 -------------+----------------------------------------------------------------
      Treated |          0          0        .       .            .           .
 ------------------------------------------------------------------------------
+file ./output/tempdata/hosp_ra_emergency_itsa_output.dta saved
 (note: file ./output/time_series/itsa_hosp_ra_emergency.svg not found)
 (file ./output/time_series/itsa_hosp_ra_emergency.svg written in SVG format)
 
@@ -261,6 +268,7 @@ Linear Trend |      Coef.   Std. Err.      t              [95% Conf. Interval]
 -------------+----------------------------------------------------------------
      Treated |          0          0        .       .            .           .
 ------------------------------------------------------------------------------
+file ./output/tempdata/hosp_all_itsa_output.dta saved
 (note: file ./output/time_series/itsa_hosp_all.svg not found)
 (file ./output/time_series/itsa_hosp_all.svg written in SVG format)
 
@@ -313,6 +321,7 @@ Linear Trend |      Coef.   Std. Err.      t              [95% Conf. Interval]
 -------------+----------------------------------------------------------------
      Treated |          0          0        .       .            .           .
 ------------------------------------------------------------------------------
+file ./output/tempdata/med_gc_itsa_output.dta saved
 (note: file ./output/time_series/itsa_med_gc.svg not found)
 (file ./output/time_series/itsa_med_gc.svg written in SVG format)
 
@@ -365,6 +374,7 @@ Linear Trend |      Coef.   Std. Err.      t              [95% Conf. Interval]
 -------------+----------------------------------------------------------------
      Treated |          0          0        .       .            .           .
 ------------------------------------------------------------------------------
+file ./output/tempdata/med_opioid_strong_itsa_output.dta saved
 (note: file ./output/time_series/itsa_med_opioid_strong.svg not found)
 (file ./output/time_series/itsa_med_opioid_strong.svg written in SVG format)
 
@@ -417,6 +427,7 @@ Linear Trend |      Coef.   Std. Err.      t              [95% Conf. Interval]
 -------------+----------------------------------------------------------------
      Treated |          0          0        .       .            .           .
 ------------------------------------------------------------------------------
+file ./output/tempdata/med_opioid_weak_itsa_output.dta saved
 (note: file ./output/time_series/itsa_med_opioid_weak.svg not found)
 (file ./output/time_series/itsa_med_opioid_weak.svg written in SVG format)
 
@@ -469,6 +480,7 @@ Linear Trend |      Coef.   Std. Err.      t              [95% Conf. Interval]
 -------------+----------------------------------------------------------------
      Treated |          0          0        .       .            .           .
 ------------------------------------------------------------------------------
+file ./output/tempdata/med_ssri_itsa_output.dta saved
 (note: file ./output/time_series/itsa_med_ssri.svg not found)
 (file ./output/time_series/itsa_med_ssri.svg written in SVG format)
 
@@ -521,6 +533,7 @@ Linear Trend |      Coef.   Std. Err.      t              [95% Conf. Interval]
 -------------+----------------------------------------------------------------
      Treated |          0          0        .       .            .           .
 ------------------------------------------------------------------------------
+file ./output/tempdata/med_nsaid_itsa_output.dta saved
 (note: file ./output/time_series/itsa_med_nsaid.svg not found)
 (file ./output/time_series/itsa_med_nsaid.svg written in SVG format)
 
@@ -618,6 +631,10 @@ Linear Trend |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
   Difference |   .0073626   .0402618     0.18   0.855    -.0730696    .0877947
 ------------------------------------------------------------------------------
+
+. parmest, label saving("./output/tempdata/op_appt_medium_itsa_output", replace
+> )
+file ./output/tempdata/op_appt_medium_itsa_output.dta saved
 
 . graph export ./output/time_series/itsa_op_appt_medium.svg, as(svg) replace
 (note: file ./output/time_series/itsa_op_appt_medium.svg not found)
@@ -747,6 +764,9 @@ Linear Trend |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
   Difference |  -.0024024   .0935187    -0.03   0.980    -.1879408     .183136
 ------------------------------------------------------------------------------
 
+. parmest, label saving("./output/tempdata/ra_daycase_itsa_output", replace)
+file ./output/tempdata/ra_daycase_itsa_output.dta saved
+
 . graph export ./output/time_series/itsa_hosp_ra_daycase.svg, as(svg) replace
 (note: file ./output/time_series/itsa_hosp_ra_daycase.svg not found)
 (file ./output/time_series/itsa_hosp_ra_daycase.svg written in SVG format)
@@ -774,283 +794,23 @@ Cumby-Huizinga test for autocorrelation
 
 . 
 . 
-. * Method of admission - elective vs emergency - itsa not working***********
+. * Method of admission - elective vs emergency
 . * Graphs stratified by admission method
 . import delimited using ./output/measures/join/measure_hosp_ra_elective_rate.c
 > sv, numericcols(3) clear
 (5 vars, 324 obs)
 
 . * Drop if ra_elective missing or is mother-baby record
-. drop if (ra_elective==. | ra_elective==31 | ra_elective==32 | ra_elective==82
->  | ra_elective==83)
-(36 observations deleted)
+. drop if (ra_elective=="" | ra_elective=="31" | ra_elective=="32" | ra_electiv
+> e=="82" | ra_elective=="83")
+type mismatch
+r(109);
 
-. * generate binary variable for elective admissions 
-. gen ra_elective_n = (ra_elective == 81 | ra_elective == 11 | ra_elective == 1
-> 2 | ra_elective == 13)
-
-. tab ra_elective*
-
-ra_electiv |     ra_elective_n
-         e |         0          1 |     Total
------------+----------------------+----------
-        11 |         0         36 |        36 
-        12 |         0         36 |        36 
-        13 |         0         36 |        36 
-        21 |        36          0 |        36 
-        22 |        36          0 |        36 
-        23 |        36          0 |        36 
-        24 |        36          0 |        36 
-        25 |        36          0 |        36 
------------+----------------------+----------
-     Total |       180        108 |       288 
-
-. * Update number of hospitalisations and population to combine all categories 
-> combined
-. bys date ra_elective_n: egen ra_hosp_n = total(ra_hosp)
-
-. bys date ra_elective_n: egen population_n = total(population)
-
-. drop ra_elective ra_hosp population value
-
-. * Calculate proportion
-. gen percent = (ra_hosp_n/population_n)*100
-
-. duplicates drop
-
-Duplicates in terms of all variables
-
-(216 observations deleted)
-
-. * Format date
-. gen dateA = date(date, "YMD")
-
-. drop date
-
-. format dateA %td
-
-. gen month=mofd(dateA)
-
-. format month %tm
-
-. *Set time series
-. tsset ra_elective_n month 
-       panel variable:  ra_elective_n (strongly balanced)
-        time variable:  month, 2019m4 to 2022m3
-                delta:  1 month
-
-. itsa percent, trperiod(2020m4) treatid(1) figure single lag(1) posttrend
-
-
-       panel variable:  ra_elective_n (strongly balanced)
-        time variable:  month, 2019m4 to 2022m3
-                delta:  1 month
-
-Regression with Newey-West standard errors      Number of obs     =         36
-maximum lag: 1                                  F(  3,        32) =       0.43
-                                                Prob > F          =     0.7303
-
-------------------------------------------------------------------------------
-             |             Newey-West
-    _percent |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-          _t |   .0081652   .0524604     0.16   0.877    -.0986933    .1150236
-    _x2020m4 |   .1812993    .470126     0.39   0.702    -.7763159    1.138915
-  _x_t2020m4 |  -.0189908   .0515721    -0.37   0.715    -.1240398    .0860581
-       _cons |   9.920392   .2981087    33.28   0.000     9.313165    10.52762
-------------------------------------------------------------------------------
-
-
-                    Postintervention Linear Trend: 2020m4
-
-Treated: _b[_t]+_b[_x_t2020m4]
-------------------------------------------------------------------------------
-Linear Trend |      Coef.   Std. Err.      t              [95% Conf. Interval]
--------------+----------------------------------------------------------------
-     Treated |  -.0108257   .0115202    -0.94   0.354    -.0342915    .0126402
-------------------------------------------------------------------------------
-
-. graph export ./output/time_series/itsa_ra_elective.svg, as(svg) replace
-(note: file ./output/time_series/itsa_ra_elective.svg not found)
-(file ./output/time_series/itsa_ra_elective.svg written in SVG format)
-
-. actest, lags(6)
-
-Cumby-Huizinga test for autocorrelation
-  H0: variable is MA process up to order q
-  HA: serial correlation present at specified lags >q
------------------------------------------------------------------------------
-  H0: q=0 (serially uncorrelated)        |  H0: q=specified lag-1
-  HA: s.c. present at range specified    |  HA: s.c. present at lag specified
------------------------------------------+-----------------------------------
-    lags   |      chi2      df     p-val | lag |      chi2      df     p-val
------------+-----------------------------+-----+-----------------------------
-   1 -  1  |      0.479      1    0.4888 |   1 |      0.479      1    0.4888
-   1 -  2  |      0.538      2    0.7642 |   2 |      0.004      1    0.9513
-   1 -  3  |      0.629      3    0.8897 |   3 |      0.231      1    0.6307
-   1 -  4  |      6.905      4    0.1410 |   4 |      5.088      1    0.0241
-   1 -  5  |      7.433      5    0.1904 |   5 |      1.610      1    0.2045
-   1 -  6  |      8.223      6    0.2222 |   6 |      0.342      1    0.5589
------------------------------------------------------------------------------
-  Test allows predetermined regressors/instruments
-  Test requires conditional homoskedasticity
-
-. 
-. /* Outpatient medium
-> import delimited "./output/measures/join/measure_op_appt_medium_rate.csv", cl
-> ear        //get csv
-> putexcel set ./output/time_series/tsreg_tables, sheet(op_appt_medium) modify
-> drop if op_appt_medium==. | op_appt_medium>=3
-> gen temp_date=date(date, "YMD")
-> format temp_date %td
-> gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
-> gen month=mofd(temp_date)
-> format month %tm
-> drop temp_date
-> * Generate new population as all those with medium described
-> bys date: egen pop_new = total(population)
-> * Calculate rate
-> gen rate = (op_appt/pop_new)*100000
-> label variable rate "Rate of op appts per 100,000"
-> *Set time series
-> tsset op_appt_medium month
-> newey rate i.op_appt_medium##i.postcovid, lag(1) force
-> *Export results
-> putexcel E1=("Number of obs") G1=(e(N))
-> putexcel E2=("F") G2=(e(F))
-> putexcel E3=("Prob > F") G3=(Ftail(e(df_m), e(df_r), e(F)))
-> matrix a = r(table)'
-> putexcel A6 = matrix(a), rownames
-> putexcel save
-> *quietly margins postcovid
-> *marginsplot
-> *graph export ./output/time_series/margins_op_appt_medium.svg, as(svg) replac
-> e
-> * Itsa model
-> itsa rate, trperiod(2020m4) figure treatid(1) lag(1)
-> graph export ./output/time_series/itsa_appt_medium.svg, as(svg) replace
-> import excel using ./output/time_series/tsreg_tables.xlsx, sheet (op_appt_med
-> ium) clear
-> export delimited using ./output/time_series/tsreg_op_appt_medium.csv, replace
-> 
-> * Hospitalisations
-> local a "cardiac ild ra sepsis vasculitis"
-> forvalues i=1/5 {
->     local c: word `i' of `a' 
->                 import delimited "./output/measures/join/measure_hosp_`c'_rat
-> e.csv", clear      //get csv
->         putexcel set ./output/time_series/tsreg_tables, sheet(hosp_`c') modif
-> y
->                 gen temp_date=date(date, "YMD")
->                 format temp_date %td
->                 gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
->                 gen month=mofd(temp_date)
->                 format month %tm
->                 drop temp_date
->                 *Value to rate per 100k
->                 gen rate = value*100000
->                 label variable rate "Rate of hospitalisations `c' per 100,000
-> "
->                 *Set time series
->                 tsset month 
->                 newey rate i.postcovid, lag(1) force
->         *Export results
->         putexcel E1=("Number of obs") G1=(e(N))
->         putexcel E2=("F") G2=(e(F))
->         putexcel E3=("Prob > F") G3=(Ftail(e(df_m), e(df_r), e(F)))
->         matrix a = r(table)'
->         putexcel A6 = matrix(a), rownames
->         putexcel save
->         *quietly margins postcovid
->         *marginsplot
->         *graph export ./output/time_series/margins_hosp_`c'.svg, as(svg) repl
-> ace
->         itsa rate, trperiod(2020m4) figure single lag(1)
->         graph export ./output/time_series/itsa_`c'.svg, as(svg) replace
->         import excel using ./output/time_series/tsreg_tables.xlsx, sheet (hos
-> p_`c') clear
->         export delimited using ./output/time_series/tsreg_hosp_`c'.csv, repla
-> ce
->         }
-> 
-> * RA daycase
-> import delimited "./output/measures/join/measure_hosp_ra_daycase_rate.csv", c
-> lear       //get csv
-> putexcel set ./output/time_series/tsreg_tables, sheet(hosp_ra_daycase) modify
-> drop if ra_daycase==. | ra_daycase>=4
-> gen temp_date=date(date, "YMD")
-> format temp_date %td
-> gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
-> gen month=mofd(temp_date)
-> format month %tm
-> drop temp_date
-> * Generate new population as all those with type of admission
-> bys date: egen pop_new = total(population)
-> * Calculate rate
-> gen rate = (ra_hosp/pop_new)*100000
-> label variable rate "Rate of op appts per 100,000"
-> *Set time series
-> tsset ra_daycase month
-> newey rate i.ra_daycase##i.postcovid, lag(1) force
-> *Export results
-> putexcel E1=("Number of obs") G1=(e(N))
-> putexcel E2=("F") G2=(e(F))
-> putexcel E3=("Prob > F") G3=(Ftail(e(df_m), e(df_r), e(F)))
-> matrix a = r(table)'
-> putexcel A6 = matrix(a), rownames
-> putexcel save
-> *quietly margins postcovid
-> *marginsplot
-> *graph export ./output/time_series/margins_hosp_ra_daycase.svg, as(svg) repla
-> ce
-> * Itsa model
-> itsa rate, trperiod(2020m4) figure treatid(2) lag(1)
-> graph export ./output/time_series/itsa_ra_daycase.svg, as(svg) replace
-> import excel using ./output/time_series/tsreg_tables.xlsx, sheet (hosp_ra_day
-> case) clear
-> export delimited using ./output/time_series/tsreg_hosp_ra_daycase.csv, replac
-> e
-> 
-> import delimited "./output/measures/join/measure_med_gc_rate.csv", clear     
->    //get csv
-> putexcel set ./output/time_series/tsreg_tables, sheet(med_gc) modify
-> gen temp_date=date(date, "YMD")
-> format temp_date %td
-> gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
-> gen month=mofd(temp_date)
-> format month %tm
-> drop temp_date
-> *Value to rate per 100k
-> gen rate = value*100000
-> label variable rate "Rate of GC prescribing per 100,000"
-> *Set time series
-> tsset month 
-> newey rate i.postcovid, lag(1) force
-> *Export results
-> putexcel E1=("Number of obs") G1=(e(N))
-> putexcel E2=("F") G2=(e(F))
-> putexcel E3=("Prob > F") G3=(Ftail(e(df_m), e(df_r), e(F)))
-> matrix a = r(table)'
-> putexcel A6 = matrix(a), rownames
-> putexcel save
-> *quietly margins postcovid
-> *marginsplot
-> *graph export ./output/time_series/margins_med_gc.svg, as(svg) replace
-> itsa rate, trperiod(2020m4) figure single lag(1)
-> graph export ./output/time_series/itsa_med_gc.svg, as(svg) replace
-> import excel using ./output/time_series/tsreg_tables.xlsx, sheet (med_gc) cle
-> ar
-> export delimited using ./output/time_series/tsreg_med_gc.csv, replace
+end of do-file
+r(109);
 
 end of do-file
 
-. . file open output using "/tmp/time_series.do.Mdrm.out", write text replace
-
-. . file write output "success" 
-
-. . file close output
-
-. 
-end of do-file
+r(109);
 
 
