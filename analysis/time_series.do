@@ -123,7 +123,7 @@ foreach var in op_appt op_appt_all hosp_ra hosp_ra_emergency hosp_all med_gc med
     append using `tempfile'
     save `tempfile', replace
 }
-export delimited using "./output/times_series/all_itsa_output.csv, replace
+export delimited using ./output/times_series/all_itsa_output.csv, replace
 
 /* Outpatient medium
 import delimited "./output/measures/join/measure_op_appt_medium_rate.csv", clear	//get csv
