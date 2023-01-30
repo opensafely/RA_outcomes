@@ -119,7 +119,7 @@ save `tempfile', replace
 
 foreach var in op_appt op_appt_all hosp_ra hosp_ra_emergency hosp_all med_gc med_opioid_strong med_opioid_weak med_ssri med_nsaid op_appt_medium ra_daycase ra_elective {
     use "./output/tempdata/`var'_itsa_output", clear
-    gen outcome = `var'
+    gen outcome = "`var'"
     append `tempfile'
     save `tempfile', replace
 }
