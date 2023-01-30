@@ -114,11 +114,11 @@ actest, lags(6)*/
 
 * Append results together
 tempfile tempfile
-use "./output/tempdata/op_appt_itsa_output", clear
-gen outcome = "op_appt"
+use "./output/tempdata/ra_elective_itsa_output", clear
+gen outcome = "ra_elective"
 save `tempfile', replace
 
-foreach var in /*op_appt*/ op_appt_all hosp_ra hosp_ra_emergency hosp_all med_gc med_opioid_strong med_opioid_weak med_ssri med_nsaid op_appt_medium ra_daycase {
+foreach var in op_appt op_appt_all hosp_ra hosp_ra_emergency hosp_all med_gc med_opioid_strong med_opioid_weak med_ssri med_nsaid op_appt_medium ra_daycase {
     use "./output/tempdata/`var'_itsa_output", clear
     gen outcome = "`var'"
     append using `tempfile'
