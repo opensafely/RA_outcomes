@@ -10,6 +10,7 @@ adopath + ./analysis/ado
 *Log file
 cap log using ./logs/time_series.log, replace
 cap mkdir ./output/time_series
+cap mkdir ./output/tables
 cap mkdir ./output/tempdata
 
 * Outpatient appointments amd hospitalisations
@@ -78,7 +79,7 @@ graph export ./output/time_series/itsa_hosp_ra_daycase.svg, as(svg) replace
 actest, lags(6)
 
 
-* Method of admission - elective vs emergency
+/* Method of admission - elective vs emergency
 * Graphs stratified by admission method
 import delimited using ./output/measures/join/measure_hosp_ra_elective_rate.csv, numericcols(3) clear
 * Drop if ra_elective missing or is mother-baby record
@@ -109,21 +110,23 @@ tsset month
 itsa percent, trperiod(2020m4) figure single lag(1) posttrend
 parmest, label saving("./output/tempdata/ra_elective_itsa_output", replace)
 graph export ./output/time_series/itsa_ra_elective.svg, as(svg) replace
-actest, lags(6)
+actest, lags(6)*/
 
 * Append results together
 tempfile tempfile
-use "./output/tempdata/ra_elective_itsa_output", clear
-gen outcome = "ra_elective"
+use "./output/tempdata/op_appt_itsa_output", clear
+gen outcome = "op_appt"
 save `tempfile', replace
 
-foreach var in op_appt op_appt_all hosp_ra hosp_ra_emergency hosp_all med_gc med_opioid_strong med_opioid_weak med_ssri med_nsaid op_appt_medium ra_daycase ra_elective {
+foreach var in /*op_appt*/ op_appt_all hosp_ra hosp_ra_emergency hosp_all med_gc med_opioid_strong med_opioid_weak med_ssri med_nsaid op_appt_medium ra_daycase {
     use "./output/tempdata/`var'_itsa_output", clear
     gen outcome = "`var'"
     append using `tempfile'
     save `tempfile', replace
 }
-export delimited using ./output/times_series/all_itsa_output.csv, replace
+use `tempfile', clear 
+describe 
+export delimited using "./output/tables/all_itsa_output.csv", replace
 
 /* Outpatient medium
 import delimited "./output/measures/join/measure_op_appt_medium_rate.csv", clear	//get csv

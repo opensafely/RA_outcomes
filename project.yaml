@@ -134,7 +134,7 @@ actions:
       moderately_sensitive: 
         log: logs/time_series.log
         graphs: output/time_series/itsa*.svg
-        data: output/time_series/all_itsa_output.csv
+        data: output/tables/all_itsa_output.csv
   
   #Study definition for outpatient objectives - population for BSR abstract
   generate_study_population_bsr_2019:

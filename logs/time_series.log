@@ -1,6 +1,8 @@
 
 . cap mkdir ./output/time_series
 
+. cap mkdir ./output/tables
+
 . cap mkdir ./output/tempdata
 
 . 
@@ -794,23 +796,307 @@ Cumby-Huizinga test for autocorrelation
 
 . 
 . 
-. * Method of admission - elective vs emergency
-. * Graphs stratified by admission method
-. import delimited using ./output/measures/join/measure_hosp_ra_elective_rate.c
+. /* Method of admission - elective vs emergency
+> * Graphs stratified by admission method
+> import delimited using ./output/measures/join/measure_hosp_ra_elective_rate.c
 > sv, numericcols(3) clear
-(5 vars, 324 obs)
-
-. * Drop if ra_elective missing or is mother-baby record
-. drop if (ra_elective=="" | ra_elective=="31" | ra_elective=="32" | ra_electiv
+> * Drop if ra_elective missing or is mother-baby record
+> drop if (ra_elective=="" | ra_elective=="31" | ra_elective=="32" | ra_electiv
 > e=="82" | ra_elective=="83")
-type mismatch
-r(109);
+> table ra_elective
+> * generate binary variable for elective admissions 
+> gen ra_elective_n = (ra_elective == "81" | ra_elective == "11" | ra_elective 
+> == "11.0" | ra_elective == "12" | ra_elective == "12.0" | ra_elective == "13"
+> | ra_elective == "13.0")
+> tab ra_elective*
+> bys ra_elective_n: table ra_elective
+> * Update number of hospitalisations and population to combine all categories 
+> combined
+> bys date ra_elective_n: egen ra_hosp_n = total(ra_hosp)
+> bys date: egen population_n = total(population)
+> drop ra_elective ra_hosp population value
+> * Elective variable is now proportion of all hospitalisations that are electi
+> ve
+> * Keep only elective as elective==0 is opposite i.e. same information 
+> drop if ra_elective_n == 0
+> * Calculate proportion
+> gen percent = (ra_hosp_n/population_n)*100
+> duplicates drop
+> * Format date
+> gen dateA = date(date, "YMD")
+> drop date
+> format dateA %td
+> gen month=mofd(dateA)
+> format month %tm
+> *Set time series
+> tsset month 
+> itsa percent, trperiod(2020m4) figure single lag(1) posttrend
+> parmest, label saving("./output/tempdata/ra_elective_itsa_output", replace)
+> graph export ./output/time_series/itsa_ra_elective.svg, as(svg) replace
+> actest, lags(6)*/
+. 
+. * Append results together
+. tempfile tempfile
+
+. use "./output/tempdata/op_appt_itsa_output", clear
+
+. gen outcome = "op_appt"
+
+. save `tempfile', replace
+(note: file /tmp/St00015.000001 not found)
+file /tmp/St00015.000001 saved
+
+. 
+. foreach var in /*op_appt*/ op_appt_all hosp_ra hosp_ra_emergency hosp_all med
+> _gc med_opioid_strong med_opioid_weak med_ssri med_nsaid op_appt_medium ra_da
+> ycase {
+  2.     use "./output/tempdata/`var'_itsa_output", clear
+  3.     gen outcome = "`var'"
+  4.     append using `tempfile'
+  5.     save `tempfile', replace
+  6. }
+file /tmp/St00015.000001 saved
+(note: variable outcome was str7, now str11 to accommodate using data's
+       values)
+file /tmp/St00015.000001 saved
+file /tmp/St00015.000001 saved
+(note: variable outcome was str8, now str17 to accommodate using data's
+       values)
+file /tmp/St00015.000001 saved
+(note: variable estimate was byte, now double to accommodate using data's
+       values)
+(note: variable min95 was byte, now double to accommodate using data's
+       values)
+(note: variable max95 was byte, now double to accommodate using data's
+       values)
+(note: variable outcome was str6, now str17 to accommodate using data's
+       values)
+file /tmp/St00015.000001 saved
+(note: variable estimate was byte, now double to accommodate using data's
+       values)
+(note: variable min95 was byte, now double to accommodate using data's
+       values)
+(note: variable max95 was byte, now double to accommodate using data's
+       values)
+file /tmp/St00015.000001 saved
+(note: variable estimate was byte, now double to accommodate using data's
+       values)
+(note: variable min95 was byte, now double to accommodate using data's
+       values)
+(note: variable max95 was byte, now double to accommodate using data's
+       values)
+(note: variable outcome was str15, now str17 to accommodate using data's
+       values)
+file /tmp/St00015.000001 saved
+(note: variable estimate was byte, now double to accommodate using data's
+       values)
+(note: variable min95 was byte, now double to accommodate using data's
+       values)
+(note: variable max95 was byte, now double to accommodate using data's
+       values)
+(note: variable outcome was str8, now str17 to accommodate using data's
+       values)
+file /tmp/St00015.000001 saved
+(note: variable estimate was byte, now double to accommodate using data's
+       values)
+(note: variable min95 was byte, now double to accommodate using data's
+       values)
+(note: variable max95 was byte, now double to accommodate using data's
+       values)
+(note: variable outcome was str9, now str17 to accommodate using data's
+       values)
+file /tmp/St00015.000001 saved
+(note: variable outcome was str14, now str17 to accommodate using data's
+       values)
+file /tmp/St00015.000001 saved
+(note: variable outcome was str10, now str17 to accommodate using data's
+       values)
+file /tmp/St00015.000001 saved
+
+. use `tempfile', clear 
+
+. describe 
+
+Contains data from /tmp/St00015.000001
+  obs:            56                          
+ vars:            10                          30 Jan 2023 11:08
+-------------------------------------------------------------------------------
+              storage   display    value
+variable name   type    format     label      variable label
+-------------------------------------------------------------------------------
+parm            str12   %12s                  Parameter name
+label           str8    %9s                   Parameter label
+estimate        double  %10.0g                Parameter estimate
+stderr          double  %10.0g                SE of parameter estimate
+dof             byte    %10.0g                Degrees of freedom
+t               double  %10.0g                t-test statistic
+p               double  %10.0g                P-value
+min95           double  %10.0g                Lower 95% confidence limit
+max95           double  %10.0g                Upper 95% confidence limit
+outcome         str17   %17s                  
+-------------------------------------------------------------------------------
+Sorted by: 
+
+. export delimited using "./output/tables/all_itsa_output.csv", replace
+(note: file ./output/tables/all_itsa_output.csv not found)
+file ./output/tables/all_itsa_output.csv saved
+
+. 
+. /* Outpatient medium
+> import delimited "./output/measures/join/measure_op_appt_medium_rate.csv", cl
+> ear        //get csv
+> putexcel set ./output/time_series/tsreg_tables, sheet(op_appt_medium) modify
+> drop if op_appt_medium==. | op_appt_medium>=3
+> gen temp_date=date(date, "YMD")
+> format temp_date %td
+> gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
+> gen month=mofd(temp_date)
+> format month %tm
+> drop temp_date
+> * Generate new population as all those with medium described
+> bys date: egen pop_new = total(population)
+> * Calculate rate
+> gen rate = (op_appt/pop_new)*100000
+> label variable rate "Rate of op appts per 100,000"
+> *Set time series
+> tsset op_appt_medium month
+> newey rate i.op_appt_medium##i.postcovid, lag(1) force
+> *Export results
+> putexcel E1=("Number of obs") G1=(e(N))
+> putexcel E2=("F") G2=(e(F))
+> putexcel E3=("Prob > F") G3=(Ftail(e(df_m), e(df_r), e(F)))
+> matrix a = r(table)'
+> putexcel A6 = matrix(a), rownames
+> putexcel save
+> *quietly margins postcovid
+> *marginsplot
+> *graph export ./output/time_series/margins_op_appt_medium.svg, as(svg) replac
+> e
+> * Itsa model
+> itsa rate, trperiod(2020m4) figure treatid(1) lag(1)
+> graph export ./output/time_series/itsa_appt_medium.svg, as(svg) replace
+> import excel using ./output/time_series/tsreg_tables.xlsx, sheet (op_appt_med
+> ium) clear
+> export delimited using ./output/time_series/tsreg_op_appt_medium.csv, replace
+> 
+> * Hospitalisations
+> local a "cardiac ild ra sepsis vasculitis"
+> forvalues i=1/5 {
+>     local c: word `i' of `a' 
+>                 import delimited "./output/measures/join/measure_hosp_`c'_rat
+> e.csv", clear      //get csv
+>         putexcel set ./output/time_series/tsreg_tables, sheet(hosp_`c') modif
+> y
+>                 gen temp_date=date(date, "YMD")
+>                 format temp_date %td
+>                 gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
+>                 gen month=mofd(temp_date)
+>                 format month %tm
+>                 drop temp_date
+>                 *Value to rate per 100k
+>                 gen rate = value*100000
+>                 label variable rate "Rate of hospitalisations `c' per 100,000
+> "
+>                 *Set time series
+>                 tsset month 
+>                 newey rate i.postcovid, lag(1) force
+>         *Export results
+>         putexcel E1=("Number of obs") G1=(e(N))
+>         putexcel E2=("F") G2=(e(F))
+>         putexcel E3=("Prob > F") G3=(Ftail(e(df_m), e(df_r), e(F)))
+>         matrix a = r(table)'
+>         putexcel A6 = matrix(a), rownames
+>         putexcel save
+>         *quietly margins postcovid
+>         *marginsplot
+>         *graph export ./output/time_series/margins_hosp_`c'.svg, as(svg) repl
+> ace
+>         itsa rate, trperiod(2020m4) figure single lag(1)
+>         graph export ./output/time_series/itsa_`c'.svg, as(svg) replace
+>         import excel using ./output/time_series/tsreg_tables.xlsx, sheet (hos
+> p_`c') clear
+>         export delimited using ./output/time_series/tsreg_hosp_`c'.csv, repla
+> ce
+>         }
+> 
+> * RA daycase
+> import delimited "./output/measures/join/measure_hosp_ra_daycase_rate.csv", c
+> lear       //get csv
+> putexcel set ./output/time_series/tsreg_tables, sheet(hosp_ra_daycase) modify
+> drop if ra_daycase==. | ra_daycase>=4
+> gen temp_date=date(date, "YMD")
+> format temp_date %td
+> gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
+> gen month=mofd(temp_date)
+> format month %tm
+> drop temp_date
+> * Generate new population as all those with type of admission
+> bys date: egen pop_new = total(population)
+> * Calculate rate
+> gen rate = (ra_hosp/pop_new)*100000
+> label variable rate "Rate of op appts per 100,000"
+> *Set time series
+> tsset ra_daycase month
+> newey rate i.ra_daycase##i.postcovid, lag(1) force
+> *Export results
+> putexcel E1=("Number of obs") G1=(e(N))
+> putexcel E2=("F") G2=(e(F))
+> putexcel E3=("Prob > F") G3=(Ftail(e(df_m), e(df_r), e(F)))
+> matrix a = r(table)'
+> putexcel A6 = matrix(a), rownames
+> putexcel save
+> *quietly margins postcovid
+> *marginsplot
+> *graph export ./output/time_series/margins_hosp_ra_daycase.svg, as(svg) repla
+> ce
+> * Itsa model
+> itsa rate, trperiod(2020m4) figure treatid(2) lag(1)
+> graph export ./output/time_series/itsa_ra_daycase.svg, as(svg) replace
+> import excel using ./output/time_series/tsreg_tables.xlsx, sheet (hosp_ra_day
+> case) clear
+> export delimited using ./output/time_series/tsreg_hosp_ra_daycase.csv, replac
+> e
+> 
+> import delimited "./output/measures/join/measure_med_gc_rate.csv", clear     
+>    //get csv
+> putexcel set ./output/time_series/tsreg_tables, sheet(med_gc) modify
+> gen temp_date=date(date, "YMD")
+> format temp_date %td
+> gen postcovid=(temp_date>=date("23/03/2020", "DMY"))
+> gen month=mofd(temp_date)
+> format month %tm
+> drop temp_date
+> *Value to rate per 100k
+> gen rate = value*100000
+> label variable rate "Rate of GC prescribing per 100,000"
+> *Set time series
+> tsset month 
+> newey rate i.postcovid, lag(1) force
+> *Export results
+> putexcel E1=("Number of obs") G1=(e(N))
+> putexcel E2=("F") G2=(e(F))
+> putexcel E3=("Prob > F") G3=(Ftail(e(df_m), e(df_r), e(F)))
+> matrix a = r(table)'
+> putexcel A6 = matrix(a), rownames
+> putexcel save
+> *quietly margins postcovid
+> *marginsplot
+> *graph export ./output/time_series/margins_med_gc.svg, as(svg) replace
+> itsa rate, trperiod(2020m4) figure single lag(1)
+> graph export ./output/time_series/itsa_med_gc.svg, as(svg) replace
+> import excel using ./output/time_series/tsreg_tables.xlsx, sheet (med_gc) cle
+> ar
+> export delimited using ./output/time_series/tsreg_med_gc.csv, replace
 
 end of do-file
-r(109);
 
+. . file open output using "/tmp/time_series.do.pKb2.out", write text replace
+
+. . file write output "success" 
+
+. . file close output
+
+. 
 end of do-file
-
-r(109);
 
 
