@@ -123,7 +123,7 @@ label values smoking smok
 egen bmi_cat = cut(bmi), at(0, 1, 18.5, 24.9, 29.9, 39.9, 100) icodes
 bys bmi_cat: sum bmi
 * add missing . to zero category
-replace bmi_cat = 0 if bmi==. 
+replace bmi_cat = 0 if bmi_cat==. 
 label define bmi 0 "Missing" 1 "Underweight" 2 "Healthy range" 3 "Overweight" 4 "Obese" 5 "Morbidly obese"
 label values bmi_cat bmi
 
