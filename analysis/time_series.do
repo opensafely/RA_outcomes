@@ -79,7 +79,7 @@ graph export ./output/time_series/itsa_hosp_ra_daycase.svg, as(svg) replace
 actest, lags(6)
 
 
-/* Method of admission - elective vs emergency
+* Method of admission - elective vs emergency
 * Graphs stratified by admission method
 import delimited using ./output/measures/join/measure_hosp_ra_elective_rate.csv, numericcols(3) clear
 * Drop if ra_elective missing or is mother-baby record
@@ -110,7 +110,7 @@ tsset month
 itsa percent, trperiod(2020m4) figure single lag(1) posttrend
 parmest, label saving("./output/tempdata/ra_elective_itsa_output", replace)
 graph export ./output/time_series/itsa_ra_elective.svg, as(svg) replace
-actest, lags(6)*/
+actest, lags(6)
 
 * Append results together
 tempfile tempfile
