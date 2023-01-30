@@ -167,6 +167,9 @@ Sorted by: dateA
 > v, numericcols(3) clear
 (5 vars, 216 obs)
 
+. * Determine total population size
+. bys date: egen tot_population = total(population)
+
 . * Drop if ra_daycase missing or is mother-baby record
 . drop if (ra_daycase==. | ra_daycase==5 | ra_daycase==8)
 (72 observations deleted)
@@ -192,10 +195,9 @@ Sorted by: dateA
 . drop comb ordin_appts ordin_pop
 
 . * Generate new population as all those with type of admission
-. bys date: egen pop_new = total(population)
-
+. *bys date: egen pop_new = total(population)
 . * Calculate rate
-. gen proportion = (ra_hosp/pop_new)*100
+. gen proportion = (ra_hosp/tot_population)*100
 
 . 
 . * Format date
@@ -206,13 +208,14 @@ Sorted by: dateA
 . format dateA %dD/M/Y
 
 . * reshape dataset so columns with rates for each ethnicity 
-. reshape wide value proportion population ra_hosp, i(dateA) j(ra_daycase)
+. reshape wide value proportion population tot_population ra_hosp, i(dateA) j(r
+> a_daycase)
 (note: j = 1 2 3)
 
 Data                               long   ->   wide
 -----------------------------------------------------------------------------
 Number of obs.                      108   ->      36
-Number of variables                   7   ->      14
+Number of variables                   7   ->      16
 j variable (3 values)        ra_daycase   ->   (dropped)
 xij variables:
                                   value   ->   value1 value2 value3
@@ -220,6 +223,8 @@ xij variables:
 > on3
                              population   ->   population1 population2 populati
 > on3
+                         tot_population   ->   tot_population1 tot_population2 
+> tot_population3
                                 ra_hosp   ->   ra_hosp1 ra_hosp2 ra_hosp3
 -----------------------------------------------------------------------------
 
@@ -227,7 +232,7 @@ xij variables:
 
 Contains data
   obs:            36                          
- vars:            14                          
+ vars:            16                          
 -------------------------------------------------------------------------------
               storage   display    value
 variable name   type    format     label      variable label
@@ -236,19 +241,20 @@ dateA           float   %dD/M/Y
 ra_hosp1        int     %8.0g                 1 ra_hosp
 population1     int     %8.0g                 1 population
 value1          float   %9.0g                 1 value
+tot_population1 float   %9.0g                 1 tot_population
 proportion1     float   %9.0g                 1 proportion
 ra_hosp2        int     %8.0g                 2 ra_hosp
 population2     int     %8.0g                 2 population
 value2          float   %9.0g                 2 value
+tot_population2 float   %9.0g                 2 tot_population
 proportion2     float   %9.0g                 2 proportion
 ra_hosp3        int     %8.0g                 3 ra_hosp
 population3     int     %8.0g                 3 population
 value3          float   %9.0g                 3 value
+tot_population3 float   %9.0g                 3 tot_population
 proportion3     float   %9.0g                 3 proportion
-pop_new         float   %9.0g                 
 -------------------------------------------------------------------------------
 Sorted by: dateA
-     Note: Dataset has changed since last saved.
 
 . * Label strata 
 . label var proportion1 "Ordinary admission"
@@ -279,19 +285,212 @@ Sorted by: dateA
 . * Graphs stratified by admission method
 . import delimited using ./output/measures/join/measure_hosp_ra_elective_rate.c
 > sv, numericcols(3) clear
-(5 vars, 324 obs)
+(5 vars, 360 obs)
+
+. * Determine total population size
+. bys date: egen tot_population = total(population)
 
 . * Drop if ra_elective missing or is mother-baby record
 . drop if (ra_elective=="" | ra_elective=="31" | ra_elective=="32" | ra_electiv
 > e=="82" | ra_elective=="83" | ra_elective=="99")
-type mismatch
-r(109);
+(36 observations deleted)
 
+. table ra_elective
+
+----------------------
+ra_electi |
+ve        |      Freq.
+----------+-----------
+       11 |         36
+       12 |         36
+       13 |         36
+       21 |         36
+       22 |         36
+       23 |         36
+       24 |         36
+       25 |         36
+       2A |         36
+----------------------
+
+. * generate binary variable for elective admissions 
+. gen ra_elective_n = (ra_elective == "81" | ra_elective == "11" | ra_elective 
+> == "11.0" | ra_elective == "12" | ra_elective == "12.0" | ra_elective == "13"
+> | ra_elective == "13.0")
+
+. tab ra_elective*
+
+ra_electiv |     ra_elective_n
+         e |         0          1 |     Total
+-----------+----------------------+----------
+        11 |         0         36 |        36 
+        12 |         0         36 |        36 
+        13 |         0         36 |        36 
+        21 |        36          0 |        36 
+        22 |        36          0 |        36 
+        23 |        36          0 |        36 
+        24 |        36          0 |        36 
+        25 |        36          0 |        36 
+        2A |        36          0 |        36 
+-----------+----------------------+----------
+     Total |       216        108 |       324 
+
+. bys ra_elective_n: table ra_elective
+
+-------------------------------------------------------------------------------
+-> ra_elective_n = 0
+
+----------------------
+ra_electi |
+ve        |      Freq.
+----------+-----------
+       21 |         36
+       22 |         36
+       23 |         36
+       24 |         36
+       25 |         36
+       2A |         36
+----------------------
+
+-------------------------------------------------------------------------------
+-> ra_elective_n = 1
+
+----------------------
+ra_electi |
+ve        |      Freq.
+----------+-----------
+       11 |         36
+       12 |         36
+       13 |         36
+----------------------
+
+. * Update number of hospitalisations and population to combine all categories 
+> combined
+. bys date ra_elective_n: egen ra_hosp_n = total(ra_hosp)
+
+. *bys date: egen population_n = total(population)
+. drop ra_elective ra_hosp population value
+
+. 
+. * Calculate proportion
+. gen proportion = (ra_hosp_n/tot_population)*100
+
+. duplicates drop
+
+Duplicates in terms of all variables
+
+(252 observations deleted)
+
+. * Format date
+. gen dateA = date(date, "YMD")
+
+. drop date
+
+. format dateA %dD/M/Y
+
+. * reshape dataset so columns with rates for each ethnicity 
+. reshape wide proportion tot_population ra_hosp_n, i(dateA) j(ra_elective)
+(note: j = 0 1)
+
+Data                               long   ->   wide
+-----------------------------------------------------------------------------
+Number of obs.                       72   ->      36
+Number of variables                   5   ->       7
+j variable (2 values)     ra_elective_n   ->   (dropped)
+xij variables:
+                             proportion   ->   proportion0 proportion1
+                         tot_population   ->   tot_population0 tot_population1
+                              ra_hosp_n   ->   ra_hosp_n0 ra_hosp_n1
+-----------------------------------------------------------------------------
+
+. describe
+
+Contains data
+  obs:            36                          
+ vars:             7                          
+-------------------------------------------------------------------------------
+              storage   display    value
+variable name   type    format     label      variable label
+-------------------------------------------------------------------------------
+dateA           float   %dD/M/Y               
+tot_population0 float   %9.0g                 0 tot_population
+ra_hosp_n0      float   %9.0g                 0 ra_hosp_n
+proportion0     float   %9.0g                 0 proportion
+tot_population1 float   %9.0g                 1 tot_population
+ra_hosp_n1      float   %9.0g                 1 ra_hosp_n
+proportion1     float   %9.0g                 1 proportion
+-------------------------------------------------------------------------------
+Sorted by: dateA
+
+. * Label strata 
+. label var proportion0 "Emergency admission"
+
+. label var proportion1 "Elective admission"
+
+. * Generate line graph
+. graph bar proportion0 proportion1, over(dateA, relabel(1 "Apr 2019" 2 " " 3 "
+>  " 4 "Jul 2019" 5 " " 6 " " 7 "Oct 2019" ///
+> 8 " " 9 " " 10 "Jan 2020" 11 " " 12 " " 12 "Apr 2020" 13 " " 14 " " 15 "Jul 2
+> 020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " " ///
+> 21 "Jan 2021" 22 " " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 
+> 29 " " 30 "Oct 2021" 31 " " 32 " " 33 "Jan 2022" ///
+> 34 " " 35 " " 36 "Apr 2022") label( angle(45))) stack graphregion(fcolor(whit
+> e)) intensity(50) ///
+> legend(label(1 "Emergency admission") label(2 "Elective admission")) ytitle("
+> Proportion of population")
+
+. 
+. graph export ./output/graphs/line_ra_elective.svg, as(svg) replace
+(note: file ./output/graphs/line_ra_elective.svg not found)
+(file ./output/graphs/line_ra_elective.svg written in SVG format)
+
+. 
+. * Generates line graphs with rate of prescriptions over time
+. foreach this_group in gc opioid_strong opioid_weak ssri nsaid {
+  2.         import delimited using ./output/measures/join/measure_med_`this_gr
+> oup'_rate.csv, numericcols(3) clear
+  3.         * Generate rate per 100,000
+.         gen rate = value*100000 
+  4.         * Format date
+.         gen dateA = date(date, "YMD")
+  5.         drop date
+  6.         format dateA %dD/M/Y  
+  7.         * Generate line graph
+.         graph twoway line rate dateA, tlabel(01Apr2019(120)01Apr2022, angle(4
+> 5) ///
+>         format(%dM-CY) labsize(small)) ytitle("Rate per 100,000") xtitle("Dat
+> e") ylabel(#5, labsize(small) ///
+>         angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6) graphregion(fcolor(w
+> hite))
+  8. 
+.         graph export ./output/graphs/line_med_`this_group'.svg, as(svg) repla
+> ce
+  9.         }
+(4 vars, 36 obs)
+(note: file ./output/graphs/line_med_gc.svg not found)
+(file ./output/graphs/line_med_gc.svg written in SVG format)
+(4 vars, 36 obs)
+(note: file ./output/graphs/line_med_opioid_strong.svg not found)
+(file ./output/graphs/line_med_opioid_strong.svg written in SVG format)
+(4 vars, 36 obs)
+(note: file ./output/graphs/line_med_opioid_weak.svg not found)
+(file ./output/graphs/line_med_opioid_weak.svg written in SVG format)
+(4 vars, 36 obs)
+(note: file ./output/graphs/line_med_ssri.svg not found)
+(file ./output/graphs/line_med_ssri.svg written in SVG format)
+(4 vars, 36 obs)
+(note: file ./output/graphs/line_med_nsaid.svg not found)
+(file ./output/graphs/line_med_nsaid.svg written in SVG format)
+
+. 
 end of do-file
-r(109);
 
+. . file open output using "/tmp/graphs.do.zP97.out", write text replace
+
+. . file write output "success" 
+
+. . file close output
+
+. 
 end of do-file
-
-r(109);
 
 

@@ -84,6 +84,8 @@ foreach this_group in ra ra_emergency {
 
 * Graphs stratified by type of admission e.g. daycase
 import delimited using ./output/measures/join/measure_hosp_ra_daycase_rate.csv, numericcols(3) clear
+* Determine total population size
+bys date: egen tot_population = total(population)
 * Drop if ra_daycase missing or is mother-baby record
 drop if (ra_daycase==. | ra_daycase==5 | ra_daycase==8)
 * Combine 3 & 4 as both ordinary admission
@@ -95,16 +97,16 @@ replace population = ordin_pop if ra_daycase==3
 drop if ra_daycase==4
 drop comb ordin_appts ordin_pop
 * Generate new population as all those with type of admission
-bys date: egen pop_new = total(population)
+*bys date: egen pop_new = total(population)
 * Calculate rate
-gen proportion = (ra_hosp/pop_new)*100
+gen proportion = (ra_hosp/tot_population)*100
 
 * Format date
 gen dateA = date(date, "YMD")
 drop date
 format dateA %dD/M/Y
 * reshape dataset so columns with rates for each ethnicity 
-reshape wide value proportion population ra_hosp, i(dateA) j(ra_daycase)
+reshape wide value proportion population tot_population ra_hosp, i(dateA) j(ra_daycase)
 describe
 * Label strata 
 label var proportion1 "Ordinary admission"
@@ -122,6 +124,8 @@ graph export ./output/graphs/line_ra_daycase.svg, as(svg) replace
 * Elective vs emergency admission 
 * Graphs stratified by admission method
 import delimited using ./output/measures/join/measure_hosp_ra_elective_rate.csv, numericcols(3) clear
+* Determine total population size
+bys date: egen tot_population = total(population)
 * Drop if ra_elective missing or is mother-baby record
 drop if (ra_elective=="" | ra_elective=="31" | ra_elective=="32" | ra_elective=="82" | ra_elective=="83" | ra_elective=="99")
 table ra_elective
@@ -131,18 +135,18 @@ tab ra_elective*
 bys ra_elective_n: table ra_elective
 * Update number of hospitalisations and population to combine all categories combined
 bys date ra_elective_n: egen ra_hosp_n = total(ra_hosp)
-bys date: egen population_n = total(population)
+*bys date: egen population_n = total(population)
 drop ra_elective ra_hosp population value
 
 * Calculate proportion
-gen proportion = (ra_hosp_n/population_n)*100
+gen proportion = (ra_hosp_n/tot_population)*100
 duplicates drop
 * Format date
 gen dateA = date(date, "YMD")
 drop date
 format dateA %dD/M/Y
 * reshape dataset so columns with rates for each ethnicity 
-reshape wide proportion population_n ra_hosp_n, i(dateA) j(ra_elective)
+reshape wide proportion tot_population ra_hosp_n, i(dateA) j(ra_elective)
 describe
 * Label strata 
 label var proportion0 "Emergency admission"
