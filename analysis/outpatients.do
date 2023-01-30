@@ -100,6 +100,9 @@ label values urban_rural_bin urban_rural_bin
 safetab urban_rural_bin urban_rural, miss
 label var urban_rural_bin "Rural-Urban"
 
+* Make missing category for region
+replace region = "missing" if region==""
+
 * Define age categories
 * Create age categories
 egen age_cat = cut(age), at(18, 40, 60, 80, 120) icodes
@@ -119,6 +122,8 @@ label values smoking smok
 * BMI categories
 egen bmi_cat = cut(bmi), at(0, 1, 18.5, 24.9, 29.9, 39.9, 100) icodes
 bys bmi_cat: sum bmi
+* add missing . to zero category
+replace bmi_cat = 0 if bmi==. 
 label define bmi 0 "Missing" 1 "Underweight" 2 "Healthy range" 3 "Overweight" 4 "Obese" 5 "Morbidly obese"
 label values bmi_cat bmi
 
