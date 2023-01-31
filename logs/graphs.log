@@ -4,39 +4,40 @@
 . 
 . * Generates bar graphs with rate of rheumatology outpatient appointments over
 >  time
-. import delimited using ./output/measures/join/measure_op_appt_rate.csv, numer
-> iccols(3) clear
+. foreach file in appt appt_all {
+  2.         import delimited using ./output/measures/join/measure_op_`file'_ra
+> te.csv, numericcols(3) clear
+  3.         *Value to percentage of population
+.         gen proportion = value*100
+  4.         label variable proportion "Proportion of population"
+  5.         * Format date
+.         gen dateA = date(date, "YMD")
+  6.         drop date
+  7.         format dateA %dD/M/Y
+  8.         * Generate bar graph
+.         graph bar proportion, over(dateA, relabel(1 "Apr 2019" 2 " " 3 " " 4 
+> "Jul 2019" 5 " " ///
+>         6 " " 7 "Oct 2019" 8 " " 9 " " 10 "Jan 2020" 11 " " 12 " " 12 "Apr 20
+> 20" 13 " " ///
+>         14 " " 15 "Jul 2020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " " 21 "Ja
+> n 2021" 22 ///
+>         " " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 29 " " 30
+>  "Oct 2021" ///
+>         31 " " 32 " " 33 "Jan 2022" 34 " " 35 " " 36 "Apr 2022") label( angle
+> (45))) ///
+>         graphregion(fcolor(white)) ytitle("Proportion of population")  ylabel
+> (0(3)15)
+  9.         graph export ./output/graphs/line_op_`file'_rate.svg, as(svg) repl
+> ace
+ 10.         }
 (4 vars, 36 obs)
-
-. *Value to percentage of population
-. gen proportion = value*100
-
-. label variable proportion "Proportion of population"
-
-. * Format date
-. gen dateA = date(date, "YMD")
-
-. drop date
-
-. format dateA %dD/M/Y
-
-. * Generate bar graph
-. graph bar proportion, over(dateA, relabel(1 "Apr 2019" 2 " " 3 " " 4 "Jul 201
-> 9" 5 " " ///
-> 6 " " 7 "Oct 2019" 8 " " 9 " " 10 "Jan 2020" 11 " " 12 " " 12 "Apr 2020" 13 "
->  " ///
-> 14 " " 15 "Jul 2020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " " 21 "Jan 2021" 
-> 22 ///
-> " " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 29 " " 30 "Oct 20
-> 21" ///
-> 31 " " 32 " " 33 "Jan 2022" 34 " " 35 " " 36 "Apr 2022") label( angle(45))) /
-> //
-> graphregion(fcolor(white)) ytitle("Proportion of population")  ylabel(0(3)15)
-
-. graph export ./output/graphs/line_op_appt_rate.svg, as(svg) replace
 (note: file ./output/graphs/line_op_appt_rate.svg not found)
 (file ./output/graphs/line_op_appt_rate.svg written in SVG format)
+(4 vars, 36 obs)
+(note: file ./output/graphs/line_op_appt_all_rate.svg not found)
+(file ./output/graphs/line_op_appt_all_rate.svg written in SVG format)
 
+. 
 . 
 . 
 . * Graphs stratified by medium of rheumatology appointment
@@ -145,7 +146,7 @@ Sorted by: dateA
 
 . 
 . * Generates bar graphs with rate of hospitalisations over time
-. foreach this_group in ra ra_emergency {
+. foreach this_group in ra ra_emergency all {
   2.         import delimited using ./output/measures/join/measure_hosp_`this_g
 > roup'_rate.csv, numericcols(3) clear
   3.         * Generate rate per 100,000
@@ -171,8 +172,8 @@ Sorted by: dateA
 >  "Oct 2021" 31 ///
 >         " " 32 " " 33 "Jan 2022" 34 " " 35 " " 36 "Apr 2022") label( angle(45
 > ))) ///
->         graphregion(fcolor(white)) ytitle("Proportion of population")  yscale
-> (range(0 15))
+>         graphregion(fcolor(white)) ytitle("Proportion of population")  ylabel
+> (0(3)15)
   8.         graph export ./output/graphs/line_hosp_`this_group'.svg, as(svg) r
 > eplace
   9.         }
@@ -182,6 +183,9 @@ Sorted by: dateA
 (4 vars, 36 obs)
 (note: file ./output/graphs/line_hosp_ra_emergency.svg not found)
 (file ./output/graphs/line_hosp_ra_emergency.svg written in SVG format)
+(4 vars, 36 obs)
+(note: file ./output/graphs/line_hosp_all.svg not found)
+(file ./output/graphs/line_hosp_all.svg written in SVG format)
 
 . 
 . * Graphs stratified by type of admission e.g. daycase
@@ -517,7 +521,7 @@ Sorted by: dateA
 . 
 end of do-file
 
-. . file open output using "/tmp/graphs.do.Xryi.out", write text replace
+. . file open output using "/tmp/graphs.do.bpG5.out", write text replace
 
 . . file write output "success" 
 
