@@ -31,7 +31,7 @@
 > 21" ///
 > 31 " " 32 " " 33 "Jan 2022" 34 " " 35 " " 36 "Apr 2022") label( angle(45))) /
 > //
-> graphregion(fcolor(white)) ytitle("Proportion of population")
+> graphregion(fcolor(white)) ytitle("Proportion of population")  ylabel(0(3)15)
 
 . graph export ./output/graphs/line_op_appt_rate.svg, as(svg) replace
 (note: file ./output/graphs/line_op_appt_rate.svg not found)
@@ -136,7 +136,7 @@ Sorted by: dateA
 > 29 " " 30 "Oct 2021" 31 " " 32 " " 33 "Jan 2022" ///
 > 34 " " 35 " " 36 "Apr 2022") label( angle(45))) stack graphregion(fcolor(whit
 > e)) intensity(50) legend(label(1 "Face to face") ///
-> label(2 "Telephone")) ytitle("Proportion of population")
+> label(2 "Telephone")) ytitle("Proportion of population")  ylabel(0(3)15)
 
 . 
 . graph export ./output/graphs/line_op_appt_medium.svg, as(svg) replace
@@ -171,7 +171,8 @@ Sorted by: dateA
 >  "Oct 2021" 31 ///
 >         " " 32 " " 33 "Jan 2022" 34 " " 35 " " 36 "Apr 2022") label( angle(45
 > ))) ///
->         graphregion(fcolor(white)) ytitle("Proportion of population")
+>         graphregion(fcolor(white)) ytitle("Proportion of population")  yscale
+> (range(0 15))
   8.         graph export ./output/graphs/line_hosp_`this_group'.svg, as(svg) r
 > eplace
   9.         }
@@ -294,7 +295,7 @@ Sorted by: dateA
 > 34 " " 35 " " 36 "Apr 2022") label( angle(45))) stack graphregion(fcolor(whit
 > e)) intensity(50) ///
 > legend(label(1 "Ordinary admission") label(2 "Day case") label(3 "Regular adm
-> ission")) ytitle("Proportion of population")
+> ission")) ytitle("Proportion of population")  ylabel(0(3)15)
 
 . 
 . graph export ./output/graphs/line_ra_daycase.svg, as(svg) replace
@@ -457,7 +458,7 @@ Sorted by: dateA
 > 34 " " 35 " " 36 "Apr 2022") label( angle(45))) stack graphregion(fcolor(whit
 > e)) intensity(50) ///
 > legend(label(1 "Emergency admission") label(2 "Elective admission")) ytitle("
-> Proportion of population")
+> Proportion of population")  ylabel(0(3)15)
 
 . 
 . graph export ./output/graphs/line_ra_elective.svg, as(svg) replace
@@ -492,7 +493,8 @@ Sorted by: dateA
 > t 2021" 31 " " ///
 >         32 " " 33 "Jan 2022" 34 " " 35 " " 36 "Apr 2022") label( angle(45))) 
 > ///
->         graphregion(fcolor(white)) ytitle("Proportion of population")
+>         graphregion(fcolor(white)) ytitle("Proportion of population")  ylabel
+> (0(3)15)
   8.         graph export ./output/graphs/line_med_`this_group'.svg, as(svg) re
 > place
   9.         }
@@ -515,7 +517,7 @@ Sorted by: dateA
 . 
 end of do-file
 
-. . file open output using "/tmp/graphs.do.AORD.out", write text replace
+. . file open output using "/tmp/graphs.do.Xryi.out", write text replace
 
 . . file write output "success" 
 

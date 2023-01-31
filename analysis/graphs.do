@@ -23,7 +23,7 @@ graph bar proportion, over(dateA, relabel(1 "Apr 2019" 2 " " 3 " " 4 "Jul 2019" 
 14 " " 15 "Jul 2020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " " 21 "Jan 2021" 22 ///
 " " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 29 " " 30 "Oct 2021" ///
 31 " " 32 " " 33 "Jan 2022" 34 " " 35 " " 36 "Apr 2022") label( angle(45))) ///
-graphregion(fcolor(white)) ytitle("Proportion of population")
+graphregion(fcolor(white)) ytitle("Proportion of population")  ylabel(0(3)15)
 graph export ./output/graphs/line_op_appt_rate.svg, as(svg) replace
 
 
@@ -62,7 +62,7 @@ graph bar proportion1 proportion2, over(dateA, relabel(1 "Apr 2019" 2 " " 3 " " 
 8 " " 9 " " 10 "Jan 2020" 11 " " 12 " " 12 "Apr 2020" 13 " " 14 " " 15 "Jul 2020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " " ///
 21 "Jan 2021" 22 " " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 29 " " 30 "Oct 2021" 31 " " 32 " " 33 "Jan 2022" ///
 34 " " 35 " " 36 "Apr 2022") label( angle(45))) stack graphregion(fcolor(white)) intensity(50) legend(label(1 "Face to face") ///
-label(2 "Telephone")) ytitle("Proportion of population")
+label(2 "Telephone")) ytitle("Proportion of population")  ylabel(0(3)15)
 
 graph export ./output/graphs/line_op_appt_medium.svg, as(svg) replace
 
@@ -84,7 +84,7 @@ foreach this_group in ra ra_emergency {
         " " 14 " " 15 "Jul 2020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " "21 "Jan 2021" 22 ///
         " " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 29 " " 30 "Oct 2021" 31 ///
         " " 32 " " 33 "Jan 2022" 34 " " 35 " " 36 "Apr 2022") label( angle(45))) ///
-        graphregion(fcolor(white)) ytitle("Proportion of population")
+        graphregion(fcolor(white)) ytitle("Proportion of population")  ylabel(0(3)15)
         graph export ./output/graphs/line_hosp_`this_group'.svg, as(svg) replace
         }
 
@@ -123,7 +123,7 @@ graph bar proportion1 proportion2 proportion3, over(dateA, relabel(1 "Apr 2019" 
 8 " " 9 " " 10 "Jan 2020" 11 " " 12 " " 12 "Apr 2020" 13 " " 14 " " 15 "Jul 2020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " " ///
 21 "Jan 2021" 22 " " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 29 " " 30 "Oct 2021" 31 " " 32 " " 33 "Jan 2022" ///
 34 " " 35 " " 36 "Apr 2022") label( angle(45))) stack graphregion(fcolor(white)) intensity(50) ///
-legend(label(1 "Ordinary admission") label(2 "Day case") label(3 "Regular admission")) ytitle("Proportion of population")
+legend(label(1 "Ordinary admission") label(2 "Day case") label(3 "Regular admission")) ytitle("Proportion of population")  ylabel(0(3)15)
 
 graph export ./output/graphs/line_ra_daycase.svg, as(svg) replace
 
@@ -162,7 +162,7 @@ graph bar proportion0 proportion1, over(dateA, relabel(1 "Apr 2019" 2 " " 3 " " 
 8 " " 9 " " 10 "Jan 2020" 11 " " 12 " " 12 "Apr 2020" 13 " " 14 " " 15 "Jul 2020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " " ///
 21 "Jan 2021" 22 " " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 29 " " 30 "Oct 2021" 31 " " 32 " " 33 "Jan 2022" ///
 34 " " 35 " " 36 "Apr 2022") label( angle(45))) stack graphregion(fcolor(white)) intensity(50) ///
-legend(label(1 "Emergency admission") label(2 "Elective admission")) ytitle("Proportion of population")
+legend(label(1 "Emergency admission") label(2 "Elective admission")) ytitle("Proportion of population")  ylabel(0(3)15)
 
 graph export ./output/graphs/line_ra_elective.svg, as(svg) replace
 
@@ -184,6 +184,6 @@ foreach this_group in gc opioid_strong opioid_weak ssri nsaid {
         14 " " 15 "Jul 2020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " "21 "Jan 2021" 22 " " ///
         23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 29 " " 30 "Oct 2021" 31 " " ///
         32 " " 33 "Jan 2022" 34 " " 35 " " 36 "Apr 2022") label( angle(45))) ///
-        graphregion(fcolor(white)) ytitle("Proportion of population")
+        graphregion(fcolor(white)) ytitle("Proportion of population")  ylabel(0(3)15)
         graph export ./output/graphs/line_med_`this_group'.svg, as(svg) replace
         }
