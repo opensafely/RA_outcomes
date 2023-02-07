@@ -2,8 +2,8 @@
 . cap mkdir ./output/graphs
 
 . 
-. * Generates bar graphs with rate of rheumatology outpatient appointments over
->  time
+. * Generates bar graphs with rate of outpatient appointments over time (rheuma
+> tology and then all)
 . foreach file in appt appt_all {
   2.         import delimited using ./output/measures/join/measure_op_`file'_ra
 > te.csv, numericcols(3) clear
@@ -23,10 +23,10 @@
 > n 2021" 22 ///
 >         " " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 29 " " 30
 >  "Oct 2021" ///
->         31 " " 32 " " 33 "Jan 2022" 34 " " 35 " " 36 "Apr 2022") label( angle
-> (45))) ///
+>         31 " " 32 " " 33 "Jan 2022" 34 " " 35 " " 36 "Apr 2022") label(angle(
+> 45) ticks)) ///
 >         graphregion(fcolor(white)) ytitle("Proportion of population")  ylabel
-> (0(3)15)
+> (0(3)15) 
   9.         graph export ./output/graphs/line_op_`file'_rate.svg, as(svg) repl
 > ace
  10.         }
@@ -135,8 +135,8 @@ Sorted by: dateA
 > 020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " " ///
 > 21 "Jan 2021" 22 " " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 
 > 29 " " 30 "Oct 2021" 31 " " 32 " " 33 "Jan 2022" ///
-> 34 " " 35 " " 36 "Apr 2022") label( angle(45))) stack graphregion(fcolor(whit
-> e)) intensity(50) legend(label(1 "Face to face") ///
+> 34 " " 35 " " 36 "Apr 2022") label(angle(45) ticks)) stack graphregion(fcolor
+> (white)) intensity(50) legend(label(1 "Face to face") ///
 > label(2 "Telephone")) ytitle("Proportion of population")  ylabel(0(3)15)
 
 . 
@@ -170,8 +170,8 @@ Sorted by: dateA
 > "Jan 2021" 22 ///
 >         " " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 29 " " 30
 >  "Oct 2021" 31 ///
->         " " 32 " " 33 "Jan 2022" 34 " " 35 " " 36 "Apr 2022") label( angle(45
-> ))) ///
+>         " " 32 " " 33 "Jan 2022" 34 " " 35 " " 36 "Apr 2022") label(angle(45)
+>  ticks)) ///
 >         graphregion(fcolor(white)) ytitle("Proportion of population")  ylabel
 > (0(3)15)
   8.         graph export ./output/graphs/line_hosp_`this_group'.svg, as(svg) r
@@ -296,8 +296,8 @@ Sorted by: dateA
 > 020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " " ///
 > 21 "Jan 2021" 22 " " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 
 > 29 " " 30 "Oct 2021" 31 " " 32 " " 33 "Jan 2022" ///
-> 34 " " 35 " " 36 "Apr 2022") label( angle(45))) stack graphregion(fcolor(whit
-> e)) intensity(50) ///
+> 34 " " 35 " " 36 "Apr 2022") label(angle(45) ticks)) stack graphregion(fcolor
+> (white)) intensity(50) ///
 > legend(label(1 "Ordinary admission") label(2 "Day case") label(3 "Regular adm
 > ission")) ytitle("Proportion of population")  ylabel(0(3)15)
 
@@ -459,8 +459,8 @@ Sorted by: dateA
 > 020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " " ///
 > 21 "Jan 2021" 22 " " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 
 > 29 " " 30 "Oct 2021" 31 " " 32 " " 33 "Jan 2022" ///
-> 34 " " 35 " " 36 "Apr 2022") label( angle(45))) stack graphregion(fcolor(whit
-> e)) intensity(50) ///
+> 34 " " 35 " " 36 "Apr 2022") label(angle(45) ticks)) stack graphregion(fcolor
+> (white)) intensity(50) ///
 > legend(label(1 "Emergency admission") label(2 "Elective admission")) ytitle("
 > Proportion of population")  ylabel(0(3)15)
 
@@ -495,8 +495,8 @@ Sorted by: dateA
 >  2021" 22 " " ///
 >         23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 29 " " 30 "Oc
 > t 2021" 31 " " ///
->         32 " " 33 "Jan 2022" 34 " " 35 " " 36 "Apr 2022") label( angle(45))) 
-> ///
+>         32 " " 33 "Jan 2022" 34 " " 35 " " 36 "Apr 2022") label(angle(45) tic
+> ks)) ///
 >         graphregion(fcolor(white)) ytitle("Proportion of population")  ylabel
 > (0(3)15)
   8.         graph export ./output/graphs/line_med_`this_group'.svg, as(svg) re
@@ -521,7 +521,7 @@ Sorted by: dateA
 . 
 end of do-file
 
-. . file open output using "/tmp/graphs.do.bpG5.out", write text replace
+. . file open output using "/tmp/graphs.do.TO71.out", write text replace
 
 . . file write output "success" 
 
