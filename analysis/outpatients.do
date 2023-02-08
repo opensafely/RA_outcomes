@@ -278,6 +278,7 @@ forvalues i=2019/2021 {
     }
 
 * Tabulate characteristics by categories of differences in rheumatology outpatient appointments for each year
+drop if region=="missing"
 tempfile tempfile
 forvalues i=2020/2021 {
     preserve
@@ -299,6 +300,8 @@ forvalues i=2020/2021 {
     }
 
 * Tabulate characteristics by categories of differences in all outpatient appointments for each year
+* When stratified there are small numbers with missing region therefore tabulate only those without region missing
+drop if region=="missing"
 tempfile tempfile
 forvalues i=2020/2021 {
     preserve
