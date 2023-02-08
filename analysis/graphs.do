@@ -9,25 +9,66 @@ cap log using ./logs/graphs.log, replace
 cap mkdir ./output/graphs
 
 * Generates bar graphs with rate of outpatient appointments over time (rheumatology and then all)
-foreach file in appt appt_all {
-        import delimited using ./output/measures/join/measure_op_`file'_rate.csv, numericcols(3) clear
-        *Value to percentage of population
-        gen proportion = value*100
-        label variable proportion "Proportion of population"
-        * Format date
-        gen dateA = date(date, "YMD")
-        drop date
-        format dateA %dD/M/Y
-        * Generate bar graph
-        graph bar proportion, over(dateA, relabel(1 "Apr 2019" 2 " " 3 " " 4 "Jul 2019" 5 " " ///
-        6 " " 7 "Oct 2019" 8 " " 9 " " 10 "Jan 2020" 11 " " 12 " " 12 "Apr 2020" 13 " " ///
-        14 " " 15 "Jul 2020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " " 21 "Jan 2021" 22 ///
-        " " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 29 " " 30 "Oct 2021" ///
-        31 " " 32 " " 33 "Jan 2022" 34 " " 35 " " 36 "Apr 2022") label(angle(45) ticks)) ///
-        graphregion(fcolor(white)) ytitle("Proportion of population")  ylabel(0(3)15) 
-        graph export ./output/graphs/line_op_`file'_rate.svg, as(svg) replace
-        }
+* Rheumatology appointments
+import delimited using ./output/measures/join/measure_op_appt_rate.csv, numericcols(3) clear
+*Value to percentage of population
+gen proportion = value*100
+label variable proportion "Proportion of population"
+* Format date
+gen dateA = date(date, "YMD")
+drop date
+format dateA %dD/M/Y
+* Generate bar graph
+graph bar proportion, over(dateA, relabel(1 "Apr 2019" 2 " " 3 " " 4 "Jul 2019" 5 " " ///
+6 " " 7 "Oct 2019" 8 " " 9 " " 10 "Jan 2020" 11 " " 12 " " 12 "Apr 2020" 13 " " ///
+14 " " 15 "Jul 2020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " " 21 "Jan 2021" 22 ///
+" " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 29 " " 30 "Oct 2021" ///
+31 " " 32 " " 33 "Jan 2022" 34 " " 35 " " 36 "Apr 2022") label(angle(45) ticks)) ///
+graphregion(fcolor(white)) ytitle("Proportion of population")  ylabel(0(3)15) 
+graph export ./output/graphs/line_op_appt_rate.svg, as(svg) replace
 
+* All outpatient appointments
+import delimited using ./output/measures/join/measure_op_appt_all_rate.csv, numericcols(3) clear
+*Value to percentage of population
+gen proportion = value*100
+label variable proportion "Proportion of population"
+* Format date
+gen dateA = date(date, "YMD")
+drop date
+format dateA %dD/M/Y
+* Generate bar graph
+graph bar proportion, over(dateA, relabel(1 "Apr 2019" 2 " " 3 " " 4 "Jul 2019" 5 " " ///
+6 " " 7 "Oct 2019" 8 " " 9 " " 10 "Jan 2020" 11 " " 12 " " 12 "Apr 2020" 13 " " ///
+14 " " 15 "Jul 2020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " " 21 "Jan 2021" 22 ///
+" " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 29 " " 30 "Oct 2021" ///
+31 " " 32 " " 33 "Jan 2022" 34 " " 35 " " 36 "Apr 2022") label(angle(45) ticks)) ///
+graphregion(fcolor(white)) ytitle("Proportion of population")  ylabel(0(5)35) 
+graph export ./output/graphs/line_op_appt_all_rate.svg, as(svg) replace
+
+tempfile tempfile
+* rheumatology and all appointments together
+keep op_appt_all proportion dateA 
+rename proportion proportion_all
+save `tempfile'
+
+import delimited using ./output/measures/join/measure_op_appt_rate.csv, numericcols(3) clear
+*Value to percentage of population
+gen proportion_rheum = value*100
+label variable proportion_rheum "Proportion of population"
+* Format date
+gen dateA = date(date, "YMD")
+drop date
+format dateA %dD/M/Y
+merge 1:1 date using `tempfile'
+drop _merge 
+gen proportion_other = proportion_all - proportion_rheum 
+* Generate stacked bar chart
+graph bar proportion_rheum proportion_other, over(dateA, relabel(1 "Apr 2019" 2 " " 3 " " 4 "Jul 2019" 5 " " 6 " " 7 "Oct 2019" ///
+8 " " 9 " " 10 "Jan 2020" 11 " " 12 " " 12 "Apr 2020" 13 " " 14 " " 15 "Jul 2020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " " ///
+21 "Jan 2021" 22 " " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 29 " " 30 "Oct 2021" 31 " " 32 " " 33 "Jan 2022" ///
+34 " " 35 " " 36 "Apr 2022") label(angle(45) ticks)) stack graphregion(fcolor(white)) intensity(50) legend(label(1 "Rheumatology") ///
+label(2 "Other")) ytitle("Proportion of population")  ylabel(0(5)35)
+graph export ./output/graphs/line_op_appt_both.svg, as(svg) replace
 
 
 * Graphs stratified by medium of rheumatology appointment

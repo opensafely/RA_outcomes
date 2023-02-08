@@ -279,7 +279,7 @@ study = StudyDefinition(
         with_these_treatment_function_codes="410",
         attended="True",
         between=["index_date", "last_day_of_month(index_date)"],
-        return_expectations = {"incidence": 0.7},
+        return_expectations = {"incidence": 0.5},
     ),
     op_appt_medium=patients.outpatient_appointment_date(
         returning="consultation_medium_used",
