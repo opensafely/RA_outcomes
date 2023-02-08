@@ -283,13 +283,13 @@ tempfile tempfile
 forvalues i=2020/2021 {
     preserve
     keep if diff_op_cat_`i'==0
-    table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate\ diff_op_all_cat_2020 cate \ diff_op_all_cat_2021 cate) clear
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
     save `tempfile', replace
     restore
     forvalues j=1/3 {
         preserve
         keep if diff_op_cat_`i'==`j'
-        table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate\ diff_op_all_cat_2020 cate \ diff_op_all_cat_2021 cate) clear
+        table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
         append using `tempfile'
         save `tempfile', replace
         if `j'==3 {
@@ -306,13 +306,13 @@ tempfile tempfile
 forvalues i=2020/2021 {
     preserve
     keep if diff_op_all_cat_`i'==0
-    table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate\ diff_op_cat_2020 cate \ diff_op_cat_2021 cate) clear
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
     save `tempfile', replace
     restore
     forvalues j=1/3 {
         preserve
         keep if diff_op_all_cat_`i'==`j'
-        table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate\ diff_op_cat_2020 cate \ diff_op_cat_2021 cate) clear
+        table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
         append using `tempfile'
         save `tempfile', replace
         if `j'==3 {
