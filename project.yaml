@@ -38,6 +38,7 @@ actions:
     outputs:
       moderately_sensitive:
         log: logs/flowchart.log
+        table: output/flowchart/values.txt
   #Study definition for outpatient objectives 1 & 2
   generate_study_population:
     run: cohortextractor:latest generate_cohort --study-definition study_definition

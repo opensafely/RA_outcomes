@@ -1,4 +1,6 @@
 
+. cap mkdir ./output/flowchart
+
 . 
 . import delimited using ./output/input_flowchart.csv, clear
 (30 vars, 10,000 obs)
@@ -11,6 +13,12 @@
 . * (imd != 0) AND
 . * has_ra
 . 
+. * Open file to write values to 
+. file open table using ./output/flowchart/values.txt, write text replace  
+(note: file ./output/flowchart/values.txt not found)
+
+. file write table ("Total start") _tab 
+
 . 
 . describe
 
@@ -58,30 +66,25 @@ Sorted by:
 . safecount
   10,000
 
-. safetab has_ra_code, m
-12
+. file write table ("`r(N)'") _n ("Has RA") _tab
 
-has_ra_code |      Freq.     Percent        Cum.
+. safetab has_ra, m
+7
+
+     has_ra |      Freq.     Percent        Cum.
 ------------+-----------------------------------
           0 |      5,000       50.00       50.00
           1 |      5,000       50.00      100.00
 ------------+-----------------------------------
       Total |     10,000      100.00
 
-. tab has_ra_code, m
-
-has_ra_code |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          0 |      5,000       50.00       50.00
-          1 |      5,000       50.00      100.00
-------------+-----------------------------------
-      Total |     10,000      100.00
-
-. keep if has_ra_code
+. keep if has_ra
 (5,000 observations deleted)
 
 . safecount
   5,000
+
+. file write table ("`r(N)'") _n ("Has follow-up") _tab 
 
 . safetab has_follow_up, m
 14
@@ -89,110 +92,106 @@ has_ra_code |      Freq.     Percent        Cum.
 has_follow_ |
          up |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |      2,511       50.22       50.22
-          1 |      2,489       49.78      100.00
+          0 |      2,505       50.10       50.10
+          1 |      2,495       49.90      100.00
 ------------+-----------------------------------
       Total |      5,000      100.00
 
 . keep if has_follow_up
-(2,511 observations deleted)
+(2,505 observations deleted)
 
 . safecount
-  2,489
+  2,495
+
+. file write table ("`r(N)'") _n ("Died") _tab 
 
 . safetab died, m
 5
 
        died |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |      1,235       49.62       49.62
-          1 |      1,254       50.38      100.00
+          0 |      1,248       50.02       50.02
+          1 |      1,247       49.98      100.00
 ------------+-----------------------------------
-      Total |      2,489      100.00
+      Total |      2,495      100.00
 
 . keep if died!=1
-(1,254 observations deleted)
+(1,247 observations deleted)
 
-. safecount 
-  1,235
+. safecount
+  1,248
+
+. file write table ("`r(N)'") _n ("Age ineligible") _tab  
 
 . sum age
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-         age |      1,235    39.00405     22.9014          0         99
+         age |      1,248    40.32612    24.42963          0         99
 
 . keep if (age>=18 & age<=110)
-(260 observations deleted)
+(275 observations deleted)
 
 . safecount
-  975
+  973
+
+. file write table ("`r(N)'") _n ("Missing sex, stp or IMD") _tab 
 
 . safetab sex, m
 4
 
         sex |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          F |        492       50.46       50.46
-          M |        474       48.62       99.08
-          U |          9        0.92      100.00
+          F |        503       51.70       51.70
+          M |        462       47.48       99.18
+          U |          8        0.82      100.00
 ------------+-----------------------------------
-      Total |        975      100.00
+      Total |        973      100.00
 
 . keep if (sex=="F" | sex=="M")
-(9 observations deleted)
+(8 observations deleted)
 
 . safecount
-  966
+  965
 
 . count if stp!=""
-  486
+  508
 
 . drop if stp==""
-(480 observations deleted)
+(457 observations deleted)
 
 . safecount
-  486
+  508
 
 . safetab imd 
 0
 
         imd |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-          0 |         24        4.94        4.94
-          1 |        108       22.22       27.16
-          2 |         92       18.93       46.09
-          3 |         97       19.96       66.05
-          4 |         93       19.14       85.19
-          5 |         72       14.81      100.00
+          0 |         24        4.72        4.72
+          1 |         99       19.49       24.21
+          2 |        108       21.26       45.47
+          3 |        108       21.26       66.73
+          4 |        101       19.88       86.61
+          5 |         68       13.39      100.00
 ------------+-----------------------------------
-      Total |        486      100.00
+      Total |        508      100.00
 
 . drop if imd==0
 (24 observations deleted)
 
 . safecount
-  462
+  484
 
-. safetab has_ra, m
-7
+. file write table ("`r(N)'") _n  
 
-     has_ra |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          0 |        231       50.00       50.00
-          1 |        231       50.00      100.00
-------------+-----------------------------------
-      Total |        462      100.00
-
-. drop if has_ra==0
-(231 observations deleted)
-
+. 
 . 
 . 
 . 
 end of do-file
 
-. . file open output using "/tmp/tmp.ieCfQemBTg", write text replace
+. . file open output using "/tmp/flowchart.do.Giag.out", write text replace
 
 . . file write output "success" 
 

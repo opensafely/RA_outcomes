@@ -239,7 +239,7 @@ export delimited using ./output/tables/op_appt_all_yrs.csv
 restore 
 * Tabulate overall characteristics 
 preserve
-table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ region cate \ imd cate \  smoking cate \ time_ra contn \ bmi_cat cate) clear
+table1_mc, vars(age_cat cate \ male cate \ eth5 cate \ urban_rural_5 cate \ region cate \ imd cate \  smoking cate \ time_ra contn \ bmi_cat cate) clear
 export delimited using ./output/tables/op_chars.csv
 restore
 * Tabulate characteristics by category of outpatient appointments for each year
@@ -247,13 +247,13 @@ tempfile tempfile
 forvalues i=2019/2021 {
     preserve
     keep if op_appt_`i'_cat==0
-    table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate\ diff_op_all_cat_2020 cate \ diff_op_all_cat_2021 cate) clear
+    table1_mc, vars(age_cat cate \ male cate \ eth5 cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate\ diff_op_all_cat_2020 cate \ diff_op_all_cat_2021 cate) clear
     save `tempfile', replace
     restore
     forvalues j=1/2 {
         preserve
         keep if op_appt_`i'_cat==`j'
-        table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ diff_op_all_cat_2020 cate \ diff_op_all_cat_2021 cate) clear
+        table1_mc, vars(age_cat cate \ male cate \ eth5 cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ diff_op_all_cat_2020 cate \ diff_op_all_cat_2021 cate) clear
         append using `tempfile'
         save `tempfile', replace
         if `j'==2 {
