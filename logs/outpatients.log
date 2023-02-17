@@ -440,7 +440,7 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 .  replace eth5=5 if ethnicity==5
 (1,011 real changes made)
 
-.  replace eth5=. if ethnicity==.
+.  replace eth5=6 if ethnicity==.
 (0 real changes made)
 
 . 
@@ -453,7 +453,8 @@ Number where no DMARDs but does have multiple RA codes and no alt diag
 >                                                         4 "Mixed"            
 >                            ///
 >                                                         5 "Other"            
->                            
+>        ///
+>                             6 "Missing"                                 
 
 .                                         
 . 
@@ -1976,8 +1977,8 @@ file ./output/tables/op_chars.csv saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-(note: file /tmp/St00016.000005 not found)
-file /tmp/St00016.000005 saved
+(note: file /tmp/St00015.000005 not found)
+file /tmp/St00015.000005 saved
 (4,971 observations deleted)
 
   +--------------------------------------------+
@@ -2134,7 +2135,7 @@ file /tmp/St00016.000005 saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00016.000005 saved
+file /tmp/St00015.000005 saved
 (625 observations deleted)
 
   +------------------------------------------------+
@@ -2297,7 +2298,7 @@ file /tmp/St00016.000005 saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00016.000005 saved
+file /tmp/St00015.000005 saved
 file ./output/tables/characteristics_strata2019.csv saved
 (4,685 observations deleted)
 
@@ -2461,7 +2462,7 @@ file ./output/tables/characteristics_strata2019.csv saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00016.000005 saved
+file /tmp/St00015.000005 saved
 (4,978 observations deleted)
 
   +--------------------------------------------+
@@ -2616,7 +2617,7 @@ file /tmp/St00016.000005 saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00016.000005 saved
+file /tmp/St00015.000005 saved
 (2,010 observations deleted)
 
   +------------------------------------------------+
@@ -2779,7 +2780,7 @@ file /tmp/St00016.000005 saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00016.000005 saved
+file /tmp/St00015.000005 saved
 file ./output/tables/characteristics_strata2020.csv saved
 (4,794 observations deleted)
 
@@ -2943,7 +2944,7 @@ file ./output/tables/characteristics_strata2020.csv saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00016.000005 saved
+file /tmp/St00015.000005 saved
 (4,995 observations deleted)
 
   +--------------------------------------------+
@@ -3021,7 +3022,7 @@ Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
 (note: variable Total was str8, now str19 to accommodate using data's values)
-file /tmp/St00016.000005 saved
+file /tmp/St00015.000005 saved
 (3,145 observations deleted)
 
   +------------------------------------------------+
@@ -3184,7 +3185,7 @@ file /tmp/St00016.000005 saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00016.000005 saved
+file /tmp/St00015.000005 saved
 file ./output/tables/characteristics_strata2021.csv saved
 
 . 
@@ -3198,15 +3199,17 @@ file ./output/tables/characteristics_strata2021.csv saved
 . forvalues i=2020/2021 {
   2.     preserve
   3.     keep if diff_op_cat_`i'==0
-  4.     table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ region
->  cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+  4.     table1_mc, vars(age_cat cate \ male cate \ eth5 cate \ urban_rural_5 c
+> ate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) c
+> lear
   5.     save `tempfile', replace
   6.     restore
   7.     forvalues j=1/3 {
   8.         preserve
   9.         keep if diff_op_cat_`i'==`j'
- 10.         table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ re
-> gion cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+ 10.         table1_mc, vars(age_cat cate \ male cate \ eth5 cate \ urban_rural
+> _5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cat
+> e) clear
  11.         append using `tempfile'
  12.         save `tempfile', replace
  13.         if `j'==3 {
@@ -3224,6 +3227,8 @@ file ./output/tables/characteristics_strata2021.csv saved
   | age_cat                           26     8 |
   |--------------------------------------------|
   | male                              34     0 |
+  |--------------------------------------------|
+  | eth5                              34     0 |
   |--------------------------------------------|
   | Rural Urban in five categories    34     0 |
   |--------------------------------------------|
@@ -3260,6 +3265,18 @@ file ./output/tables/characteristics_strata2021.csv saved
   | male                             Female                        22 (65%)    
 >         |
   |                                  Male                          12 (35%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | eth5                             White                         6 (18%)     
+>         |
+  |                                  South Asian                   5 (15%)     
+>         |
+  |                                  Black                         10 (29%)    
+>         |
+  |                                  Mixed                         7 (21%)     
+>         |
+  |                                  Other                         6 (18%)     
 >         |
   |----------------------------------------------------------------------------
 > --------|
@@ -3336,8 +3353,8 @@ file ./output/tables/characteristics_strata2021.csv saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-(note: file /tmp/St00016.00000f not found)
-file /tmp/St00016.00000f saved
+(note: file /tmp/St00015.00000f not found)
+file /tmp/St00015.00000f saved
 (3,512 observations deleted)
 
   +----------------------------------------------+
@@ -3346,6 +3363,8 @@ file /tmp/St00016.00000f saved
   | age_cat                          1,195   293 |
   |----------------------------------------------|
   | male                             1,488     0 |
+  |----------------------------------------------|
+  | eth5                             1,488     0 |
   |----------------------------------------------|
   | Rural Urban in five categories   1,488     0 |
   |----------------------------------------------|
@@ -3384,6 +3403,18 @@ file /tmp/St00016.00000f saved
   | male                             Female                        801 (53.8%) 
 >         |
   |                                  Male                          687 (46.2%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | eth5                             White                         303 (20.4%) 
+>         |
+  |                                  South Asian                   280 (18.8%) 
+>         |
+  |                                  Black                         276 (18.5%) 
+>         |
+  |                                  Mixed                         306 (20.6%) 
+>         |
+  |                                  Other                         323 (21.7%) 
 >         |
   |----------------------------------------------------------------------------
 > --------|
@@ -3462,7 +3493,7 @@ file /tmp/St00016.00000f saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00016.00000f saved
+file /tmp/St00015.00000f saved
 (4,674 observations deleted)
 
   +--------------------------------------------+
@@ -3471,6 +3502,8 @@ file /tmp/St00016.00000f saved
   | age_cat                          251    75 |
   |--------------------------------------------|
   | male                             326     0 |
+  |--------------------------------------------|
+  | eth5                             326     0 |
   |--------------------------------------------|
   | Rural Urban in five categories   326     0 |
   |--------------------------------------------|
@@ -3509,6 +3542,18 @@ file /tmp/St00016.00000f saved
   | male                             Female                        183 (56.1%) 
 >        |
   |                                  Male                          143 (43.9%) 
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | eth5                             White                         76 (23.3%)  
+>        |
+  |                                  South Asian                   78 (23.9%)  
+>        |
+  |                                  Black                         45 (13.8%)  
+>        |
+  |                                  Mixed                         59 (18.1%)  
+>        |
+  |                                  Other                         68 (20.9%)  
 >        |
   |----------------------------------------------------------------------------
 > -------|
@@ -3589,7 +3634,7 @@ Data are presented as mean (SD) for continuous measures, and n (%) for categori
  
 (note: variable Total was str18, now str19 to accommodate using data's
        values)
-file /tmp/St00016.00000f saved
+file /tmp/St00015.00000f saved
 (3,521 observations deleted)
 
   +----------------------------------------------+
@@ -3598,6 +3643,8 @@ file /tmp/St00016.00000f saved
   | age_cat                          1,155   324 |
   |----------------------------------------------|
   | male                             1,479     0 |
+  |----------------------------------------------|
+  | eth5                             1,479     0 |
   |----------------------------------------------|
   | Rural Urban in five categories   1,479     0 |
   |----------------------------------------------|
@@ -3636,6 +3683,18 @@ file /tmp/St00016.00000f saved
   | male                             Female                        755 (51.0%) 
 >         |
   |                                  Male                          724 (49.0%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | eth5                             White                         276 (18.7%) 
+>         |
+  |                                  South Asian                   309 (20.9%) 
+>         |
+  |                                  Black                         301 (20.4%) 
+>         |
+  |                                  Mixed                         280 (18.9%) 
+>         |
+  |                                  Other                         313 (21.2%) 
 >         |
   |----------------------------------------------------------------------------
 > --------|
@@ -3714,7 +3773,7 @@ file /tmp/St00016.00000f saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00016.00000f saved
+file /tmp/St00015.00000f saved
 file ./output/tables/characteristics_diff_strata2020.csv saved
 (4,979 observations deleted)
 
@@ -3724,6 +3783,8 @@ file ./output/tables/characteristics_diff_strata2020.csv saved
   | age_cat                           16     5 |
   |--------------------------------------------|
   | male                              21     0 |
+  |--------------------------------------------|
+  | eth5                              21     0 |
   |--------------------------------------------|
   | Rural Urban in five categories    21     0 |
   |--------------------------------------------|
@@ -3760,6 +3821,18 @@ file ./output/tables/characteristics_diff_strata2020.csv saved
   | male                             Female                        10 (48%)    
 >         |
   |                                  Male                          11 (52%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | eth5                             White                         6 (29%)     
+>         |
+  |                                  South Asian                   3 (14%)     
+>         |
+  |                                  Black                         5 (24%)     
+>         |
+  |                                  Mixed                         4 (19%)     
+>         |
+  |                                  Other                         3 (14%)     
 >         |
   |----------------------------------------------------------------------------
 > --------|
@@ -3834,7 +3907,7 @@ file ./output/tables/characteristics_diff_strata2020.csv saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00016.00000f saved
+file /tmp/St00015.00000f saved
 (4,134 observations deleted)
 
   +--------------------------------------------+
@@ -3843,6 +3916,8 @@ file /tmp/St00016.00000f saved
   | age_cat                          690   176 |
   |--------------------------------------------|
   | male                             866     0 |
+  |--------------------------------------------|
+  | eth5                             866     0 |
   |--------------------------------------------|
   | Rural Urban in five categories   866     0 |
   |--------------------------------------------|
@@ -3881,6 +3956,18 @@ file /tmp/St00016.00000f saved
   | male                             Female                        448 (51.7%) 
 >        |
   |                                  Male                          418 (48.3%) 
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | eth5                             White                         168 (19.4%) 
+>        |
+  |                                  South Asian                   178 (20.6%) 
+>        |
+  |                                  Black                         178 (20.6%) 
+>        |
+  |                                  Mixed                         153 (17.7%) 
+>        |
+  |                                  Other                         189 (21.8%) 
 >        |
   |----------------------------------------------------------------------------
 > -------|
@@ -3961,7 +4048,7 @@ Data are presented as mean (SD) for continuous measures, and n (%) for categori
  
 (note: variable Total was str18, now str19 to accommodate using data's
        values)
-file /tmp/St00016.00000f saved
+file /tmp/St00015.00000f saved
 (4,747 observations deleted)
 
   +--------------------------------------------+
@@ -3970,6 +4057,8 @@ file /tmp/St00016.00000f saved
   | age_cat                          200    53 |
   |--------------------------------------------|
   | male                             253     0 |
+  |--------------------------------------------|
+  | eth5                             253     0 |
   |--------------------------------------------|
   | Rural Urban in five categories   253     0 |
   |--------------------------------------------|
@@ -4008,6 +4097,18 @@ file /tmp/St00016.00000f saved
   | male                             Female                        150 (59.3%) 
 >         |
   |                                  Male                          103 (40.7%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | eth5                             White                         49 (19.4%)  
+>         |
+  |                                  South Asian                   46 (18.2%)  
+>         |
+  |                                  Black                         46 (18.2%)  
+>         |
+  |                                  Mixed                         55 (21.7%)  
+>         |
+  |                                  Other                         57 (22.5%)  
 >         |
   |----------------------------------------------------------------------------
 > --------|
@@ -4086,7 +4187,7 @@ file /tmp/St00016.00000f saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00016.00000f saved
+file /tmp/St00015.00000f saved
 (4,074 observations deleted)
 
   +--------------------------------------------+
@@ -4095,6 +4196,8 @@ file /tmp/St00016.00000f saved
   | age_cat                          736   190 |
   |--------------------------------------------|
   | male                             926     0 |
+  |--------------------------------------------|
+  | eth5                             926     0 |
   |--------------------------------------------|
   | Rural Urban in five categories   926     0 |
   |--------------------------------------------|
@@ -4133,6 +4236,18 @@ file /tmp/St00016.00000f saved
   | male                             Female                        496 (53.6%) 
 >         |
   |                                  Male                          430 (46.4%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | eth5                             White                         190 (20.5%) 
+>         |
+  |                                  South Asian                   199 (21.5%) 
+>         |
+  |                                  Black                         169 (18.3%) 
+>         |
+  |                                  Mixed                         176 (19.0%) 
+>         |
+  |                                  Other                         192 (20.7%) 
 >         |
   |----------------------------------------------------------------------------
 > --------|
@@ -4211,7 +4326,7 @@ file /tmp/St00016.00000f saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00016.00000f saved
+file /tmp/St00015.00000f saved
 file ./output/tables/characteristics_diff_strata2021.csv saved
 
 . 
@@ -4227,15 +4342,17 @@ file ./output/tables/characteristics_diff_strata2021.csv saved
 . forvalues i=2020/2021 {
   2.     preserve
   3.     keep if diff_op_all_cat_`i'==0
-  4.     table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ region
->  cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+  4.     table1_mc, vars(age_cat cate \ male cate \ eth5 cate \ urban_rural_5 c
+> ate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) c
+> lear
   5.     save `tempfile', replace
   6.     restore
   7.     forvalues j=1/3 {
   8.         preserve
   9.         keep if diff_op_all_cat_`i'==`j'
- 10.         table1_mc, vars(age_cat cate \ male cate \ urban_rural_5 cate \ re
-> gion cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+ 10.         table1_mc, vars(age_cat cate \ male cate \ eth5 cate \ urban_rural
+> _5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cat
+> e) clear
  11.         append using `tempfile'
  12.         save `tempfile', replace
  13.         if `j'==3 {
@@ -4253,6 +4370,8 @@ file ./output/tables/characteristics_diff_strata2021.csv saved
   | age_cat                           33    10 |
   |--------------------------------------------|
   | male                              43     0 |
+  |--------------------------------------------|
+  | eth5                              43     0 |
   |--------------------------------------------|
   | Rural Urban in five categories    43     0 |
   |--------------------------------------------|
@@ -4289,6 +4408,18 @@ file ./output/tables/characteristics_diff_strata2021.csv saved
   | male                             Female                        26 (60%)    
 >         |
   |                                  Male                          17 (40%)    
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | eth5                             White                         6 (14%)     
+>         |
+  |                                  South Asian                   9 (21%)     
+>         |
+  |                                  Black                         4 ( 9%)     
+>         |
+  |                                  Mixed                         10 (23%)    
+>         |
+  |                                  Other                         14 (33%)    
 >         |
   |----------------------------------------------------------------------------
 > --------|
@@ -4365,8 +4496,8 @@ file ./output/tables/characteristics_diff_strata2021.csv saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-(note: file /tmp/St00016.00000o not found)
-file /tmp/St00016.00000o saved
+(note: file /tmp/St00015.00000o not found)
+file /tmp/St00015.00000o saved
 (3,509 observations deleted)
 
   +----------------------------------------------+
@@ -4375,6 +4506,8 @@ file /tmp/St00016.00000o saved
   | age_cat                          1,161   330 |
   |----------------------------------------------|
   | male                             1,491     0 |
+  |----------------------------------------------|
+  | eth5                             1,491     0 |
   |----------------------------------------------|
   | Rural Urban in five categories   1,491     0 |
   |----------------------------------------------|
@@ -4413,6 +4546,18 @@ file /tmp/St00016.00000o saved
   | male                             Female                        805 (54.0%) 
 >       |
   |                                  Male                          686 (46.0%) 
+>       |
+  |----------------------------------------------------------------------------
+> ------|
+  | eth5                             White                         296 (19.9%) 
+>       |
+  |                                  South Asian                   301 (20.2%) 
+>       |
+  |                                  Black                         296 (19.9%) 
+>       |
+  |                                  Mixed                         284 (19.0%) 
+>       |
+  |                                  Other                         314 (21.1%) 
 >       |
   |----------------------------------------------------------------------------
 > ------|
@@ -4493,7 +4638,7 @@ Data are presented as mean (SD) for continuous measures, and n (%) for categori
  
 (note: variable Total was str17, now str19 to accommodate using data's
        values)
-file /tmp/St00016.00000o saved
+file /tmp/St00015.00000o saved
 (4,635 observations deleted)
 
   +--------------------------------------------+
@@ -4502,6 +4647,8 @@ file /tmp/St00016.00000o saved
   | age_cat                          285    80 |
   |--------------------------------------------|
   | male                             365     0 |
+  |--------------------------------------------|
+  | eth5                             365     0 |
   |--------------------------------------------|
   | Rural Urban in five categories   365     0 |
   |--------------------------------------------|
@@ -4540,6 +4687,18 @@ file /tmp/St00016.00000o saved
   | male                             Female                        193 (52.9%) 
 >         |
   |                                  Male                          172 (47.1%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | eth5                             White                         78 (21.4%)  
+>         |
+  |                                  South Asian                   62 (17.0%)  
+>         |
+  |                                  Black                         70 (19.2%)  
+>         |
+  |                                  Mixed                         72 (19.7%)  
+>         |
+  |                                  Other                         83 (22.7%)  
 >         |
   |----------------------------------------------------------------------------
 > --------|
@@ -4618,7 +4777,7 @@ file /tmp/St00016.00000o saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00016.00000o saved
+file /tmp/St00015.00000o saved
 (3,572 observations deleted)
 
   +----------------------------------------------+
@@ -4627,6 +4786,8 @@ file /tmp/St00016.00000o saved
   | age_cat                          1,148   280 |
   |----------------------------------------------|
   | male                             1,428     0 |
+  |----------------------------------------------|
+  | eth5                             1,428     0 |
   |----------------------------------------------|
   | Rural Urban in five categories   1,428     0 |
   |----------------------------------------------|
@@ -4665,6 +4826,18 @@ file /tmp/St00016.00000o saved
   | male                             Female                        737 (51.6%) 
 >        |
   |                                  Male                          691 (48.4%) 
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | eth5                             White                         281 (19.7%) 
+>        |
+  |                                  South Asian                   300 (21.0%) 
+>        |
+  |                                  Black                         262 (18.3%) 
+>        |
+  |                                  Mixed                         286 (20.0%) 
+>        |
+  |                                  Other                         299 (20.9%) 
 >        |
   |----------------------------------------------------------------------------
 > -------|
@@ -4745,7 +4918,7 @@ Data are presented as mean (SD) for continuous measures, and n (%) for categori
  
 (note: variable Total was str18, now str19 to accommodate using data's
        values)
-file /tmp/St00016.00000o saved
+file /tmp/St00015.00000o saved
 file ./output/tables/characteristics_diff_all_strata2020.csv saved
 (4,983 observations deleted)
 
@@ -4755,6 +4928,8 @@ file ./output/tables/characteristics_diff_all_strata2020.csv saved
   | age_cat                           13     4 |
   |--------------------------------------------|
   | male                              17     0 |
+  |--------------------------------------------|
+  | eth5                              17     0 |
   |--------------------------------------------|
   | Rural Urban in five categories    17     0 |
   |--------------------------------------------|
@@ -4791,6 +4966,18 @@ file ./output/tables/characteristics_diff_all_strata2020.csv saved
   | male                             Female                        12 (71%)    
 >        |
   |                                  Male                          5 (29%)     
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | eth5                             White                         2 (12%)     
+>        |
+  |                                  South Asian                   3 (18%)     
+>        |
+  |                                  Black                         5 (29%)     
+>        |
+  |                                  Mixed                         5 (29%)     
+>        |
+  |                                  Other                         2 (12%)     
 >        |
   |----------------------------------------------------------------------------
 > -------|
@@ -4859,7 +5046,7 @@ file ./output/tables/characteristics_diff_all_strata2020.csv saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00016.00000o saved
+file /tmp/St00015.00000o saved
 (4,105 observations deleted)
 
   +--------------------------------------------+
@@ -4868,6 +5055,8 @@ file /tmp/St00016.00000o saved
   | age_cat                          723   172 |
   |--------------------------------------------|
   | male                             895     0 |
+  |--------------------------------------------|
+  | eth5                             895     0 |
   |--------------------------------------------|
   | Rural Urban in five categories   895     0 |
   |--------------------------------------------|
@@ -4906,6 +5095,18 @@ file /tmp/St00016.00000o saved
   | male                             Female                        477 (53.3%) 
 >        |
   |                                  Male                          418 (46.7%) 
+>        |
+  |----------------------------------------------------------------------------
+> -------|
+  | eth5                             White                         175 (19.6%) 
+>        |
+  |                                  South Asian                   182 (20.3%) 
+>        |
+  |                                  Black                         169 (18.9%) 
+>        |
+  |                                  Mixed                         175 (19.6%) 
+>        |
+  |                                  Other                         194 (21.7%) 
 >        |
   |----------------------------------------------------------------------------
 > -------|
@@ -4984,7 +5185,7 @@ file /tmp/St00016.00000o saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00016.00000o saved
+file /tmp/St00015.00000o saved
 (4,755 observations deleted)
 
   +--------------------------------------------+
@@ -4993,6 +5194,8 @@ file /tmp/St00016.00000o saved
   | age_cat                          185    60 |
   |--------------------------------------------|
   | male                             245     0 |
+  |--------------------------------------------|
+  | eth5                             245     0 |
   |--------------------------------------------|
   | Rural Urban in five categories   245     0 |
   |--------------------------------------------|
@@ -5031,6 +5234,18 @@ file /tmp/St00016.00000o saved
   | male                             Female                        140 (57.1%) 
 >         |
   |                                  Male                          105 (42.9%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | eth5                             White                         58 (23.7%)  
+>         |
+  |                                  South Asian                   57 (23.3%)  
+>         |
+  |                                  Black                         41 (16.7%)  
+>         |
+  |                                  Mixed                         41 (16.7%)  
+>         |
+  |                                  Other                         48 (19.6%)  
 >         |
   |----------------------------------------------------------------------------
 > --------|
@@ -5109,7 +5324,7 @@ file /tmp/St00016.00000o saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00016.00000o saved
+file /tmp/St00015.00000o saved
 (4,091 observations deleted)
 
   +--------------------------------------------+
@@ -5118,6 +5333,8 @@ file /tmp/St00016.00000o saved
   | age_cat                          721   188 |
   |--------------------------------------------|
   | male                             909     0 |
+  |--------------------------------------------|
+  | eth5                             909     0 |
   |--------------------------------------------|
   | Rural Urban in five categories   909     0 |
   |--------------------------------------------|
@@ -5156,6 +5373,18 @@ file /tmp/St00016.00000o saved
   | male                             Female                        475 (52.3%) 
 >         |
   |                                  Male                          434 (47.7%) 
+>         |
+  |----------------------------------------------------------------------------
+> --------|
+  | eth5                             White                         178 (19.6%) 
+>         |
+  |                                  South Asian                   184 (20.2%) 
+>         |
+  |                                  Black                         183 (20.1%) 
+>         |
+  |                                  Mixed                         167 (18.4%) 
+>         |
+  |                                  Other                         197 (21.7%) 
 >         |
   |----------------------------------------------------------------------------
 > --------|
@@ -5234,7 +5463,7 @@ file /tmp/St00016.00000o saved
 Data are presented as mean (SD) for continuous measures, and n (%) for categori
 > cal measures.
  
-file /tmp/St00016.00000o saved
+file /tmp/St00015.00000o saved
 file ./output/tables/characteristics_diff_all_strata2021.csv saved
 
 . 
@@ -5242,5 +5471,5 @@ file ./output/tables/characteristics_diff_all_strata2021.csv saved
       name:  <unnamed>
        log:  /workspace/logs/outpatients.log
   log type:  text
- closed on:  15 Feb 2023, 14:49:45
+ closed on:  17 Feb 2023, 08:56:21
 -------------------------------------------------------------------------------

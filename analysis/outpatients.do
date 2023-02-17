@@ -60,13 +60,14 @@ forvalues i=2019/2021 {
  replace eth5=3 if ethnicity==4
  replace eth5=4 if ethnicity==2
  replace eth5=5 if ethnicity==5
- replace eth5=. if ethnicity==.
+ replace eth5=6 if ethnicity==.
 
  label define eth5 			1 "White"  					///
 							2 "South Asian"				///						
 							3 "Black"  					///
 							4 "Mixed"					///
-							5 "Other"					
+							5 "Other"                   ///
+                            6 "Missing"					
 					
 
 label values eth5 eth5
