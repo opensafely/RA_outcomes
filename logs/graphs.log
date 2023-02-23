@@ -613,7 +613,7 @@ Sorted by: dateA
 . 
 end of do-file
 
-. . file open output using "/tmp/graphs.do.I3xE.out", write text replace
+. . file open output using "/tmp/graphs.do.llc2.out", write text replace
 
 . . file write output "success" 
 

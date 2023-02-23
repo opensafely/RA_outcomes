@@ -112,6 +112,7 @@ actions:
         log: logs/outpatients.log
         output: output/tables/op_*.csv
         tables: output/tables/characteristics*.csv
+        temp: output/tables/logistic*
 
   sankey:
     run: r:latest analysis/sankey.r

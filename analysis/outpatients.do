@@ -10,6 +10,7 @@ adopath + ./analysis/ado
 cap log using ./logs/outpatients.log, replace
 
 cap mkdir ./output/tables/
+cap mkdir ./output/tempdata
 
 * Import data
 import delimited using ./output/input.csv
@@ -298,7 +299,18 @@ forvalues i=2020/2021 {
             }
         restore
         }
+    * Multinomial logistic regression
+    mlogit diff_op_cat_`i' i.age_cat i.male i.eth5 i.urban_rural_5 i.imd /*region smoking*/ bmi time_ra, baseoutcome(2) rrr 
+    parmest, label format(estimate p min95 max95) saving("./output/tempdata/diff_rheum_`i'", replace) idstr("diff_rheum_`i'")
     }
+* Put together 2020 and 2021 logistic regression results
+preserve 
+use "./output/tempdata/diff_rheum_2020", clear 
+append using "./output/tempdata/diff_rheum_2021"
+drop stderr z 
+export delimited using ./output/tables/logistic_diff_results.csv 
+restore
+
 
 * Tabulate characteristics by categories of differences in all outpatient appointments for each year
 * When stratified there are small numbers with missing region therefore tabulate only those without region missing
