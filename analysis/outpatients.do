@@ -104,6 +104,17 @@ label var urban_rural_bin "Rural-Urban"
 
 * Make missing category for region
 replace region = "missing" if region==""
+* Make numeric region variable 
+gen region_n = 1 if region=="East Midlands"
+replace region_n = 2 if region=="East of England"
+replace region_n = 3 if region=="London"
+replace region_n = 4 if region=="North East"
+replace region_n = 5 if region=="North West"
+replace region_n = 6 if region=="South East"
+replace region_n = 7 if region=="South West"
+replace region_n = 8 if region=="West Midlands"
+replace region_n = 9 if region=="Yorkshire and the Humber"
+tab region*, m 
 
 * Define age categories
 * Create age categories
@@ -300,7 +311,7 @@ forvalues i=2020/2021 {
         restore
         }
     * Multinomial logistic regression
-    mlogit diff_op_cat_`i' i.age_cat i.male i.eth5 i.urban_rural_5 i.imd region smoking bmi time_ra, baseoutcome(2) rrr 
+    mlogit diff_op_cat_`i' i.age_cat i.male i.eth5 i.urban_rural_5 i.imd i.region_n i.smoking bmi time_ra, baseoutcome(2) rrr 
     parmest, label eform format(estimate p min95 max95) saving("./output/tempdata/diff_rheum_`i'", replace) idstr("diff_rheum_`i'")
     }
 * Put together 2020 and 2021 logistic regression results
