@@ -122,8 +122,8 @@ file /tmp/St00015.000001 saved
 > 020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " " ///
 > 21 "Jan 2021" 22 " " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 
 > 29 " " 30 "Oct 2021" 31 " " 32 " " 33 "Jan 2022" ///
-> 34 " " 35 " " 36 "Apr 2022") label(angle(45) ticks)) stack graphregion(fcolor
-> (white)) intensity(50) legend(label(1 "Rheumatology") ///
+> 34 " " 35 " " 36 "Apr 2022") label(angle(45) ticks)) graphregion(fcolor(white
+> )) intensity(50) legend(label(1 "Rheumatology") ///
 > label(2 "Other")) ytitle("Proportion of population")  ylabel(0(5)35)
 
 . graph export ./output/graphs/line_op_appt_both.svg, as(svg) replace
@@ -227,8 +227,8 @@ Sorted by: dateA
 > 020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " " ///
 > 21 "Jan 2021" 22 " " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 
 > 29 " " 30 "Oct 2021" 31 " " 32 " " 33 "Jan 2022" ///
-> 34 " " 35 " " 36 "Apr 2022") label(angle(45) ticks)) stack graphregion(fcolor
-> (white)) intensity(50) legend(label(1 "Face to face") ///
+> 34 " " 35 " " 36 "Apr 2022") label(angle(45) ticks)) graphregion(fcolor(white
+> )) intensity(50) legend(label(1 "Face to face") ///
 > label(2 "Telephone")) ytitle("Proportion of population")  ylabel(0(3)15)
 
 . 
@@ -388,8 +388,8 @@ Sorted by: dateA
 > 020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " " ///
 > 21 "Jan 2021" 22 " " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 
 > 29 " " 30 "Oct 2021" 31 " " 32 " " 33 "Jan 2022" ///
-> 34 " " 35 " " 36 "Apr 2022") label(angle(45) ticks)) stack graphregion(fcolor
-> (white)) intensity(50) ///
+> 34 " " 35 " " 36 "Apr 2022") label(angle(45) ticks)) graphregion(fcolor(white
+> )) intensity(50) ///
 > legend(label(1 "Ordinary admission") label(2 "Day case") label(3 "Regular adm
 > ission")) ytitle("Proportion of population")  ylabel(0(3)15)
 
@@ -544,6 +544,10 @@ Sorted by: dateA
 
 . label var proportion1 "Elective admission"
 
+. * Export dataset for output checking 
+. export delimited using ./output/graphs/elective_data.csv 
+file ./output/graphs/elective_data.csv saved
+
 . * Generate line graph
 . graph bar proportion0 proportion1, over(dateA, relabel(1 "Apr 2019" 2 " " 3 "
 >  " 4 "Jul 2019" 5 " " 6 " " 7 "Oct 2019" ///
@@ -551,8 +555,8 @@ Sorted by: dateA
 > 020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " " ///
 > 21 "Jan 2021" 22 " " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 
 > 29 " " 30 "Oct 2021" 31 " " 32 " " 33 "Jan 2022" ///
-> 34 " " 35 " " 36 "Apr 2022") label(angle(45) ticks)) stack graphregion(fcolor
-> (white)) intensity(50) ///
+> 34 " " 35 " " 36 "Apr 2022") label(angle(45) ticks)) graphregion(fcolor(white
+> )) intensity(50) ///
 > legend(label(1 "Emergency admission") label(2 "Elective admission")) ytitle("
 > Proportion of population")  ylabel(0(3)15)
 
@@ -613,7 +617,7 @@ Sorted by: dateA
 . 
 end of do-file
 
-. . file open output using "/tmp/graphs.do.llc2.out", write text replace
+. . file open output using "/tmp/graphs.do.MpnX.out", write text replace
 
 . . file write output "success" 
 

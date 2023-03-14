@@ -201,6 +201,8 @@ describe
 * Label strata 
 label var proportion0 "Emergency admission"
 label var proportion1 "Elective admission"
+* Export dataset for output checking 
+export delimited using ./output/graphs/elective_data.csv 
 * Generate line graph
 graph bar proportion0 proportion1, over(dateA, relabel(1 "Apr 2019" 2 " " 3 " " 4 "Jul 2019" 5 " " 6 " " 7 "Oct 2019" ///
 8 " " 9 " " 10 "Jan 2020" 11 " " 12 " " 12 "Apr 2020" 13 " " 14 " " 15 "Jul 2020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " " ///
