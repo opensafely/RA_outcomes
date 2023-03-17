@@ -309,13 +309,13 @@ study = StudyDefinition(
         return_expectations = {"incidence": 0.7},
     ),
     ra_hosp=patients.admitted_to_hospital(
-        with_these_diagnoses=ra_hospitalisation,
+        with_these_primary_diagnoses=ra_hospitalisation,
         between=["index_date", "last_day_of_month(index_date)"],
         returning="binary_flag",
         return_expectations={"incidence": 0.1},
     ),
     ra_daycase=patients.admitted_to_hospital(
-        with_these_diagnoses=ra_hospitalisation,
+        with_these_primary_diagnoses=ra_hospitalisation,
         between=["index_date", "last_day_of_month(index_date)"],
         returning="patient_classification",
         return_expectations={"category": { "ratios":{ 
@@ -328,14 +328,14 @@ study = StudyDefinition(
             },
         },
     ),
-    ra_emergency=patients.attended_emergency_care(
-        with_these_diagnoses=ra_codes,
-        between=["index_date", "last_day_of_month(index_date)"],
-        returning="binary_flag",
-        return_expectations={"incidence": 0.1},
-    ),
+    #ra_emergency=patients.attended_emergency_care(
+    #    with_these_diagnoses=ra_codes,
+    #    between=["index_date", "last_day_of_month(index_date)"],
+    #    returning="binary_flag",
+    #    return_expectations={"incidence": 0.1},
+    #),
     ra_elective=patients.admitted_to_hospital(
-         with_these_diagnoses=ra_hospitalisation,
+         with_these_primary_diagnoses=ra_hospitalisation,
         between=["index_date", "last_day_of_month(index_date)"],
         returning="admission_method",
         return_expectations={"category": { "ratios":{ 
@@ -421,12 +421,12 @@ measures = [
         denominator="population",
         group_by="ra_daycase",
     ),
-    Measure(
-        id="hosp_ra_emergency_rate",
-        numerator="ra_emergency",
-        denominator="population",
-        group_by="population",
-    ),
+    #Measure(
+    #    id="hosp_ra_emergency_rate",
+    #    numerator="ra_emergency",
+    #    denominator="population",
+    #    group_by="population",
+    #),
     Measure(
         id="hosp_ra_elective_rate",
         numerator="ra_hosp",
