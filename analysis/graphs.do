@@ -128,7 +128,7 @@ foreach this_group in ra /*ra_emergency*/ all {
         " " 14 " " 15 "Jul 2020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " "21 "Jan 2021" 22 ///
         " " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 29 " " 30 "Oct 2021" 31 ///
         " " 32 " " 33 "Jan 2022" 34 " " 35 " " 36 "Apr 2022") label(angle(45) ticks)) ///
-        graphregion(fcolor(white)) ytitle("Proportion of population")  ylabel(0(3)15)
+        graphregion(fcolor(white)) ytitle("Proportion of population")  ylabel(0(1)5)
         graph export ./output/graphs/line_hosp_`this_group'.svg, as(svg) replace
         }
 
@@ -208,12 +208,12 @@ graph bar proportion0 proportion1, over(dateA, relabel(1 "Apr 2019" 2 " " 3 " " 
 8 " " 9 " " 10 "Jan 2020" 11 " " 12 " " 12 "Apr 2020" 13 " " 14 " " 15 "Jul 2020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " " ///
 21 "Jan 2021" 22 " " 23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 29 " " 30 "Oct 2021" 31 " " 32 " " 33 "Jan 2022" ///
 34 " " 35 " " 36 "Apr 2022") label(angle(45) ticks)) graphregion(fcolor(white)) intensity(50) ///
-legend(label(1 "Emergency admission") label(2 "Elective admission")) ytitle("Proportion of population")  ylabel(0(3)5)
+legend(label(1 "Emergency admission") label(2 "Elective admission")) ytitle("Proportion of population")  ylabel(0(1)5)
 
 graph export ./output/graphs/line_ra_elective.svg, as(svg) replace
 
 * Generates bar graphs with rate of prescriptions over time
-foreach this_group in gc opioid_strong opioid_weak ssri nsaid {
+foreach this_group in gc opioid_strong /*opioid_weak*/ ssri nsaid {
         import delimited using ./output/measures/join/measure_med_`this_group'_rate.csv, numericcols(3) clear
         * Generate rate per 100,000
         gen proportion = value*100 
@@ -233,3 +233,23 @@ foreach this_group in gc opioid_strong opioid_weak ssri nsaid {
         graphregion(fcolor(white)) ytitle("Proportion of population")  ylabel(0(3)15)
         graph export ./output/graphs/line_med_`this_group'.svg, as(svg) replace
         }
+
+* Weak opioids has different axis
+import delimited using ./output/measures/join/measure_med_opioid_weak_rate.csv, numericcols(3) clear
+* Generate rate per 100,000
+gen proportion = value*100 
+* Format date
+gen dateA = date(date, "YMD")
+drop date
+format dateA %dD/M/Y  
+* Generate line graph
+/*graph twoway line rate dateA, tlabel(01Apr2019(120)01Apr2022, angle(45) ///
+format(%dM-CY) labsize(small)) ytitle("Rate per 100,000") xtitle("Date") ylabel(#5, labsize(small) ///
+angle(0)) yscale(r(0) titlegap(*10)) xmtick(##6) graphregion(fcolor(white))*/
+graph bar proportion, over(dateA, relabel(1 "Apr 2019" 2 " " 3 " " 4 "Jul 2019" 5 " " ///
+6 " " 7 "Oct 2019" 8 " " 9 " " 10 "Jan 2020" 11 " " 12 " " 12 "Apr 2020" 13 " " ///
+14 " " 15 "Jul 2020" 16 " " 17 " " 18 "Oct 2020" 19 " " 20 " "21 "Jan 2021" 22 " " ///
+23 " " 24 "Apr 2021" 25 " " 26 " " 27 "Jul 2021" 28 " " 29 " " 30 "Oct 2021" 31 " " ///
+32 " " 33 "Jan 2022" 34 " " 35 " " 36 "Apr 2022") label(angle(45) ticks)) ///
+graphregion(fcolor(white)) ytitle("Proportion of population")  ylabel(0(3)25)
+graph export ./output/graphs/line_med_opioid_weak.svg, as(svg) replace
