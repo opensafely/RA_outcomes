@@ -252,7 +252,7 @@ export delimited using ./output/tables/op_appt_all_yrs.csv
 restore 
 * Tabulate overall characteristics 
 preserve
-table1_mc, vars(age_cat cate \ male cate \ eth5 cate \ urban_rural_5 cate \ region cate \ imd cate \  smoking cate \ time_ra contn \ bmi_cat cate) clear
+table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \  smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate) clear
 export delimited using ./output/tables/op_chars.csv
 restore
 * Tabulate characteristics by category of outpatient appointments for each year
@@ -260,13 +260,13 @@ tempfile tempfile
 forvalues i=2019/2021 {
     preserve
     keep if op_appt_`i'_cat==0
-    table1_mc, vars(age_cat cate \ male cate \ eth5 cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate\ diff_op_all_cat_2020 cate \ diff_op_all_cat_2021 cate) clear
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate \ diff_op_all_cat_2020 cate \ diff_op_all_cat_2021 cate) clear
     save `tempfile', replace
     restore
     forvalues j=1/2 {
         preserve
         keep if op_appt_`i'_cat==`j'
-        table1_mc, vars(age_cat cate \ male cate \ eth5 cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ diff_op_all_cat_2020 cate \ diff_op_all_cat_2021 cate) clear
+        table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate \ diff_op_all_cat_2020 cate \ diff_op_all_cat_2021 cate) clear
         append using `tempfile'
         save `tempfile', replace
         if `j'==2 {
@@ -296,13 +296,13 @@ tempfile tempfile
 forvalues i=2020/2021 {
     preserve
     keep if diff_op_cat_`i'==0
-    table1_mc, vars(age_cat cate \ male cate \ eth5 cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
     save `tempfile', replace
     restore
     forvalues j=1/3 {
         preserve
         keep if diff_op_cat_`i'==`j'
-        table1_mc, vars(age_cat cate \ male cate \ eth5 cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+        table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
         append using `tempfile'
         save `tempfile', replace
         if `j'==3 {
@@ -311,8 +311,12 @@ forvalues i=2020/2021 {
         restore
         }
     * Multinomial logistic regression
-    mlogit diff_op_cat_`i' i.age_cat i.male i.eth5 i.urban_rural_5 i.imd i.region_n i.smoking bmi time_ra, baseoutcome(2) rrr 
+    mlogit diff_op_cat_`i' i.age_cat i.male i.urban_rural_bin i.imd i.smoking bmi time_ra, baseoutcome(2) rrr 
+    est sto m1
+    *coefplot, drop(_cons) keep(*:) omitted baselevels
+    *coefplot (m1, keep(More_appointments:*)) (m1,keep(Fewer_appointments:*)) (m1, keep(No_appointments_both_years:*)), drop(_cons) xline(1) eform 
     parmest, label eform format(estimate p min95 max95) saving("./output/tempdata/diff_rheum_`i'", replace) idstr("diff_rheum_`i'")
+    *graph export ./output/tables/coefplot_`i'.svg, as(svg) replace 
     }
 * Put together 2020 and 2021 logistic regression results
 preserve 
@@ -330,13 +334,13 @@ tempfile tempfile
 forvalues i=2020/2021 {
     preserve
     keep if diff_op_all_cat_`i'==0
-    table1_mc, vars(age_cat cate \ male cate \ eth5 cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
     save `tempfile', replace
     restore
     forvalues j=1/3 {
         preserve
         keep if diff_op_all_cat_`i'==`j'
-        table1_mc, vars(age_cat cate \ male cate \ eth5 cate \ urban_rural_5 cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+        table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
         append using `tempfile'
         save `tempfile', replace
         if `j'==3 {

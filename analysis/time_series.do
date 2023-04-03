@@ -15,7 +15,7 @@ cap mkdir ./output/tempdata
 
 * Outpatient appointments amd hospitalisations
 * Autocorrelation indicates no autocorrelation for op_appt 
-foreach file in op_appt op_appt_all hosp_ra hosp_ra_emergency hosp_all med_gc med_opioid_strong med_opioid_weak med_ssri med_nsaid {
+foreach file in op_appt op_appt_all hosp_ra /*hosp_ra_emergency*/ hosp_all med_gc med_opioid_strong med_opioid_weak med_ssri med_nsaid {
     import delimited "./output/measures/join/measure_`file'_rate.csv", clear	//get csv
     gen temp_date=date(date, "YMD")
     format temp_date %td
@@ -118,7 +118,7 @@ use "./output/tempdata/ra_elective_itsa_output", clear
 gen outcome = "ra_elective"
 save `tempfile', replace
 
-foreach var in op_appt op_appt_all hosp_ra hosp_ra_emergency hosp_all med_gc med_opioid_strong med_opioid_weak med_ssri med_nsaid op_appt_medium ra_daycase {
+foreach var in op_appt op_appt_all hosp_ra /*hosp_ra_emergency*/ hosp_all med_gc med_opioid_strong med_opioid_weak med_ssri med_nsaid op_appt_medium ra_daycase {
     use "./output/tempdata/`var'_itsa_output", clear
     gen outcome = "`var'"
     append using `tempfile'
