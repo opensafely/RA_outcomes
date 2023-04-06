@@ -311,7 +311,7 @@ forvalues i=2020/2021 {
         restore
         }
     * Multinomial logistic regression
-    mlogit diff_op_cat_`i' i.age_cat i.male i.urban_rural_bin i.imd i.smoking bmi time_ra, baseoutcome(2) rrr 
+    mlogit diff_op_cat_`i' ib3.age_cat i.male i.urban_rural_bin i.imd i.smoking bmi time_ra, baseoutcome(2) rrr 
     est sto m1
     *coefplot, drop(_cons) keep(*:) omitted baselevels
     *coefplot (m1, keep(More_appointments:*)) (m1,keep(Fewer_appointments:*)) (m1, keep(No_appointments_both_years:*)), drop(_cons) xline(1) eform 
