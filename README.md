@@ -4,6 +4,8 @@ This is the code and configuration for RA_outcomes.
 
 You can run this project via [Gitpod](https://gitpod.io) in a web browser by clicking on this badge: [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/opensafely/RA_outcomes)
 
+* Abstract presented at the British Society for Rheumatology Annual meeting (April 2023) is here: https://academic.oup.com/rheumatology/article/62/Supplement_2/kead104.146/7136480 
+
 * The paper is [here]()
 * Raw model outputs, including charts, crosstabs, etc, are in `released_outputs/`
 * If you are interested in how we defined our variables, take a look at the [study definition](analysis/study_definition.py); this is written in `python`, but non-programmers should be able to understand what is going on there
