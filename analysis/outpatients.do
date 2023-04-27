@@ -185,22 +185,21 @@ forvalues i=2019/2021 {
     label values op_appt_`i'_orig_cat appt
     }
 
-* Calculate difference in rheumatology appointments compared to previous year
+* Calculate difference in rheumatology appointments compared to 2019
 gen diff_op_2020 = outpatient_appt_2020 - outpatient_appt_2019
-gen diff_op_2021 = outpatient_appt_2021 - outpatient_appt_2020
+gen diff_op_2021 = outpatient_appt_2021 - outpatient_appt_2019
 sum diff_op_2020 diff_op_2021, d
-* Categorise difference
-egen diff_op_cat_2020 = cut(diff_op_2020), at(-100, 0, 1, 100) icodes
-egen diff_op_cat_2021 = cut(diff_op_2021), at(-100, 0, 1, 100) icodes
-label define op_cat 0 "No appointments both years" 1 "Fewer appointments" 2 "Same number of appointments" 3 "More appointments"
+
+* Identify people with no appointments in either year flag them and set difference to missing
 forvalues i=2020/2021 {
-    tab diff_op_cat_`i' op_appt_`i'_cat
-    * Update categories to include category of those with no appointments in both years
-    replace diff_op_cat_`i' = diff_op_cat_`i' + 1
-    tab diff_op_cat_`i'
-    replace diff_op_cat_`i' = 0 if diff_op_cat_`i'==2 & op_appt_`i'_cat==0
-    tab diff_op_cat_`i'
-    label values diff_op_cat_`i' op_cat
+    gen no_appts_`i' = diff_op_`i'==0 & op_appt_`i'_cat==0
+    tab no_appts_`i' op_appt_`i'_cat
+    replace diff_op_`i'=. if no_appts_`i'==1
+}
+
+* Identify of people with appointments whether they had fewer appointments 
+forvalues i=2020/2021 {
+    gen fewer_appts_`i' = (diff_op_`i' < 0) if diff_op_`i'!=.
 }
 
 * Categorise number of outpatient appointments (all specialties)
@@ -218,26 +217,26 @@ forvalues i=2019/2021 {
     label values op_appt_all_`i'_orig_cat appt_all
     }
 
-* Calculate difference in all outpatient appointments compared to previous year
+* Calculate difference in all outpatient appointments compared to 2019
 gen diff_op_all_2020 = outpatient_appt_all_2020 - outpatient_appt_all_2019
-gen diff_op_all_2021 = outpatient_appt_all_2021 - outpatient_appt_all_2020
+gen diff_op_all_2021 = outpatient_appt_all_2021 - outpatient_appt_all_2019
 sum diff_op_all_2020 diff_op_all_2021, d
-* Categorise difference
-egen diff_op_all_cat_2020 = cut(diff_op_all_2020), at(-100, 0, 1, 100) icodes
-egen diff_op_all_cat_2021 = cut(diff_op_all_2021), at(-100, 0, 1, 100) icodes
+
+* Identify people with no appointments in either year flag them and set difference to missing
 forvalues i=2020/2021 {
-    tab diff_op_all_cat_`i' op_appt_all_`i'_cat
-    * Update categories to include category of those with no appointments in both years
-    replace diff_op_all_cat_`i' = diff_op_all_cat_`i' + 1
-    tab diff_op_all_cat_`i'
-    replace diff_op_all_cat_`i' = 0 if diff_op_all_cat_`i'==2 & op_appt_all_`i'_cat==0
-    tab diff_op_all_cat_`i'
-    label values diff_op_all_cat_`i' op_cat
+    gen no_appts_all_`i' = diff_op_all_`i'==0 & op_appt_all_`i'_cat==0
+    tab no_appts_all_`i' op_appt_all_`i'_cat
+    replace diff_op_all_`i'=. if no_appts_all_`i'==1
+    }
+
+* Identify of people with appointments whether they had fewer appointments 
+forvalues i=2020/2021 {
+    gen fewer_appts_all_`i' = (diff_op_all_`i' < 0) if diff_op_all_`i'!=.
 }
 
 preserve
 * Tabulate number of rheumatology appointments per year of those with whole year available
-table1_mc, vars(op_appt_2019_cat cate \ op_appt_2020_cat cate \ op_appt_2021_cat cate \ diff_op_cat_2020 cate \ diff_op_cat_2021 cate) clear
+table1_mc, vars(op_appt_2019_cat cate \ op_appt_2020_cat cate \ op_appt_2021_cat cate \ no_appts_2020 cate \ no_appts_2021 cate \ fewer_appts_2020 cate \ fewer_appts_2021 cate) clear
 export delimited using ./output/tables/op_appt_yrs.csv
 restore 
 preserve
@@ -247,7 +246,7 @@ export delimited using ./output/tables/op_appt_orig_yrs.csv
 restore 
 preserve
 * Tabulate number of all outpatient appointments per year of those with whole year available
-table1_mc, vars(op_appt_all_2019_cat cate \ op_appt_all_2020_cat cate \ op_appt_all_2021_cat cate \ diff_op_all_cat_2020 cate \ diff_op_all_cat_2021 cate) clear
+table1_mc, vars(op_appt_all_2019_cat cate \ op_appt_all_2020_cat cate \ op_appt_all_2021_cat cate \ no_appts_all_2020 cate \ no_appts_all_2021 cate \ fewer_appts_all_2020 cate \ fewer_appts_all_2021 cate) clear
 export delimited using ./output/tables/op_appt_all_yrs.csv
 restore 
 * Tabulate overall characteristics 
@@ -260,13 +259,13 @@ tempfile tempfile
 forvalues i=2019/2021 {
     preserve
     keep if op_appt_`i'_cat==0
-    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate \ diff_op_all_cat_2020 cate \ diff_op_all_cat_2021 cate) clear
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate) clear
     save `tempfile', replace
     restore
     forvalues j=1/2 {
         preserve
         keep if op_appt_`i'_cat==`j'
-        table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate \ diff_op_all_cat_2020 cate \ diff_op_all_cat_2021 cate) clear
+        table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate) clear
         append using `tempfile'
         save `tempfile', replace
         if `j'==2 {
@@ -294,34 +293,49 @@ forvalues i=2019/2021 {
 drop if region=="missing"
 tempfile tempfile
 forvalues i=2020/2021 {
+    * Same number or more appointments 
     preserve
-    keep if diff_op_cat_`i'==0
-    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+    keep if fewer_appts_`i'==0
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate) clear
     save `tempfile', replace
     restore
-    forvalues j=1/3 {
-        preserve
-        keep if diff_op_cat_`i'==`j'
-        table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
-        append using `tempfile'
-        save `tempfile', replace
-        if `j'==3 {
-            export delimited using ./output/tables/characteristics_diff_strata`i'.csv
-            }
-        restore
+    * Fewer appointments 
+    preserve
+    keep if fewer_appts_`i'==1
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate) clear
+    append using `tempfile'
+    save `tempfile', replace
+    restore 
+    * No appointments
+    preserve 
+    keep if no_appts_`i' ==1
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate) clear
+    append using `tempfile'
+    save `tempfile', replace
+    export delimited using ./output/tables/characteristics_diff_strata`i'.csv    
+    restore
+    * Logistic regression 
+    foreach var in urban_rural_bin i.imd i.region_n i.eth5 {
+        logit fewer_appts_`i' `var' ib1.age_cat male, or 
+        est sto m1 
+        parmest, label eform format(estimate p min95 max95) saving("./output/tempdata/`var'_diff_rheum_`i'", replace) idstr("`var'_rheum_`i'")
         }
-    * Multinomial logistic regression
-    mlogit diff_op_cat_`i' ib1.age_cat i.male i.urban_rural_bin i.imd i.smoking bmi time_ra, baseoutcome(2) rrr 
+    logit fewer_appts_`i' ib1.age_cat male urban_rural_bin i.imd i.region_n i.eth5, or 
     est sto m1
-    *coefplot, drop(_cons) keep(*:) omitted baselevels
-    *coefplot (m1, keep(More_appointments:*)) (m1,keep(Fewer_appointments:*)) (m1, keep(No_appointments_both_years:*)), drop(_cons) xline(1) eform 
-    parmest, label eform format(estimate p min95 max95) saving("./output/tempdata/diff_rheum_`i'", replace) idstr("diff_rheum_`i'")
-    *graph export ./output/tables/coefplot_`i'.svg, as(svg) replace 
+    parmest, label eform format(estimate p min95 max95) saving("./output/tempdata/multi_diff_rheum_`i'", replace) idstr("multi_rheum_`i'")
     }
 * Put together 2020 and 2021 logistic regression results
 preserve 
-use "./output/tempdata/diff_rheum_2020", clear 
-append using "./output/tempdata/diff_rheum_2021"
+use "./output/tempdata/urban_rural_bin_diff_rheum_2020", clear 
+append using "./output/tempdata/i.imd_diff_rheum_2020"
+append using "./output/tempdata/i.region_n_diff_rheum_2020"
+append using "./output/tempdata/i.eth5_diff_rheum_2020"
+append using "./output/tempdata/multi_diff_rheum_2020"
+append using "./output/tempdata/urban_rural_bin_diff_rheum_2021"
+append using "./output/tempdata/i.imd_diff_rheum_2021"
+append using "./output/tempdata/i.region_n_diff_rheum_2021"
+append using "./output/tempdata/i.eth5_diff_rheum_2021"
+append using "./output/tempdata/multi_diff_rheum_2021"
 drop stderr z 
 export delimited using ./output/tables/logistic_diff_results.csv 
 restore
@@ -333,22 +347,49 @@ drop if region=="missing"
 tempfile tempfile
 forvalues i=2020/2021 {
     preserve
-    keep if diff_op_all_cat_`i'==0
-    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
+    keep if fewer_appts_all_`i'==0
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate) clear
     save `tempfile', replace
     restore
-    forvalues j=1/3 {
-        preserve
-        keep if diff_op_all_cat_`i'==`j'
-        table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate) clear
-        append using `tempfile'
-        save `tempfile', replace
-        if `j'==3 {
-            export delimited using ./output/tables/characteristics_diff_all_strata`i'.csv
-            }
-        restore
+    preserve
+    keep if fewer_appts_all_`i'==1
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate) clear
+    append using `tempfile'
+    save `tempfile', replace
+    restore 
+    * No appointments 
+    preserve
+    keep if no_appts_all_`i' ==1
+    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate) clear
+    append using `tempfile'
+    save `tempfile', replace
+    export delimited using ./output/tables/characteristics_diff_all_strata`i'.csv    
+    restore
+    * Logistic regression 
+    foreach var in urban_rural_bin i.imd i.region_n i.eth5 {
+        logit fewer_appts_all_`i' `var' ib1.age_cat male, or 
+        est sto m2
+        parmest, label eform format(estimate p min95 max95) saving("./output/tempdata/`var'_diff_all_`i'", replace) idstr("`var'_all_`i'")
         }
+    logit fewer_appts_all_`i' ib1.age_cat male urban_rural_bin i.imd i.region_n i.eth5, or 
+    est sto m2
+    parmest, label eform format(estimate p min95 max95) saving("./output/tempdata/multi_diff_all_`i'", replace) idstr("multi_all_`i'")
     }
+* Put together 2020 and 2021 logistic regression results
+use "./output/tempdata/urban_rural_bin_diff_all_2020", clear 
+append using "./output/tempdata/i.imd_diff_all_2020"
+append using "./output/tempdata/i.region_n_diff_all_2020"
+append using "./output/tempdata/i.eth5_diff_all_2020"
+append using "./output/tempdata/multi_diff_all_2020"
+append using "./output/tempdata/urban_rural_bin_diff_all_2021"
+append using "./output/tempdata/i.imd_diff_all_2021"
+append using "./output/tempdata/i.region_n_diff_all_2021"
+append using "./output/tempdata/i.eth5_diff_all_2021"
+append using "./output/tempdata/multi_diff_all_2021"
+drop stderr z 
+export delimited using ./output/tables/logistic_diff_all_results.csv
+
+    
 
 log close
 
