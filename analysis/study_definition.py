@@ -400,6 +400,20 @@ study = StudyDefinition(
         on_or_before="2020-03-01",
         returning="binary_flag",
     ),
-
+    prescribed_weak_opioids=patients.with_these_medications(
+        codelist=opioid_weak_codes,
+        on_or_after="index_date",
+        returning="binary_flag",
+    ),
+    prescribed_strong_opioids=patients.with_these_medications(
+        codelist=opioid_strong_codes,
+        on_or_after="index_date",
+        returning="binary_flag",
+    ),
+    prescribed_gcs=patients.with_these_medications(
+        codelist=gc_codes,
+        on_or_after="index_date",
+        returning="binary_flag",
+    ),
     **common_variables
 )
