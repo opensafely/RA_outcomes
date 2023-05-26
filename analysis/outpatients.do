@@ -288,7 +288,7 @@ forvalues i=2019/2021 {
     * Characteristics by whether prescribed specific drugs 
     * Weak opioids 
     preserve
-    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \  smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate) by(prescribed_weak_opioids) clear
+    table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region cat \ imd cat) by(prescribed_weak_opioids) clear
     export delimited using ./output/tables/drug_weak_op_chars.csv
     * Rounding numbers in table to nearest 5
     destring _columna_1, gen(n1) ignore(",") force
@@ -302,7 +302,7 @@ forvalues i=2019/2021 {
     restore
     
     *Strong opioids 
-    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \  smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate) by(prescribed_strong_opioids) clear
+    table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region cat \ imd cat) by(prescribed_strong_opioids) clear
     export delimited using ./output/tables/drug_strong_op_chars.csv
     * Rounding numbers in table to nearest 5
     destring _columna_1, gen(n1) ignore(",") force
@@ -316,7 +316,7 @@ forvalues i=2019/2021 {
     restore
 
     *GCs 
-    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \  smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate) by(prescribed_gcs) clear
+    table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region cat \ imd cat) by(prescribed_gcs) clear
     export delimited using ./output/tables/drug_gc_chars.csv
     * Rounding numbers in table to nearest 5
     destring _columna_1, gen(n1) ignore(",") force

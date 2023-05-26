@@ -1698,7 +1698,7 @@ file ./output/tables/op_chars.csv saved
 
 Contains data from /tmp/St00015.000005
   obs:            40                          
- vars:             7                          26 May 2023 15:27
+ vars:             7                          26 May 2023 15:54
 -------------------------------------------------------------------------------
               storage   display    value
 variable name   type    format     label      variable label
@@ -1768,20 +1768,53 @@ file ./output/tables/op_chars_rounded.csv saved
  21.         restore
  22.     }
  23.     * Characteristics by whether prescribed specific drugs 
+.     * Weak opioids 
 .     preserve
- 24.     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ regi
-> on cate \ imd cate \  smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate
-> ) by(prescribed_weak_opioids) clear
+ 24.     table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region 
+> cat \ imd cat) by(prescribed_weak_opioids) clear
  25.     export delimited using ./output/tables/drug_weak_op_chars.csv
  26.     * Rounding numbers in table to nearest 5
-.     describe
- 27.     destring _columna_1, gen(n) ignore(",")  force
- 28.     destring _columnb_1, gen(percent) ignore("-" "%" "(" ")") force 
- 29.     gen rounded_n = round(n, 5)
- 30.     keep factor level rounded_n percent
- 31.     export delimited using ./output/tables/drug_weak_op_chars_rounded.csv
- 32.     restore
- 33. 
+.     destring _columna_1, gen(n1) ignore(",") force
+ 27.     destring _columna_0, gen(n0) ignore(",") force
+ 28.     destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
+ 29.     destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
+ 30.     gen rounded_n1 = round(n1, 5)
+ 31.     gen rounded_n0 = round(n0, 5)
+ 32.     keep factor level rounded_n0 percent0 rounded_n1 percent1
+ 33.     export delimited using ./output/tables/drug_weak_op_chars_rounded.csv
+ 34.     restore
+ 35.     
+.     *Strong opioids 
+.     table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region cat
+>  \ imd cat) by(prescribed_strong_opioids) clear
+ 36.     export delimited using ./output/tables/drug_strong_op_chars.csv
+ 37.     * Rounding numbers in table to nearest 5
+.     destring _columna_1, gen(n1) ignore(",") force
+ 38.     destring _columna_0, gen(n0) ignore(",") force
+ 39.     destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
+ 40.     destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
+ 41.     gen rounded_n1 = round(n1, 5)
+ 42.     gen rounded_n0 = round(n0, 5)
+ 43.     keep factor level rounded_n0 percent0 rounded_n1 percent1
+ 44.     export delimited using ./output/tables/drug_strong_op_chars_rounded.cs
+> v
+ 45.     restore
+ 46. 
+.     *GCs 
+.     table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region cat
+>  \ imd cat) by(prescribed_gcs) clear
+ 47.     export delimited using ./output/tables/drug_gc_chars.csv
+ 48.     * Rounding numbers in table to nearest 5
+.     destring _columna_1, gen(n1) ignore(",") force
+ 49.     destring _columna_0, gen(n0) ignore(",") force
+ 50.     destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
+ 51.     destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
+ 52.     gen rounded_n1 = round(n1, 5)
+ 53.     gen rounded_n0 = round(n0, 5)
+ 54.     keep factor level rounded_n0 percent0 rounded_n1 percent1
+ 55.     export delimited using ./output/tables/drug_gc_chars_rounded.csv
+ 56.     restore
+ 57. 
 .     /* Tabulate characteristics by whether hospitalised with RA for each year
 >     preserve
 >     keep if ra_hosp_`i'==0
@@ -2053,16 +2086,210 @@ _columnb_1: characters space % ( ) removed; percent generated as double
 (6 missing values generated)
 (6 missing values generated)
 file ./output/tables/characteristics_strata2019_rounded.csv saved
-exceeded memory limits using exact(1); try again with larger #; see help 
-tabulate for details
 
-r(910);
+  +-----------------------------------------+
+  | factor          N_0     N_1   m_0   m_1 |
+  |-----------------------------------------|
+  | age_cat       1,965   1,962   512   561 |
+  |-----------------------------------------|
+  | male          2,477   2,523     0     0 |
+  |-----------------------------------------|
+  | Rural-Urban   2,477   2,523     0     0 |
+  |-----------------------------------------|
+  | region        2,477   2,523     0     0 |
+  |-----------------------------------------|
+  | imd           2,477   2,523     0     0 |
+  +-----------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------
+> ----------------------------------+
+  |                                          prescribed_weak_opioids = 0   pres
+> cribed_weak_opioids = 1   p-value |
+  |----------------------------------------------------------------------------
+> ----------------------------------|
+  |                                          N=2,477                       N=2,
+> 523                               |
+  |----------------------------------------------------------------------------
+> ----------------------------------|
+  | age_cat       18 - 40 years              705 (35.9%)                   718 
+> (36.6%)                    0.80   |
+  |               41 - 60 years              642 (32.7%)                   637 
+> (32.5%)                           |
+  |               61 - 80 years              479 (24.4%)                   483 
+> (24.6%)                           |
+  |               >80 years                  139 ( 7.1%)                   124 
+> ( 6.3%)                           |
+  |----------------------------------------------------------------------------
+> ----------------------------------|
+  | male          Female                     1,204 (48.6%)                 1,30
+> 5 (51.7%)                  0.028  |
+  |               Male                       1,273 (51.4%)                 1,21
+> 8 (48.3%)                         |
+  |----------------------------------------------------------------------------
+> ----------------------------------|
+  | Rural-Urban   Rural                      1,241 (50.1%)                 1,26
+> 0 (49.9%)                  0.91   |
+  |               Urban                      1,236 (49.9%)                 1,26
+> 3 (50.1%)                         |
+  |----------------------------------------------------------------------------
+> ----------------------------------|
+  | region        East Midlands              226 ( 9.1%)                   259 
+> (10.3%)                    0.20   |
+  |               East of England            250 (10.1%)                   241 
+> ( 9.6%)                           |
+  |               London                     485 (19.6%)                   503 
+> (19.9%)                           |
+  |               North East                 271 (10.9%)                   235 
+> ( 9.3%)                           |
+  |               North West                 257 (10.4%)                   262 
+> (10.4%)                           |
+  |               South East                 476 (19.2%)                   524 
+> (20.8%)                           |
+  |               West Midlands              242 ( 9.8%)                   260 
+> (10.3%)                           |
+  |               Yorkshire and the Humber   270 (10.9%)                   239 
+> ( 9.5%)                           |
+  |----------------------------------------------------------------------------
+> ----------------------------------|
+  | imd           0                          127 ( 5.1%)                   125 
+> ( 5.0%)                    0.84   |
+  |               1                          456 (18.4%)                   499 
+> (19.8%)                           |
+  |               2                          483 (19.5%)                   472 
+> (18.7%)                           |
+  |               3                          488 (19.7%)                   481 
+> (19.1%)                           |
+  |               4                          457 (18.4%)                   474 
+> (18.8%)                           |
+  |               5                          466 (18.8%)                   472 
+> (18.7%)                           |
+  +----------------------------------------------------------------------------
+> ----------------------------------+
+Data are presented as n (%).
+ 
+file ./output/tables/drug_weak_op_chars.csv saved
+_columna_1: contains nonnumeric characters not specified in ignore()
+_columna_1: character , removed; n1 generated as int
+(2 missing values generated)
+_columna_0: contains nonnumeric characters not specified in ignore()
+_columna_0: character , removed; n0 generated as int
+(2 missing values generated)
+_columnb_1: contains nonnumeric characters not specified in ignore()
+_columnb_1: characters space % ( ) removed; percent1 generated as double
+(2 missing values generated)
+_columnb_0: contains nonnumeric characters not specified in ignore()
+_columnb_0: characters space % ( ) removed; percent0 generated as double
+(2 missing values generated)
+(2 missing values generated)
+(2 missing values generated)
+file ./output/tables/drug_weak_op_chars_rounded.csv saved
+
+  +-----------------------------------------+
+  | factor          N_0     N_1   m_0   m_1 |
+  |-----------------------------------------|
+  | age_cat       2,001   1,926   553   520 |
+  |-----------------------------------------|
+  | male          2,554   2,446     0     0 |
+  |-----------------------------------------|
+  | Rural-Urban   2,554   2,446     0     0 |
+  |-----------------------------------------|
+  | region        2,554   2,446     0     0 |
+  |-----------------------------------------|
+  | imd           2,554   2,446     0     0 |
+  +-----------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------
+> --------------------------------------+
+  |                                          prescribed_strong_opioids = 0   pr
+> escribed_strong_opioids = 1   p-value |
+  |----------------------------------------------------------------------------
+> --------------------------------------|
+  |                                          N=2,554                         N=
+> 2,446                                 |
+  |----------------------------------------------------------------------------
+> --------------------------------------|
+  | age_cat       18 - 40 years              753 (37.6%)                     67
+> 0 (34.8%)                      0.33   |
+  |               41 - 60 years              638 (31.9%)                     64
+> 1 (33.3%)                             |
+  |               61 - 80 years              479 (23.9%)                     48
+> 3 (25.1%)                             |
+  |               >80 years                  131 ( 6.5%)                     13
+> 2 ( 6.9%)                             |
+  |----------------------------------------------------------------------------
+> --------------------------------------|
+  | male          Female                     1,293 (50.6%)                   1,
+> 216 (49.7%)                    0.52   |
+  |               Male                       1,261 (49.4%)                   1,
+> 230 (50.3%)                           |
+  |----------------------------------------------------------------------------
+> --------------------------------------|
+  | Rural-Urban   Rural                      1,293 (50.6%)                   1,
+> 208 (49.4%)                    0.38   |
+  |               Urban                      1,261 (49.4%)                   1,
+> 238 (50.6%)                           |
+  |----------------------------------------------------------------------------
+> --------------------------------------|
+  | region        East Midlands              261 (10.2%)                     22
+> 4 ( 9.2%)                      0.83   |
+  |               East of England            254 ( 9.9%)                     23
+> 7 ( 9.7%)                             |
+  |               London                     489 (19.1%)                     49
+> 9 (20.4%)                             |
+  |               North East                 261 (10.2%)                     24
+> 5 (10.0%)                             |
+  |               North West                 260 (10.2%)                     25
+> 9 (10.6%)                             |
+  |               South East                 506 (19.8%)                     49
+> 4 (20.2%)                             |
+  |               West Midlands              254 ( 9.9%)                     24
+> 8 (10.1%)                             |
+  |               Yorkshire and the Humber   269 (10.5%)                     24
+> 0 ( 9.8%)                             |
+  |----------------------------------------------------------------------------
+> --------------------------------------|
+  | imd           0                          125 ( 4.9%)                     12
+> 7 ( 5.2%)                      0.18   |
+  |               1                          480 (18.8%)                     47
+> 5 (19.4%)                             |
+  |               2                          492 (19.3%)                     46
+> 3 (18.9%)                             |
+  |               3                          483 (18.9%)                     48
+> 6 (19.9%)                             |
+  |               4                          511 (20.0%)                     42
+> 0 (17.2%)                             |
+  |               5                          463 (18.1%)                     47
+> 5 (19.4%)                             |
+  +----------------------------------------------------------------------------
+> --------------------------------------+
+Data are presented as n (%).
+ 
+file ./output/tables/drug_strong_op_chars.csv saved
+_columna_1: contains nonnumeric characters not specified in ignore()
+_columna_1: character , removed; n1 generated as int
+(2 missing values generated)
+_columna_0: contains nonnumeric characters not specified in ignore()
+_columna_0: character , removed; n0 generated as int
+(2 missing values generated)
+_columnb_1: contains nonnumeric characters not specified in ignore()
+_columnb_1: characters space % ( ) removed; percent1 generated as double
+(2 missing values generated)
+_columnb_0: contains nonnumeric characters not specified in ignore()
+_columnb_0: characters space % ( ) removed; percent0 generated as double
+(2 missing values generated)
+(2 missing values generated)
+(2 missing values generated)
+file ./output/tables/drug_strong_op_chars_rounded.csv saved
+nothing to restore
+r(622);
 
 end of do-file
-r(910);
+r(622);
 
 end of do-file
 
-r(910);
+r(622);
 
 
