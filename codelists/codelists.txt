@@ -60,8 +60,8 @@ user/ruthcostello/sepsis/26427682
 opensafely/asthma-oral-prednisolone-medication/2020-04-27
 
 # Opioids
-opensafely/opioids-strong-for-msk-conditions/34c95431
-opensafely/opioids-weak-for-msk-conditions/1bb9e0fc
+opensafely/opioids-strong-for-msk-conditions/278495b8
+opensafely/opioids-weak-for-msk-conditions/0e752283
 
 # Pain medicines
 user/ruthcostello/msk_pain_medicines/57dd13af

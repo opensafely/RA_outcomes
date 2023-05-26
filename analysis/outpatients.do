@@ -253,6 +253,12 @@ restore
 preserve
 table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \  smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate) clear
 export delimited using ./output/tables/op_chars.csv
+* Rounding numbers in table to nearest 5
+    destring _columna_1, gen(n) force
+    destring _columnb_1, gen(percent) ignore("-" "%" "(" ")")  force
+    gen rounded_n = round(n, 5)
+    keep factor level rounded_n percent
+    export delimited using ./output/tables/op_chars_rounded.csv
 restore
 * Tabulate characteristics by category of outpatient appointments for each year
 tempfile tempfile
@@ -270,6 +276,11 @@ forvalues i=2019/2021 {
         save `tempfile', replace
         if `j'==2 {
             export delimited using ./output/tables/characteristics_strata`i'.csv
+            destring _columna_1, gen(n) force
+            destring _columnb_1, gen(percent) ignore("-" "%" "(" ")") force
+            gen rounded_n = round(n, 5)
+            keep factor level rounded_n percent
+            export delimited using ./output/tables/characteristics_strata`i'_rounded.csv
         }
         restore
     }
@@ -313,14 +324,19 @@ forvalues i=2020/2021 {
     append using `tempfile'
     save `tempfile', replace
     export delimited using ./output/tables/characteristics_diff_strata`i'.csv    
+    destring _columna_1, gen(n) force
+    destring _columnb_1, gen(percent) ignore("-" "%" "(" ")") force
+    gen rounded_n = round(n, 5)
+    keep factor level rounded_n percent
+    export delimited using ./output/tables/characteristics_diff_strata`i'_rounded.csv
     restore
     * Logistic regression 
-    foreach var in urban_rural_bin i.imd i.region_n i.eth5 {
+    foreach var in urban_rural_bin i.imd ib3.region_n i.eth5 {
         logit fewer_appts_`i' `var' ib1.age_cat male, or 
         est sto m1 
         parmest, label eform format(estimate p min95 max95) saving("./output/tempdata/`var'_diff_rheum_`i'", replace) idstr("`var'_rheum_`i'")
         }
-    logit fewer_appts_`i' ib1.age_cat male urban_rural_bin i.imd i.region_n i.eth5, or 
+    logit fewer_appts_`i' ib1.age_cat male urban_rural_bin i.imd ib3.region_n i.eth5, or 
     est sto m1
     parmest, label eform format(estimate p min95 max95) saving("./output/tempdata/multi_diff_rheum_`i'", replace) idstr("multi_rheum_`i'")
     }
@@ -328,12 +344,12 @@ forvalues i=2020/2021 {
 preserve 
 use "./output/tempdata/urban_rural_bin_diff_rheum_2020", clear 
 append using "./output/tempdata/i.imd_diff_rheum_2020"
-append using "./output/tempdata/i.region_n_diff_rheum_2020"
+append using "./output/tempdata/ib3.region_n_diff_rheum_2020"
 append using "./output/tempdata/i.eth5_diff_rheum_2020"
 append using "./output/tempdata/multi_diff_rheum_2020"
 append using "./output/tempdata/urban_rural_bin_diff_rheum_2021"
 append using "./output/tempdata/i.imd_diff_rheum_2021"
-append using "./output/tempdata/i.region_n_diff_rheum_2021"
+append using "./output/tempdata/ib3.region_n_diff_rheum_2021"
 append using "./output/tempdata/i.eth5_diff_rheum_2021"
 append using "./output/tempdata/multi_diff_rheum_2021"
 drop stderr z 
@@ -363,7 +379,12 @@ forvalues i=2020/2021 {
     table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate) clear
     append using `tempfile'
     save `tempfile', replace
-    export delimited using ./output/tables/characteristics_diff_all_strata`i'.csv    
+    export delimited using ./output/tables/characteristics_diff_all_strata`i'.csv   
+    destring _columna_1, gen(n) force
+    destring _columnb_1, gen(percent) ignore("-" "%" "(" ")") force
+    gen rounded_n = round(n, 5)
+    keep factor level rounded_n percent
+    export delimited using ./output/tables/characteristics_diff_all_strata`i'_rounded.csv 
     restore
     * Logistic regression 
     foreach var in urban_rural_bin i.imd i.region_n i.eth5 {
