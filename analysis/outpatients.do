@@ -285,52 +285,6 @@ forvalues i=2019/2021 {
         }
         restore
     }
-    * Characteristics by whether prescribed specific drugs 
-    * Weak opioids 
-    preserve
-    table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region cat \ imd cat) by(prescribed_weak_opioids) clear
-    export delimited using ./output/tables/drug_weak_op_chars.csv
-    * Rounding numbers in table to nearest 5
-    destring _columna_1, gen(n1) ignore(",") force
-    destring _columna_0, gen(n0) ignore(",") force
-    destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
-    destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
-    gen rounded_n1 = round(n1, 5)
-    gen rounded_n0 = round(n0, 5)
-    keep factor level rounded_n0 percent0 rounded_n1 percent1
-    export delimited using ./output/tables/drug_weak_op_chars_rounded.csv
-    restore
-    
-    *Strong opioids 
-    preserve
-    table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region cat \ imd cat) by(prescribed_strong_opioids) clear
-    export delimited using ./output/tables/drug_strong_op_chars.csv
-    * Rounding numbers in table to nearest 5
-    destring _columna_1, gen(n1) ignore(",") force
-    destring _columna_0, gen(n0) ignore(",") force
-    destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
-    destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
-    gen rounded_n1 = round(n1, 5)
-    gen rounded_n0 = round(n0, 5)
-    keep factor level rounded_n0 percent0 rounded_n1 percent1
-    export delimited using ./output/tables/drug_strong_op_chars_rounded.csv
-    restore
-
-    *GCs 
-    preserve
-    table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region cat \ imd cat) by(prescribed_gcs) clear
-    export delimited using ./output/tables/drug_gc_chars.csv
-    * Rounding numbers in table to nearest 5
-    destring _columna_1, gen(n1) ignore(",") force
-    destring _columna_0, gen(n0) ignore(",") force
-    destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
-    destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
-    gen rounded_n1 = round(n1, 5)
-    gen rounded_n0 = round(n0, 5)
-    keep factor level rounded_n0 percent0 rounded_n1 percent1
-    export delimited using ./output/tables/drug_gc_chars_rounded.csv
-    restore
-
     /* Tabulate characteristics by whether hospitalised with RA for each year
     preserve
     keep if ra_hosp_`i'==0
@@ -344,7 +298,52 @@ forvalues i=2019/2021 {
     save `tempfile', replace
     export delimited using ./output/tables/characteristics_ra_hosp_`i'.csv
     restore*/
-    }
+}
+* Characteristics by whether prescribed specific drugs 
+* Weak opioids 
+preserve
+table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region cat \ imd cat) by(prescribed_weak_opioids) clear
+export delimited using ./output/tables/drug_weak_op_chars.csv
+* Rounding numbers in table to nearest 5
+destring _columna_1, gen(n1) ignore(",") force
+destring _columna_0, gen(n0) ignore(",") force
+destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
+destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
+gen rounded_n1 = round(n1, 5)
+gen rounded_n0 = round(n0, 5)
+keep factor level rounded_n0 percent0 rounded_n1 percent1
+export delimited using ./output/tables/drug_weak_op_chars_rounded.csv
+restore
+
+*Strong opioids 
+preserve
+table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region cat \ imd cat) by(prescribed_strong_opioids) clear
+export delimited using ./output/tables/drug_strong_op_chars.csv
+* Rounding numbers in table to nearest 5
+destring _columna_1, gen(n1) ignore(",") force
+destring _columna_0, gen(n0) ignore(",") force
+destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
+destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
+gen rounded_n1 = round(n1, 5)
+gen rounded_n0 = round(n0, 5)
+keep factor level rounded_n0 percent0 rounded_n1 percent1
+export delimited using ./output/tables/drug_strong_op_chars_rounded.csv
+restore
+
+*GCs 
+preserve
+table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region cat \ imd cat) by(prescribed_gcs) clear
+export delimited using ./output/tables/drug_gc_chars.csv
+* Rounding numbers in table to nearest 5
+destring _columna_1, gen(n1) ignore(",") force
+destring _columna_0, gen(n0) ignore(",") force
+destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
+destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
+gen rounded_n1 = round(n1, 5)
+gen rounded_n0 = round(n0, 5)
+keep factor level rounded_n0 percent0 rounded_n1 percent1
+export delimited using ./output/tables/drug_gc_chars_rounded.csv
+restore
 
 * Tabulate characteristics by categories of differences in rheumatology outpatient appointments for each year
 drop if region=="missing"

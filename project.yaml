@@ -114,6 +114,7 @@ actions:
         output: output/tables/op_*.csv
         tables: output/tables/characteristics*.csv
         temp: output/tables/logistic*
+        drug: output/tables/drug*
        # plot: output/tables/coef*
 
   sankey:
