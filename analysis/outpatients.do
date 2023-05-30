@@ -302,6 +302,7 @@ forvalues i=2019/2021 {
     restore
     
     *Strong opioids 
+    preserve
     table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region cat \ imd cat) by(prescribed_strong_opioids) clear
     export delimited using ./output/tables/drug_strong_op_chars.csv
     * Rounding numbers in table to nearest 5
@@ -316,6 +317,7 @@ forvalues i=2019/2021 {
     restore
 
     *GCs 
+    preserve
     table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region cat \ imd cat) by(prescribed_gcs) clear
     export delimited using ./output/tables/drug_gc_chars.csv
     * Rounding numbers in table to nearest 5
