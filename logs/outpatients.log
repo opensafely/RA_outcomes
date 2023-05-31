@@ -1512,6 +1512,45 @@ Data are presented as n (%).
 . export delimited using ./output/tables/op_appt_yrs.csv
 file ./output/tables/op_appt_yrs.csv saved
 
+. * Rounding numbers in table to nearest 5
+. describe
+
+Contains data from /tmp/St00015.000002
+  obs:            19                          
+ vars:             7                          31 May 2023 15:51
+-------------------------------------------------------------------------------
+              storage   display    value
+variable name   type    format     label      variable label
+-------------------------------------------------------------------------------
+factor          str16   %-16s                 Factor
+level           str18   %-18s                 Level
+Total           str13   %-13s                 Total
+N_1             str5    %9s                   
+m_1             str5    %9s                   
+_columna_1      str11   %6s                   1 _columna_
+_columnb_1      str11   %-11s                 1 _columnb_
+-------------------------------------------------------------------------------
+Sorted by: 
+     Note: Dataset has changed since last saved.
+
+. destring _columna_1, gen(n) ignore(",") force
+_columna_1: contains nonnumeric characters not specified in ignore()
+_columna_1: character , removed; n generated as int
+(2 missing values generated)
+
+. destring _columnb_1, gen(percent) ignore("-" "%" "(" ")") force
+_columnb_1: contains nonnumeric characters not specified in ignore()
+_columnb_1: characters space % ( ) removed; percent generated as double
+(2 missing values generated)
+
+. gen rounded_n = round(n, 5)
+(2 missing values generated)
+
+. keep factor level rounded_n percent
+
+. export delimited using ./output/tables/op_appt_yrs_rounded.csv
+file ./output/tables/op_appt_yrs_rounded.csv saved
+
 . restore 
 
 . preserve
@@ -1715,9 +1754,9 @@ file ./output/tables/op_chars.csv saved
 . * Rounding numbers in table to nearest 5
 . describe
 
-Contains data from /tmp/St00016.000005
+Contains data from /tmp/St00015.000005
   obs:            40                          
- vars:             7                          31 May 2023 14:57
+ vars:             7                          31 May 2023 15:51
 -------------------------------------------------------------------------------
               storage   display    value
 variable name   type    format     label      variable label
@@ -1758,8 +1797,8 @@ file ./output/tables/op_chars_rounded.csv saved
 . forvalues i=2019/2021 {
   2.     preserve
   3.     table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region 
-> cat \ imd cat \ smoking cate \ time_ra contn \ bmi_cat cat \ eth5 cat) by(op_
-> appt_`i'_cat) clear
+> cat \ imd cat \ smoking cat \ time_ra contn \ bmi_cat cat \ eth5 cat) by(op_a
+> ppt_`i'_cat) clear
   4.     export delimited using ./output/tables/characteristics_strata`i'.csv
   5.     destring _columna_0, gen(n0) ignore(",") force
   6.     destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")") force
@@ -1883,7 +1922,7 @@ file ./output/tables/op_chars_rounded.csv saved
   |----------------------------------------------------------------------------
 > ----------------------------------------|
   | smoking       Never smoked               45 ( 9.5%)            5 (13.9%)   
->           444 (10.1%)            0.085  |
+>           444 (10.1%)            0.072  |
   |               Current smoker             103 (21.7%)           7 (19.4%)   
 >           864 (19.7%)                   |
   |               Ex-smoker                  73 (15.4%)            12 (33.3%)  
@@ -2037,7 +2076,7 @@ file ./output/tables/characteristics_strata2019_rounded.csv saved
   |----------------------------------------------------------------------------
 > ----------------------------------------|
   | smoking       Never smoked               35 ( 9.8%)            2 (10.5%)   
->           314 (10.1%)            0.92   |
+>           314 (10.1%)            0.93   |
   |               Current smoker             68 (19.0%)            3 (15.8%)   
 >           613 (19.8%)                   |
   |               Ex-smoker                  56 (15.7%)            5 (26.3%)   
@@ -2191,7 +2230,7 @@ file ./output/tables/characteristics_strata2020_rounded.csv saved
   |----------------------------------------------------------------------------
 > ----------------------------------------|
   | smoking       Never smoked               21 ( 9.3%)            0 ( 0.0%)   
->           205 (10.0%)            0.65   |
+>           205 (10.0%)            0.48   |
   |               Current smoker             51 (22.5%)            2 (13.3%)   
 >           409 (20.0%)                   |
   |               Ex-smoker                  37 (16.3%)            1 ( 6.7%)   
@@ -4678,5 +4717,5 @@ file ./output/tables/logistic_diff_all_results.csv saved
       name:  <unnamed>
        log:  /workspace/logs/outpatients.log
   log type:  text
- closed on:  31 May 2023, 14:58:17
+ closed on:  31 May 2023, 15:52:01
 -------------------------------------------------------------------------------
