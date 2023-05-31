@@ -124,13 +124,13 @@ actions:
       moderately_sensitive:
         graphs: output/sankey_compact.csv
 
-  time_series_checks:
-    run: stata-mp:latest analysis/time_series_checks.do
-    needs: [generate_study_population_op, calculate_measures_op]
-    outputs: 
-      moderately_sensitive: 
-        log: logs/time_series_checks.log
-        graphs: output/time_series/checks*.svg
+  #time_series_checks:
+  #  run: stata-mp:latest analysis/time_series_checks.do
+  #  needs: [generate_study_population_op, calculate_measures_op]
+  #  outputs: 
+  #    moderately_sensitive: 
+  #      log: logs/time_series_checks.log
+  #      graphs: output/time_series/checks*.svg
 
   time_series:
     run: stata-mp:latest analysis/time_series.do
