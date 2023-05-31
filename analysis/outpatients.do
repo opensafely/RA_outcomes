@@ -265,7 +265,7 @@ restore
 * Tabulate characteristics by category of outpatient appointments for each year
 forvalues i=2019/2021 {
     preserve
-    table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region cat \ imd cat \ smoking cate \ time_ra contn \ bmi_cat cat \ eth5 cat) by(op_appt_`i'_cat) clear
+    table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region cat \ imd cat \ smoking cat \ time_ra contn \ bmi_cat cat \ eth5 cat) by(op_appt_`i'_cat) clear
     export delimited using ./output/tables/characteristics_strata`i'.csv
     destring _columna_0, gen(n0) ignore(",") force
     destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")") force
