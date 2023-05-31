@@ -200,6 +200,7 @@ forvalues i=2020/2021 {
 * Identify of people with appointments whether they had fewer appointments 
 forvalues i=2020/2021 {
     gen fewer_appts_`i' = (diff_op_`i' < 0) if diff_op_`i'!=.
+    tab fewer_appts_`i' no_appts_`i'
 }
 
 * Categorise number of outpatient appointments (all specialties)
@@ -262,29 +263,23 @@ keep factor level rounded_n percent
 export delimited using ./output/tables/op_chars_rounded.csv
 restore
 * Tabulate characteristics by category of outpatient appointments for each year
-tempfile tempfile
 forvalues i=2019/2021 {
     preserve
-    keep if op_appt_`i'_cat==0
-    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate) clear
-    save `tempfile', replace
+    table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region cat \ imd cat \ smoking cate \ time_ra contn \ bmi_cat cat \ eth5 cat) by(op_appt_`i'_cat) clear
+    export delimited using ./output/tables/characteristics_strata`i'.csv
+    destring _columna_0, gen(n0) ignore(",") force
+    destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")") force
+    destring _columna_1, gen(n1) ignore(",") force
+    destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")") force
+    destring _columna_2, gen(n2) ignore(",") force
+    destring _columnb_2, gen(percent2) ignore("-" "%" "(" ")") force
+    gen rounded_n0 = round(n0, 5)
+    gen rounded_n1 = round(n1, 5)
+    gen rounded_n2 = round(n2, 5)
+    keep factor level rounded_n0 percent0 rounded_n1 percent1 rounded_n2 percent2
+    export delimited using ./output/tables/characteristics_strata`i'_rounded.csv
     restore
-    forvalues j=1/2 {
-        preserve
-        keep if op_appt_`i'_cat==`j'
-        table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate) clear
-        append using `tempfile'
-        save `tempfile', replace
-        if `j'==2 {
-            export delimited using ./output/tables/characteristics_strata`i'.csv
-            destring _columna_1, gen(n) ignore(",") force
-            destring _columnb_1, gen(percent) ignore("-" "%" "(" ")") force
-            gen rounded_n = round(n, 5)
-            keep factor level rounded_n percent
-            export delimited using ./output/tables/characteristics_strata`i'_rounded.csv
-        }
-        restore
-    }
+
     /* Tabulate characteristics by whether hospitalised with RA for each year
     preserve
     keep if ra_hosp_`i'==0
@@ -351,29 +346,29 @@ tempfile tempfile
 forvalues i=2020/2021 {
     * Same number or more appointments 
     preserve
-    keep if fewer_appts_`i'==0
-    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate) clear
-    save `tempfile', replace
-    restore
-    * Fewer appointments 
-    preserve
-    keep if fewer_appts_`i'==1
-    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate) clear
-    append using `tempfile'
-    save `tempfile', replace
+    table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region cat \ imd cat \ smoking cat \ time_ra contn \ bmi_cat cat \ eth5 cat) by(fewer_appts_`i') clear
+    export delimited using ./output/tables/characteristics_fewer_appts_`i'.csv    
+    destring _columna_1, gen(n1) ignore(",") force
+    destring _columna_0, gen(n0) ignore(",") force
+    destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
+    destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
+    gen rounded_n1 = round(n1, 5)
+    gen rounded_n0 = round(n0, 5)
+    keep factor level rounded_n0 percent0 rounded_n1 percent1
+    export delimited using ./output/tables/characteristics_fewer_appts_`i'_rounded.csv
     restore 
     * No appointments
     preserve 
-    keep if no_appts_`i' ==1
-    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate) clear
-    append using `tempfile'
-    save `tempfile', replace
-    export delimited using ./output/tables/characteristics_diff_strata`i'.csv    
-    destring _columna_1, gen(n) ignore(",") force
-    destring _columnb_1, gen(percent) ignore("-" "%" "(" ")") force
-    gen rounded_n = round(n, 5)
-    keep factor level rounded_n percent
-    export delimited using ./output/tables/characteristics_diff_strata`i'_rounded.csv
+    table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region cat \ imd cat \ smoking cat \ time_ra contn \ bmi_cat cat \ eth5 cat) by(no_appts_`i') clear
+    export delimited using ./output/tables/characteristics_no_appts_`i'.csv    
+    destring _columna_1, gen(n1) ignore(",") force
+    destring _columna_0, gen(n0) ignore(",") force
+    destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
+    destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
+    gen rounded_n1 = round(n1, 5)
+    gen rounded_n0 = round(n0, 5)
+    keep factor level rounded_n0 percent0 rounded_n1 percent1
+    export delimited using ./output/tables/characteristics_no_appts_`i'_rounded.csv
     restore
     * Logistic regression 
     foreach var in urban_rural_bin i.imd ib3.region_n i.eth5 {
@@ -408,28 +403,29 @@ drop if region=="missing"
 tempfile tempfile
 forvalues i=2020/2021 {
     preserve
-    keep if fewer_appts_all_`i'==0
-    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate) clear
-    save `tempfile', replace
-    restore
-    preserve
-    keep if fewer_appts_all_`i'==1
-    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate) clear
-    append using `tempfile'
-    save `tempfile', replace
+    table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region cat \ imd cat \ smoking cat \ time_ra contn \ bmi_cat cat \ eth5 cat) by(fewer_appts_all_`i') clear
+    export delimited using ./output/tables/characteristics_fewer_appts_all_`i'.csv    
+    destring _columna_1, gen(n1) ignore(",") force
+    destring _columna_0, gen(n0) ignore(",") force
+    destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
+    destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
+    gen rounded_n1 = round(n1, 5)
+    gen rounded_n0 = round(n0, 5)
+    keep factor level rounded_n0 percent0 rounded_n1 percent1
+    export delimited using ./output/tables/characteristics_fewer_appts_all_`i'_rounded.csv
     restore 
     * No appointments 
     preserve
-    keep if no_appts_all_`i' ==1
-    table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \ smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate) clear
-    append using `tempfile'
-    save `tempfile', replace
-    export delimited using ./output/tables/characteristics_diff_all_strata`i'.csv   
-    destring _columna_1, gen(n) ignore(",") force
-    destring _columnb_1, gen(percent) ignore("-" "%" "(" ")") force
-    gen rounded_n = round(n, 5)
-    keep factor level rounded_n percent
-    export delimited using ./output/tables/characteristics_diff_all_strata`i'_rounded.csv 
+    table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region cat \ imd cat \ smoking cat \ time_ra contn \ bmi_cat cat \ eth5 cat) by(no_appts_all_`i') clear
+    export delimited using ./output/tables/characteristics_no_appts_all_`i'.csv    
+    destring _columna_1, gen(n1) ignore(",") force
+    destring _columna_0, gen(n0) ignore(",") force
+    destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
+    destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
+    gen rounded_n1 = round(n1, 5)
+    gen rounded_n0 = round(n0, 5)
+    keep factor level rounded_n0 percent0 rounded_n1 percent1
+    export delimited using ./output/tables/characteristics_no_appts_all_`i'_rounded.csv
     restore
     * Logistic regression 
     foreach var in urban_rural_bin i.imd i.region_n i.eth5 {
