@@ -447,7 +447,7 @@ forvalues i=2020/2021 {
         est sto m2
         parmest, label eform format(estimate p min95 max95) saving("./output/tempdata/`var'_diff_all_`i'", replace) idstr("`var'_all_`i'")
         }
-    logit fewer_appts_all_`i' ib1.age_cat male urban_rural_bin i.imd i.region_n i.eth5, or 
+    logit fewer_appts_all_`i' ib1.age_cat male urban_rural_bin i.imd ib3.region_n i.eth5, or 
     est sto m2
     parmest, label eform format(estimate p min95 max95) saving("./output/tempdata/multi_diff_all_`i'", replace) idstr("multi_all_`i'")
     }
