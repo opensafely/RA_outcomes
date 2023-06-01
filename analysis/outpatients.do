@@ -256,6 +256,13 @@ preserve
 * Tabulate number of all outpatient appointments per year of those with whole year available
 table1_mc, vars(op_appt_all_2019_cat cate \ op_appt_all_2020_cat cate \ op_appt_all_2021_cat cate \ no_appts_all_2020 cate \ no_appts_all_2021 cate \ fewer_appts_all_2020 cate \ fewer_appts_all_2021 cate) clear
 export delimited using ./output/tables/op_appt_all_yrs.csv
+* Rounding numbers in table to nearest 5
+describe
+destring _columna_1, gen(n) ignore(",") force
+destring _columnb_1, gen(percent) ignore("-" "%" "(" ")") force
+gen rounded_n = round(n, 5)
+keep factor level rounded_n percent
+export delimited using ./output/tables/op_appt_all_yrs_rounded.csv
 restore 
 * Tabulate overall characteristics 
 preserve
