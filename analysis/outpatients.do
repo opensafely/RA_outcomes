@@ -106,7 +106,7 @@ label var urban_rural_bin "Rural-Urban"
 replace region = "missing" if region==""
 * Make numeric region variable 
 gen region_n = 1 if region=="East Midlands"
-replace region_n = 2 if region=="East of England"
+replace region_n = 2 if region=="East"
 replace region_n = 3 if region=="London"
 replace region_n = 4 if region=="North East"
 replace region_n = 5 if region=="North West"
