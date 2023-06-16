@@ -113,7 +113,7 @@ replace region_n = 5 if region=="North West"
 replace region_n = 6 if region=="South East"
 replace region_n = 7 if region=="South West"
 replace region_n = 8 if region=="West Midlands"
-replace region_n = 9 if region=="Yorkshire and the Humber"
+replace region_n = 9 if region=="Yorkshire and The Humber"
 tab region*, m 
 
 * Define age categories
