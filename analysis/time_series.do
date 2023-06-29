@@ -31,6 +31,8 @@ foreach file in op_appt op_appt_all hosp_ra /*hosp_ra_emergency*/ hosp_all med_g
     parmest, label saving("./output/tempdata/`file'_itsa_output", replace)
     graph export ./output/time_series/itsa_`file'.svg, as(svg) replace
     actest, lags(6)
+    keep date percent
+    export delimited "./output/time_series/plot_data_`file'.csv"
     }
 
 * Medium of rheumatology outpatient appointments
