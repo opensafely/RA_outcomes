@@ -6,10 +6,37 @@
 . cap mkdir ./output/tempdata
 
 . 
+. * Update outpatient appointments all file to exclude rheumatology appointment
+> s 
+. tempfile datafile 
+
+. import delimited "./output/measures/join/measure_op_appt_all_rate.csv", clear
+(4 vars, 36 obs)
+
+. save `datafile'
+file /tmp/St00015.000001 saved
+
+. import delimited "./output/measures/join/measure_op_appt_rate.csv", clear
+(4 vars, 36 obs)
+
+. merge 1:1 date using `datafile', keepusing(op_appt_all)
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                             0
+    matched                                36  (_merge==3)
+    -----------------------------------------
+
+. gen op_appt_all_n = op_appt_all - op_appt 
+
+. export delimited "./output/measures/join/measure_op_appt_all_n_rate.csv"
+file ./output/measures/join/measure_op_appt_all_n_rate.csv saved
+
+. 
 . * Outpatient appointments amd hospitalisations
 . * Autocorrelation indicates no autocorrelation for op_appt 
-. foreach file in op_appt op_appt_all hosp_ra /*hosp_ra_emergency*/ hosp_all me
-> d_gc med_opioid_strong med_opioid_weak med_ssri med_nsaid {
+. foreach file in op_appt op_appt_all_n hosp_ra /*hosp_ra_emergency*/ hosp_all 
+> med_gc med_opioid_strong med_opioid_weak med_ssri med_nsaid {
   2.     import delimited "./output/measures/join/measure_`file'_rate.csv", cle
 > ar    //get csv
   3.     gen temp_date=date(date, "YMD")
@@ -84,7 +111,7 @@ Cumby-Huizinga test for autocorrelation (Breusch-Godfrey)
   Test allows predetermined regressors/instruments
   Test requires conditional homoskedasticity
 file ./output/time_series/plot_data_op_appt.csv saved
-(4 vars, 36 obs)
+(7 vars, 36 obs)
         time variable:  month, 2019m4 to 2022m3
                 delta:  1 month
 
@@ -115,10 +142,10 @@ Linear Trend |      Coef.   Std. Err.      t              [95% Conf. Interval]
 -------------+----------------------------------------------------------------
      Treated |          0          0        .       .            .           .
 ------------------------------------------------------------------------------
-(note: file ./output/tempdata/op_appt_all_itsa_output.dta not found)
-file ./output/tempdata/op_appt_all_itsa_output.dta saved
-(note: file ./output/time_series/itsa_op_appt_all.svg not found)
-(file ./output/time_series/itsa_op_appt_all.svg written in SVG format)
+(note: file ./output/tempdata/op_appt_all_n_itsa_output.dta not found)
+file ./output/tempdata/op_appt_all_n_itsa_output.dta saved
+(note: file ./output/time_series/itsa_op_appt_all_n.svg not found)
+(file ./output/time_series/itsa_op_appt_all_n.svg written in SVG format)
 
 Cumby-Huizinga test for autocorrelation (Breusch-Godfrey)
   H0: variable is MA process up to order q
@@ -138,7 +165,7 @@ Cumby-Huizinga test for autocorrelation (Breusch-Godfrey)
 -----------------------------------------------------------------------------
   Test allows predetermined regressors/instruments
   Test requires conditional homoskedasticity
-file ./output/time_series/plot_data_op_appt_all.csv saved
+file ./output/time_series/plot_data_op_appt_all_n.csv saved
 (4 vars, 36 obs)
         time variable:  month, 2019m4 to 2022m3
                 delta:  1 month
@@ -951,13 +978,13 @@ Cumby-Huizinga test for autocorrelation (Breusch-Godfrey)
 . gen outcome = "ra_elective"
 
 . save `tempfile', replace
-(note: file /tmp/St00015.000001 not found)
-file /tmp/St00015.000001 saved
+(note: file /tmp/St00015.000002 not found)
+file /tmp/St00015.000002 saved
 
 . 
-. foreach var in op_appt op_appt_all hosp_ra /*hosp_ra_emergency*/ hosp_all med
-> _gc med_opioid_strong med_opioid_weak med_ssri med_nsaid op_appt_medium ra_da
-> ycase {
+. foreach var in op_appt op_appt_all_n hosp_ra /*hosp_ra_emergency*/ hosp_all m
+> ed_gc med_opioid_strong med_opioid_weak med_ssri med_nsaid op_appt_medium ra_
+> daycase {
   2.     use "./output/tempdata/`var'_itsa_output", clear
   3.     gen outcome = "`var'"
   4.     append using `tempfile'
@@ -975,7 +1002,7 @@ file /tmp/St00015.000001 saved
        values)
 (note: variable outcome was str7, now str11 to accommodate using data's
        values)
-file /tmp/St00015.000001 saved
+file /tmp/St00015.000002 saved
 (note: variable estimate was byte, now double to accommodate using data's
        values)
 (note: variable stderr was byte, now double to accommodate using data's
@@ -986,7 +1013,7 @@ file /tmp/St00015.000001 saved
        values)
 (note: variable max95 was byte, now double to accommodate using data's
        values)
-file /tmp/St00015.000001 saved
+file /tmp/St00015.000002 saved
 (note: variable estimate was byte, now double to accommodate using data's
        values)
 (note: variable stderr was byte, now double to accommodate using data's
@@ -997,16 +1024,16 @@ file /tmp/St00015.000001 saved
        values)
 (note: variable max95 was byte, now double to accommodate using data's
        values)
-(note: variable outcome was str7, now str11 to accommodate using data's
+(note: variable outcome was str7, now str13 to accommodate using data's
        values)
-file /tmp/St00015.000001 saved
+file /tmp/St00015.000002 saved
 (note: variable stderr was byte, now double to accommodate using data's
        values)
 (note: variable t was byte, now double to accommodate using data's values)
 (note: variable p was byte, now double to accommodate using data's values)
-(note: variable outcome was str8, now str11 to accommodate using data's
+(note: variable outcome was str8, now str13 to accommodate using data's
        values)
-file /tmp/St00015.000001 saved
+file /tmp/St00015.000002 saved
 (note: variable estimate was byte, now double to accommodate using data's
        values)
 (note: variable stderr was byte, now double to accommodate using data's
@@ -1017,9 +1044,9 @@ file /tmp/St00015.000001 saved
        values)
 (note: variable max95 was byte, now double to accommodate using data's
        values)
-(note: variable outcome was str6, now str11 to accommodate using data's
+(note: variable outcome was str6, now str13 to accommodate using data's
        values)
-file /tmp/St00015.000001 saved
+file /tmp/St00015.000002 saved
 (note: variable estimate was byte, now double to accommodate using data's
        values)
 (note: variable stderr was byte, now double to accommodate using data's
@@ -1030,7 +1057,7 @@ file /tmp/St00015.000001 saved
        values)
 (note: variable max95 was byte, now double to accommodate using data's
        values)
-file /tmp/St00015.000001 saved
+file /tmp/St00015.000002 saved
 (note: variable estimate was byte, now double to accommodate using data's
        values)
 (note: variable stderr was byte, now double to accommodate using data's
@@ -1043,7 +1070,7 @@ file /tmp/St00015.000001 saved
        values)
 (note: variable outcome was str15, now str17 to accommodate using data's
        values)
-file /tmp/St00015.000001 saved
+file /tmp/St00015.000002 saved
 (note: variable estimate was byte, now double to accommodate using data's
        values)
 (note: variable stderr was byte, now double to accommodate using data's
@@ -1056,7 +1083,7 @@ file /tmp/St00015.000001 saved
        values)
 (note: variable outcome was str8, now str17 to accommodate using data's
        values)
-file /tmp/St00015.000001 saved
+file /tmp/St00015.000002 saved
 (note: variable estimate was byte, now double to accommodate using data's
        values)
 (note: variable stderr was byte, now double to accommodate using data's
@@ -1069,21 +1096,21 @@ file /tmp/St00015.000001 saved
        values)
 (note: variable outcome was str9, now str17 to accommodate using data's
        values)
-file /tmp/St00015.000001 saved
+file /tmp/St00015.000002 saved
 (note: variable outcome was str14, now str17 to accommodate using data's
        values)
-file /tmp/St00015.000001 saved
+file /tmp/St00015.000002 saved
 (note: variable outcome was str10, now str17 to accommodate using data's
        values)
-file /tmp/St00015.000001 saved
+file /tmp/St00015.000002 saved
 
 . use `tempfile', clear 
 
 . describe 
 
-Contains data from /tmp/St00015.000001
+Contains data from /tmp/St00015.000002
   obs:            56                          
- vars:            10                          29 Jun 2023 08:50
+ vars:            10                          29 Jun 2023 09:51
 -------------------------------------------------------------------------------
               storage   display    value
 variable name   type    format     label      variable label
@@ -1254,7 +1281,7 @@ file ./output/tables/all_itsa_output.csv saved
 
 end of do-file
 
-. . file open output using "/tmp/time_series.do.vddk.out", write text replace
+. . file open output using "/tmp/time_series.do.jRPY.out", write text replace
 
 . . file write output "success" 
 
