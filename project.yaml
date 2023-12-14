@@ -56,7 +56,7 @@ actions:
         cohort: output/input_static.csv
   #Study population for time-series
   generate_study_population_op:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_op_meas --index-date-range "2019-04-01 to 2022-03-31 by month" --output-dir=output/measures --output-format=csv
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_op_meas --index-date-range "2019-04-01 to 2023-11-30 by month" --output-dir=output/measures --output-format=csv
     outputs:
       highly_sensitive:
         cohort: output/measures/input_op_meas*.csv
@@ -113,8 +113,8 @@ actions:
         log: logs/outpatients.log
         output: output/tables/op_*.csv
         tables: output/tables/characteristics*.csv
-        temp: output/tables/logistic*
-        drug: output/tables/drug*
+        temp: output/tables/logistic*.csv
+        drug: output/tables/drug*.csv
        # plot: output/tables/coef*
 
   sankey:

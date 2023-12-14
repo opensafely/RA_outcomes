@@ -47,7 +47,7 @@ sum hydrox_count, d
 
 sum outpatient*, d
 
-forvalues i=2019/2021 {
+forvalues i=2019/2022 {
     sum ra_hosp_beddays_`i' if ra_hosp_`i'>0, d 
 }
 

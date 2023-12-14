@@ -241,6 +241,17 @@ study = StudyDefinition(
                 "incidence": 0.9,
             },
     ),
+
+    outpatient_appt_2022=patients.outpatient_appointment_date(
+        returning="number_of_matches_in_period",
+        with_these_treatment_function_codes="410",
+        attended="True",
+        between=["2022-04-01", "2023-03-31"],
+        return_expectations={
+                "int": {"distribution": "normal", "mean": 8, "stddev": 2,},
+                "incidence": 0.9,
+            },
+    ),
     # Medium of last rheumatology consultation for each year
     outpatient_medium_2019=patients.outpatient_appointment_date(
         returning="consultation_medium_used",
@@ -302,6 +313,26 @@ study = StudyDefinition(
             },
         },
     ),
+    outpatient_medium_2022=patients.outpatient_appointment_date(
+        returning="consultation_medium_used",
+        with_these_treatment_function_codes="410",
+        attended="True",
+        between=["2022-04-01", "2023-03-31"],
+        return_expectations={
+            "category": { "ratios":{ 
+                "1": 0.2,
+                "2": 0.1,
+                "3": 0.1,
+                "4": 0.1,
+                "5": 0.1,
+                "6": 0.1,
+                "7": 0.1,
+                "8": 0.1,
+                "98": 0.1, 
+                },
+            },
+        },
+    ),
     # Hospitalisations with primary reason RA
     ra_hosp_2019=patients.admitted_to_hospital(
         with_these_diagnoses=ra_hospitalisation,
@@ -320,6 +351,13 @@ study = StudyDefinition(
     ra_hosp_2021=patients.admitted_to_hospital(
         with_these_diagnoses=ra_hospitalisation,
         between=["2021-04-01", "2022-03-31"],
+        returning="number_of_matches_in_period",
+        return_expectations={ "int": {"distribution": "normal", "mean": 3, "stddev": 1},
+                "incidence": 1,},
+    ),
+    ra_hosp_2022=patients.admitted_to_hospital(
+        with_these_diagnoses=ra_hospitalisation,
+        between=["2022-04-01", "2023-03-31"],
         returning="number_of_matches_in_period",
         return_expectations={ "int": {"distribution": "normal", "mean": 3, "stddev": 1},
                 "incidence": 1,},
@@ -352,6 +390,15 @@ study = StudyDefinition(
                 "incidence": 0.9,
             },
     ),
+    outpatient_appt_all_2022=patients.outpatient_appointment_date(
+        returning="number_of_matches_in_period",
+        attended="True",
+        between=["2022-04-01", "2023-03-31"],
+        return_expectations={
+                "int": {"distribution": "normal", "mean": 8, "stddev": 2,},
+                "incidence": 0.9,
+            },
+    ),
     overall_hosp_2019=patients.admitted_to_hospital(
         between=["2019-04-01", "2020-03-31"],
         returning="number_of_matches_in_period",
@@ -366,6 +413,12 @@ study = StudyDefinition(
     ),
     overall_hosp_2021=patients.admitted_to_hospital(
         between=["2021-04-01", "2022-03-31"],
+        returning="number_of_matches_in_period",
+        return_expectations={ "int": {"distribution": "normal", "mean": 3, "stddev": 1},
+                "incidence": 1,},
+    ),
+    overall_hosp_2022=patients.admitted_to_hospital(
+        between=["2022-04-01", "2023-03-31"],
         returning="number_of_matches_in_period",
         return_expectations={ "int": {"distribution": "normal", "mean": 3, "stddev": 1},
                 "incidence": 1,},
