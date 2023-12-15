@@ -2,217 +2,217 @@
   "files": {
     "user-ruthcostello-rheumatoid-arthritis.csv": {
       "id": "user/ruthcostello/rheumatoid-arthritis/248f6b70",
-      "url": "https://codelists.opensafely.org/codelist/user/ruthcostello/rheumatoid-arthritis/248f6b70/",
+      "url": "https://www.opencodelists.org/codelist/user/ruthcostello/rheumatoid-arthritis/248f6b70/",
       "downloaded_at": "2022-12-16 11:11:19.928991Z",
       "sha": "d15214288eacb6b825a5a72f6b5b338cd5bc13fa"
     },
     "user-ruthcostello-rheumatoid-arthritis-group-3-4.csv": {
       "id": "user/ruthcostello/rheumatoid-arthritis-group-3-4/596111d0",
-      "url": "https://codelists.opensafely.org/codelist/user/ruthcostello/rheumatoid-arthritis-group-3-4/596111d0/",
+      "url": "https://www.opencodelists.org/codelist/user/ruthcostello/rheumatoid-arthritis-group-3-4/596111d0/",
       "downloaded_at": "2022-12-16 11:11:20.156522Z",
       "sha": "ac57df3c9c338b8de98d7972ff36f28f347d54b8"
     },
     "opensafely-methotrexate-oral.csv": {
       "id": "opensafely/methotrexate-oral/041a8320",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/methotrexate-oral/041a8320/",
-      "downloaded_at": "2022-06-06 10:25:18.118751Z",
-      "sha": "68754de9916bb08a1ea9d6d84c899dda5ee64ad7"
+      "url": "https://www.opencodelists.org/codelist/opensafely/methotrexate-oral/041a8320/",
+      "downloaded_at": "2023-12-15 12:31:35.844877Z",
+      "sha": "0f8f693c2b17aebe303de6d1afb35e09b964bf31"
     },
     "opensafely-sulfasalazine-oral-dmd.csv": {
       "id": "opensafely/sulfasalazine-oral-dmd/1a189116",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/sulfasalazine-oral-dmd/1a189116/",
-      "downloaded_at": "2022-06-06 10:25:18.361756Z",
-      "sha": "295d27dc7f03635498c460ad4d16686608f02c71"
+      "url": "https://www.opencodelists.org/codelist/opensafely/sulfasalazine-oral-dmd/1a189116/",
+      "downloaded_at": "2023-12-15 12:31:35.955459Z",
+      "sha": "975f39500aa1e5c383b7b0de6e27de2cbe79709f"
     },
     "opensafely-leflunomide-dmd.csv": {
       "id": "opensafely/leflunomide-dmd/1765d120",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/leflunomide-dmd/1765d120/",
-      "downloaded_at": "2022-06-06 10:25:18.631654Z",
-      "sha": "0d88edfe37ebb951a6ccc6199ef360c91b188c11"
+      "url": "https://www.opencodelists.org/codelist/opensafely/leflunomide-dmd/1765d120/",
+      "downloaded_at": "2023-12-15 12:31:36.081363Z",
+      "sha": "92073736d258bbfd5ce6d2afefc1ea0d9dcc2fe2"
     },
     "opensafely-hydroxychloroquine.csv": {
       "id": "opensafely/hydroxychloroquine/2020-06-15",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/hydroxychloroquine/2020-06-15/",
-      "downloaded_at": "2022-06-06 10:25:19.208702Z",
-      "sha": "b9787f3b2851a0c2d4b03fbe3eec921ff9098802"
+      "url": "https://www.opencodelists.org/codelist/opensafely/hydroxychloroquine/2020-06-15/",
+      "downloaded_at": "2023-12-15 12:31:36.193438Z",
+      "sha": "b3224596ae077e10e8ed970dc4fae0a979de4bad"
     },
     "opensafely-ethnicity-snomed-0removed.csv": {
       "id": "opensafely/ethnicity-snomed-0removed/2e641f61",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/ethnicity-snomed-0removed/2e641f61/",
+      "url": "https://www.opencodelists.org/codelist/opensafely/ethnicity-snomed-0removed/2e641f61/",
       "downloaded_at": "2022-07-19 09:15:13.857302Z",
       "sha": "8b849b5b785d80306e488d0109640c8c1d2da01b"
     },
     "opensafely-alanine-aminotransferase-alt-tests.csv": {
       "id": "opensafely/alanine-aminotransferase-alt-tests/2298df3e",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/alanine-aminotransferase-alt-tests/2298df3e/",
+      "url": "https://www.opencodelists.org/codelist/opensafely/alanine-aminotransferase-alt-tests/2298df3e/",
       "downloaded_at": "2022-06-15 15:22:53.394149Z",
       "sha": "0d231653e5ece343f6945309d21fc40c7f685ff2"
     },
     "opensafely-red-blood-cell-rbc-tests.csv": {
       "id": "opensafely/red-blood-cell-rbc-tests/576a859e",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/red-blood-cell-rbc-tests/576a859e/",
+      "url": "https://www.opencodelists.org/codelist/opensafely/red-blood-cell-rbc-tests/576a859e/",
       "downloaded_at": "2022-06-15 15:22:53.617596Z",
       "sha": "e111693c2b9ae4e688d859daa73491a978b0795b"
     },
     "user-bangzheng-creatinine-value.csv": {
       "id": "user/bangzheng/creatinine-value/7d319079",
-      "url": "https://codelists.opensafely.org/codelist/user/bangzheng/creatinine-value/7d319079/",
+      "url": "https://www.opencodelists.org/codelist/user/bangzheng/creatinine-value/7d319079/",
       "downloaded_at": "2022-07-19 14:47:26.735292Z",
       "sha": "4628fc44b49144576a578c1d2e13435aa6296af3"
     },
     "primis-covid19-vacc-uptake-ckd35.csv": {
       "id": "primis-covid19-vacc-uptake/ckd35/v.1.5.3",
-      "url": "https://codelists.opensafely.org/codelist/primis-covid19-vacc-uptake/ckd35/v.1.5.3/",
+      "url": "https://www.opencodelists.org/codelist/primis-covid19-vacc-uptake/ckd35/v.1.5.3/",
       "downloaded_at": "2022-07-12 14:34:41.898676Z",
       "sha": "2e2e33d85817844bb8922fc6c87583c898f61ec5"
     },
     "primis-covid19-vacc-uptake-cld.csv": {
       "id": "primis-covid19-vacc-uptake/cld/v.1.5.3",
-      "url": "https://codelists.opensafely.org/codelist/primis-covid19-vacc-uptake/cld/v.1.5.3/",
+      "url": "https://www.opencodelists.org/codelist/primis-covid19-vacc-uptake/cld/v.1.5.3/",
       "downloaded_at": "2022-07-12 14:34:42.299166Z",
       "sha": "a895e56a651467671e5b2bb5c8e764a7dac0db47"
     },
     "opensafely-azathioprine-dmd.csv": {
       "id": "opensafely/azathioprine-dmd/78f0ddfe",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/azathioprine-dmd/78f0ddfe/",
-      "downloaded_at": "2022-06-17 10:20:42.313810Z",
-      "sha": "f6fa74e1b390e9c0735d523e68873146c19e7f39"
+      "url": "https://www.opencodelists.org/codelist/opensafely/azathioprine-dmd/78f0ddfe/",
+      "downloaded_at": "2023-12-15 12:31:37.021655Z",
+      "sha": "5af05030dc8f96d1f52464effa4167f2b305b86c"
     },
     "opensafely-dmards.csv": {
       "id": "opensafely/dmards/2020-06-23",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/dmards/2020-06-23/",
-      "downloaded_at": "2022-07-12 14:34:42.903259Z",
-      "sha": "06aae624d5a02a69c9e9e518a6d64e0a8e74e66e"
+      "url": "https://www.opencodelists.org/codelist/opensafely/dmards/2020-06-23/",
+      "downloaded_at": "2023-12-15 12:31:37.178090Z",
+      "sha": "c5c8b3fb290a31a49442ee57503b7c6067c44a40"
     },
     "user-ruthcostello-psoriasis.csv": {
       "id": "user/ruthcostello/psoriasis/2d3ec689",
-      "url": "https://codelists.opensafely.org/codelist/user/ruthcostello/psoriasis/2d3ec689/",
+      "url": "https://www.opencodelists.org/codelist/user/ruthcostello/psoriasis/2d3ec689/",
       "downloaded_at": "2022-07-12 14:34:43.102877Z",
       "sha": "5702b6191b2e003e2528568a2436d8662d0d0a8a"
     },
     "opensafely-psoriatic-arthritis.csv": {
       "id": "opensafely/psoriatic-arthritis/17e0b160",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/psoriatic-arthritis/17e0b160/",
+      "url": "https://www.opencodelists.org/codelist/opensafely/psoriatic-arthritis/17e0b160/",
       "downloaded_at": "2022-07-12 14:34:43.431771Z",
       "sha": "c4188c7e914b59f058ad61bd39e005ee976e1ee5"
     },
     "opensafely-inflammatory-bowel-disease.csv": {
       "id": "opensafely/inflammatory-bowel-disease/2020-04-07",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/inflammatory-bowel-disease/2020-04-07/",
+      "url": "https://www.opencodelists.org/codelist/opensafely/inflammatory-bowel-disease/2020-04-07/",
       "downloaded_at": "2022-07-12 14:34:43.730428Z",
       "sha": "cd2175107ab3e81151fc31cd8ffd754ce5902f8b"
     },
     "user-ruthcostello-systemic-lupus-erythematosus.csv": {
       "id": "user/ruthcostello/systemic-lupus-erythematosus/142f5354",
-      "url": "https://codelists.opensafely.org/codelist/user/ruthcostello/systemic-lupus-erythematosus/142f5354/",
+      "url": "https://www.opencodelists.org/codelist/user/ruthcostello/systemic-lupus-erythematosus/142f5354/",
       "downloaded_at": "2022-07-12 14:34:43.994340Z",
       "sha": "ff4ba4a58e8098a46120bc45e656ddc1ff95cdf3"
     },
     "opensafely-haematological-cancer.csv": {
       "id": "opensafely/haematological-cancer/2020-04-15",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/haematological-cancer/2020-04-15/",
+      "url": "https://www.opencodelists.org/codelist/opensafely/haematological-cancer/2020-04-15/",
       "downloaded_at": "2022-07-13 11:46:26.147048Z",
       "sha": "59d65c613a7b984ba46eca8a74eedcc6320609fe"
     },
     "user-ruthcostello-spondyloarthropathy.csv": {
       "id": "user/ruthcostello/spondyloarthropathy/3809c661",
-      "url": "https://codelists.opensafely.org/codelist/user/ruthcostello/spondyloarthropathy/3809c661/",
+      "url": "https://www.opencodelists.org/codelist/user/ruthcostello/spondyloarthropathy/3809c661/",
       "downloaded_at": "2022-07-13 12:39:07.452470Z",
       "sha": "0b459464201177ca348a3feb919ba78eeb57c5fc"
     },
     "opensafely-type-1-diabetes.csv": {
       "id": "opensafely/type-1-diabetes/2020-06-29",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/type-1-diabetes/2020-06-29/",
+      "url": "https://www.opencodelists.org/codelist/opensafely/type-1-diabetes/2020-06-29/",
       "downloaded_at": "2022-07-19 12:46:06.725489Z",
       "sha": "dc4ce0fbdb8500cc7dc6288e8eec9c783e31de57"
     },
     "opensafely-type-2-diabetes.csv": {
       "id": "opensafely/type-2-diabetes/2020-06-29",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/type-2-diabetes/2020-06-29/",
+      "url": "https://www.opencodelists.org/codelist/opensafely/type-2-diabetes/2020-06-29/",
       "downloaded_at": "2022-07-19 12:46:06.976642Z",
       "sha": "21a0fd8e041c19abd876970d75b389b6904dc901"
     },
     "opensafely-chronic-cardiac-disease.csv": {
       "id": "opensafely/chronic-cardiac-disease/2020-04-08",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/chronic-cardiac-disease/2020-04-08/",
+      "url": "https://www.opencodelists.org/codelist/opensafely/chronic-cardiac-disease/2020-04-08/",
       "downloaded_at": "2022-07-19 15:17:48.336984Z",
       "sha": "2267f6fada9c77a2bbf62ce7a1c07ddf48348d61"
     },
     "user-ruthcostello-ra_hospitalisation.csv": {
       "id": "user/ruthcostello/ra_hospitalisation/14ec9de6",
-      "url": "https://codelists.opensafely.org/codelist/user/ruthcostello/ra_hospitalisation/14ec9de6/",
+      "url": "https://www.opencodelists.org/codelist/user/ruthcostello/ra_hospitalisation/14ec9de6/",
       "downloaded_at": "2022-08-02 11:03:00.691988Z",
       "sha": "06e4db0975b3355b66e9187d071452348c39d6df"
     },
     "opensafely-cardiovascular-secondary-care.csv": {
       "id": "opensafely/cardiovascular-secondary-care/20b63bd4",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/cardiovascular-secondary-care/20b63bd4/",
+      "url": "https://www.opencodelists.org/codelist/opensafely/cardiovascular-secondary-care/20b63bd4/",
       "downloaded_at": "2022-08-02 11:03:00.907046Z",
       "sha": "7c956ed25484f8c03dae29823031c27f2802914a"
     },
     "user-ruthcostello-vasculitis.csv": {
       "id": "user/ruthcostello/vasculitis/6ebe102b",
-      "url": "https://codelists.opensafely.org/codelist/user/ruthcostello/vasculitis/6ebe102b/",
+      "url": "https://www.opencodelists.org/codelist/user/ruthcostello/vasculitis/6ebe102b/",
       "downloaded_at": "2022-08-09 10:35:15.994378Z",
       "sha": "a2bc78865c51d3d66c2ccfbd572b8a0c846184ea"
     },
     "user-ruthcostello-sepsis.csv": {
       "id": "user/ruthcostello/sepsis/26427682",
-      "url": "https://codelists.opensafely.org/codelist/user/ruthcostello/sepsis/26427682/",
+      "url": "https://www.opencodelists.org/codelist/user/ruthcostello/sepsis/26427682/",
       "downloaded_at": "2022-08-09 10:35:16.248383Z",
       "sha": "2a799ac08e35bbfa5eff6bcd487c27200a7b723d"
     },
     "opensafely-asthma-oral-prednisolone-medication.csv": {
       "id": "opensafely/asthma-oral-prednisolone-medication/2020-04-27",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/asthma-oral-prednisolone-medication/2020-04-27/",
-      "downloaded_at": "2022-08-03 13:07:48.370075Z",
-      "sha": "e47cc254975c23f7507cf04bb655454f8b5ece18"
+      "url": "https://www.opencodelists.org/codelist/opensafely/asthma-oral-prednisolone-medication/2020-04-27/",
+      "downloaded_at": "2023-12-15 12:31:38.882443Z",
+      "sha": "05c7047b64ade549c42b565161a51f421d119c50"
     },
     "opensafely-opioids-strong-for-msk-conditions.csv": {
       "id": "opensafely/opioids-strong-for-msk-conditions/278495b8",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/opioids-strong-for-msk-conditions/278495b8/",
-      "downloaded_at": "2023-05-26 10:06:01.051734Z",
-      "sha": "526c221437cea8186a6cb50f6aaa97220e6f077a"
+      "url": "https://www.opencodelists.org/codelist/opensafely/opioids-strong-for-msk-conditions/278495b8/",
+      "downloaded_at": "2023-12-15 12:31:39.008136Z",
+      "sha": "b4644ec551a87e572a778afbe616e294415915f7"
     },
     "opensafely-opioids-weak-for-msk-conditions.csv": {
       "id": "opensafely/opioids-weak-for-msk-conditions/0e752283",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/opioids-weak-for-msk-conditions/0e752283/",
-      "downloaded_at": "2023-05-26 10:06:01.300415Z",
-      "sha": "af101fb4313ad31d3a5563087bc40575198a5018"
+      "url": "https://www.opencodelists.org/codelist/opensafely/opioids-weak-for-msk-conditions/0e752283/",
+      "downloaded_at": "2023-12-15 12:31:39.133150Z",
+      "sha": "af57204fdeb36c10d250555a2764c765698f1416"
     },
     "user-ruthcostello-msk_pain_medicines.csv": {
       "id": "user/ruthcostello/msk_pain_medicines/57dd13af",
-      "url": "https://codelists.opensafely.org/codelist/user/ruthcostello/msk_pain_medicines/57dd13af/",
+      "url": "https://www.opencodelists.org/codelist/user/ruthcostello/msk_pain_medicines/57dd13af/",
       "downloaded_at": "2022-11-08 15:27:49.636916Z",
       "sha": "1160347a2dfa9a4984dc8017a07514ed91883d64"
     },
     "opensafely-selective-serotonin-reuptake-inhibitors-dmd.csv": {
       "id": "opensafely/selective-serotonin-reuptake-inhibitors-dmd/6a572e55",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/selective-serotonin-reuptake-inhibitors-dmd/6a572e55/",
-      "downloaded_at": "2022-11-08 15:27:49.856490Z",
-      "sha": "85e3b0949455aa282fd26b09d523905127160789"
+      "url": "https://www.opencodelists.org/codelist/opensafely/selective-serotonin-reuptake-inhibitors-dmd/6a572e55/",
+      "downloaded_at": "2023-12-15 12:31:39.383883Z",
+      "sha": "0249044a49c051dbfe5872f45197500077401bf6"
     },
     "opensafely-nsaids-oral.csv": {
       "id": "opensafely/nsaids-oral/49a0f281",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/nsaids-oral/49a0f281/",
-      "downloaded_at": "2022-12-08 14:53:58.211558Z",
-      "sha": "e33fa37c8037bf34f92a5ed4afc79cc7dfd334d5"
+      "url": "https://www.opencodelists.org/codelist/opensafely/nsaids-oral/49a0f281/",
+      "downloaded_at": "2023-12-15 12:31:39.540476Z",
+      "sha": "079e1c4e03e022d983d520bc3852ee3ff6fd9ab3"
     },
     "user-emilyherrett-depression_icd10.csv": {
       "id": "user/emilyherrett/depression_icd10/0aaf5048",
-      "url": "https://codelists.opensafely.org/codelist/user/emilyherrett/depression_icd10/0aaf5048/",
+      "url": "https://www.opencodelists.org/codelist/user/emilyherrett/depression_icd10/0aaf5048/",
       "downloaded_at": "2022-08-09 10:35:16.751310Z",
       "sha": "0b364f07654123840f01c96d4645785ac195b47f"
     },
     "opensafely-smoking-clear.csv": {
       "id": "opensafely/smoking-clear/2020-04-29",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/smoking-clear/2020-04-29/",
+      "url": "https://www.opencodelists.org/codelist/opensafely/smoking-clear/2020-04-29/",
       "downloaded_at": "2022-08-16 13:25:38.490284Z",
       "sha": "0b5f3afe1db96dcce5141220e893a42ba2e5a8f7"
     },
     "opensafely-smoking-unclear.csv": {
       "id": "opensafely/smoking-unclear/2020-04-29",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/smoking-unclear/2020-04-29/",
+      "url": "https://www.opencodelists.org/codelist/opensafely/smoking-unclear/2020-04-29/",
       "downloaded_at": "2022-08-16 13:25:38.726787Z",
       "sha": "d9dad3e9d9491f765863b2617114c521957b6db1"
     }
