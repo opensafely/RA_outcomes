@@ -47,7 +47,7 @@ sum hydrox_count, d
 
 sum outpatient*, d
 
-forvalues i=2019/2022 {
+forvalues i=2019/2021 {
     sum ra_hosp_beddays_`i' if ra_hosp_`i'>0, d 
 }
 
@@ -154,25 +154,28 @@ count if end_date<date("2019-04-01", "YMD")
 gen end_2020 = end_date<date("2020-03-31", "YMD")
 gen end_2021 = end_date<date("2021-03-31", "YMD") 
 gen end_2022 = end_date<date("2022-03-31", "YMD") 
+gen end_2023 = end_date<date("2023-03-31", "YMD") 
 tab end_2020
 tab end_2021
 tab end_2022
+tab end_2023
 
 * Set outpatient appointment count to missing if end prior to the end of the year 
-forvalues i=2019/2021 {
+forvalues i=2019/2022 {
     local j=`i'+1
     di `j'
     gen op_appt_`i'_orig = outpatient_appt_`i'
     replace outpatient_appt_`i'=. if end_`j'
-    gen op_medium_`i'_orig = outpatient_medium_`i'
-    replace outpatient_medium_`i'=. if end_`j'
+    *gen op_medium_`i'_orig = outpatient_medium_`i'
+    *replace outpatient_medium_`i'=. if end_`j'
     gen op_appt_all_`i'_orig = outpatient_appt_all_`i'
     replace outpatient_appt_all_`i'=. if end_`j'
 }
 
+
 * Categorise number of outpatient appointments
 label define appt 0 "No appointments" 1 "1-2 per year" 2 "3 or more per year" 
-forvalues i=2019/2021 {
+forvalues i=2019/2022 {
     * Rheumatology outpatient appointments
     egen op_appt_`i'_cat = cut(outpatient_appt_`i'), at(0, 1, 3, 1000) icodes
     * Check all categorised
@@ -188,24 +191,25 @@ forvalues i=2019/2021 {
 * Calculate difference in rheumatology appointments compared to 2019
 gen diff_op_2020 = outpatient_appt_2020 - outpatient_appt_2019
 gen diff_op_2021 = outpatient_appt_2021 - outpatient_appt_2019
-sum diff_op_2020 diff_op_2021, d
+gen diff_op_2022 = outpatient_appt_2022 - outpatient_appt_2019
+sum diff_op_2020 diff_op_2021 diff_op_2022, d
 
 * Identify people with no appointments in either year flag them and set difference to missing
-forvalues i=2020/2021 {
+forvalues i=2020/2022 {
     gen no_appts_`i' = diff_op_`i'==0 & op_appt_`i'_cat==0
     tab no_appts_`i' op_appt_`i'_cat
     replace diff_op_`i'=. if no_appts_`i'==1
 }
 
 * Identify of people with appointments whether they had fewer appointments 
-forvalues i=2020/2021 {
+forvalues i=2020/2022 {
     gen fewer_appts_`i' = (diff_op_`i' < 0) if diff_op_`i'!=.
     tab fewer_appts_`i' no_appts_`i'
 }
 
 * Categorise number of outpatient appointments (all specialties)
 label define appt_all 0 "No appointments" 1 "1-2 per year" 2 "3-5 per year" 3 "6 or more per year"
-forvalues i=2019/2021 {
+forvalues i=2019/2022 {
     sum outpatient_appt_all_`i', d
     egen op_appt_all_`i'_cat = cut(outpatient_appt_all_`i'), at(0, 1, 3, 6, 1000) icodes
     * Check all categorised
@@ -221,63 +225,64 @@ forvalues i=2019/2021 {
 * Calculate difference in all outpatient appointments compared to 2019
 gen diff_op_all_2020 = outpatient_appt_all_2020 - outpatient_appt_all_2019
 gen diff_op_all_2021 = outpatient_appt_all_2021 - outpatient_appt_all_2019
-sum diff_op_all_2020 diff_op_all_2021, d
+gen diff_op_all_2022 = outpatient_appt_all_2022 - outpatient_appt_all_2019
+sum diff_op_all_2020 diff_op_all_2021 diff_op_2022, d
 
 * Identify people with no appointments in either year flag them and set difference to missing
-forvalues i=2020/2021 {
+forvalues i=2020/2022 {
     gen no_appts_all_`i' = diff_op_all_`i'==0 & op_appt_all_`i'_cat==0
     tab no_appts_all_`i' op_appt_all_`i'_cat
     replace diff_op_all_`i'=. if no_appts_all_`i'==1
     }
 
 * Identify of people with appointments whether they had fewer appointments 
-forvalues i=2020/2021 {
+forvalues i=2020/2022 {
     gen fewer_appts_all_`i' = (diff_op_all_`i' < 0) if diff_op_all_`i'!=.
 }
 
 preserve
 * Tabulate number of rheumatology appointments per year of those with whole year available
-table1_mc, vars(op_appt_2019_cat cate \ op_appt_2020_cat cate \ op_appt_2021_cat cate \ no_appts_2020 cate \ no_appts_2021 cate \ fewer_appts_2020 cate \ fewer_appts_2021 cate) clear
+table1_mc, vars(op_appt_2019_cat cat \ op_appt_2020_cat cat \ op_appt_2021_cat cat \ op_appt_2022_cat cat \ no_appts_2020 cat \ no_appts_2021 cat \ no_appts_2022 cat \ fewer_appts_2020 cat \ fewer_appts_2021 cat \ fewer_appts_2022 cat) clear
 export delimited using ./output/tables/op_appt_yrs.csv
 * Rounding numbers in table to nearest 5
 describe
 destring _columna_1, gen(n) ignore(",") force
 destring _columnb_1, gen(percent) ignore("-" "%" "(" ")") force
-gen rounded_n = round(n, 5)
+gen rounded_n = round(n, 7)
 keep factor level rounded_n percent
 export delimited using ./output/tables/op_appt_yrs_rounded.csv
 restore 
 preserve
 * Tabulate number of rheumatology appointments per year (includes people who end follow-up during year)
-table1_mc, vars(op_appt_2019_orig_cat cate \ op_appt_2020_orig_cat cate \ op_appt_2021_orig_cat cate) clear
+table1_mc, vars(op_appt_2019_orig_cat cat \ op_appt_2020_orig_cat cat \ op_appt_2021_orig_cat cat \ op_appt_2022_orig_cat cat) clear
 export delimited using ./output/tables/op_appt_orig_yrs.csv
 restore 
 preserve
 * Tabulate number of all outpatient appointments per year of those with whole year available
-table1_mc, vars(op_appt_all_2019_cat cate \ op_appt_all_2020_cat cate \ op_appt_all_2021_cat cate \ no_appts_all_2020 cate \ no_appts_all_2021 cate \ fewer_appts_all_2020 cate \ fewer_appts_all_2021 cate) clear
+table1_mc, vars(op_appt_all_2019_cat cat \ op_appt_all_2020_cat cat \ op_appt_all_2021_cat cat \ op_appt_all_2022_cat cat \ no_appts_all_2020 cat \ no_appts_all_2021 cat \ no_appts_all_2022 cat \ fewer_appts_all_2020 cat \ fewer_appts_all_2021 cat \ fewer_appts_all_2022 cat) clear
 export delimited using ./output/tables/op_appt_all_yrs.csv
 * Rounding numbers in table to nearest 5
 describe
 destring _columna_1, gen(n) ignore(",") force
 destring _columnb_1, gen(percent) ignore("-" "%" "(" ")") force
-gen rounded_n = round(n, 5)
+gen rounded_n = round(n, 7)
 keep factor level rounded_n percent
 export delimited using ./output/tables/op_appt_all_yrs_rounded.csv
 restore 
 * Tabulate overall characteristics 
 preserve
-table1_mc, vars(age_cat cate \ male cate \ urban_rural_bin cate \ region cate \ imd cate \  smoking cate \ time_ra contn \ bmi_cat cate \ eth5 cate) clear
+table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region cat \ imd cat \  smoking cat \ time_ra contn \ bmi_cat cat \ eth5 cat) clear
 export delimited using ./output/tables/op_chars.csv
 * Rounding numbers in table to nearest 5
 describe
 destring _columna_1, gen(n) ignore(",") force
 destring _columnb_1, gen(percent) ignore("-" "%" "(" ")") force
-gen rounded_n = round(n, 5)
+gen rounded_n = round(n, 7)
 keep factor level rounded_n percent
 export delimited using ./output/tables/op_chars_rounded.csv
 restore
 * Tabulate characteristics by category of outpatient appointments for each year
-forvalues i=2019/2021 {
+forvalues i=2019/2022 {
     preserve
     table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region cat \ imd cat \ smoking cat \ time_ra contn \ bmi_cat cat \ eth5 cat) by(op_appt_`i'_cat) clear
     export delimited using ./output/tables/characteristics_strata`i'.csv
@@ -318,8 +323,8 @@ destring _columna_1, gen(n1) ignore(",") force
 destring _columna_0, gen(n0) ignore(",") force
 destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
 destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
-gen rounded_n1 = round(n1, 5)
-gen rounded_n0 = round(n0, 5)
+gen rounded_n1 = round(n1, 7)
+gen rounded_n0 = round(n0, 7)
 keep factor level rounded_n0 percent0 rounded_n1 percent1
 export delimited using ./output/tables/drug_weak_op_chars_rounded.csv
 restore
@@ -333,8 +338,8 @@ destring _columna_1, gen(n1) ignore(",") force
 destring _columna_0, gen(n0) ignore(",") force
 destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
 destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
-gen rounded_n1 = round(n1, 5)
-gen rounded_n0 = round(n0, 5)
+gen rounded_n1 = round(n1, 7)
+gen rounded_n0 = round(n0, 7)
 keep factor level rounded_n0 percent0 rounded_n1 percent1
 export delimited using ./output/tables/drug_strong_op_chars_rounded.csv
 restore
@@ -348,8 +353,8 @@ destring _columna_1, gen(n1) ignore(",") force
 destring _columna_0, gen(n0) ignore(",") force
 destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
 destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
-gen rounded_n1 = round(n1, 5)
-gen rounded_n0 = round(n0, 5)
+gen rounded_n1 = round(n1, 7)
+gen rounded_n0 = round(n0, 7)
 keep factor level rounded_n0 percent0 rounded_n1 percent1
 export delimited using ./output/tables/drug_gc_chars_rounded.csv
 restore
@@ -357,7 +362,7 @@ restore
 * Tabulate characteristics by categories of differences in rheumatology outpatient appointments for each year
 drop if region=="missing"
 tempfile tempfile
-forvalues i=2020/2021 {
+forvalues i=2020/2022 {
     * Same number or more appointments 
     preserve
     table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region cat \ imd cat \ smoking cat \ time_ra contn \ bmi_cat cat \ eth5 cat) by(fewer_appts_`i') clear
@@ -366,8 +371,8 @@ forvalues i=2020/2021 {
     destring _columna_0, gen(n0) ignore(",") force
     destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
     destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
-    gen rounded_n1 = round(n1, 5)
-    gen rounded_n0 = round(n0, 5)
+    gen rounded_n1 = round(n1, 7)
+    gen rounded_n0 = round(n0, 7)
     keep factor level rounded_n0 percent0 rounded_n1 percent1
     export delimited using ./output/tables/characteristics_fewer_appts_`i'_rounded.csv
     restore 
@@ -379,14 +384,14 @@ forvalues i=2020/2021 {
     destring _columna_0, gen(n0) ignore(",") force
     destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
     destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
-    gen rounded_n1 = round(n1, 5)
-    gen rounded_n0 = round(n0, 5)
+    gen rounded_n1 = round(n1, 7)
+    gen rounded_n0 = round(n0, 7)
     keep factor level rounded_n0 percent0 rounded_n1 percent1
     export delimited using ./output/tables/characteristics_no_appts_`i'_rounded.csv
     restore
     * Logistic regression 
-    foreach var in urban_rural_bin i.imd ib3.region_n i.eth5 {
-        logit fewer_appts_`i' `var' ib1.age_cat male, or 
+    foreach var in ib1.age_cat male urban_rural_bin i.imd ib3.region_n i.eth5 {
+        logit fewer_appts_`i' `var', or 
         est sto m1 
         parmest, label eform format(estimate p min95 max95) saving("./output/tempdata/`var'_diff_rheum_`i'", replace) idstr("`var'_rheum_`i'")
         }
@@ -396,16 +401,27 @@ forvalues i=2020/2021 {
     }
 * Put together 2020 and 2021 logistic regression results
 preserve 
-use "./output/tempdata/urban_rural_bin_diff_rheum_2020", clear 
+use "./output/tempdata/ib1.age_cat_diff_rheum_2020", clear 
+append using "./output/tempdata/male_diff_rheum_2020"
+append using "./output/tempdata/urban_rural_bin_diff_rheum_2020"
 append using "./output/tempdata/i.imd_diff_rheum_2020"
 append using "./output/tempdata/ib3.region_n_diff_rheum_2020"
 append using "./output/tempdata/i.eth5_diff_rheum_2020"
 append using "./output/tempdata/multi_diff_rheum_2020"
+append using "./output/tempdata/ib1.age_cat_diff_rheum_2021"
+append using "./output/tempdata/male_diff_rheum_2021"
 append using "./output/tempdata/urban_rural_bin_diff_rheum_2021"
 append using "./output/tempdata/i.imd_diff_rheum_2021"
 append using "./output/tempdata/ib3.region_n_diff_rheum_2021"
 append using "./output/tempdata/i.eth5_diff_rheum_2021"
 append using "./output/tempdata/multi_diff_rheum_2021"
+append using "./output/tempdata/ib1.age_cat_diff_rheum_2022"
+append using "./output/tempdata/male_diff_rheum_2022"
+append using "./output/tempdata/urban_rural_bin_diff_rheum_2022"
+append using "./output/tempdata/i.imd_diff_rheum_2022"
+append using "./output/tempdata/ib3.region_n_diff_rheum_2022"
+append using "./output/tempdata/i.eth5_diff_rheum_2022"
+append using "./output/tempdata/multi_diff_rheum_2022"
 drop stderr z 
 export delimited using ./output/tables/logistic_diff_results.csv 
 restore
@@ -415,7 +431,7 @@ restore
 * When stratified there are small numbers with missing region therefore tabulate only those without region missing
 drop if region=="missing"
 tempfile tempfile
-forvalues i=2020/2021 {
+forvalues i=2020/2022 {
     preserve
     table1_mc, vars(age_cat cat \ male cat \ urban_rural_bin cat \ region cat \ imd cat \ smoking cat \ time_ra contn \ bmi_cat cat \ eth5 cat) by(fewer_appts_all_`i') clear
     export delimited using ./output/tables/characteristics_fewer_appts_all_`i'.csv    
@@ -423,8 +439,8 @@ forvalues i=2020/2021 {
     destring _columna_0, gen(n0) ignore(",") force
     destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
     destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
-    gen rounded_n1 = round(n1, 5)
-    gen rounded_n0 = round(n0, 5)
+    gen rounded_n1 = round(n1, 7)
+    gen rounded_n0 = round(n0, 7)
     keep factor level rounded_n0 percent0 rounded_n1 percent1
     export delimited using ./output/tables/characteristics_fewer_appts_all_`i'_rounded.csv
     restore 
@@ -436,8 +452,8 @@ forvalues i=2020/2021 {
     destring _columna_0, gen(n0) ignore(",") force
     destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
     destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
-    gen rounded_n1 = round(n1, 5)
-    gen rounded_n0 = round(n0, 5)
+    gen rounded_n1 = round(n1, 7)
+    gen rounded_n0 = round(n0, 7)
     keep factor level rounded_n0 percent0 rounded_n1 percent1
     export delimited using ./output/tables/characteristics_no_appts_all_`i'_rounded.csv
     restore
@@ -452,16 +468,27 @@ forvalues i=2020/2021 {
     parmest, label eform format(estimate p min95 max95) saving("./output/tempdata/multi_diff_all_`i'", replace) idstr("multi_all_`i'")
     }
 * Put together 2020 and 2021 logistic regression results
-use "./output/tempdata/urban_rural_bin_diff_all_2020", clear 
-append using "./output/tempdata/i.imd_diff_all_2020"
-append using "./output/tempdata/i.region_n_diff_all_2020"
-append using "./output/tempdata/i.eth5_diff_all_2020"
-append using "./output/tempdata/multi_diff_all_2020"
-append using "./output/tempdata/urban_rural_bin_diff_all_2021"
-append using "./output/tempdata/i.imd_diff_all_2021"
-append using "./output/tempdata/i.region_n_diff_all_2021"
-append using "./output/tempdata/i.eth5_diff_all_2021"
-append using "./output/tempdata/multi_diff_all_2021"
+use "./output/tempdata/ib1.age_cat_diff_rheum_2020", clear 
+append using "./output/tempdata/male_diff_rheum_2020"
+append using "./output/tempdata/urban_rural_bin_diff_rheum_2020"
+append using "./output/tempdata/i.imd_diff_rheum_2020"
+append using "./output/tempdata/ib3.region_n_diff_rheum_2020"
+append using "./output/tempdata/i.eth5_diff_rheum_2020"
+append using "./output/tempdata/multi_diff_rheum_2020"
+append using "./output/tempdata/ib1.age_cat_diff_rheum_2021"
+append using "./output/tempdata/male_diff_rheum_2021"
+append using "./output/tempdata/urban_rural_bin_diff_rheum_2021"
+append using "./output/tempdata/i.imd_diff_rheum_2021"
+append using "./output/tempdata/ib3.region_n_diff_rheum_2021"
+append using "./output/tempdata/i.eth5_diff_rheum_2021"
+append using "./output/tempdata/multi_diff_rheum_2021"
+append using "./output/tempdata/ib1.age_cat_diff_rheum_2022"
+append using "./output/tempdata/male_diff_rheum_2022"
+append using "./output/tempdata/urban_rural_bin_diff_rheum_2022"
+append using "./output/tempdata/i.imd_diff_rheum_2022"
+append using "./output/tempdata/ib3.region_n_diff_rheum_2022"
+append using "./output/tempdata/i.eth5_diff_rheum_2022"
+append using "./output/tempdata/multi_diff_rheum_2022"
 drop stderr z 
 export delimited using ./output/tables/logistic_diff_all_results.csv
 
