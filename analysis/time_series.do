@@ -33,6 +33,7 @@ foreach file in op_appt op_appt_all_n hosp_ra /*hosp_ra_emergency*/ hosp_all med
     drop temp_date
     *Value to percentage of population
     gen percent = value*100
+    drop if percent==0
     label variable percent "Percent of population"
     *Set time series
     tsset month 
