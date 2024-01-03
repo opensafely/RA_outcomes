@@ -171,14 +171,14 @@
     "opensafely-opioids-strong-for-msk-conditions.csv": {
       "id": "opensafely/opioids-strong-for-msk-conditions/278495b8",
       "url": "https://www.opencodelists.org/codelist/opensafely/opioids-strong-for-msk-conditions/278495b8/",
-      "downloaded_at": "2023-12-15 12:31:39.008136Z",
-      "sha": "b4644ec551a87e572a778afbe616e294415915f7"
+      "downloaded_at": "2024-01-03 13:41:16.826006Z",
+      "sha": "d3d9e4501d75bd63788f5c3c8d341c87e94ca6f1"
     },
     "opensafely-opioids-weak-for-msk-conditions.csv": {
       "id": "opensafely/opioids-weak-for-msk-conditions/0e752283",
       "url": "https://www.opencodelists.org/codelist/opensafely/opioids-weak-for-msk-conditions/0e752283/",
-      "downloaded_at": "2023-12-15 12:31:39.133150Z",
-      "sha": "af57204fdeb36c10d250555a2764c765698f1416"
+      "downloaded_at": "2024-01-03 13:41:16.951970Z",
+      "sha": "bc0d8a8d12b4e42672518010bed3b86d74acfe5b"
     },
     "user-ruthcostello-msk_pain_medicines.csv": {
       "id": "user/ruthcostello/msk_pain_medicines/57dd13af",
