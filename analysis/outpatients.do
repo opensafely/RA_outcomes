@@ -248,7 +248,7 @@ export delimited using ./output/tables/op_appt_yrs.csv
 describe
 destring _columna_1, gen(n) ignore(",") force
 destring _columnb_1, gen(percent) ignore("-" "%" "(" ")") force
-gen rounded_n = round(n, 7)
+gen rounded_n = round(n, 5)
 keep factor level rounded_n percent
 export delimited using ./output/tables/op_appt_yrs_rounded.csv
 restore 
@@ -265,7 +265,7 @@ export delimited using ./output/tables/op_appt_all_yrs.csv
 describe
 destring _columna_1, gen(n) ignore(",") force
 destring _columnb_1, gen(percent) ignore("-" "%" "(" ")") force
-gen rounded_n = round(n, 7)
+gen rounded_n = round(n, 5)
 keep factor level rounded_n percent
 export delimited using ./output/tables/op_appt_all_yrs_rounded.csv
 restore 
@@ -277,7 +277,7 @@ export delimited using ./output/tables/op_chars.csv
 describe
 destring _columna_1, gen(n) ignore(",") force
 destring _columnb_1, gen(percent) ignore("-" "%" "(" ")") force
-gen rounded_n = round(n, 7)
+gen rounded_n = round(n, 5)
 keep factor level rounded_n percent
 export delimited using ./output/tables/op_chars_rounded.csv
 restore
@@ -323,8 +323,8 @@ destring _columna_1, gen(n1) ignore(",") force
 destring _columna_0, gen(n0) ignore(",") force
 destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
 destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
-gen rounded_n1 = round(n1, 7)
-gen rounded_n0 = round(n0, 7)
+gen rounded_n1 = round(n1, 5)
+gen rounded_n0 = round(n0, 5)
 keep factor level rounded_n0 percent0 rounded_n1 percent1
 export delimited using ./output/tables/drug_weak_op_chars_rounded.csv
 restore
@@ -338,8 +338,8 @@ destring _columna_1, gen(n1) ignore(",") force
 destring _columna_0, gen(n0) ignore(",") force
 destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
 destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
-gen rounded_n1 = round(n1, 7)
-gen rounded_n0 = round(n0, 7)
+gen rounded_n1 = round(n1, 5)
+gen rounded_n0 = round(n0, 5)
 keep factor level rounded_n0 percent0 rounded_n1 percent1
 export delimited using ./output/tables/drug_strong_op_chars_rounded.csv
 restore
@@ -353,8 +353,8 @@ destring _columna_1, gen(n1) ignore(",") force
 destring _columna_0, gen(n0) ignore(",") force
 destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
 destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
-gen rounded_n1 = round(n1, 7)
-gen rounded_n0 = round(n0, 7)
+gen rounded_n1 = round(n1, 5)
+gen rounded_n0 = round(n0, 5)
 keep factor level rounded_n0 percent0 rounded_n1 percent1
 export delimited using ./output/tables/drug_gc_chars_rounded.csv
 restore
@@ -371,8 +371,8 @@ forvalues i=2020/2022 {
     destring _columna_0, gen(n0) ignore(",") force
     destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
     destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
-    gen rounded_n1 = round(n1, 7)
-    gen rounded_n0 = round(n0, 7)
+    gen rounded_n1 = round(n1, 5)
+    gen rounded_n0 = round(n0, 5)
     keep factor level rounded_n0 percent0 rounded_n1 percent1
     export delimited using ./output/tables/characteristics_fewer_appts_`i'_rounded.csv
     restore 
@@ -384,8 +384,8 @@ forvalues i=2020/2022 {
     destring _columna_0, gen(n0) ignore(",") force
     destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
     destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
-    gen rounded_n1 = round(n1, 7)
-    gen rounded_n0 = round(n0, 7)
+    gen rounded_n1 = round(n1, 5)
+    gen rounded_n0 = round(n0, 5)
     keep factor level rounded_n0 percent0 rounded_n1 percent1
     export delimited using ./output/tables/characteristics_no_appts_`i'_rounded.csv
     restore
@@ -439,8 +439,8 @@ forvalues i=2020/2022 {
     destring _columna_0, gen(n0) ignore(",") force
     destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
     destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
-    gen rounded_n1 = round(n1, 7)
-    gen rounded_n0 = round(n0, 7)
+    gen rounded_n1 = round(n1, 5)
+    gen rounded_n0 = round(n0, 5)
     keep factor level rounded_n0 percent0 rounded_n1 percent1
     export delimited using ./output/tables/characteristics_fewer_appts_all_`i'_rounded.csv
     restore 
@@ -452,8 +452,8 @@ forvalues i=2020/2022 {
     destring _columna_0, gen(n0) ignore(",") force
     destring _columnb_1, gen(percent1) ignore("-" "%" "(" ")")  force
     destring _columnb_0, gen(percent0) ignore("-" "%" "(" ")")  force
-    gen rounded_n1 = round(n1, 7)
-    gen rounded_n0 = round(n0, 7)
+    gen rounded_n1 = round(n1, 5)
+    gen rounded_n0 = round(n0, 5)
     keep factor level rounded_n0 percent0 rounded_n1 percent1
     export delimited using ./output/tables/characteristics_no_appts_all_`i'_rounded.csv
     restore
