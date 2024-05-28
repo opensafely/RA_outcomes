@@ -16,10 +16,18 @@ cap mkdir ./output/tempdata
 * Update outpatient appointments all file to exclude rheumatology appointments 
 tempfile datafile 
 import delimited "./output/measures/join/measure_op_appt_all_rate.csv", clear
+rename value all_op_value
+rename op_appt all_op_appt 
+describe 
 save `datafile'
 import delimited "./output/measures/join/measure_op_appt_rate.csv", clear
-merge 1:1 date using `datafile', keepusing(op_appt_all)
-gen op_appt_all_n = op_appt_all - op_appt 
+merge 1:1 date using `datafile', keepusing(all_op_value all_op_appt)
+describe 
+rename value rheum_op_value
+rename op_appt rheum_op_appt 
+gen value = all_op_value - rheum_op_value
+gen op_appt = all_op_appt - rheum_op_appt 
+drop all_op_value rheum_op_value _merge all_op_appt rheum_op_appt
 export delimited "./output/measures/join/measure_op_appt_all_n_rate.csv"
 
 * Outpatient appointments amd hospitalisations

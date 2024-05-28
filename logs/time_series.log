@@ -13,13 +13,34 @@
 . import delimited "./output/measures/join/measure_op_appt_all_rate.csv", clear
 (4 vars, 56 obs)
 
+. rename value all_op_value
+
+. rename op_appt all_op_appt 
+
+. describe 
+
+Contains data
+  obs:            56                          
+ vars:             4                          
+-------------------------------------------------------------------------------
+              storage   display    value
+variable name   type    format     label      variable label
+-------------------------------------------------------------------------------
+all_op_appt     int     %8.0g                 
+population      int     %8.0g                 
+all_op_value    float   %9.0g                 
+date            str10   %10s                  
+-------------------------------------------------------------------------------
+Sorted by: 
+     Note: Dataset has changed since last saved.
+
 . save `datafile'
 file /tmp/St00015.000001 saved
 
 . import delimited "./output/measures/join/measure_op_appt_rate.csv", clear
 (4 vars, 56 obs)
 
-. merge 1:1 date using `datafile', keepusing(op_appt_all)
+. merge 1:1 date using `datafile', keepusing(all_op_value all_op_appt)
 
     Result                           # of obs.
     -----------------------------------------
@@ -27,7 +48,35 @@ file /tmp/St00015.000001 saved
     matched                                56  (_merge==3)
     -----------------------------------------
 
-. gen op_appt_all_n = op_appt_all - op_appt 
+. describe 
+
+Contains data
+  obs:            56                          
+ vars:             7                          
+-------------------------------------------------------------------------------
+              storage   display    value
+variable name   type    format     label      variable label
+-------------------------------------------------------------------------------
+op_appt         int     %8.0g                 
+population      int     %8.0g                 
+value           float   %9.0g                 
+date            str10   %10s                  
+all_op_appt     int     %8.0g                 
+all_op_value    float   %9.0g                 
+_merge          byte    %23.0g     _merge     
+-------------------------------------------------------------------------------
+Sorted by: date
+     Note: Dataset has changed since last saved.
+
+. rename value rheum_op_value
+
+. rename op_appt rheum_op_appt 
+
+. gen value = all_op_value - rheum_op_value
+
+. gen op_appt = all_op_appt - rheum_op_appt 
+
+. drop all_op_value rheum_op_value _merge all_op_appt rheum_op_appt
 
 . export delimited "./output/measures/join/measure_op_appt_all_n_rate.csv"
 file ./output/measures/join/measure_op_appt_all_n_rate.csv saved
@@ -112,7 +161,7 @@ Cumby-Huizinga test for autocorrelation (Breusch-Godfrey)
   Test allows predetermined regressors/instruments
   Test requires conditional homoskedasticity
 file ./output/time_series/plot_data_op_appt.csv saved
-(7 vars, 56 obs)
+(4 vars, 56 obs)
 (0 observations deleted)
         time variable:  month, 2019m4 to 2023m11
                 delta:  1 month
@@ -132,7 +181,7 @@ maximum lag: 1                                  F(  0,        52) =          .
           _t |          0  (omitted)
     _x2020m4 |          0  (omitted)
   _x_t2020m4 |          0  (omitted)
-       _cons |         50          .        .       .            .           .
+       _cons |         20          .        .       .            .           .
 ------------------------------------------------------------------------------
 
 
@@ -1003,16 +1052,10 @@ file /tmp/St00015.000002 saved
 (note: variable outcome was str7, now str11 to accommodate using data's
        values)
 file /tmp/St00015.000002 saved
-(note: variable estimate was byte, now double to accommodate using data's
-       values)
 (note: variable stderr was byte, now double to accommodate using data's
        values)
 (note: variable t was byte, now double to accommodate using data's values)
 (note: variable p was byte, now double to accommodate using data's values)
-(note: variable min95 was byte, now double to accommodate using data's
-       values)
-(note: variable max95 was byte, now double to accommodate using data's
-       values)
 file /tmp/St00015.000002 saved
 (note: variable estimate was byte, now double to accommodate using data's
        values)
@@ -1110,7 +1153,7 @@ file /tmp/St00015.000002 saved
 
 Contains data from /tmp/St00015.000002
   obs:            56                          
- vars:            10                          3 Jan 2024 13:30
+ vars:            10                          28 May 2024 15:55
 -------------------------------------------------------------------------------
               storage   display    value
 variable name   type    format     label      variable label
@@ -1281,7 +1324,7 @@ file ./output/tables/all_itsa_output.csv saved
 
 end of do-file
 
-. . file open output using "/tmp/time_series.do.ITfH.out", write text replace
+. . file open output using "/tmp/time_series.do.oAhp.out", write text replace
 
 . . file write output "success" 
 
