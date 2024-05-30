@@ -26,13 +26,19 @@ describe
 rename value rheum_op_value
 rename op_appt rheum_op_appt 
 gen value = all_op_value - rheum_op_value
-gen op_appt = all_op_appt - rheum_op_appt 
+gen op_appt_all_n = all_op_appt - rheum_op_appt 
 drop all_op_value rheum_op_value _merge all_op_appt rheum_op_appt
 export delimited "./output/measures/join/measure_op_appt_all_n_rate.csv"
 
 * Outpatient appointments amd hospitalisations
 * Autocorrelation indicates no autocorrelation for op_appt 
-foreach file in op_appt op_appt_all_n hosp_ra /*hosp_ra_emergency*/ hosp_all med_gc med_opioid_strong med_opioid_weak med_ssri med_nsaid {
+local a "op_appt op_appt_all_n hosp_ra hosp_all med_gc med_opioid_strong med_opioid_weak med_ssri med_nsaid"
+local b "op_appt op_appt_all_n ra_hosp all_admissions gc_prescribing opioid_strong_prescribing opioid_weak_prescribing ssri_prescribing nsaid_prescribing"
+local n: word count `a'
+forvalues i=1/`n' {
+    local file: word `i' of `a'
+    local var: word `i' of `b'
+
     import delimited "./output/measures/join/measure_`file'_rate.csv", clear	//get csv
     gen temp_date=date(date, "YMD")
     format temp_date %td
@@ -40,16 +46,21 @@ foreach file in op_appt op_appt_all_n hosp_ra /*hosp_ra_emergency*/ hosp_all med
     format month %tm
     drop temp_date
     *Value to percentage of population
+    gen `var'_round = round(`var', 5)
+    gen pop_round = round(population, 5)
+    gen percent_round = (`var'_round/pop_round)*100
     gen percent = value*100
+    count if percent_round!=percent
     drop if percent==0
-    label variable percent "Percent of population"
+    label variable percent_round "Percent of population"
+    export delimited "./output/measures/join/measure_`file'_round_rate.csv"
     *Set time series
     tsset month 
-    itsa percent, trperiod(2020m4) figure single lag(1) posttrend
+    itsa percent_round, trperiod(2020m4) figure single lag(1) posttrend
     parmest, label saving("./output/tempdata/`file'_itsa_output", replace)
     graph export ./output/time_series/itsa_`file'.svg, as(svg) replace
     actest, lags(6)
-    keep date percent
+    keep date percent_round
     export delimited "./output/time_series/plot_data_`file'.csv"
     }
 

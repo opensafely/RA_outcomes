@@ -141,7 +141,7 @@ actions:
         graphs: output/time_series/itsa*.svg
         data: output/tables/all_itsa_output.csv
         plots: output/time_series/plot_data*.csv
-        data_check: output/measures/join/measure_op_appt_all_n_rate.csv
+        data_check: output/measures/join/measure_*_rate.csv
   
   #Study definition for outpatient objectives - population for BSR abstract
   generate_study_population_bsr_2019:
